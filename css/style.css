@@ -31,7 +31,7 @@ html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 body {
   font-family: var(--sans);
   font-size: 16.5px;
-  line-height: 1.65;
+  line-height: 1.3;
   color: var(--ink);
   background: var(--paper);
 }
@@ -285,7 +285,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .advisory-list li.featured .btn-download { background: var(--r5); }
 .advisory-list li.featured:hover { border-color: var(--r5); box-shadow: 0 4px 14px rgba(239,124,40,.3); }
 .advisory-list li.featured:hover .btn-download { background: color-mix(in srgb, var(--r5) 75%, black); }
-.advisory-list li.featured .summary { font-size: 1.05rem; line-height: 1.45; margin-bottom: .7rem; }
+.advisory-list li.featured .summary { font-size: 1.05rem; margin-bottom: .7rem; }
 
 .btn-download {
   background: var(--navy); color: var(--cream); font-weight: 600;
@@ -427,7 +427,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .page-head p.full { max-width: none; }
 .page-head .map-panel { max-width: 32rem; margin: 2.2rem auto 0; }
 
-.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); padding-top: 1.2rem; padding-bottom: 1.5rem; }
 .page-head-alt h1 { color: var(--navy); }
 .page-head-alt p { color: var(--muted); }
 
