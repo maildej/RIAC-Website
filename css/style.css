@@ -427,7 +427,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .page-head p.full { max-width: none; }
 .page-head .map-panel { max-width: 32rem; margin: 2.2rem auto 0; }
 
-.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); }
+.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); padding-top: 1.5rem; padding-bottom: 1.5rem; }
 .page-head-alt h1 { color: var(--navy); }
 .page-head-alt p { color: var(--muted); }
 
