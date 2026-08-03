@@ -71,8 +71,12 @@
       var visibleCount = 0;
 
       items.forEach(function (item) {
-        var title = item.querySelector('h3').textContent.toLowerCase();
-        var matches = title.indexOf(query) !== -1;
+        // Match the summary as well as the title, so an advisory stays
+        // findable by terms its title no longer contains (e.g. "domestic").
+        var summaryEl = item.querySelector('.summary');
+        var text = item.querySelector('h3').textContent.toLowerCase() +
+                   ' ' + (summaryEl ? summaryEl.textContent.toLowerCase() : '');
+        var matches = text.indexOf(query) !== -1;
         item.hidden = !matches;
         if (matches) visibleCount++;
       });
