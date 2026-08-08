@@ -47,6 +47,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
+| `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, and known gaps. Read this before doing any Airtable work |
 
 ## Forms (Formspree)
 
@@ -81,6 +82,26 @@ An **unlisted** page (`chief-defender-survey.html`) sent to NY chief defenders, 
 - Pages use relative links (`advisories.html`); only `404.html` uses absolute links (`/advisories.html`) because GitHub serves it from any URL.
 - Placeholder content is marked with yellow `.notice` boxes and the word "placeholder" — real contact details and advisory PDFs still need to be filled in.
 - To publish changes: commit and push to `main` (or upload the changed files via github.com); GitHub Pages redeploys automatically in ~1 minute.
+
+## Working across two computers
+
+Dan works from more than one desktop. Chats started in a **local terminal** are stored on
+that machine only (`~/.claude/projects/<encoded-path>/*.jsonl`) and cannot be reached from
+anywhere else — if that computer sleeps, the conversation is stranded. Chats started
+**online** (claude.ai/code, or the desktop app's cloud option) run on Anthropic's servers
+and are available from any computer.
+
+Rule of thumb:
+
+- **Website edits and Airtable work → start the chat online.** Neither needs anything on
+  Dan's hard drive. Airtable is reached over the internet either way.
+- **Practice advisory edits → local session.** These live in
+  `C:\Users\dejac\OneDrive OCBA\RIAC - Documents\Admin\`, and an online session cannot see
+  that folder. Word source copies are also kept in `advisories/source/` in this repo.
+
+Because stranded chats are a recurring problem, **durable decisions belong in files, not
+in conversation** — `AIRTABLE.md` for database work, this file for everything else. Write
+the conclusion down as you go.
 
 ## Outstanding
 
