@@ -48,6 +48,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
 | `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, and known gaps. Read this before doing any Airtable work |
+| `AIRTABLE-TODO.md` | Dan's working checklist of Airtable interface jobs that only he can do (the API cannot edit interface layouts). Delete the file once empty |
 
 ## Forms (Formspree)
 
