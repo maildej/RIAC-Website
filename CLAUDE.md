@@ -35,9 +35,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
-| `intake.html` | Intake forms landing page: fill in online or download the PDF, for criminal and non-criminal cases |
-| `intake-criminal.html` / `intake-non-criminal.html` | **Online intake forms** mirroring the PDF intake forms. A county picker routes each submission to the correct RIAC (see `js/intake-form.js`) |
-| `js/intake-form.js` | Shared logic for both online intake forms: county→region map, per-region Formspree endpoints, inline thank-you telling the attorney where to email supporting documents. Region contact emails here mirror `contact.html` — keep in sync |
+| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |
@@ -61,7 +59,6 @@ Two forms email their submissions through **Formspree** (formspree.io) — a fre
 |---|---|---|---|---|
 | Advisory download request (`request.html`) | `formspree.io/f/mjgnrzpp` | (set in Formspree) | New RIAC advisory download request | `js/document-request.js` |
 | Chief Defender survey (`chief-defender-survey.html`) | `formspree.io/f/mdaqzrpq` | RIAC2@ocbaacp.org | Chief Defender Referral Survey | `js/chief-defender-survey.js` |
-| Online intake forms (`intake-criminal.html`, `intake-non-criminal.html`) | 7 endpoints, one per destination inbox — IDs live in `js/intake-form.js` | Each region's center (see SETUP.md Step 7) | "Criminal/Non-Criminal Case Intake — {County} County (Region N)", set by JS | `js/intake-form.js` |
 
 Notes:
 - The subject line and honeypot spam trap are set with hidden fields (`_subject`, `_gotcha`) in the form's HTML.
@@ -110,8 +107,13 @@ the conclusion down as you go.
 
 ## Outstanding
 
-- The online intake forms are built but **not live**: Dan must create the seven per-region Formspree forms and paste their IDs into `js/intake-form.js` (SETUP.md, Step 7). Until then the pages show a yellow notice and refuse submissions.
-
+- **Point `intake.html` at the Airtable intake form.** The online intake forms that used to
+  be planned here (`intake-criminal.html`, `intake-non-criminal.html`, `js/intake-form.js`,
+  and SETUP.md's Formspree Step 7) were **deleted on 10 August 2026** — the Airtable intake
+  form supersedes them. They were never committed, so they never reached the live site.
+  **Do not rebuild them, and do not build any website form that posts into Airtable** — the
+  conflict check is bound to Airtable's own form by internal ID and silently stops running
+  on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
 - Dan must verify the six centers' contact details in `contact.html` (compiled from public sources, July 2026), then remove the yellow notice box there.
 - Add real advisory PDFs to `advisories/` and update `advisories.html`.
 - Complete the one-time setup in `SETUP.md` (create repo, enable Pages, add DNS records in Wix).
