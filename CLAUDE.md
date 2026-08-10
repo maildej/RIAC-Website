@@ -49,7 +49,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
 | `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, and known gaps. Read this before doing any Airtable work |
-| `AIRTABLE-TODO.md` | Dan's working checklist of Airtable interface jobs that only he can do (the API cannot edit interface layouts). Delete the file once empty |
+| `AIRTABLE-TODO.md` | **The Airtable to-do list.** Everything still outstanding on the database, tagged by who can do it. Read this when Dan asks what is on his list. Delete the file once empty |
 
 ## Forms (Formspree)
 
@@ -107,6 +107,8 @@ the conclusion down as you go.
 
 ## Outstanding
 
+**Website:**
+
 - **Point `intake.html` at the Airtable intake form.** The online intake forms that used to
   be planned here (`intake-criminal.html`, `intake-non-criminal.html`, `js/intake-form.js`,
   and SETUP.md's Formspree Step 7) were **deleted on 10 August 2026** — the Airtable intake
@@ -123,6 +125,6 @@ the conclusion down as you go.
 The base is "RIAC CMS Pilot", and it has its own two files:
 
 - **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
-- **`AIRTABLE-TODO.md`** — the jobs only Dan can do, because the API cannot edit interface layouts.
+- **`AIRTABLE-TODO.md`** — **the Airtable to-do list.** Everything still outstanding on the database, not only the parts Dan has to do himself. If he asks "what's on my to-do list for the Airtable?", read it and offer him a couple of items; most are big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or **[Decide]**, so it is clear up front what can be done in the session and what needs his hands in the interface designer.
 
 **Put Airtable items in those two files, not in the list above.** Nothing about the database is tracked here any more.
