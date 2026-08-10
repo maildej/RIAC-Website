@@ -118,11 +118,9 @@ the conclusion down as you go.
 
 ### RIAC CMS (the Airtable pilot — nothing to do with this website)
 
-The base is "RIAC CMS Pilot". **The database itself is documented in `AIRTABLE.md`, and the jobs only Dan can do are in `AIRTABLE-TODO.md`** — including the offence catalogues and their loader scripts, which used to be listed here.
+The base is "RIAC CMS Pilot", and it has its own two files:
 
-- The **Needs Review** interface page still needs rethinking — as structured it is not clear how it will work. Pending intakes are meant to be *pushed* into a case from there, never pulled from a case file.
-- **Check the public intake form asks for first and last name in separate boxes.** The conflict check matches on **surname OR date of birth**, which is what lets it survive misspelt first names and initials — but it only works if a surname actually arrives. Its own description warns that if `Client Last Name` comes through empty, *every person on file* matches and the check becomes noise. Of the three intake submissions currently on file, **two have both name boxes empty** (the `Client Name` formula renders as a single space). That may just be how those test rows were made — the form could not be read from the API, because it is a view-based form rather than an interface form. Submit the live form once and confirm the surname lands in `Client Last Name`.
-- **Review the two chaser systems running side by side** — `Send approved reminders` (the four-rung one behind the Reminder Queue page) and `Monthly reminders 1 and 2` (the batch one behind Monthly Reminders and Run Monthly Reminders). Both are deployed and both send real email. **This may well be deliberate** — Dan thinks a workflow was designed around it in another conversation — so do not retire either without checking. Worth confirming which does what, because they are started by different tick-boxes, and someone ticking the wrong one would chase the same attorneys twice.
-- The crime viewer should show **both** jury-instruction links — the job is written up in `AIRTABLE-TODO.md` §5, and the fields themselves in `AIRTABLE.md` under "Jury instruction links".
+- **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
+- **`AIRTABLE-TODO.md`** — the jobs only Dan can do, because the API cannot edit interface layouts.
 
-**Where Airtable notes go:** `AIRTABLE.md` is the database map and `AIRTABLE-TODO.md` is Dan's interface checklist. Put new Airtable items there, not in this list. The few bullets left above are ones not yet written up in either file.
+**Put Airtable items in those two files, not in the list above.** Nothing about the database is tracked here any more.
