@@ -35,6 +35,9 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
+| `intake.html` | Intake forms landing page: fill in online or download the PDF, for criminal and non-criminal cases |
+| `intake-criminal.html` / `intake-non-criminal.html` | **Online intake forms** mirroring the PDF intake forms. A county picker routes each submission to the correct RIAC (see `js/intake-form.js`) |
+| `js/intake-form.js` | Shared logic for both online intake forms: county→region map, per-region Formspree endpoints, inline thank-you telling the attorney where to email supporting documents. Region contact emails here mirror `contact.html` — keep in sync |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |
@@ -58,6 +61,7 @@ Two forms email their submissions through **Formspree** (formspree.io) — a fre
 |---|---|---|---|---|
 | Advisory download request (`request.html`) | `formspree.io/f/mjgnrzpp` | (set in Formspree) | New RIAC advisory download request | `js/document-request.js` |
 | Chief Defender survey (`chief-defender-survey.html`) | `formspree.io/f/mdaqzrpq` | RIAC2@ocbaacp.org | Chief Defender Referral Survey | `js/chief-defender-survey.js` |
+| Online intake forms (`intake-criminal.html`, `intake-non-criminal.html`) | 7 endpoints, one per destination inbox — IDs live in `js/intake-form.js` | Each region's center (see SETUP.md Step 7) | "Criminal/Non-Criminal Case Intake — {County} County (Region N)", set by JS | `js/intake-form.js` |
 
 Notes:
 - The subject line and honeypot spam trap are set with hidden fields (`_subject`, `_gotcha`) in the form's HTML.
@@ -106,6 +110,20 @@ the conclusion down as you go.
 
 ## Outstanding
 
+- The online intake forms are built but **not live**: Dan must create the seven per-region Formspree forms and paste their IDs into `js/intake-form.js` (SETUP.md, Step 7). Until then the pages show a yellow notice and refuse submissions.
+
 - Dan must verify the six centers' contact details in `contact.html` (compiled from public sources, July 2026), then remove the yellow notice box there.
 - Add real advisory PDFs to `advisories/` and update `advisories.html`.
 - Complete the one-time setup in `SETUP.md` (create repo, enable Pages, add DNS records in Wix).
+
+### RIAC CMS (the Airtable pilot — nothing to do with this website)
+
+Kept here because it is the one to-do list. The base is "RIAC CMS Pilot"; the catalogue-building scripts live in `OneDrive - OCBA/RIAC - Documents/Admin/Database Design`.
+
+- **Two Penal Law sections have moved on since the catalogue was loaded (5 Aug 2026).** Sections **265.07** and **265.09** have gained lettered and numbered branches that did not exist then. The catalogue still holds the old, branch-less versions, so the next full run of `catalogue_penal_law.py` will *add* `265.07(1)`, `265.07(2)(a)`, `265.07(2)(b)` and `265.09(1)(a)` and leave the superseded rows sitting alongside them. Nothing breaks, but those two sections want a look afterwards and the stale rows deleting. Everything else in the catalogue still lines up exactly.
+- **Never edit `Section` or `Subdivision` by hand in either offence catalogue** (NY Penal Law Offenses, NY VTL Offenses). Those two columns are how the loader scripts recognise a record they have seen before — the `Citation` on screen is a formula built on top of them, and a formula cannot be used for matching. Change one by hand and that record becomes invisible to the script: the next run will not update it, it will create a second copy alongside it. Treat those columns as belonging to the script, the same way `Classification` belongs to Dan — the script never overwrites his classifications, and nobody should overwrite its section numbers. Everything else on those records is safe to edit.
+- Neither catalogue has been re-run since the scripts were repointed (10 Aug 2026), so the two points above are untested against a real load.
+- The **Needs Review** interface page still needs rethinking — as structured it is not clear how it will work. Pending intakes are meant to be *pushed* into a case from there, never pulled from a case file.
+- **Check the public intake form asks for first and last name in separate boxes.** The conflict check matches on **surname OR date of birth**, which is what lets it survive misspelt first names and initials — but it only works if a surname actually arrives. Its own description warns that if `Client Last Name` comes through empty, *every person on file* matches and the check becomes noise. Of the three intake submissions currently on file, **two have both name boxes empty** (the `Client Name` formula renders as a single space). That may just be how those test rows were made — the form could not be read from the API, because it is a view-based form rather than an interface form. Submit the live form once and confirm the surname lands in `Client Last Name`.
+- **Review the two chaser systems running side by side** — `Send approved reminders` (the four-rung one behind the Reminder Queue page) and `Monthly reminders 1 and 2` (the batch one behind Monthly Reminders and Run Monthly Reminders). Both are deployed and both send real email. **This may well be deliberate** — Dan thinks a workflow was designed around it in another conversation — so do not retire either without checking. Worth confirming which does what, because they are started by different tick-boxes, and someone ticking the wrong one would chase the same attorneys twice.
+- **The crime viewer should show both jury-instruction links, not one.** Every offence record now carries two separate fields, and they answer different questions: `CJI Link` is the specific jury instruction document for that subdivision, and `CJI Article Page` is the court's page listing every instruction for the whole article. Show both — the document for a one-click read, the article page so the attorney can look around it or find something the direct link missed. `CJI Match` says how good the direct link is (Exact subdivision / Broader document / Same section only / No model jury instruction exists for this offense / Not listed / No CJI page) and is worth surfacing as a small caption, because "Same section only" is a nearest-neighbour jump rather than a precise match, and "No model jury instruction exists for this offense" is the court positively confirming none exists — which is useful to an attorney rather than a gap. Both fields are blank for the six articles that have no CJI page at all (179, 185, 241, 242, 275, 280).
