@@ -48,7 +48,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
 | `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, and known gaps. Read this before doing any Airtable work |
-| `AIRTABLE-TODO.md` | Dan's working checklist of Airtable interface jobs that only he can do (the API cannot edit interface layouts). Delete the file once empty |
+| `AIRTABLE-TODO.md` | **The Airtable to-do list.** Everything still outstanding on the database, tagged by who can do it. Read this when Dan asks what is on his list. Delete the file once empty |
 
 ## Forms (Formspree)
 
@@ -106,6 +106,14 @@ the conclusion down as you go.
 
 ## Outstanding
 
+**Website:**
+
 - Dan must verify the six centers' contact details in `contact.html` (compiled from public sources, July 2026), then remove the yellow notice box there.
 - Add real advisory PDFs to `advisories/` and update `advisories.html`.
 - Complete the one-time setup in `SETUP.md` (create repo, enable Pages, add DNS records in Wix).
+
+**Airtable:** see `AIRTABLE-TODO.md` — that file is the list. If Dan asks "what's on my
+to-do list for the Airtable?", read it and offer him a couple of items to work on; most are
+big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or
+**[Decide]**, so it is clear up front what can be done in the session and what needs his
+hands in the interface designer.
