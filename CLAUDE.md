@@ -35,6 +35,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
+| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |
@@ -108,12 +109,22 @@ the conclusion down as you go.
 
 **Website:**
 
+- **Point `intake.html` at the Airtable intake form.** The online intake forms that used to
+  be planned here (`intake-criminal.html`, `intake-non-criminal.html`, `js/intake-form.js`,
+  and SETUP.md's Formspree Step 7) were **deleted on 10 August 2026** — the Airtable intake
+  form supersedes them. They were never committed, so they never reached the live site.
+  **Do not rebuild them, and do not build any website form that posts into Airtable** — the
+  conflict check is bound to Airtable's own form by internal ID and silently stops running
+  on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
 - Dan must verify the six centers' contact details in `contact.html` (compiled from public sources, July 2026), then remove the yellow notice box there.
 - Add real advisory PDFs to `advisories/` and update `advisories.html`.
 - Complete the one-time setup in `SETUP.md` (create repo, enable Pages, add DNS records in Wix).
 
-**Airtable:** see `AIRTABLE-TODO.md` — that file is the list. If Dan asks "what's on my
-to-do list for the Airtable?", read it and offer him a couple of items to work on; most are
-big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or
-**[Decide]**, so it is clear up front what can be done in the session and what needs his
-hands in the interface designer.
+### RIAC CMS (the Airtable pilot — nothing to do with this website)
+
+The base is "RIAC CMS Pilot", and it has its own two files:
+
+- **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
+- **`AIRTABLE-TODO.md`** — **the Airtable to-do list.** Everything still outstanding on the database, not only the parts Dan has to do himself. If he asks "what's on my to-do list for the Airtable?", read it and offer him a couple of items; most are big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or **[Decide]**, so it is clear up front what can be done in the session and what needs his hands in the interface designer.
+
+**Put Airtable items in those two files, not in the list above.** Nothing about the database is tracked here any more.
