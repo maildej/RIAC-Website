@@ -48,7 +48,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
-| `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, and known gaps. Read this before doing any Airtable work |
+| `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, the reminder ladder, and known gaps. Read this before doing any Airtable work |
 | `AIRTABLE-TODO.md` | **The Airtable to-do list.** Everything still outstanding on the database, tagged by who can do it. Read this when Dan asks what is on his list. Delete the file once empty |
 
 ## Forms (Formspree)
@@ -124,7 +124,7 @@ the conclusion down as you go.
 
 The base is "RIAC CMS Pilot", and it has its own two files:
 
-- **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
+- **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the reminder ladder and how a case gets chased and closed, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
 - **`AIRTABLE-TODO.md`** — **the Airtable to-do list.** Everything still outstanding on the database, not only the parts Dan has to do himself. If he asks "what's on my to-do list for the Airtable?", read it and offer him a couple of items; most are big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or **[Decide]**, so it is clear up front what can be done in the session and what needs his hands in the interface designer.
 
 **Put Airtable items in those two files, not in the list above.** Nothing about the database is tracked here any more.
