@@ -116,9 +116,17 @@ the conclusion down as you go.
   **Do not rebuild them, and do not build any website form that posts into Airtable** — the
   conflict check is bound to Airtable's own form by internal ID and silently stops running
   on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
-- Dan must verify the six centers' contact details in `contact.html` (compiled from public sources, July 2026), then remove the yellow notice box there.
-- Add real advisory PDFs to `advisories/` and update `advisories.html`.
-- Complete the one-time setup in `SETUP.md` (create repo, enable Pages, add DNS records in Wix).
+**Done — do not re-raise these (confirmed 12 August 2026):**
+
+- ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
+  box~~ — done. No notice box remains in the file.
+- ~~Add real advisory PDFs~~ — done. 15 PDFs are in `advisories/`.
+- ~~Complete the one-time setup in `SETUP.md`~~ — done. **The site is live at nyriac.com**,
+  contact page included. Repo, Pages and the Wix DNS records are all in place.
+
+⚠️ **`nyriac.com` is blocked to Claude by the network proxy**, so the live site cannot be
+checked from a session — only the files in this repo can. Ask Dan rather than assuming the
+site is behind what is in the folder.
 
 ### RIAC CMS (the Airtable pilot — nothing to do with this website)
 
