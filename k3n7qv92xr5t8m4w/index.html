@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intake — test page — RIAC</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<!--
+  UNLISTED TEST PAGE — not linked from anywhere on this site, and carries noindex/nofollow.
+  It exists so the online intake route can be tested end to end before the real Intake Forms
+  page is changed. intake.html is deliberately UNTOUCHED and still shows only the PDFs.
+
+  Deliberately NOT listed in robots.txt: that file is public, so naming this folder there
+  would publish the address it is meant to keep quiet. The same reasoning applies to
+  chief-defender-survey.html, which is also absent from robots.txt.
+
+  Paths here are absolute (/css/, /images/) because this page sits in a subfolder.
+
+  When testing is finished, this content moves into intake.html and this folder is deleted.
+-->
+<body>
+
+<header class="site-header">
+  <div class="header-card">
+    <div class="funder-ribbon">Funded by the New York State Office of Indigent Legal Services</div>
+    <div class="wrap">
+    <a class="brand" href="/index.html">
+      <img src="/images/riac-mark.svg" alt="" aria-hidden="true">
+      <span class="brand-text">
+        <span class="brand-acronym">RIAC</span>
+        <span class="brand-full">Regional Immigration<br>Assistance Centers</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/index.html">Home</a>
+      <a href="/advisories.html">Practice Advisories</a>
+      <a href="/intake.html">Intake Forms</a>
+      <a href="/contact.html">Find Your RIAC</a>
+    </nav>
+    </div>
+  </div>
+</header>
+
+<div class="page-head page-head-alt">
+  <div class="wrap">
+    <h1>Intake Forms</h1>
+    <p class="full">Tell us about a case you would like advice on. Submitting online is the quickest way to reach us &mdash; or download a fillable form to complete offline and send in.</p>
+  </div>
+</div>
+
+<section class="section section-top-tighter">
+  <div class="wrap">
+
+    <div class="notice">
+      <strong>This is a test page.</strong> It is being used to check the online intake route
+      before it goes live. <strong>Please do not submit a real client&rsquo;s details here.</strong>
+      The live intake page is <a href="/intake.html">nyriac.com/intake.html</a>.
+    </div>
+
+    <!-- PRIMARY ROUTE. This is the Airtable intake form; do not replace it with a form hosted
+         on this site. The conflict check is bound to that form and silently stops running on
+         anything else. See AIRTABLE.md, "The conflict check only fires from one specific form".
+         After the six centers move to separate databases this becomes six links, one per
+         region — see AIRTABLE-TODO.md. -->
+    <div class="intake-followup">
+      <h3>Submit a new case online</h3>
+      <p class="summary">The fastest route, and the one we recommend. The form asks for your details, the court and docket, and what your client is alleged to have done.</p>
+      <a class="btn btn-download" href="https://airtable.com/appwoHVXRp4vgfJB9/shryvSQtGt8dGjP3l">Start an online intake</a>
+    </div>
+
+    <h2 class="section-title">If you cannot submit online</h2>
+    <p class="section-intro">Some of our colleagues complete intakes at a jail with no signal, or prefer to write them out by hand. Both forms below are fillable PDFs that work offline &mdash; <strong>download the one you need before you set off</strong> if you are going somewhere without a connection.</p>
+
+    <div class="intake-grid">
+      <a class="intake-card" href="/intake-forms/criminal-intake-form.pdf" download>
+        <h3>Criminal Cases</h3>
+        <p class="summary">RIAC intake form to be used in all criminal matters (from a parking ticket to A-I Felony).</p>
+        <span class="btn btn-download">Download PDF</span>
+      </a>
+      <a class="intake-card" href="/intake-forms/non-criminal-intake-form.pdf" download>
+        <h3>Non-Criminal Cases</h3>
+        <p class="summary">RIAC intake form for all non-criminal cases, such as family court, divorce matters, affirmative immigration applications etc.</p>
+        <span class="btn btn-download">Download PDF</span>
+      </a>
+    </div>
+
+    <div class="intake-followup">
+      <h3>Once completed, please send your intake form to your RIAC</h3>
+      <p class="summary">Post it or email it to your regional center, along with the relevant case documents. We will take it from there.</p>
+      <a class="btn btn-download" href="/contact.html">Find Your RIAC</a>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>Regional Immigration Assistance Centers</strong> &middot; <a href="/contact.html">Find your RIAC</a> &middot; <a href="/advisories.html">Practice advisories</a> &middot; <a href="/intake.html">Intake forms</a></p>
+    <p class="fineprint">This website provides general information for legal service providers and does not constitute legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>

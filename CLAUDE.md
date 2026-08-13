@@ -19,7 +19,13 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 
 ## Important constraints
 
-- **Do not use the branding of, or link to, the NYS Office of Indigent Legal Services (ILS)** or its website (ils.ny.gov) anywhere on the site. Factual information (region/county assignments, the centers' own contact details) is fine; ILS names, logos, and links are not. Avoid external links generally.
+- **Anything referring to the NYS Office of Indigent Legal Services (ILS) must be approved by
+  ILS before it goes on the site.** Do not add, reword or remove an ILS reference on your own
+  initiative, and **flag any you notice for scrutiny** — Dan, 13 August 2026.
+  - The funder ribbon in every page's header — *"Funded by the New York State Office of
+    Indigent Legal Services"* — **is ILS-approved and ILS-requested wording. Leave it alone.**
+  - Still do not use ILS logos, or link to ils.ny.gov. Avoid external links generally.
+  - Factual information (region/county assignments, the centers' own contact details) is fine.
 - The six regions, their colors, and county assignments mirror the RIAC logo and are listed in `tools/build-map.py`. Region colors are defined once in `css/style.css` (`--r1`…`--r6`).
 
 ## Technical setup
@@ -35,7 +41,8 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
-| `intake.html` | Intake page: **links to the Airtable intake form** as the main route, with the two fillable PDFs kept below for attorneys working offline (posted by hand, or completed at a jail with no signal). **Never replace that link with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else |
+| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form. **Deliberately still PDF-only** — the online route is being tested at the unlisted address below first |
+| `k3n7qv92xr5t8m4w/` | **Unlisted test page** for the online intake route (`nyriac.com/k3n7qv92xr5t8m4w/`). `noindex`, linked from nowhere, and carries a visible "do not submit a real client's details" notice. Links out to the **Airtable intake form**. **Never replace that link with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else. When testing is done this content moves into `intake.html` and the folder is deleted |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |
