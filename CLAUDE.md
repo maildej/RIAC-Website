@@ -35,7 +35,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
-| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form |
+| `intake.html` | Intake page: **links to the Airtable intake form** as the main route, with the two fillable PDFs kept below for attorneys working offline (posted by hand, or completed at a jail with no signal). **Never replace that link with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |

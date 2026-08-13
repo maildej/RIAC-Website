@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Intake Forms — RIAC</title>
-  <meta name="description" content="Download the RIAC intake forms for criminal and non-criminal cases.">
+  <meta name="description" content="Submit a new case to your Regional Immigration Assistance Center online, or download a fillable intake form to complete offline.">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,12 +38,26 @@
 <div class="page-head page-head-alt">
   <div class="wrap">
     <h1>Intake Forms</h1>
-    <p class="full">Download and complete the intake form that matches your client&rsquo;s matter, then send it to your regional center along with the relevant case documents.</p>
+    <p class="full">Tell us about a case you would like advice on. Submitting online is the quickest way to reach us &mdash; or download a fillable form to complete offline and send in.</p>
   </div>
 </div>
 
 <section class="section section-top-tighter">
   <div class="wrap">
+
+    <!-- PRIMARY ROUTE. This is the Airtable intake form; do not replace it with a form hosted
+         on this site. The conflict check is bound to that form and silently stops running on
+         anything else. See AIRTABLE.md, "The conflict check only fires from one specific form".
+         After the six centers move to separate databases this becomes six links, one per
+         region — see AIRTABLE-TODO.md. -->
+    <div class="intake-followup">
+      <h3>Submit a new case online</h3>
+      <p class="summary">The fastest route, and the one we recommend. The form asks for your details, the court and docket, and what your client is alleged to have done.</p>
+      <a class="btn btn-download" href="https://airtable.com/appwoHVXRp4vgfJB9/shryvSQtGt8dGjP3l">Start an online intake</a>
+    </div>
+
+    <h2 class="section-title">If you cannot submit online</h2>
+    <p class="section-intro">Some of our colleagues complete intakes at a jail with no signal, or prefer to write them out by hand. Both forms below are fillable PDFs that work offline &mdash; <strong>download the one you need before you set off</strong> if you are going somewhere without a connection.</p>
 
     <div class="intake-grid">
       <a class="intake-card" href="intake-forms/criminal-intake-form.pdf" download>
@@ -60,6 +74,7 @@
 
     <div class="intake-followup">
       <h3>Once completed, please send your intake form to your RIAC</h3>
+      <p class="summary">Post it or email it to your regional center, along with the relevant case documents. We will take it from there.</p>
       <a class="btn btn-download" href="contact.html">Find Your RIAC</a>
     </div>
 
