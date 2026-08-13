@@ -57,6 +57,31 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
 | `NOTES.md` | Pointer file. `AIRTABLE.md` and `AIRTABLE-TODO.md` **moved to the private repo `maildej/riac-notes`** on 13 Aug 2026, because this repository is public |
 
+## Unlisted pages, and what "unlisted" is actually worth
+
+Two pages are deliberately not linked from anywhere: `chief-defender-survey.html` and the
+intake test folder. Both carry `noindex, nofollow`.
+
+⚠️ **Neither is secret, and nothing should be built assuming otherwise.** This repository is
+**public** — GitHub Pages requires it on a free plan — so **every path in it is discoverable by
+browsing the file tree on github.com.** A hard-to-guess folder name does not change that.
+
+**Dan's position, 13 August 2026, and it is the right one:** *"I am not super concerned if the
+draft intake form URL has been exposed — as long as it is not broadcast, nobody will be using
+it."* Nobody finds these by accident, and the intake test page says on its face not to submit a
+real client's details.
+
+So the protection that actually works is the combination of: **`noindex`**, **not being linked
+from any page**, and **the page saying what it is**. Not the address.
+
+**Do not propose renaming a folder as a security measure.** It was done once, on 13 August, and
+it is housekeeping — the old address remains in this repository's public git history regardless,
+and the new one is just as visible in the tree. The old intake test address
+(`k3n7qv92xr5t8m4w`) is dead and now 404s.
+
+**If a page ever genuinely must not be found**, the answer is not a clever URL — it is a private
+repository with paid Pages hosting, or somewhere other than this site.
+
 ## Forms (Formspree)
 
 Two forms email their submissions through **Formspree** (formspree.io) — a free service that turns a plain HTML form into an email, so the static site needs no backend. Each form posts to a Formspree endpoint; the recipient email and reply settings live in the Formspree account, not in the site code. Submissions are sent in the background with a small `fetch` script so the visitor stays on the page and sees an inline confirmation.
