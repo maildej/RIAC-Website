@@ -42,7 +42,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
 | `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form. **Deliberately still PDF-only** — the online route is being tested at the unlisted address below first |
-| `k3n7qv92xr5t8m4w/` | **Unlisted test page** for the online intake route (`nyriac.com/k3n7qv92xr5t8m4w/`). `noindex`, linked from nowhere, and carries a visible "do not submit a real client's details" notice. Links out to the **Airtable intake form**. **Never replace that link with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else. When testing is done this content moves into `intake.html` and the folder is deleted |
+| `p9vt3xk6qz1md7bw/` | **Unlisted test page** for the online intake route (`nyriac.com/p9vt3xk6qz1md7bw/`). `noindex`, linked from nowhere, and carries a visible "do not submit a real client's details" notice. Links out to the **Airtable intake form**. **Never replace that link with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else. When testing is done this content moves into `intake.html` and the folder is deleted |
 | `chief-defender-survey.html` | **Unlisted** survey for NY chief defenders (see "Chief Defender survey" below). `noindex`; not linked from any nav or footer — reachable only by direct URL |
 | `js/chief-defender-survey.js` | Submits the survey to Formspree via `fetch` and shows an inline thank-you |
 | `css/style.css` | All styling, shared by every page (brand + region colors at top in `:root`) |
@@ -55,8 +55,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions for Dan |
-| `AIRTABLE.md` | Map of the RIAC case management database in Airtable — tables, interface pages, automations, the reminder ladder, and known gaps. Read this before doing any Airtable work |
-| `AIRTABLE-TODO.md` | **The Airtable to-do list.** Everything still outstanding on the database, tagged by who can do it. Read this when Dan asks what is on his list. Delete the file once empty |
+| `NOTES.md` | Pointer file. `AIRTABLE.md` and `AIRTABLE-TODO.md` **moved to the private repo `maildej/riac-notes`** on 13 Aug 2026, because this repository is public |
 
 ## Forms (Formspree)
 
@@ -95,6 +94,9 @@ again:
    conversation goes into the right file — `AIRTABLE.md` for how the database works,
    `AIRTABLE-TODO.md` for what is still outstanding, this file for anything else. Nothing of
    substance should exist only in the chat.
+   ⚠️ **The first two are in the private repo `maildej/riac-notes`**, so a `***Publish` means
+   committing and pushing **both repositories**, not just this one. If that repo has not been
+   added to the session, say so rather than writing database notes into this public one.
 2. **Commit and push to GitHub**, so the files are safe and readable from any computer.
 3. **Report back plainly**: what was written down, what was pushed, and — separately —
    **anything left that only Dan can do**, such as hand-work in the Airtable interface
@@ -133,8 +135,8 @@ Rule of thumb:
   that folder. Word source copies are also kept in `advisories/source/` in this repo.
 
 Because stranded chats are a recurring problem, **durable decisions belong in files, not
-in conversation** — `AIRTABLE.md` for database work, this file for everything else. Write
-the conclusion down as you go.
+in conversation** — `AIRTABLE.md` (in `maildej/riac-notes`) for database work, this file for
+everything else. Write the conclusion down as you go.
 
 ## Outstanding
 
@@ -161,7 +163,9 @@ site is behind what is in the folder.
 
 ### RIAC CMS (the Airtable pilot — nothing to do with this website)
 
-The base is "RIAC CMS Pilot", and it has its own two files:
+The base is "RIAC CMS Pilot", and it has its own two files. ⚠️ **Both now live in the private
+repository `maildej/riac-notes`, not here** — ask for that repo to be added to the session
+before doing any database work, or you will be working blind:
 
 - **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the reminder ladder and how a case gets chased and closed, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.
 - **`AIRTABLE-TODO.md`** — **the Airtable to-do list.** Everything still outstanding on the database, not only the parts Dan has to do himself. If he asks "what's on my to-do list for the Airtable?", read it and offer him a couple of items; most are big enough to want a chat each. Every item is tagged **[Claude]**, **[Dan]**, **[Both]** or **[Decide]**, so it is clear up front what can be done in the session and what needs his hands in the interface designer.
