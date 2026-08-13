@@ -78,6 +78,30 @@ An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (l
 
 An **unlisted** page (`chief-defender-survey.html`) sent to NY chief defenders, asking how their office identifies and refers non-U.S.-born clients to their RIAC. It is deliberately not linked anywhere on the site and carries `noindex, nofollow` — it's shared by direct link only. Question 1 is a searchable office picker whose ~130 options were generated from the NYSDA "Public Defense Services" Chief Defender list; if that list changes, update the `<datalist id="offices">` options in the page.
 
+## The `***Publish` command
+
+When Dan writes **`***Publish`** (any capitalisation; the three asterisks are what make it a
+command rather than the word appearing in a sentence), do all of this without being asked
+again:
+
+1. **Write everything down.** Every decision, finding, correction and open question from the
+   conversation goes into the right file — `AIRTABLE.md` for how the database works,
+   `AIRTABLE-TODO.md` for what is still outstanding, this file for anything else. Nothing of
+   substance should exist only in the chat.
+2. **Commit and push to GitHub**, so the files are safe and readable from any computer.
+3. **Report back plainly**: what was written down, what was pushed, and — separately —
+   **anything left that only Dan can do**, such as hand-work in the Airtable interface
+   designer, turning an automation on, or a decision still outstanding.
+4. **Ask, if anything is genuinely unclear** — but only about real forks in the road, not to
+   confirm the obvious.
+
+**Explain in plain English when asking.** Dan uses "publish", "push" and "pull" narratively
+and does not claim to know the technical distinctions. So if a question has to be asked about
+one, say what the thing actually does rather than naming it — "save these notes to GitHub so
+they're on your other computer too" rather than "push to origin".
+
+The point of the command is that a chat can be closed at any moment without losing anything.
+
 ## Conventions
 
 - Navigation (header) and footer are copied into each page — when editing them, update **all three pages** (`index.html`, `advisories.html`, `contact.html`) plus `404.html`'s header.
