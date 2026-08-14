@@ -50,6 +50,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `images/favicon.svg` | Browser tab icon (navy square + map) |
 | `advisories/` | Drop advisory PDFs here; link them from `advisories.html`. `advisories/source/` holds internal Word (.docx) copies for editing — not linked publicly, kept out of search engines via `robots.txt` |
 | `admin/` | **Secret admin page** (see "Admin CMS" below) — login-protected via GitHub, for uploading/managing advisory PDFs and Word source files |
+| `email-signatures/` | **Unlisted** copy-and-paste page for staff Outlook signatures (see "Email signatures" below). `noindex`, not linked from any nav or footer |
 | `tools/` | Map generator (`build-map.py` + county boundary data). **Dan can ignore this folder**; it's only needed if region/county assignments ever change. It regenerates `tools/map-inline.svg`, which is pasted into `index.html` and mirrored in `images/`. |
 | `404.html` | Shown for broken links (uses absolute `/` paths) |
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
@@ -108,6 +109,40 @@ An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (l
 ### Chief Defender survey
 
 An **unlisted** page (`chief-defender-survey.html`) sent to NY chief defenders, asking how their office identifies and refers non-U.S.-born clients to their RIAC. It is deliberately not linked anywhere on the site and carries `noindex, nofollow` — it's shared by direct link only. Question 1 is a searchable office picker whose ~130 options were generated from the NYSDA "Public Defense Services" Chief Defender list; if that list changes, update the `<datalist id="offices">` options in the page.
+
+### Email signatures
+
+`email-signatures/index.html` — an unlisted page holding the staff Outlook signature, ready to
+select and copy. Built 14 August 2026 to fix a real complaint: recipients were seeing a broken
+image box instead of the RIAC logo.
+
+**The cause, and the rule that follows from it.** The old signature did not contain the logo — it
+contained an `<img>` pointing at `https://nyriac.com/images/riac-email-logo.png`. Mail clients
+block remotely-loaded images by default from senders not already trusted, so **first-time
+recipients — most of the attorneys RIAC writes to — saw an empty box with the alt text in blue.**
+It looked like "the logo breaks on replies" because a reply from an untrusted sender blocks
+downloads across the whole message, quoted signature included, while the sender's own copy always
+looked fine.
+
+⚠️ **Never put a website-hosted image in an email signature.** The picture has to travel inside
+the message. On this page the logo is a **base64 `data:` URI**, so copying the rendered block out
+of a browser hands Outlook the actual bitmap and it embeds its own copy — nothing left to block.
+Base64 in a `data:` URI works *for this purpose only*; classic Outlook desktop will not render a
+`data:` URI in a received email, which is fine here because the URI never reaches the email.
+
+Other notes:
+
+- The page is generated, not hand-written — the generator lives in the session scratchpad, not
+  the repo. To change the design, edit `email-signatures/index.html` directly; it is plain
+  inline-styled tables (the only thing email clients render reliably — no CSS classes, no flexbox).
+- Signature markup is **inline styles on nested `<table>`s** on purpose. Do not "tidy" it into
+  modern CSS; Outlook renders mail through Word's engine and will drop it.
+- Contains a worked example (Sharon Ames), a blank template, and a table of all six centres'
+  phone/email taken from `contact.html` — if contact details change, change both.
+- **Outlook has two signature dropdowns**, one for new messages and one for replies/forwards.
+  A blank second dropdown is the other reason a signature "doesn't show on replies".
+- Not added to `robots.txt`: a `Disallow` there would stop crawlers from ever reading the page's
+  `noindex`, which is the stronger instruction. Same reasoning applies to any future noindex page.
 
 ## The `***Publish` command
 
@@ -174,6 +209,18 @@ everything else. Write the conclusion down as you go.
   **Do not rebuild them, and do not build any website form that posts into Airtable** — the
   conflict check is bound to Airtable's own form by internal ID and silently stops running
   on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
+- **[Dan] Region 6 (Long Island): are Nassau and Suffolk swapped in `contact.html`?** Noticed
+  14 August 2026 while building the signatures. The block headed *Nassau County* carries a
+  Central Islip address (Suffolk), a **631** number (Suffolk) and `LIRIAC@sclas.org` (**S**uffolk
+  County Legal Aid Society); the block headed *Suffolk County* carries a Hempstead address
+  (Nassau), a **516** number (Nassau) and `SuffolkLIRIAC@nclas.org` (**N**assau County Legal Aid
+  Society). Every signal points the same way, but this is factual centre information — **do not
+  swap it on your own initiative.** Dan confirms, then fix `contact.html` and the table in
+  `email-signatures/index.html` together.
+- **[Dan] Confirm the new signature actually renders.** `nyriac.com` is blocked to Claude, and no
+  session can see a real Outlook. Dan must send a test to an address that has never received mail
+  from the sender before, and report back.
+
 **Done — do not re-raise these (confirmed 12 August 2026):**
 
 - ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
