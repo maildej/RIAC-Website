@@ -209,19 +209,18 @@ everything else. Write the conclusion down as you go.
   **Do not rebuild them, and do not build any website form that posts into Airtable** — the
   conflict check is bound to Airtable's own form by internal ID and silently stops running
   on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
-- **[Dan] Region 6 (Long Island): are Nassau and Suffolk swapped in `contact.html`?** Noticed
-  14 August 2026 while building the signatures. The block headed *Nassau County* carries a
-  Central Islip address (Suffolk), a **631** number (Suffolk) and `LIRIAC@sclas.org` (**S**uffolk
-  County Legal Aid Society); the block headed *Suffolk County* carries a Hempstead address
-  (Nassau), a **516** number (Nassau) and `SuffolkLIRIAC@nclas.org` (**N**assau County Legal Aid
-  Society). Every signal points the same way, but this is factual centre information — **do not
-  swap it on your own initiative.** Dan confirms, then fix `contact.html` and the table in
-  `email-signatures/index.html` together.
 - **[Dan] Confirm the new signature actually renders.** `nyriac.com` is blocked to Claude, and no
   session can see a real Outlook. Dan must send a test to an address that has never received mail
   from the sender before, and report back.
 
 **Done — do not re-raise these (confirmed 12 August 2026):**
+
+- ~~Region 6 (Long Island): Nassau and Suffolk headings swapped in `contact.html`~~ — **fixed
+  15 August 2026, confirmed by Dan.** Each block's details were right; the two headings were on
+  the wrong blocks. **Nassau County** is now Hempstead / 516-560-6474 / `SuffolkLIRIAC@nclas.org`,
+  and **Suffolk County** is Central Islip / 631-853-7807 / `LIRIAC@sclas.org`. Note the Nassau
+  mailbox really is named `SuffolkLIRIAC@` — odd, but it is a Nassau (`nclas.org`) address and
+  Dan confirmed the details are correct, so leave it. Mirrored in `email-signatures/index.html`.
 
 - ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
   box~~ — done. No notice box remains in the file.
