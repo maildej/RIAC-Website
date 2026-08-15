@@ -50,7 +50,6 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `images/favicon.svg` | Browser tab icon (navy square + map) |
 | `advisories/` | Drop advisory PDFs here; link them from `advisories.html`. `advisories/source/` holds internal Word (.docx) copies for editing — not linked publicly, kept out of search engines via `robots.txt` |
 | `admin/` | **Secret admin page** (see "Admin CMS" below) — login-protected via GitHub, for uploading/managing advisory PDFs and Word source files |
-| `email-signatures/` | **Unlisted** copy-and-paste page for staff Outlook signatures (see "Email signatures" below). `noindex`, not linked from any nav or footer |
 | `tools/` | Map generator (`build-map.py` + county boundary data). **Dan can ignore this folder**; it's only needed if region/county assignments ever change. It regenerates `tools/map-inline.svg`, which is pasted into `index.html` and mirrored in `images/`. |
 | `404.html` | Shown for broken links (uses absolute `/` paths) |
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
@@ -112,9 +111,21 @@ An **unlisted** page (`chief-defender-survey.html`) sent to NY chief defenders, 
 
 ### Email signatures
 
-`email-signatures/index.html` — an unlisted page holding the staff Outlook signature, ready to
-select and copy. Built 14 August 2026 to fix a real complaint: recipients were seeing a broken
-image box instead of the RIAC logo.
+⚠️ **Not in this repository, and deliberately so.** The staff Outlook signature is a **brand-kit
+asset, not website content.** The master copy is an HTML file in Dan's **OneDrive brand kit**,
+alongside the logo files. It was built here on 15 August 2026 to fix a real complaint —
+recipients were seeing a broken image box instead of the RIAC logo — and then removed from the
+repo at Dan's request, because anything on `main` is automatically served at a nyriac.com
+address and the signature has no business being on the public website.
+
+**Do not re-add it to this repo.** If it needs changing, ask Dan for the file from OneDrive,
+edit it, and give it back to him — do not commit it. (An earlier copy is recoverable from the
+history of branch `claude/email-signatures-issue-52bj3v` if his is ever lost.)
+
+The file is a plain page holding the signature ready to select and copy, with setup steps around
+it: a worked example (Sharon Ames), a blank template, and a table of all six centres'
+phone/email taken from `contact.html` — **if contact details change here, that file needs the
+same change.**
 
 **The cause, and the rule that follows from it.** The old signature did not contain the logo — it
 contained an `<img>` pointing at `https://nyriac.com/images/riac-email-logo.png`. Mail clients
@@ -125,24 +136,21 @@ downloads across the whole message, quoted signature included, while the sender'
 looked fine.
 
 ⚠️ **Never put a website-hosted image in an email signature.** The picture has to travel inside
-the message. On this page the logo is a **base64 `data:` URI**, so copying the rendered block out
+the message. In the file the logo is a **base64 `data:` URI**, so copying the rendered block out
 of a browser hands Outlook the actual bitmap and it embeds its own copy — nothing left to block.
+This also makes the file self-contained: it works from OneDrive with no connection to the site.
 Base64 in a `data:` URI works *for this purpose only*; classic Outlook desktop will not render a
 `data:` URI in a received email, which is fine here because the URI never reaches the email.
 
 Other notes:
 
-- The page is generated, not hand-written — the generator lives in the session scratchpad, not
-  the repo. To change the design, edit `email-signatures/index.html` directly; it is plain
-  inline-styled tables (the only thing email clients render reliably — no CSS classes, no flexbox).
 - Signature markup is **inline styles on nested `<table>`s** on purpose. Do not "tidy" it into
   modern CSS; Outlook renders mail through Word's engine and will drop it.
-- Contains a worked example (Sharon Ames), a blank template, and a table of all six centres'
-  phone/email taken from `contact.html` — if contact details change, change both.
 - **Outlook has two signature dropdowns**, one for new messages and one for replies/forwards.
   A blank second dropdown is the other reason a signature "doesn't show on replies".
-- Not added to `robots.txt`: a `Disallow` there would stop crawlers from ever reading the page's
-  `noindex`, which is the stronger instruction. Same reasoning applies to any future noindex page.
+- The general lesson about `robots.txt` still applies to any future `noindex` page here: do
+  **not** add a `Disallow` for it, because that stops crawlers ever reading the `noindex`, which
+  is the stronger instruction.
 
 ## The `***Publish` command
 
@@ -220,7 +228,8 @@ everything else. Write the conclusion down as you go.
   the wrong blocks. **Nassau County** is now Hempstead / 516-560-6474 / `SuffolkLIRIAC@nclas.org`,
   and **Suffolk County** is Central Islip / 631-853-7807 / `LIRIAC@sclas.org`. Note the Nassau
   mailbox really is named `SuffolkLIRIAC@` — odd, but it is a Nassau (`nclas.org`) address and
-  Dan confirmed the details are correct, so leave it. Mirrored in `email-signatures/index.html`.
+  Dan confirmed the details are correct, so leave it. The signature file in Dan's OneDrive brand
+  kit carries the same table and was corrected to match.
 
 - ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
   box~~ — done. No notice box remains in the file.
