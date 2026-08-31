@@ -500,3 +500,26 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 }
 
 .form-escape { font-size: .9rem; color: var(--muted); margin-top: 1.4rem; }
+
+/* Preview banner — deliberately MAGENTA, a color used nowhere else on this site, so an
+   unfinished page can never be mistaken for a live one. If these pages graduate into
+   intake.html, this rule and every .preview-banner using it should be deleted. */
+
+.preview-banner {
+  --preview: #b0006e;
+  background: var(--preview); color: #fff;
+  border-radius: 8px; padding: 1.1rem 1.3rem; margin: 1.4rem 0 2rem;
+  font-size: .95rem; line-height: 1.55;
+  box-shadow: 0 3px 14px rgba(176,0,110,.3);
+}
+.preview-banner p { margin: 0; }
+.preview-banner p + p { margin-top: .5rem; }
+.preview-banner strong { color: #fff; }
+.preview-banner a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+.preview-banner a:hover { color: #ffd9ee; }
+.preview-tag {
+  display: inline-block; background: #fff; color: var(--preview);
+  font-family: var(--sans); font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .22rem .6rem; border-radius: 3px; margin-bottom: .6rem;
+}
