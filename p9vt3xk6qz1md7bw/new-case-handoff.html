@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start a new case (hand-off) — test page — RIAC</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<!--
+  UNLISTED TEST PAGE — noindex/nofollow, not linked from anywhere on this site.
+
+  THIS IS THE *HAND-OFF* VERSION. The page carries everything except the questions, and
+  sends the attorney to airtable.com to answer those. new-case.html is the same page with
+  the form embedded in it instead. Compare the two, keep one, delete the other.
+
+  Everything on this page other than the form block is identical to new-case.html, so the
+  comparison is a fair one. If you change wording here, change it there too until one of
+  the two is deleted.
+
+  DO NOT replace this with a form hosted on this site. The conflict check is bound to
+  the Airtable form and silently stops running on anything else. See AIRTABLE.md in the
+  private notes repo, "The conflict check only fires from one specific form".
+
+  The fallback panel underneath the frame is deliberate and must stay. Some court and
+  defender-office networks block airtable.com; when that happens the frame shows nothing
+  at all and the attorney has no way of knowing the page is not simply broken.
+-->
+<body>
+
+<header class="site-header">
+  <div class="header-card">
+    <div class="funder-ribbon">Funded by the New York State Office of Indigent Legal Services</div>
+    <div class="wrap">
+    <a class="brand" href="/index.html">
+      <img src="/images/riac-mark.svg" alt="" aria-hidden="true">
+      <span class="brand-text">
+        <span class="brand-acronym">RIAC</span>
+        <span class="brand-full">Regional Immigration<br>Assistance Centers</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/index.html">Home</a>
+      <a href="/advisories.html">Practice Advisories</a>
+      <a href="/intake.html">Intake Forms</a>
+      <a href="/contact.html">Find Your RIAC</a>
+    </nav>
+    </div>
+  </div>
+</header>
+
+<div class="page-head page-head-alt">
+  <div class="wrap">
+    <h1>Start a New Case</h1>
+    <p class="full">Tell us about a case you would like advice on. Please answer every question &mdash; if your client does not know an answer, say so rather than leaving it blank.</p>
+  </div>
+</div>
+
+<section class="section section-top-tighter">
+  <div class="wrap">
+
+    <div class="notice">
+      <strong>Preview page.</strong> The layout is still being worked on, but the form is
+      live &mdash; anything sent from here reaches the Central New York RIAC as a normal intake.
+      <a href="index.html">Back to the intake choices</a>.
+    </div>
+
+    <div class="step-block">
+      <span class="step-label">Step 1</span>
+      <h2 class="section-title">Documents we need in every case</h2>
+      <p class="section-intro">Have these ready before you start &mdash; you can upload them as you go. If any of them are unavailable, say so in the form and explain why; we may be able to help you get them.</p>
+      <ul class="doc-list">
+        <li><strong>Fingerprint RAP sheet.</strong> Repository inquiries are generally insufficient.</li>
+        <li><strong>All accusatory instruments</strong>, including supporting affidavits and police reports.</li>
+        <li><strong>All immigration documents</strong> &mdash; for example a green card, work permit, USCIS receipt, or the visa stamp in a passport. If a document exists but you cannot get hold of it, describe it.</li>
+      </ul>
+    </div>
+
+    <div class="step-block">
+      <span class="step-label">Step 2</span>
+      <h2 class="section-title">Case and client information</h2>
+      <p class="section-intro">Allow about fifteen minutes. The form saves nothing until you submit it, so try to finish in one sitting.</p>
+
+      <div class="intake-followup">
+        <h3>Open the intake form</h3>
+        <p class="summary">The form opens on Airtable, our case management system, in a new tab.
+        Come back to this page afterwards for the points under Step&nbsp;3 &mdash; several of them
+        are time-sensitive.</p>
+        <a class="btn btn-download" href="https://airtable.com/appwoHVXRp4vgfJB9/pag4B5iaEMdq7k31o/form" target="_blank" rel="noopener">Open the form</a>
+      </div>
+
+      <div class="form-fallback">
+        <p><strong>Will the form not open, or not let you upload a file?</strong> Some court and
+        office networks block outside services. If so, use the fillable PDF at the bottom of this
+        page, or <a href="/contact.html">call us</a> &mdash; do not let it hold up the case.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <span class="step-label">Step 3</span>
+      <h2 class="section-title">Before you receive RIAC advice</h2>
+      <p class="section-intro">Please read these now rather than waiting to hear from us. Several of them are time-sensitive.</p>
+      <ul class="warn-list">
+        <li>If your client is subject to an order of protection, immediately review the advisory on
+          <a href="/advisories/domestic-orders-of-protection.pdf">orders of protection and foreign-born clients</a>.</li>
+        <li>If there is an ICE detainer, or your client is likely to be arrested by ICE &mdash; in court, on release from jail, or at home &mdash; immediately review the advisories on
+          <a href="/advisories/mandatory-detention-undocumented-clients-open-cases.pdf">mandatory immigration detention</a> and
+          <a href="/advisories/responding-to-ice-presence-in-ny-courtrooms.pdf">ICE presence in New York courtrooms</a>.</li>
+        <li><strong>Do not accept any plea, or enter any diversion program</strong> &mdash; even a seemingly excellent one, including an up-front plea that will be vacated. See the advisory on
+          <a href="/advisories/no-diversion-or-up-front-pleas-without-riac-advice.pdf">diversion and up-front pleas</a>.</li>
+        <li><strong>Do not advise your client to accept an ACD</strong> until you have reviewed the
+          <a href="/advisories/info-for-attorneys-and-clients-regarding-acds.pdf">ACD advisory</a> with them.</li>
+        <li><strong>Do not use a court interpreter outside of court</strong> &mdash; that conversation is not privileged. You have access to telephonic interpretation: see the advisory on
+          <a href="/advisories/court-interpreters-cannot-be-used-outside-court.pdf">court interpreters</a>, or contact us if you need help arranging it.</li>
+        <li><strong>Do not ask your client to contact RIAC directly.</strong> We are your legal expert, not your client&rsquo;s immigration attorney.</li>
+        <li>Advise your client of their <strong>right to refuse to speak with ICE</strong>, even to confirm their name. Ask us for the &ldquo;Know Your Rights with ICE&rdquo; flyers in English, Spanish or other languages.</li>
+      </ul>
+    </div>
+
+    <div class="step-block">
+      <h2 class="section-title">If you cannot submit online</h2>
+      <p class="section-intro">These fillable PDFs work offline &mdash; download the one you need before you set off if you are going somewhere without a connection.</p>
+      <div class="intake-grid">
+        <a class="intake-card" href="/intake-forms/criminal-intake-form.pdf" download>
+          <h3>Criminal Cases</h3>
+          <p class="summary">RIAC intake form to be used in all criminal matters (from a parking ticket to A-I Felony).</p>
+          <span class="btn btn-download">Download PDF</span>
+        </a>
+        <a class="intake-card" href="/intake-forms/non-criminal-intake-form.pdf" download>
+          <h3>Non-Criminal Cases</h3>
+          <p class="summary">RIAC intake form for all non-criminal cases, such as family court, divorce matters, affirmative immigration applications etc.</p>
+          <span class="btn btn-download">Download PDF</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="variant-switch">
+      Comparing layouts: this is the <strong>hand-off</strong> version.
+      <a href="new-case.html">See the embedded version</a>, where the form sits inside this page.
+    </p>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>Regional Immigration Assistance Centers</strong> &middot; <a href="/contact.html">Find your RIAC</a> &middot; <a href="/advisories.html">Practice advisories</a> &middot; <a href="/intake.html">Intake forms</a></p>
+    <p class="fineprint">This website provides general information for legal service providers and does not constitute legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>

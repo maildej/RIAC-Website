@@ -452,3 +452,49 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   .legend { grid-template-columns: repeat(2, 1fr); }
   .site-nav { gap: 1.1rem; }
 }
+
+/* ---------- Online intake (unlisted test pages) ----------
+   Used only by /p9vt3xk6qz1md7bw/ while the online intake route is being
+   trialled. When that content moves into intake.html, this block moves with it. */
+
+.form-embed {
+  --form-embed-height: 1200px;   /* retune the frame by changing this one number */
+  margin-top: 1.5rem;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+.form-embed iframe { display: block; width: 100%; height: var(--form-embed-height); border: 0; }
+
+.form-fallback {
+  background: var(--cream); border: 1px solid var(--line); border-radius: 6px;
+  padding: 1rem 1.2rem; margin-top: 1.2rem; font-size: .95rem;
+}
+.form-fallback p { margin: 0 0 .6rem; }
+.form-fallback p:last-child { margin-bottom: 0; }
+
+.step-block { margin-top: 2.6rem; }
+.step-label {
+  display: inline-block; background: var(--navy); color: var(--cream);
+  font-family: var(--sans); font-size: .72rem; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .25rem .6rem; border-radius: 3px; margin-bottom: .7rem;
+}
+.doc-list, .warn-list { margin: 1rem 0 0; padding-left: 1.2rem; }
+.doc-list li, .warn-list li { margin-bottom: .8rem; }
+
+.recipient {
+  background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--r2);
+  padding: .9rem 1.1rem; border-radius: 4px; margin-top: 1.2rem; font-size: .95rem;
+}
+.recipient strong { color: var(--navy); }
+
+.variant-switch {
+  font-size: .85rem; color: var(--muted);
+  border-top: 1px dashed var(--line); margin-top: 3.5rem; padding-top: 1rem;
+}
+
+@media (max-width: 820px) {
+  .form-embed { --form-embed-height: 80vh; }
+}
