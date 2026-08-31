@@ -523,3 +523,10 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   letter-spacing: .12em; text-transform: uppercase;
   padding: .22rem .6rem; border-radius: 3px; margin-bottom: .6rem;
 }
+
+.doc-head {
+  font-family: var(--sans); font-size: .8rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  margin-top: 1.6rem;
+}
+.doc-head:first-of-type { margin-top: 1.2rem; }
