@@ -18,10 +18,14 @@
   iframe. new-case-handoff.html is the same page with the form opening on airtable.com
   instead. Compare the two, keep one, delete the other.
 
-  THE FORM ADDRESS APPEARS ONCE, BELOW, in the iframe's src. If the frame comes up
-  blank, get the embed address from Airtable itself — open the form, Share, then the
-  embed option — and paste that address in place of the src below. Airtable sometimes
-  serves a different address for embedding than the one you use in a browser.
+  FRAMING — READ BEFORE CHANGING THE src BELOW.
+  The ordinary browser address of the form (airtable.com/app.../pag.../form) CANNOT be
+  framed: Airtable sends a header refusing it, and the box renders as "airtable.com
+  refused to connect". Confirmed on 31 Aug 2026. Do not put that address back in the src.
+  The src below uses Airtable's /embed/ address instead, which is the address Airtable
+  serves for this purpose. If THAT is also refused, this form simply cannot be embedded —
+  get the exact snippet from the form's Share > embed option, and if no such option
+  exists, delete this page and keep new-case-handoff.html.
 
   DO NOT replace this with a form hosted on this site. The conflict check is bound to
   the Airtable form and silently stops running on anything else. See AIRTABLE.md in the
@@ -86,9 +90,12 @@
       <h2 class="section-title">Case and client information</h2>
       <p class="section-intro">Allow about fifteen minutes. The form saves nothing until you submit it, so try to finish in one sitting.</p>
 
+      <p class="form-escape">Trouble with the form below?
+        <a href="https://airtable.com/appwoHVXRp4vgfJB9/pag4B5iaEMdq7k31o/form" target="_blank" rel="noopener">Open it in a new tab instead</a>.</p>
+
       <div class="form-embed">
         <iframe
-          src="https://airtable.com/appwoHVXRp4vgfJB9/pag4B5iaEMdq7k31o/form"
+          src="https://airtable.com/embed/appwoHVXRp4vgfJB9/pag4B5iaEMdq7k31o/form"
           title="RIAC new case intake form"
           allow="clipboard-write"></iframe>
       </div>

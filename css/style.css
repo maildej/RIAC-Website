@@ -498,3 +498,5 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 @media (max-width: 820px) {
   .form-embed { --form-embed-height: 80vh; }
 }
+
+.form-escape { font-size: .9rem; color: var(--muted); margin-top: 1.4rem; }
