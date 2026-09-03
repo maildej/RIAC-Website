@@ -22,6 +22,16 @@
 
   Paths here are absolute (/css/, /images/) because this page sits in a subfolder.
 
+  STRUCTURE (Aug 2026):
+    index.html              this page — the front door, two choice cards
+    new-case.html           new case, Airtable form EMBEDDED in the page
+    new-case-handoff.html   new case, same page but HANDING OFF to airtable.com
+    supplemental.html       adding to an existing case — form not yet published
+
+  new-case.html and new-case-handoff.html are deliberately two versions of the same
+  thing, so the embedded and hand-off routes can be compared on a real phone and a real
+  desktop before one of them is chosen. Once chosen, delete the other.
+
   When testing is finished, this content moves into intake.html and this folder is deleted.
 -->
 <body>
@@ -57,24 +67,38 @@
 <section class="section section-top-tighter">
   <div class="wrap">
 
-    <div class="notice">
-      <strong>This is a test page.</strong> It is being used to check the online intake route
-      before it goes live. <strong>Please do not submit a real client&rsquo;s details here.</strong>
-      The live intake page is <a href="/intake.html">nyriac.com/intake.html</a>.
+    <div class="preview-banner">
+      <span class="preview-tag">Preview</span>
+      <p><strong>This is a preview page while the online intake is being built.</strong>
+      The layout is still being worked on. The form behind it is live, so anything sent
+      from here reaches the Central New York RIAC exactly as a normal intake would.
+      The published intake page is <a href="/intake.html">nyriac.com/intake.html</a>.</p>
     </div>
 
-    <!-- PRIMARY ROUTE. This is the Airtable intake form; do not replace it with a form hosted
-         on this site. The conflict check is bound to that form and silently stops running on
-         anything else. See AIRTABLE.md, "The conflict check only fires from one specific form".
-         After the six centers move to separate databases this becomes six links, one per
-         region — see AIRTABLE-TODO.md. -->
-    <div class="intake-followup">
-      <h3>Submit a new case online</h3>
-      <p class="summary">The fastest route, and the one we recommend. The form asks for your details, the court and docket, and what your client is alleged to have done.</p>
-      <a class="btn btn-download" href="https://airtable.com/appwoHVXRp4vgfJB9/shryvSQtGt8dGjP3l">Start an online intake</a>
+    <h2 class="section-title">What would you like to do?</h2>
+    <p class="section-intro">Choose whichever applies. One form covers every kind of case, criminal and non-criminal alike. If you are unsure which of the two below you need, start a new case &mdash; we will match it up at our end.</p>
+
+    <div class="intake-grid">
+      <a class="intake-card" href="new-case.html">
+        <h3>Start a new case</h3>
+        <p class="summary">Ask us to advise on a case we have not seen before &mdash; criminal or non-criminal, one form covers both. Allow about fifteen minutes, and have your client&rsquo;s immigration documents to hand.</p>
+        <span class="btn btn-download">Begin</span>
+      </a>
+      <a class="intake-card" href="supplemental.html">
+        <h3>Add to an existing case</h3>
+        <p class="summary">Send us further documents or information on a case you have already opened with us &mdash; a new RAP sheet, a revised offer, or an answer to something we asked. You will need your RIAC case number.</p>
+        <span class="btn btn-download">Begin</span>
+      </a>
     </div>
 
-    <h2 class="section-title">If you cannot submit online</h2>
+    <div class="recipient">
+      <strong>These forms go to the Central New York RIAC (Region 2).</strong>
+      If your case is outside our sixteen counties, please
+      <a href="/contact.html">find your RIAC</a> and contact them directly &mdash;
+      the other centers are not yet taking intakes through this website.
+    </div>
+
+    <h2 class="section-title" style="margin-top:3rem">If you cannot submit online</h2>
     <p class="section-intro">Some of our colleagues complete intakes at a jail with no signal, or prefer to write them out by hand. Both forms below are fillable PDFs that work offline &mdash; <strong>download the one you need before you set off</strong> if you are going somewhere without a connection.</p>
 
     <div class="intake-grid">
