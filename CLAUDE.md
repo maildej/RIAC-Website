@@ -217,19 +217,33 @@ everything else. Write the conclusion down as you go.
   **Do not rebuild them, and do not build any website form that posts into Airtable** — the
   conflict check is bound to Airtable's own form by internal ID and silently stops running
   on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
+- ⚠️ **[Dan] Two contact-detail corrections are written but NOT LIVE — they need merging.**
+  Both sit in **pull request #19** (`claude/email-signatures-issue-52bj3v`), opened 15 August
+  2026 and still open as of 3 September. Until someone clicks *Merge pull request*, nyriac.com
+  keeps showing the wrong details:
+  1. **Region 2's phone number** — corrected to **(315) 898-2593** on 3 September 2026, replacing
+     315-356-5794. Dan's instruction.
+  2. **Region 6 (Long Island): Nassau and Suffolk headings were on the wrong blocks.** Each
+     block's details were right; only the labels were swapped. **Nassau County** is Hempstead /
+     516-560-6474 / `SuffolkLIRIAC@nclas.org`, and **Suffolk County** is Central Islip /
+     631-853-7807 / `LIRIAC@sclas.org`. Confirmed by Dan, 15 August 2026. Note the Nassau mailbox
+     really is named `SuffolkLIRIAC@` — odd, but it is a Nassau (`nclas.org`) address and Dan
+     confirmed it is correct, so **leave it.**
+
+  **Lesson worth keeping:** a fix committed to a branch changes nothing that the public sees.
+  Only `main` is published. This one sat unmerged for three weeks while Long Island attorneys
+  were still being pointed at the wrong office — so when a correction matters, say plainly that
+  merging is the step that publishes it, and check back rather than assuming it happened.
 - **[Dan] Confirm the new signature actually renders.** `nyriac.com` is blocked to Claude, and no
   session can see a real Outlook. Dan must send a test to an address that has never received mail
   from the sender before, and report back.
+- **[Dan] Update the OneDrive signature file's RIAC 2 number**, and Courtney's and Daniel's
+  signature blocks, to **315-898-2593**. An online session cannot reach OneDrive, and the copies
+  of Courtney's and Daniel's signatures exist only in Dan's file — Claude has never seen them.
+  Sharon's block and two Region 2 templates carrying the new number were handed to Dan on
+  3 September 2026.
 
 **Done — do not re-raise these (confirmed 12 August 2026):**
-
-- ~~Region 6 (Long Island): Nassau and Suffolk headings swapped in `contact.html`~~ — **fixed
-  15 August 2026, confirmed by Dan.** Each block's details were right; the two headings were on
-  the wrong blocks. **Nassau County** is now Hempstead / 516-560-6474 / `SuffolkLIRIAC@nclas.org`,
-  and **Suffolk County** is Central Islip / 631-853-7807 / `LIRIAC@sclas.org`. Note the Nassau
-  mailbox really is named `SuffolkLIRIAC@` — odd, but it is a Nassau (`nclas.org`) address and
-  Dan confirmed the details are correct, so leave it. The signature file in Dan's OneDrive brand
-  kit carries the same table and was corrected to match.
 
 - ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
   box~~ — done. No notice box remains in the file.
