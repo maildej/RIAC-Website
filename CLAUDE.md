@@ -55,7 +55,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `CNAME` | Custom domain for GitHub Pages — **do not delete or edit** |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is — **do not delete** |
 | `SETUP.md` | One-time GitHub + Wix DNS setup instructions |
-| `NOTES.md` | Pointer file. `AIRTABLE.md` and `AIRTABLE-TODO.md` **live in the private repo `maildej/riac-notes`**, because this repository is public |
+| `NOTES.md` | Pointer file. `AIRTABLE.md` and `AIRTABLE-TODO.md` **live in the private repo `maildej/RIAC-Airtable`**, because this repository is public |
 
 ## Unlisted pages, and what "unlisted" is actually worth
 
@@ -98,7 +98,7 @@ Notes:
 
 An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (loaded from a CDN — the one exception to "no JavaScript/frameworks" in this project, isolated entirely to `/admin/`). It gives RIAC staff a real login (via GitHub — not just an unlisted-URL "secret") to upload and manage practice advisory PDFs and their internal Word source files, with built-in search across entries and a "copy URL" option on any uploaded file (for pasting into emails).
 
-- Configuration: `admin/config.yml`. Backend is `github`, repo `maildej/nyriac.com`, branch `main`.
+- Configuration: `admin/config.yml`. Backend is `github`, repo `maildej/RIAC-Website`, branch `main`.
 - Because GitHub Pages can't run server-side code, GitHub OAuth login is proxied through a **free Netlify site created only for this purpose** (Netlify doesn't host the actual site — nyriac.com stays on GitHub Pages). See `SETUP.md` for the one-time setup the owner needs to complete (registering a GitHub OAuth App, connecting Netlify, and adding `nyriac.com` as a domain on that Netlify site so its OAuth login recognizes requests from it), which fills in `site_domain` in `admin/config.yml`.
 - Uploads land in `advisories/` (PDF) and `advisories/source/` (Word doc) and create a small metadata entry under `cms/advisories/` that Decap uses for its list/search — this metadata isn't read by the public site. **Uploading a file here does not automatically add it as a card on `advisories.html`** — that step (title, summary, card styling) is still a manual edit, same as any other advisories.html change.
 - Only people with push access to the GitHub repo (or added as OAuth-approved users) can log in — that's the real access boundary, not the page's URL being unlisted.
@@ -158,7 +158,7 @@ again:
    conversation goes into the right file — `AIRTABLE.md` for how the database works,
    `AIRTABLE-TODO.md` for what is still outstanding, this file for anything else. Nothing of
    substance should exist only in the chat.
-   ⚠️ **The first two are in the private repo `maildej/riac-notes`**, so a `***Publish` means
+   ⚠️ **The first two are in the private repo `maildej/RIAC-Airtable`**, so a `***Publish` means
    committing and pushing **both repositories**, not just this one. If that repo has not been
    added to the session, say so rather than writing database notes into this public one.
 2. **Commit and push to GitHub**, so the files are safe and readable from any computer.
@@ -198,13 +198,13 @@ Rule of thumb:
   also kept in `advisories/source/` in this repo.
 
 Because stranded chats are a recurring problem, **durable decisions belong in files, not
-in conversation** — `AIRTABLE.md` (in `maildej/riac-notes`) for database work, this file for
+in conversation** — `AIRTABLE.md` (in `maildej/RIAC-Airtable`) for database work, this file for
 everything else. Write the conclusion down as you go.
 
 ## Where a chat runs, when it ends, and why the machinery is mentioned
 
 These apply to every session on this repository, cloud or local. The fuller version, with its
-reasoning, is rule 10 of `CLAUDE.md` in `maildej/riac-notes`.
+reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **Open every session by saying where it is running**, in one short paragraph: cloud or desktop,
   which repository or folder is attached (or none), and whether that fits the task. Website edits
@@ -259,7 +259,7 @@ the site is behind what is in the folder.
 ### RIAC CMS (the Airtable pilot — nothing to do with this website)
 
 The base is "RIAC CMS Pilot", and it has its own two files. ⚠️ **Both now live in the private
-repository `maildej/riac-notes`, not here** — ask for that repo to be added to the session
+repository `maildej/RIAC-Airtable`, not here** — ask for that repo to be added to the session
 before doing any database work, or you will be working blind:
 
 - **`AIRTABLE.md`** — the database map: tables, interface pages, automations, the reminder ladder and how a case gets chased and closed, the offence catalogues and their loader scripts, and everything currently unfinished. Read it before doing any Airtable work.

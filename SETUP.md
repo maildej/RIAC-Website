@@ -1,5 +1,9 @@
 # One-time setup: GitHub Pages + Wix DNS
 
+> This setup was completed once. The repository created in Step 1 is now named `RIAC-Website`;
+> the site and its domain are unaffected by the name.
+
+
 Follow these steps once. After that, updating the site is just uploading changed files to GitHub.
 
 ## Step 1 — Create the repository

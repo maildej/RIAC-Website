@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: maildej/nyriac.com
+  repo: maildej/RIAC-Website
   branch: main
   site_domain: incandescent-nasturtium-490a59.netlify.app
 
