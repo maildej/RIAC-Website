@@ -7,9 +7,10 @@ repository: **`maildej/riac-notes`**.
 free plan — so everything in it is readable by anyone. Those notes describe the database in
 enough detail to be worth keeping to ourselves.
 
-⚠️ **They are still in this repository's git history**, up to 13 August 2026. Deleting a file
-does not unpublish it. Harmless — no client data has ever been in them — but the move protects
-what comes next, not what already happened.
+They are not in this repository's history either: the history was rewritten to remove every past
+version of both files. ⚠️ **Deleting a file does not unpublish it** — only a history rewrite does,
+and a rewrite means every copy of this repository has to be downloaded afresh. So never put
+database notes here, even briefly.
 
 **Working on the database?** Ask for `maildej/riac-notes` to be added to the session. A session
 that only has this repository cannot see the notes.
