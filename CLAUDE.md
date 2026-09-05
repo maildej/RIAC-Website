@@ -201,6 +201,30 @@ Because stranded chats are a recurring problem, **durable decisions belong in fi
 in conversation** — `AIRTABLE.md` (in `maildej/riac-notes`) for database work, this file for
 everything else. Write the conclusion down as you go.
 
+## Where a chat runs, when it ends, and why the machinery is mentioned
+
+These apply to every session on this repository, cloud or local. The fuller version, with its
+reasoning, is rule 10 of `CLAUDE.md` in `maildej/riac-notes`.
+
+- **Open every session by saying where it is running**, in one short paragraph: cloud or desktop,
+  which repository or folder is attached (or none), and whether that fits the task. Website edits
+  and GitHub housekeeping belong in the cloud; anything needing files on the desktop (OneDrive,
+  Word masters, Outlook) belongs local; a chat with no folder attached cannot push to GitHub. If
+  the place does not fit, say so and give the move: what to push first, how to start the right
+  kind of chat, and a paste-ready opening message for it. Ask only where the opening message
+  leaves it genuinely undecidable.
+- **Suggest a new chat when the opening task is finished, the conversation has drifted from its
+  title, or earlier decisions are being asked again.** Do the hand-over first: `***Publish`, then
+  write the next chat's opening message, ready to paste.
+- **When the work is done, say so and prompt the archive** in one line: "This chat is finished.
+  Archive it: in the desktop sidebar, right-click the chat and choose Archive." Archiving hides the
+  chat and can be undone. A cloud archive does not reach the desktop's list of local chats, nor
+  the reverse.
+- **Explain every technical step in one plain sentence before taking it** — pull, push, merge,
+  branch, force-push, re-clone, attaching a repository — saying what it does and why it is needed
+  now. Name the control, not the outcome: "merge the pull request, which copies the branch's
+  changes into `main`, so the fix goes live", not "merge it".
+
 ## Outstanding
 
 **Website:**
