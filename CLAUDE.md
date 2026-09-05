@@ -109,6 +109,49 @@ An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (l
 
 An **unlisted** page (`chief-defender-survey.html`) sent to NY chief defenders, asking how their office identifies and refers non-U.S.-born clients to their RIAC. It is deliberately not linked anywhere on the site and carries `noindex, nofollow` — it's shared by direct link only. Question 1 is a searchable office picker whose ~130 options were generated from the NYSDA "Public Defense Services" Chief Defender list; if that list changes, update the `<datalist id="offices">` options in the page.
 
+### Email signatures
+
+⚠️ **Not in this repository, and deliberately so.** The staff Outlook signature is a **brand-kit
+asset, not website content.** The master copy is an HTML file in Dan's **OneDrive brand kit**,
+alongside the logo files. It was built here on 15 August 2026 to fix a real complaint —
+recipients were seeing a broken image box instead of the RIAC logo — and then removed from the
+repo at Dan's request, because anything on `main` is automatically served at a nyriac.com
+address and the signature has no business being on the public website.
+
+**Do not re-add it to this repo.** If it needs changing, ask Dan for the file from OneDrive,
+edit it, and give it back to him — do not commit it. (An earlier copy is recoverable from the
+history of branch `claude/email-signatures-issue-52bj3v` if his is ever lost.)
+
+The file is a plain page holding the signature ready to select and copy, with setup steps around
+it: a worked example (Sharon Ames), a blank template, and a table of all six centres'
+phone/email taken from `contact.html` — **if contact details change here, that file needs the
+same change.**
+
+**The cause, and the rule that follows from it.** The old signature did not contain the logo — it
+contained an `<img>` pointing at `https://nyriac.com/images/riac-email-logo.png`. Mail clients
+block remotely-loaded images by default from senders not already trusted, so **first-time
+recipients — most of the attorneys RIAC writes to — saw an empty box with the alt text in blue.**
+It looked like "the logo breaks on replies" because a reply from an untrusted sender blocks
+downloads across the whole message, quoted signature included, while the sender's own copy always
+looked fine.
+
+⚠️ **Never put a website-hosted image in an email signature.** The picture has to travel inside
+the message. In the file the logo is a **base64 `data:` URI**, so copying the rendered block out
+of a browser hands Outlook the actual bitmap and it embeds its own copy — nothing left to block.
+This also makes the file self-contained: it works from OneDrive with no connection to the site.
+Base64 in a `data:` URI works *for this purpose only*; classic Outlook desktop will not render a
+`data:` URI in a received email, which is fine here because the URI never reaches the email.
+
+Other notes:
+
+- Signature markup is **inline styles on nested `<table>`s** on purpose. Do not "tidy" it into
+  modern CSS; Outlook renders mail through Word's engine and will drop it.
+- **Outlook has two signature dropdowns**, one for new messages and one for replies/forwards.
+  A blank second dropdown is the other reason a signature "doesn't show on replies".
+- The general lesson about `robots.txt` still applies to any future `noindex` page here: do
+  **not** add a `Disallow` for it, because that stops crawlers ever reading the `noindex`, which
+  is the stronger instruction.
+
 ## The `***Publish` command
 
 When Dan writes **`***Publish`** (any capitalisation; the three asterisks are what make it a
@@ -174,6 +217,32 @@ everything else. Write the conclusion down as you go.
   **Do not rebuild them, and do not build any website form that posts into Airtable** — the
   conflict check is bound to Airtable's own form by internal ID and silently stops running
   on anything else. Link out to the Airtable form instead. See `AIRTABLE-TODO.md`.
+- ⚠️ **[Dan] Two contact-detail corrections are written but NOT LIVE — they need merging.**
+  Both sit in **pull request #19** (`claude/email-signatures-issue-52bj3v`), opened 15 August
+  2026 and still open as of 3 September. Until someone clicks *Merge pull request*, nyriac.com
+  keeps showing the wrong details:
+  1. **Region 2's phone number** — corrected to **(315) 898-2593** on 3 September 2026, replacing
+     315-356-5794. Dan's instruction.
+  2. **Region 6 (Long Island): Nassau and Suffolk headings were on the wrong blocks.** Each
+     block's details were right; only the labels were swapped. **Nassau County** is Hempstead /
+     516-560-6474 / `SuffolkLIRIAC@nclas.org`, and **Suffolk County** is Central Islip /
+     631-853-7807 / `LIRIAC@sclas.org`. Confirmed by Dan, 15 August 2026. Note the Nassau mailbox
+     really is named `SuffolkLIRIAC@` — odd, but it is a Nassau (`nclas.org`) address and Dan
+     confirmed it is correct, so **leave it.**
+
+  **Lesson worth keeping:** a fix committed to a branch changes nothing that the public sees.
+  Only `main` is published. This one sat unmerged for three weeks while Long Island attorneys
+  were still being pointed at the wrong office — so when a correction matters, say plainly that
+  merging is the step that publishes it, and check back rather than assuming it happened.
+- **[Dan] Confirm the new signature actually renders.** `nyriac.com` is blocked to Claude, and no
+  session can see a real Outlook. Dan must send a test to an address that has never received mail
+  from the sender before, and report back.
+- **[Dan] Update the OneDrive signature file's RIAC 2 number**, and Courtney's and Daniel's
+  signature blocks, to **315-898-2593**. An online session cannot reach OneDrive, and the copies
+  of Courtney's and Daniel's signatures exist only in Dan's file — Claude has never seen them.
+  Sharon's block and two Region 2 templates carrying the new number were handed to Dan on
+  3 September 2026.
+
 **Done — do not re-raise these (confirmed 12 August 2026):**
 
 - ~~Verify the six centers' contact details in `contact.html` and remove the yellow notice
