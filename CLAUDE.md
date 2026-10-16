@@ -372,6 +372,16 @@ into this repository with the build.
   need not complete the form, with the county's center's details; the later steps grey out and
   Next is disabled. The old help text's "all six centers" line goes. Chosen over the old form's
   warning with a firm-details box and the form going on.
+- **W13 2** (16 October 2026): step 3, **Court & Case**: the old form's questions word for word,
+  **Case Type first** (six choices, two columns), asked on both ways (fix 3); "If this case is
+  urgent…"; the court found by typing, from the county's courts, with "Court Not Listed / Non-NY
+  Court?"; Docket No. and Next Court Date side by side; ICE INVOLVEMENT in a tinted tick box; the
+  order-of-protection question, its tick list opening under Yes; custody status (seven choices,
+  two columns); the details box. **The upload way is offered by a quiet line at the top**,
+  "Already filled in a RIAC intake form (the PDF)? Upload it instead ›", not a required question;
+  on the upload way an orange line says what comes next (the client's name, then the form at step
+  8) with "Answer the questions here instead ›", and the step keeps only the case type and the
+  urgency. Chosen over the old form's required "How Would You Like To Submit Your Referral?".
 
 ## Working across two computers
 
