@@ -251,6 +251,9 @@ into this repository with the build.
   refuses at the first step, before any file is sent ("daily-limit"); the page then shows the
   centre's contact details and the PDF forms, and keeps the attorney's answers on screen as a copy
   to print or save.
+- **A referral's reference** (RW6 1) looks like `R2-261016-7KQ4MX`: the centre's code, the New
+  York date, and six characters with no 0, O, 1, I, L or U. The pages show it exactly as the
+  worker gives it (the mockups' shorter `R2-0142` is only a stand-in).
 - **Still with the owner:** the bot-check key.
 
 **Settled:**
