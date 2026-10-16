@@ -280,8 +280,14 @@ into this repository with the build.
   closed ones under a heading that starts collapsed; orange only for "Waiting for documents".
   The owner's changes: **(1)** the card at the top shows **the signed-in attorney's name and
   contact details prominently** ("Steven Smith, Esq.", then "RIAC Referrals:" over the list);
-  **(2)** **a search bar** over the list. Chosen over a card for each referral. The redraw with
-  both changes goes back to the owner before "build".
+  **(2)** **a search bar** over the list. Chosen over a card for each referral. **Confirmed on the
+  redraw ("W5 yes")**: the card shows the name large ("Steven Smith, Esq."; office staff without
+  ", Esq."), the office, email and phone, and "These are the details RIAC holds for you. If one is
+  wrong, tell your RIAC."; Sign Out and how long the sign-in lasts on its right; "RIAC
+  Referrals:" over the list, the search bar beside it ("Search by name, court or number": client,
+  court, docket, reference and case number, open and closed alike; the closed heading opens by
+  itself when it holds a match). For office staff each row also names its attorney. Until the
+  worker can supply the name, office and phone, the card shows the email address alone.
 
 ## Working across two computers
 
