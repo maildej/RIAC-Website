@@ -230,7 +230,7 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 6, 15 October 2026: the addresses, what each takes and gives back, the
+The agreed contract (draft 7, 15 October 2026: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It is copied
@@ -246,7 +246,12 @@ into this repository with the build.
 - **Senders:** the portal's sign-in emails come from `portal@nyriac.com` (one address for every
   centre), so the sign-in page may name it; receipts for a referral come from the centre's own
   referral address (`cny-referrals@nyriac.com` for Region 2).
-- **Still with the owner:** the bot-check key and the daily ceiling.
+- **Daily ceiling** (RW5 1, contract draft 7): past 25 referrals in a day for a centre, a referral
+  is still taken with the usual answer, and nothing tells the sender. Past 100 in a day the worker
+  refuses at the first step, before any file is sent ("daily-limit"); the page then shows the
+  centre's contact details and the PDF forms, and keeps the attorney's answers on screen as a copy
+  to print or save.
+- **Still with the owner:** the bot-check key.
 
 **Settled:**
 
