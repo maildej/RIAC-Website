@@ -47,8 +47,8 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
-| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form. **Deliberately still PDF-only** — the online route is being tested at the unlisted address below first |
-| `p9vt3xk6qz1md7bw/` | **Unlisted test pages** for the online intake route (`nyriac.com/p9vt3xk6qz1md7bw/`). All `noindex` and linked from nowhere. `index.html` is the front door (two cards: start a new case / add to an existing case); `new-case.html` embeds the **Airtable form** in the page; `new-case-handoff.html` is the same page but sends the attorney to airtable.com — the two exist to be compared, then one is deleted; `supplemental.html` is a placeholder until that form is published. Currently points at **Region 2's** form only. **Never replace the Airtable form with a form hosted here** — the conflict check is bound to the Airtable form and silently stops running on anything else. Embedding it is fine; re-implementing it is not. When testing is done this content moves into `intake.html` and the folder is deleted |
+| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form. **Deliberately still PDF-only** until the referral form goes live (see "The referral form and the attorney portal") |
+| `p9vt3xk6qz1md7bw/` | **Unlisted test pages** for the online intake route (`nyriac.com/p9vt3xk6qz1md7bw/`). All `noindex` and linked from nowhere. `index.html` is the front door (two cards: start a new case / add to an existing case); `new-case.html` embeds the **Airtable form** in the page; `new-case-handoff.html` is the same page but sends the attorney to airtable.com — the two exist to be compared, then one is deleted; `supplemental.html` is a placeholder until that form is published. Currently points at **Region 2's** form only. ⚠️ **Superseded:** Airtable's form has been closed to the public since 15 October 2026, so these pages no longer work. RIAC's own referral pages replace them (see "The referral form and the attorney portal" below), and this folder is deleted when those go live |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
 | `images/symbols.svg` | The symbols on the advisory, intake and home-page cards, one `<symbol id="i-…">` each — see "Design rules" below |
 | `images/riac-mark.svg` | Colored map mark used as the header logo on every page |
@@ -216,6 +216,30 @@ repository), without sharing any of their code.
   symbols. Do not use stock or clip-art pictures, or images from the training slides: most are
   not licensed for a public website.
 
+### The referral form and the attorney portal (being built)
+
+Attorneys will send a new case through a form on this site, and sign in to an attorney portal
+to see their referrals and add to them. Both are being built by the chat "Website - [W] nyriac.com
+referral and portal pages (Local)"; the owner's decisions on them are coded W1, W2 and so on.
+Nothing visible is built before the owner says "build", and nothing is pushed to `main` before
+the owner says yes to that push.
+
+⚠️ **The pages send to a private worker** (a small program on Cloudflare), never straight into
+the database. The worker is built in a private repository. This repository is public, so
+nothing from the private repositories goes in it: no code, no database, table or field names or
+IDs, and no keys. The pages know only the worker's public addresses and what each one takes
+and gives back, agreed with the worker's chat.
+
+**Settled:**
+
+- **W1 1** (15 October 2026): the form shows its steps as **numbered circles** across the top,
+  on a pale band, with the progress bar beneath; on a phone, the numbers only, with the current
+  step's name under them. After Send: a card with the reference, the time it was sent and where
+  the receipt went; an orange box, "This page is your only copy", beside **Print Or Save As
+  PDF**; then the full copy as **one document on a white sheet** with the RIAC letterhead,
+  section by section. Chosen over steps as pills in a navy bar with the copy as one card per
+  section.
+
 ## Working across two computers
 
 The owner works from more than one desktop. Chats started in a **local terminal** are stored on
@@ -264,11 +288,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 **Website:**
 
-- **Point `intake.html` at the Airtable intake form.** No online intake form is built on this
-  site; the Airtable intake form supersedes the ones once planned here.
-  **Do not build any website form that posts into Airtable** — the conflict check is bound to
-  Airtable's own form by internal ID and silently stops running on anything else. Link out to the
-  Airtable form instead. See `AIRTABLE-TODO.md`.
+- **The referral form and the attorney portal** (see the section of that name above). Until they
+  go live, `intake.html` stays PDF-only. Airtable's own form is no longer public, so it is
+  **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
   Claude, and no session can see a real Outlook. Send a test to an address that has never
   received mail from the sender before.
