@@ -259,6 +259,14 @@ referral address (`cny-referrals@nyriac.com` for Region 2).
   A New Case** (the cream button) and **Find Your RIAC** (the outlined one), two buttons of one
   size; Practice Advisories leaves the panel (it stays in the menu and the cards). Chosen over
   leaving the panel as it is, and over an orange full-width button above the two.
+- **W4 1** (15 October 2026): the portal's sign-in is **one narrow card, centred**, with nothing
+  beside it: the email box, Cloudflare's bot check, **Email Me A Sign-In Link**, and a line that
+  the link works once, for 15 minutes, in this browser only; under the card, a line to Send Us A
+  New Case. After asking: **Check your email** (from `portal@nyriac.com`), with "open the link on
+  this device, in this browser" in a tinted box, **Send Another Link** and **Use A Different Email
+  Address**. A link that cannot be used gets its own card with the three reasons and **Email Me A
+  New Link**. The page answers the same whatever address is typed. Chosen over the card with a
+  panel beside it listing what the portal shows.
 
 ## Working across two computers
 
