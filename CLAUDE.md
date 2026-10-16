@@ -274,6 +274,14 @@ into this repository with the build.
   Address**. A link that cannot be used gets its own card with the three reasons and **Email Me A
   New Link**. The page answers the same whatever address is typed. Chosen over the card with a
   panel beside it listing what the portal shows.
+- **W5 1, with the owner's two changes** (15 October 2026): the portal lists referrals as **a
+  table**, one line each (client with reference and case number; court and docket; received;
+  where it stands; **Add To This Referral**), becoming short blocks on a phone; newest first;
+  closed ones under a heading that starts collapsed; orange only for "Waiting for documents".
+  The owner's changes: **(1)** the card at the top shows **the signed-in attorney's name and
+  contact details prominently** ("Steven Smith, Esq.", then "RIAC Referrals:" over the list);
+  **(2)** **a search bar** over the list. Chosen over a card for each referral. The redraw with
+  both changes goes back to the owner before "build".
 
 ## Working across two computers
 
