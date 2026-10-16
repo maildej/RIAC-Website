@@ -341,6 +341,22 @@ into this repository with the build.
   directly; then Next, as for Region 2. After Send the card reads **"Emailed to …"**, says the
   referral will not appear in Your Referrals, and gives the center's phone and email. The PDFs
   stay on the Send A Case page. Chosen over a card offering the form here or the PDF yourself.
+- **W11 1** (16 October 2026): **nine steps**: County · About You · Court & Case · Client ·
+  Immigration · *(the case type)* · Other People · Documents · Check And Send. Step 6 is named for
+  the case type, its label short on the step bar (Criminal Case, Probation, Appeal,
+  Post-Conviction, Family Court, Removal); post-conviction asks the criminal and the appeal
+  questions. The questions are the old public form's, word for word, placed as follows: About You
+  (the attorney's names, email, phone, office type, office); Court & Case (case type; answer here
+  or upload a completed intake form instead; advice needed by; court, docket, next date; custody;
+  orders of protection; ICE involvement; details); Client (names, date of birth, other names or
+  dates of birth; country of birth, English, language); Immigration (entry and current status and
+  dates, A-number, pending applications, three screening lists, immigration attorney, family,
+  details); the case-type step; Other People (CS7 rows); Documents (each kind enclosed, sent
+  before, to follow or not available; RAP sheet completeness; anything else). On the upload way,
+  Immigration, the case-type step and Other People are skipped (struck through on the bar) and
+  Client asks only names and date of birth. Step labels sit on one line. The three fixes are
+  worded with the owner on their steps; the Removal questions (fix 2) are the owner's to set, and
+  until then that case type's step is left out. Chosen over seven longer steps.
 
 ## Working across two computers
 
