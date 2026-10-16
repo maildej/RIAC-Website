@@ -255,6 +255,10 @@ referral address (`cny-referrals@nyriac.com` for Region 2).
   New Case** (the form, the featured orange card) and **Your Referrals** (the portal's sign-in),
   with the paper intake forms beneath. Chosen over Your Referrals taking Home's place in the menu,
   and over a separate Sign In button after the four.
+- **W3 2** (15 October 2026): once the form is live, the home page's navy panel carries **Send Us
+  A New Case** (the cream button) and **Find Your RIAC** (the outlined one), two buttons of one
+  size; Practice Advisories leaves the panel (it stays in the menu and the cards). Chosen over
+  leaving the panel as it is, and over an orange full-width button above the two.
 
 ## Working across two computers
 
