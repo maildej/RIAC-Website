@@ -311,6 +311,24 @@ into this repository with the build.
   For New York City the card gives the Immigrant Defense Project's website and email and no PDFs.
   ⚠️ The form then holds a copy of the centers' contact details: **if `contact.html` changes, the
   form's copy changes with it.** Chosen over a page of its own.
+- **W8 2** (16 October 2026): an attorney sends to a center other than the county's own by **two
+  routes, each with its reason built in**, and no "why" question: **the county list ends with "The
+  court is outside New York State"**, which then asks which center should receive the referral;
+  and **under the county's center, "Does this center have a conflict with your client? Choose
+  another center"**, which leaves that center out of the choice and offers an optional note about
+  the conflict (up to 1,000 characters). Each center in the choice is tagged "Takes referrals here"
+  or "By email or post"; one not online shows its W7 card. Chosen over one "Choose the center
+  instead" panel with a reason question.
+- **W9 yes** (16 October 2026, the owner's own idea): **the form also emails a referral straight
+  to a center not yet on the system**, so the online form works across the state and only the
+  portal stays with the centers on the system. Go-live is still Region 2 alone; the emailed route
+  is added **center by center, as each agrees**. Conditions: each center agrees and confirms the
+  address to send to; the sending mailbox keeps no copy and no RIAC staff can open it, so Region 2
+  never holds another center's client's details (the rule of 13 August 2026 on a center conflicted
+  out); big files go as links that expire, or a lower limit applies. It amends CS8 1 and needs the
+  worker, email tenant and case-start chats, and CS5's security review covers it. New York City
+  (the Immigrant Defense Project, its own system) stays as W7 1 unless it asks. How the form looks
+  for an emailed center is W10.
 
 ## Working across two computers
 
