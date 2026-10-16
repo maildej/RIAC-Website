@@ -230,7 +230,7 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 10, 15 October 2026: the addresses, what each takes and gives back, the
+The agreed contract (draft 11, 15 October 2026: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It is copied
@@ -333,7 +333,13 @@ into this repository with the build.
   the hard go-live, as a setting on the worker, **never in this repository**. The email's subject
   line carries no client name or detail (the email tenant chat: Exchange's message trace keeps
   every subject for 90 days, readable by Region 2's administrators); the worker writes the email,
-  the form only sends the answers.
+  the form only sends the answers. Contract draft 11 (section G): each center has a `mode`
+  ("system", "email" or "none"; New York City always "none"); the files travel inside the email,
+  so an emailed center's limit is **2.8 MB in all** (the worker chat's call: links would leave a
+  client's files on Cloudflare for days behind an address anyone holding the email could open);
+  the page names the county at the upload step so the right limits come back, shows them before
+  files are chosen, and says larger files can be sent to the center directly after Send; past 25
+  a day for an emailed center the worker refuses ("daily-limit").
 - **W10 1** (16 October 2026): for a center that receives referrals by email, the form is
   **seamless**: under the county, one line, "Western New York RIAC (Region 1) will receive this
   referral, by email.", and beneath it that we email it as it is sent and keep no copy, that it
