@@ -331,6 +331,13 @@ into this repository with the build.
   for an emailed center is W10. ⚠️ Until go-live every emailed center's receiving address is one of
   the tester's own two, so a test never reaches a real center; the real addresses go in only at
   the hard go-live, as a setting on the worker, **never in this repository**.
+- **W10 1** (16 October 2026): for a center that receives referrals by email, the form is
+  **seamless**: under the county, one line, "Western New York RIAC (Region 1) will receive this
+  referral, by email.", and beneath it that we email it as it is sent and keep no copy, that it
+  will not appear in Your Referrals, and that to add to it later the attorney contacts the center
+  directly; then Next, as for Region 2. After Send the card reads **"Emailed to …"**, says the
+  referral will not appear in Your Referrals, and gives the center's phone and email. The PDFs
+  stay on the Send A Case page. Chosen over a card offering the form here or the PDF yourself.
 
 ## Working across two computers
 
