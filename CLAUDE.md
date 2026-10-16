@@ -230,7 +230,7 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 7, 15 October 2026: the addresses, what each takes and gives back, the
+The agreed contract (draft 8, 15 October 2026: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It is copied
@@ -296,6 +296,13 @@ into this repository with the build.
   court, docket, reference and case number, open and closed alike; the closed heading opens by
   itself when it holds a match). For office staff each row also names its attorney. Until the
   worker can supply the name, office and phone, the card shows the email address alone.
+- **W6 1** (16 October 2026): **Add To This Referral opens a page of its own**, with "‹ Back To
+  Your Referrals" above a card: which referral it is (client, reference, court and docket, where
+  it stands); the message to RIAC (up to 6,000 characters, "a longer account can be attached as a
+  file"); the limits; the same document boxes as the referral plus **Something else**, which asks
+  what the document is (up to 1,000 characters); **Cancel** and **Send To RIAC**. After Send, a
+  card shows what was added and when, with **Print Or Save As PDF** and **Back To Your
+  Referrals**. Chosen over opening it under its row in the list, and over a box over the list.
 
 ## Working across two computers
 
