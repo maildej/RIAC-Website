@@ -328,7 +328,9 @@ into this repository with the build.
   out); big files go as links that expire, or a lower limit applies. It amends CS8 1 and needs the
   worker, email tenant and case-start chats, and CS5's security review covers it. New York City
   (the Immigrant Defense Project, its own system) stays as W7 1 unless it asks. How the form looks
-  for an emailed center is W10.
+  for an emailed center is W10. ⚠️ Until go-live every emailed center's receiving address is one of
+  the tester's own two, so a test never reaches a real center; the real addresses go in only at
+  the hard go-live, as a setting on the worker, **never in this repository**.
 
 ## Working across two computers
 
