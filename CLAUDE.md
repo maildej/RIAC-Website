@@ -248,6 +248,11 @@ referral address (`cny-referrals@nyriac.com` for Region 2).
   PDF**; then the full copy as **one document on a white sheet** with the RIAC letterhead,
   section by section. Chosen over steps as pills in a navy bar with the copy as one card per
   section.
+- **W2 1** (15 October 2026): the menu keeps its four buttons. **"Intake Forms" becomes "Send A
+  Case"**; its page keeps the address `intake.html` and holds two cards side by side, **Send Us A
+  New Case** (the form, the featured orange card) and **Your Referrals** (the portal's sign-in),
+  with the paper intake forms beneath. Chosen over Your Referrals taking Home's place in the menu,
+  and over a separate Sign In button after the four.
 
 ## Working across two computers
 
