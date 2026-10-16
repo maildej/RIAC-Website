@@ -228,7 +228,8 @@ the owner says yes to that push.
 the database. The worker is built in a private repository. This repository is public, so
 nothing from the private repositories goes in it: no code, no database, table or field names or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
-and gives back, agreed with the worker's chat.
+and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
+`http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
 
 **Settled:**
 
