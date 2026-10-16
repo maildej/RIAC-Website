@@ -357,6 +357,15 @@ into this repository with the build.
   Client asks only names and date of birth. Step labels sit on one line. The three fixes are
   worded with the owner on their steps; the Removal questions (fix 2) are the owner's to set, and
   until then that case type's step is left out. Chosen over seven longer steps.
+- **W12 1** (16 October 2026): step 2, **About You**: "Attorney's first name" and "Attorney's last
+  name" side by side, both required (fix 1); Attorney Email (required) and Attorney Phone; Your
+  Office Type, the six choices in two columns; the office found by typing part of its name, with
+  "Office Not Listed?" and its details box. **Privately retained counsel: the form stops** there:
+  a card, "Please contact your RIAC directly", saying RIAC gives free advice to public defenders
+  and assigned counsel, that the RIAC may be able to refer them to private counsel, and that they
+  need not complete the form, with the county's center's details; the later steps grey out and
+  Next is disabled. The old help text's "all six centers" line goes. Chosen over the old form's
+  warning with a firm-details box and the form going on.
 
 ## Working across two computers
 
