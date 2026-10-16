@@ -303,6 +303,14 @@ into this repository with the build.
   what the document is (up to 1,000 characters); **Cancel** and **Send To RIAC**. After Send, a
   card shows what was added and when, with **Print Or Save As PDF** and **Back To Your
   Referrals**. Chosen over opening it under its row in the list, and over a box over the list.
+- **W7 1** (16 October 2026): when the county's center does not take referrals online yet, the
+  answer appears **in place, under the county**: a card edged in the region's colour with the
+  center's name and contact details (the same as on `contact.html`) and **Criminal Intake Form
+  (PDF)** and **Non-Criminal Intake Form (PDF)**; the other seven steps grey out and there is no
+  Next; the county can be changed on the spot, and "Choose the center instead" is still offered.
+  For New York City the card gives the Immigrant Defense Project's website and email and no PDFs.
+  ⚠️ The form then holds a copy of the centers' contact details: **if `contact.html` changes, the
+  form's copy changes with it.** Chosen over a page of its own.
 
 ## Working across two computers
 
