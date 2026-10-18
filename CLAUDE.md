@@ -525,11 +525,12 @@ into this repository with the build.
     order of protection"; "client wants joint custody and will not admit to neglect"* / *Please
     record (1) any existing or likely offer to resolve this case and (2) your client's current
     objectives. (Even your best guess is very helpful information.)*
-  - Children: **the numbered list sits outside the box**, between the question and the box (the
-    owner's change): *For each child, please note (1) the child's date of birth AND country of
-    birth and (2) whether they are the biological or adopted children of your client and their
-    spouse. If a child was not born in the U.S., please also include (3) their current immigration
-    status and (4) when they received it.* The box holds the example only: *e.g. "Maria, born March
+  - Children: **the numbered points sit outside the box**, between the question and the box, **as
+    a formatted numbered list** (the owner's two changes): *For each child, please note:* 1. the
+    child's date of birth AND country of birth; 2. whether they are the biological or adopted
+    children of your client and their spouse; *If a child was not born in the U.S., please also
+    include:* 3. their current immigration status; 4. when they received it (a list in two parts,
+    numbered on, all in the italic grey of the guidance). The box holds the example only: *e.g. "Maria, born March
     3, 2015 in Mexico; biological child of client and spouse; green card since 2019"*
   - Marriage: *e.g. "Married June 12, 2018 at the Onondaga County Clerk's Office; religious
     ceremony in Pakistan in 2017, never registered"* / *Please include the date and physical
