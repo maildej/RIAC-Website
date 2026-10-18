@@ -548,6 +548,19 @@ into this repository with the build.
   (`--fs-small`; the guidance inside a box no longer takes the typed answer's size), and typed
   answers are at `--fs-text`. The form's own styles; the site's `.field label` elsewhere is
   unchanged. Chosen over shrinking the guidance alone, which left it the same size as the question.
+- **W27 2** (18 October 2026): step 7, **Other People**. "Is Anyone Else Involved In This Case?"
+  (required: Yes, No, Not known yet), described *Co-defendants, complainants or victims, witnesses,
+  family members, or anyone else named.* Under Yes, **each person added becomes one line** (name,
+  role, relationship, date of birth; **Change** and **Remove**), and **one "Add a person" box** sits
+  beneath: First Name and Middle & Last Names (W19's labels and guidance), Date Of Birth (the
+  browser's date box, *If known*), Their Role (a dropdown of the five: Co-defendant, Complainant or
+  victim, Witness, Family member, Other person named), Relationship To The Client (*e.g. "former
+  partner"; "brother"; "none"*), and **+ Add This Person**, which moves the person into the list and
+  empties the box. **Safeguard:** pressing Next with details still in the box adds that person, or,
+  if the name or role is missing, stops and points at the box, so nobody typed is lost. Then
+  "Anyone Involved Whose Name You Do Not Know" (*e.g. "Two unidentified co-defendants"; "the
+  complainant's mother, name unknown"*). Keys as the contract: `people[]`, `peopleNote`,
+  `noOtherPeople`. Chosen over a card for each person with every field open.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
