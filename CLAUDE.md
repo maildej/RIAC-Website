@@ -431,6 +431,18 @@ into this repository with the build.
   script. The guidance is the box's description for screen readers (`aria-describedby`). Chosen
   over the help under the box (as steps 2 to 5 were first drawn) and between the question and the
   box.
+- **W17 1** (18 October 2026): **the short answer boxes hold their guidance inside the box too**,
+  as the long boxes (W16): one rule for every box that can hold words. A short box opens as tall as
+  its guidance and shrinks to one line at the first letter typed (unlike a long box, which keeps
+  its room), so the questions below move up once. The old help's own examples move into the
+  "e.g." line. A date box or a choice cannot hold words, so its guidance sits between the question
+  and the answer ("If unknown, please leave blank."); the tick lists keep W15's line under their
+  band. Paired boxes on a computer line up (each pair is a two-row subgrid). Chosen over the
+  guidance between the question and the box.
+- **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
+  guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
+  the step hints included. Inside a box, the example and the instruction are then told apart by
+  "e.g." and the blank line between them.
 - **W18 1** (18 October 2026, the owner's own request for a lighter grey): **all the form's grey
   guidance** (inside the boxes, under the questions, the length notes, the step hints) is
   **`#6b7786`**, a little lighter than the site's `--muted`: the lightest grey that still meets the
