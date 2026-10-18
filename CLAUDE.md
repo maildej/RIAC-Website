@@ -402,7 +402,9 @@ into this repository with the build.
   form card, the rounded tiles inside it (the owner's rule for boxes inside boxes: rounded,
   square, rounded); **the question sits in a pale navy band across the top of its box**, so it
   plainly belongs to that list; "Select any which may apply" beneath the band. Chosen over the
-  outline alone.
+  outline alone. **Every answer box on the form, the explanation under Unknown included, grows
+  as the attorney types**, so the whole answer is always visible (the owner checked, 17 October
+  2026; the mockup's two-line box was only a drawing).
 
 ## Working across two computers
 
