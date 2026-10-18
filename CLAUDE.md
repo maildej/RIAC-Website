@@ -542,6 +542,12 @@ into this repository with the build.
   The two Yes / No / Unsure questions and the three tick lists as the old form, W15 and W21;
   "Marriage Or Divorce" shows when Divorce is ticked, "Money And Support" when Divorce, Custody or
   Family Court (Other) is.
+- **W26 2** (18 October 2026, the owner's observation that the guidance looked larger than the
+  question): on the form, **a question is the largest text** (`--fs-text`, bold: the labels and the
+  tick lists' banded questions), **the grey guidance and the descriptions are smaller**
+  (`--fs-small`; the guidance inside a box no longer takes the typed answer's size), and typed
+  answers are at `--fs-text`. The form's own styles; the site's `.field label` elsewhere is
+  unchanged. Chosen over shrinking the guidance alone, which left it the same size as the question.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
