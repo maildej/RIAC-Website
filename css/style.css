@@ -412,6 +412,15 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .intake-card:hover .btn-download { background: var(--navy-deep); }
 .intake-card .summary { font-size: var(--fs-small); line-height: 1.55; margin-bottom: 1rem; }
 
+/* Send A Case (W2 1): the online form's card is the featured, orange one. */
+.intake-card.featured { background: color-mix(in srgb, var(--r5) 12%, white); border-color: var(--r5); }
+.intake-card.featured h3 { background: var(--r5); }
+.intake-card.featured .btn-download { background: var(--r5); }
+.intake-card.featured:hover { border-color: var(--r5); box-shadow: 0 4px 14px rgba(239,124,40,.3); }
+.intake-card.featured:hover .btn-download { background: color-mix(in srgb, var(--r5) 75%, black); }
+.paper-forms-title { margin-top: 2.6rem; margin-bottom: .2rem; }
+.paper-forms-sub { text-align: center; font-size: var(--fs-small); color: var(--muted); }
+
 .intake-followup {
   margin-top: 1.4rem; text-align: center;
   background: color-mix(in srgb, var(--r5) 12%, white);

@@ -1,0 +1,332 @@
+/* ============================================================
+   The referral form (referral.html) and the attorney portal
+   (portal/). Loaded after style.css by those pages only.
+   Every font size is one of the --fs-* variables in style.css.
+   The owner's decisions behind each part are coded W1 to W30 in
+   CLAUDE.md, "The referral form and the attorney portal".
+   ============================================================ */
+
+/* The form's own grey for guidance (W18 1): the lightest that still meets
+   the usual accessibility standard on white (4.6 to 1). */
+.ref-app { --help: #6b7786; --warn: #8a4210; --bad: #a33; }
+
+.ref-section { padding-top: 0; }
+.noscript-box { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1.4rem 1.6rem; }
+
+/* ---------- The card and the step bar (W1 1) ---------- */
+
+.ref-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+
+.steps-wrap { padding: 1.6rem 2.2rem 1.2rem; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--navy) 3%, white); }
+.steps { list-style: none; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
+.steps li { position: relative; text-align: center; font-size: var(--fs-label); font-weight: 600; color: var(--muted); line-height: 1.3; white-space: nowrap; }
+.steps li + li::before { content: ""; position: absolute; top: 1rem; right: 50%; width: 100%; border-top: 2px solid var(--line); z-index: 0; }
+.steps .n {
+  position: relative; z-index: 1; display: grid; place-items: center; width: 2rem; height: 2rem; margin: 0 auto .45rem;
+  border-radius: 50%; border: 2px solid #cfd5dc; background: #fff; color: var(--muted); font-size: var(--fs-small);
+}
+.steps li.current, .steps li.done { color: var(--navy); }
+.steps li.current .n, .steps li.done .n { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+.steps li.skip { opacity: .35; }
+.steps li.skip .lbl { text-decoration: line-through; }
+.steps li.off { opacity: .45; }
+.steps button { all: unset; cursor: pointer; display: block; }
+.steps button:focus-visible .n { outline: 2px solid var(--navy); outline-offset: 2px; }
+.steps-wrap .now { display: none; }
+.progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 1.1rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--navy); transition: width .2s; }
+.progress-note { font-size: var(--fs-small); color: var(--muted); text-align: right; margin-top: .35rem; }
+
+/* ---------- One step's questions ---------- */
+
+.ref-body { padding: 2rem 2.2rem 1.6rem; }
+.ref-q { max-width: 40rem; margin: 0 auto; }
+.ref-q h2 { font-size: var(--fs-section); color: var(--navy); margin-bottom: .35rem; }
+.ref-q .hint { color: var(--help); font-style: italic; font-size: var(--fs-small); margin-bottom: 1.4rem; }
+.ref-q .subhead {
+  font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--navy); border-bottom: 1px solid var(--line); padding-bottom: .35rem; margin: 1.6rem 0 .9rem;
+}
+
+/* A question is the largest text, guidance and descriptions smaller (W26 2). */
+.ref-q .field { margin-bottom: 1.3rem; }
+.ref-q .field > label, .ref-q .field > .label { display: block; font-weight: 600; font-size: var(--fs-text); color: var(--navy); margin-bottom: .4rem; }
+.req { color: var(--bad); font-weight: 600; }
+.ref-q .desc { display: block; color: var(--help); font-style: italic; font-size: var(--fs-small); margin: -.15rem 0 .5rem; line-height: 1.5; }
+.desc-list { color: var(--help); font-style: italic; font-size: var(--fs-small); line-height: 1.5; margin: -.15rem 0 .55rem; }
+.desc-list ol { margin: .15rem 0 .45rem 1.4rem; padding: 0; }
+.desc-list li { margin-bottom: .1rem; }
+.desc-list p { margin: 0; }
+
+.ref-q input[type="text"], .ref-q input[type="email"], .ref-q input[type="tel"], .ref-q input[type="search"],
+.ref-q input[type="date"], .ref-q select, .ref-q textarea {
+  width: 100%; font: inherit; font-size: var(--fs-text); padding: .6rem .8rem; border: 1px solid var(--line); border-radius: 8px;
+  background: #fff; color: var(--ink);
+}
+.ref-q input[type="date"] { max-width: 14rem; }
+.ref-q input:focus, .ref-q select:focus, .ref-q textarea:focus { outline: 2px solid var(--navy); outline-offset: 1px; }
+.ref-q input::placeholder { color: var(--help); font-style: italic; font-size: var(--fs-small); opacity: 1; }
+.ref-q textarea { resize: none; overflow: hidden; line-height: 1.5; field-sizing: content; min-height: 3.2rem; }
+
+/* Guidance written inside a box (W16, W17): laid over the box, because a box's own placeholder cannot mix italic and
+   plain. The box and the guidance share one grid cell, so an empty box is as tall as its guidance. Once anything is
+   typed CSS hides the guidance (the box's placeholder is one space, so :placeholder-shown says whether it is empty).
+   A long box keeps the guidance's room, so it never jumps smaller; a short box shrinks to one line. */
+.inbox-wrap { display: grid; }
+.inbox-wrap > * { grid-area: 1 / 1; }
+.inbox-hint {
+  pointer-events: none; color: var(--help); font-style: italic; font-size: var(--fs-small); line-height: 1.5;
+  padding: calc(.6rem + 1px) calc(.8rem + 1px); overflow-wrap: anywhere;
+}
+.inbox-hint .eg { display: block; margin-bottom: 1.5em; }
+.inbox-hint .eg:last-child { margin-bottom: 0; }
+textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
+.inbox-wrap.short textarea.inbox { min-height: 0; }
+.inbox-wrap.short textarea.inbox:not(:placeholder-shown) + .inbox-hint { display: none; }
+
+/* A line under a box only once its answer nears its limit (W24 2). */
+.near-limit { color: var(--warn); font-style: italic; font-size: var(--fs-small); margin-top: .35rem; }
+
+/* Two short answers to a row on a computer, their boxes lined up (W14 2, W17). */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; grid-template-rows: auto auto auto; }
+.pair > .field { display: grid; grid-row: span 3; grid-template-rows: subgrid; align-content: start; row-gap: 0; }
+.pair > .field > label { align-self: end; }
+
+/* Choices: a question with choices is a fieldset whose legend reads like any other question */
+.plain-fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.plain-fieldset > legend { display: block; padding: 0; font-weight: 600; font-size: var(--fs-text); color: var(--navy); margin-bottom: .4rem; }
+.radio-group { display: grid; gap: .45rem; }
+.radio-group.two { grid-template-columns: 1fr 1fr; gap: .45rem 1rem; }
+.radio-group.inline { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; }
+.radio-group label { display: flex; gap: .5rem; align-items: flex-start; font-size: var(--fs-text); color: var(--ink); font-weight: 400; }
+.radio-group input { margin-top: .3rem; width: auto; flex: none; }
+.tick-line { display: flex; gap: .5rem; align-items: center; font-size: var(--fs-small); margin-top: .5rem; }
+.tick-long { display: flex; gap: .6rem; align-items: flex-start; font-size: var(--fs-small); background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem .9rem; margin-bottom: 1.3rem; }
+.tick-long input { margin-top: .2rem; }
+
+/* Tick lists: tiles two lines high, in a square box with the question in a band (W15 2, "W15 b"). */
+.tl { border: 2px solid color-mix(in srgb, var(--navy) 55%, white); padding: 0 1.1rem 1.1rem; background: #fff; margin-bottom: 1.4rem; }
+.tl > .lab {
+  display: block; font-weight: 600; font-size: var(--fs-text); color: var(--navy);
+  margin: 0 -1.1rem .5rem; padding: .6rem 1.1rem;
+  background: color-mix(in srgb, var(--navy) 8%, white); border-bottom: 1px solid color-mix(in srgb, var(--navy) 25%, white);
+}
+.tl > .help { display: block; color: var(--help); font-style: italic; font-size: var(--fs-small); margin-bottom: .5rem; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; gap: .45rem .6rem; }
+.tiles-apart { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .55rem; padding-top: .55rem; border-top: 1px dashed var(--line); }
+.tile {
+  display: flex; align-items: center; gap: .6rem; min-height: 3.4rem; padding: .3rem .8rem; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 1.3; font-size: var(--fs-small);
+}
+.tile input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.tile .box { flex: none; width: 1.15rem; height: 1.15rem; border: 2px solid #9aa4b0; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
+.tile:has(input:checked) { border-color: var(--navy); background: color-mix(in srgb, var(--navy) 7%, white); box-shadow: 0 0 0 1px var(--navy); }
+.tile:has(input:checked) .box { background: var(--navy); border-color: var(--navy); }
+.tile:has(input:checked) .box::after { content: "\2713"; }
+.tile:has(input:focus-visible) { outline: 2px solid var(--navy); outline-offset: 2px; }
+.tiles-apart .tile { background: #f6f5f1; }
+.tiles-apart .tile:has(input:checked) { background: color-mix(in srgb, var(--r5) 10%, white); border-color: var(--r5); box-shadow: 0 0 0 1px var(--r5); }
+.tiles-apart .tile:has(input:checked) .box { background: var(--r5); border-color: var(--r5); }
+.tl .field { margin: .8rem 0 0; }
+
+/* Square boxes inside the rounded card, rounded controls inside them (the owner's rule). */
+.sq-box { border: 2px solid color-mix(in srgb, var(--navy) 55%, white); background: #fff; margin-bottom: 1.3rem; }
+.sq-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .55rem 1.1rem;
+  background: color-mix(in srgb, var(--navy) 8%, white); border-bottom: 1px solid color-mix(in srgb, var(--navy) 25%, white);
+}
+.sq-head .nm { font-weight: 600; color: var(--navy); }
+.sq-head .ds { display: block; font-style: italic; color: var(--help); font-size: var(--fs-small); font-weight: 400; }
+.sq-body { padding: 1rem 1.1rem .2rem; }
+
+/* Buttons */
+.ref-app .btn { margin: 0; }
+.btn-navy { background: var(--navy); color: var(--cream); border: 1px solid var(--navy); }
+.btn-navy:hover { background: var(--navy-deep); }
+.btn-plain { background: #fff; color: var(--navy); border: 1px solid var(--navy); }
+.btn-plain:hover { background: color-mix(in srgb, var(--navy) 5%, white); }
+.btn[disabled], .btn.dim { opacity: .4; cursor: default; }
+.link-btn { all: unset; cursor: pointer; color: var(--navy); font-weight: 600; text-decoration: underline; font-size: var(--fs-small); }
+.link-btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.ref-actions { display: flex; justify-content: space-between; gap: .7rem; border-top: 1px solid var(--line); margin-top: 1.8rem; padding-top: 1.2rem; }
+.ref-actions .btn { min-width: 11rem; height: 2.9rem; display: inline-flex; align-items: center; justify-content: center; }
+.ref-actions .spacer { flex: 1; }
+
+/* Errors */
+.err-summary { background: #fdf0f0; border: 1px solid #e8b8b8; border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1.3rem; font-size: var(--fs-small); color: #8a2c2c; }
+.err-summary ul { margin: .3rem 0 0 1.2rem; }
+.field-err { display: block; color: var(--bad); font-size: var(--fs-small); font-weight: 600; margin-top: .3rem; }
+.has-err input, .has-err textarea, .has-err select { border-color: var(--bad); }
+.has-err.tl { border-color: var(--bad); }
+
+/* ---------- Step 1: the county and its center (W1, W7, W8, W10) ---------- */
+
+.centre-line { display: flex; align-items: center; gap: .7rem; background: color-mix(in srgb, var(--navy) 6%, white); border-radius: 8px; padding: .75rem 1rem; font-size: var(--fs-small); color: var(--navy); }
+.centre-line .dot { width: .9rem; height: .9rem; border-radius: 50%; flex: none; background: var(--rc, var(--navy)); }
+.centre-line.email { display: block; }
+.centre-line.email .row { display: flex; align-items: center; gap: .7rem; }
+.centre-line.email .sub { color: var(--ink); margin: .45rem 0 0 1.6rem; }
+.instead { font-size: var(--fs-small); color: var(--muted); margin-top: 1rem; }
+.instead .link-btn { font-size: inherit; }
+
+.elsewhere { border: 1px solid var(--line); border-left: 5px solid var(--rc, var(--navy)); border-radius: 8px; padding: 1rem 1.2rem; font-size: var(--fs-small); margin-top: .2rem; }
+.elsewhere h3 { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); margin-bottom: .35rem; }
+.elsewhere p { margin-bottom: .6rem; }
+.elsewhere .contact-block, .result-card .contact-block { border-top: 0; padding-top: 0; margin-bottom: .9rem; }
+.pdfs { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.pdfs .btn { margin: 0; text-align: center; white-space: normal; }
+
+.choose { border: 1px solid var(--navy); border-radius: 8px; padding: 1rem 1.2rem 1.1rem; margin-top: 1rem; background: color-mix(in srgb, var(--navy) 3%, white); }
+.choose h3 { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); margin-bottom: .25rem; }
+.choose .hint { margin-bottom: .8rem; }
+.centres { display: grid; gap: .35rem; }
+.centre { display: flex; align-items: center; gap: .6rem; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: .5rem .8rem; font-size: var(--fs-small); cursor: pointer; }
+.centre:has(input:checked) { border-color: var(--navy); box-shadow: 0 0 0 1px var(--navy); }
+.centre input { margin: 0; }
+.centre .dot { width: .8rem; height: .8rem; border-radius: 50%; flex: none; background: var(--rc, var(--navy)); }
+.centre .tag { margin-left: auto; font-size: var(--fs-label); font-weight: 600; letter-spacing: .02em; padding: .1rem .55rem; border-radius: 99px; white-space: nowrap; }
+.centre .tag.online { background: color-mix(in srgb, var(--r2) 16%, white); color: #1d5a2b; }
+.centre .tag.post { background: #eceae3; color: #555; }
+.choose .field { margin: 1rem 0 0; }
+
+.private-stop { margin-bottom: 1rem; }
+.elsewhere .centre-name { font-weight: 600; color: var(--navy); margin-bottom: .2rem; }
+
+/* The upload way's lines (W13 2) */
+.upload-switch { display: flex; align-items: center; gap: .8rem; justify-content: space-between; flex-wrap: wrap; border: 1px dashed var(--navy); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.3rem; }
+.upload-on { background: color-mix(in srgb, var(--r5) 10%, white); border: 1px solid var(--r5); border-radius: 8px; padding: .8rem 1rem; font-size: var(--fs-small); margin-bottom: 1.3rem; }
+
+/* ---------- Step 7: Other People (W27 2) ---------- */
+
+.people-list { list-style: none; margin: 0 0 1rem; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
+.people-list li { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 1rem; border-bottom: 1px solid var(--line); font-size: var(--fs-small); }
+.people-list li:last-child { border-bottom: 0; }
+.people-list .acts { white-space: nowrap; display: flex; gap: .8rem; align-items: flex-start; }
+.ref-q select.role { width: 100%; }
+.sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
+
+/* ---------- Step 8: Documents (W28) ---------- */
+
+.limits { font-size: var(--fs-small); color: var(--ink); background: color-mix(in srgb, var(--navy) 5%, white); border-radius: 8px; padding: .6rem .9rem; margin-bottom: 1.2rem; }
+.bot-check { margin-bottom: .9rem; min-height: 65px; }
+.pills4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; }
+.pills4.three { grid-template-columns: repeat(3, 1fr); }
+.pill { position: relative; display: grid; place-items: center; text-align: center; min-height: 2.5rem; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; color: var(--navy); background: #fff; cursor: pointer; line-height: 1.2; }
+.pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pill:has(input:checked) { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+.pill:has(input:focus-visible) { outline: 2px solid var(--navy); outline-offset: 2px; }
+.drop { margin-top: .8rem; border: 2px dashed var(--line); border-radius: 8px; padding: .8rem 1rem; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.drop.over { border-color: var(--navy); background: color-mix(in srgb, var(--navy) 4%, white); }
+.drop .btn { height: 2.4rem; display: inline-flex; align-items: center; padding: 0 1rem; }
+.drop-note { font-style: italic; color: var(--help); font-size: var(--fs-small); }
+.files { list-style: none; margin: .7rem 0 0; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
+.files li { display: grid; grid-template-columns: 1fr auto auto auto; gap: .8rem; align-items: center; padding: .55rem .9rem; border-bottom: 1px solid var(--line); font-size: var(--fs-small); }
+.files li:last-child { border-bottom: 0; }
+.fname { overflow-wrap: anywhere; }
+.fsize { color: var(--help); }
+.fstate { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.fstate.ok { color: var(--r2); font-weight: 600; }
+.fstate.bad { color: var(--bad); font-weight: 600; white-space: normal; }
+.bar { display: inline-block; width: 5rem; height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--navy); }
+.sq-body .sub { margin: .9rem 0 1rem; }
+.sq-body .pills4 { margin-bottom: 1rem; }
+
+/* ---------- Step 9 and after Send: the document (W1 1, W29 1, W30 1) ---------- */
+
+.copy-sheet { background: #fff; border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 6px 18px rgba(0,0,0,.08); padding: 2.4rem 2.8rem 2rem; max-width: 52rem; margin: 1.6rem auto 0; }
+.copy-head { display: flex; align-items: center; gap: .9rem; border-bottom: 3px solid var(--navy); padding-bottom: 1rem; }
+.copy-head .mark { width: 54px; height: 42px; background: var(--navy); border-radius: 6px; padding: 4px 6px; flex: none; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.copy-head .mark img { width: 100%; height: 100%; display: block; }
+.copy-head .org { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); line-height: 1.2; }
+.copy-head .org small { display: block; font-family: var(--sans); font-size: var(--fs-small); color: var(--muted); }
+.copy-head .ref { margin-left: auto; text-align: right; font-size: var(--fs-small); color: var(--muted); line-height: 1.4; }
+.copy-head .ref strong { color: var(--navy); }
+.copy-title { font-size: var(--fs-section); color: var(--navy); margin: 1.3rem 0 .2rem; }
+.copy-sub { font-size: var(--fs-small); color: var(--muted); }
+.copy-section h3 {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--navy); border-bottom: 1px solid var(--line); padding-bottom: .35rem; margin: 1.6rem 0 .6rem; break-after: avoid;
+}
+.copy-section h3 .link-btn { letter-spacing: 0; text-transform: none; }
+.copy-rows { display: block; font-size: var(--fs-small); }
+.copy-rows .row { display: grid; grid-template-columns: 14rem 1fr; gap: 1.2rem; padding: .22rem 0; break-inside: avoid; }
+.copy-rows dt { color: var(--muted); }
+.copy-rows dd { color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+.copy-foot { border-top: 1px solid var(--line); margin-top: 1.8rem; padding-top: 1rem; font-size: var(--fs-small); color: var(--muted); }
+.copy-foot p + p { margin-top: .4rem; }
+
+.sendarea { max-width: 52rem; margin: 1.4rem auto 0; display: grid; gap: .7rem; }
+.sendarea p { font-size: var(--fs-small); margin: 0; }
+.sendarea .btn { height: 3rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
+
+.sent-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
+.sent-card h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .9rem 1.6rem; display: flex; align-items: center; gap: .7rem; }
+.sent-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-small); }
+.sent-facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; padding: 1.2rem 1.6rem 0; font-size: var(--fs-small); }
+.sent-facts dt { color: var(--muted); }
+.sent-facts dd { color: var(--ink); font-weight: 600; }
+.only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }
+.only-copy p { margin: 0; }
+.only-copy .btn { background: var(--r5); color: #fff; flex: none; }
+.sent-note { margin: 0 1.6rem 1.2rem; font-size: var(--fs-small); background: color-mix(in srgb, var(--navy) 5%, white); border-radius: 8px; padding: .8rem 1rem; }
+
+.result-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 46rem; margin: 0 auto; }
+.result-card > h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .9rem 1.5rem; }
+.result-card .inner { padding: 1.3rem 1.5rem 1.4rem; font-size: var(--fs-small); }
+.result-card .inner p { margin-bottom: .8rem; }
+
+.busy { opacity: .6; pointer-events: none; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Narrow windows and phones ---------- */
+
+/* Below about 1,050px the longer step names collide, so the bar shows numbers and the current step's name (W20). */
+@media (max-width: 1050px) {
+  .steps .lbl { display: none; }
+  .steps .n { margin-bottom: 0; }
+  .steps-wrap .now { display: block; text-align: center; font-size: var(--fs-small); font-weight: 600; color: var(--navy); margin-top: .6rem; }
+}
+@media (max-width: 600px) {
+  .steps-wrap { padding: 1.1rem .8rem .9rem; }
+  .steps .n { width: 1.75rem; height: 1.75rem; }
+  .steps li + li::before { top: .875rem; }
+  .ref-body { padding: 1.4rem 1.1rem 1.2rem; }
+  .pair, .radio-group.two, .tiles, .tiles-apart, .pdfs { grid-template-columns: 1fr; }
+  .pair { grid-template-rows: none; }
+  .pair > .field { grid-row: auto; grid-template-rows: none; display: block; }
+  .tiles { grid-auto-flow: row; }
+  .ref-actions { flex-direction: column-reverse; }
+  .ref-actions .btn { width: 100%; }
+  .pills4, .pills4.three { grid-template-columns: 1fr 1fr; }
+  .files li { grid-template-columns: 1fr auto; }
+  .files .fsize { display: none; }
+  .people-list li { flex-direction: column; gap: .3rem; }
+  .centre { flex-wrap: wrap; row-gap: .25rem; }
+  .centre .tag { margin-left: 2.6rem; }
+  .copy-sheet { padding: 1.4rem 1.1rem 1.2rem; }
+  .copy-head .ref { display: none; }
+  .copy-rows .row { grid-template-columns: 1fr; gap: .1rem; }
+  .only-copy { flex-direction: column; align-items: stretch; margin: 1rem 1rem 1.2rem; }
+  .sent-facts { padding: 1rem 1rem 0; }
+  .sent-note { margin: 0 1rem 1rem; }
+}
+
+/* ---------- Printing the copy (W30 1) ---------- */
+
+/* The footer's left half, "Referral R2-…", is added by js/referral.js once the reference is known (a rule inserted
+   into this sheet, since the page's security policy allows no inline styles). */
+@page {
+  size: Letter; margin: 0.6in 0.65in 0.75in;
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 9pt Inter, sans-serif; color: #5b6878; }
+}
+@media print {
+  html, body { background: #fff; }
+  .site-header, .page-head, .site-footer, .sent-card, .no-print, .sendarea { display: none !important; }
+  .section { padding: 0; }
+  .wrap { max-width: none; padding: 0; }
+  .copy-sheet { box-shadow: none; border: 0; padding: 0; margin: 0; max-width: none; }
+}
+
+.bot-check.done { min-height: 0; }
