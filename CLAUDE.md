@@ -561,6 +561,27 @@ into this repository with the build.
   "Anyone Involved Whose Name You Do Not Know" (*e.g. "Two unidentified co-defendants"; "the
   complainant's mother, name unknown"*). Keys as the contract: `people[]`, `peopleNote`,
   `noOtherPeople`. Chosen over a card for each person with every field open.
+- **W28 yes** (18 October 2026): step 8, **Documents**. At the top, **Cloudflare's bot check**
+  (the upload's first call needs it before any file can go; on most visits it ticks itself), then
+  **the limits the worker gives** (Region 2: 20 files, 25 MB each, 100 MB in all; a center reached
+  by email: 2.8 MB in all, with a line that larger files can go to the center directly after
+  Send). **Each document is a square box** with its name and description in a band, **named as on
+  the paper criminal intake form**: *Fingerprint RAP Sheet* (Repository inquiries are generally
+  insufficient), *All Accusatory Instruments* (Must include supporting affidavits / police
+  reports), *All Immigration Documents* (e.g. green card, work permit, USCIS receipt or passport
+  visa). Each box has **four buttons of one size: Attach Now, Sent Before, To Follow, Not
+  Available** (Sent Before only on those three kinds, as the contract allows). Files **upload as
+  soon as they are chosen**, each with its own progress bar, Remove, and Try Again if it fails.
+  Not Available opens *Please explain (we may be able to help)* (the paper form's words). The boxes
+  shown follow the case type: the RAP sheet and immigration documents always; accusatory
+  instruments for a criminal case, an appeal and post-conviction relief; probation paperwork for a
+  violation of probation; pleadings for family court; the immigration advice and transcripts for an
+  appeal and post-conviction relief; on the upload way, the completed intake form first. Then the
+  old form's "Does The RAP Sheet Include ALL Of Your Client's Criminal History?" and, under No or
+  Unsure, "Criminal History Not On The RAP Sheet / Further Details" (in the box: *e.g. "Arrested in
+  New Jersey in 2019 for shoplifting; outcome unknown"*), and "Include Anything Else RIAC Needs To
+  Know Here:". The page checks every document has an answer before Send. Chosen over the paper
+  form's tick boxes beside each upload.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
