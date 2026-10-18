@@ -473,6 +473,17 @@ into this repository with the build.
   under Yes; an empty box under No passes nothing on (contract draft 12, built and tested by the
   worker chat, 18 October 2026; not yet deployed). Narrow windows (below about 1,050 px) get the phone-style step bar, since
   the longer step names collide there.
+- **W21 yes** (18 October 2026): **every "Unknown - PLEASE DESCRIBE WHY" on the form becomes a
+  plain "Unknown"**, as on the probation step (W20): on every screening tick list (about the
+  client, ICE, immigration questions, family, orders of protection, the incident, family court's
+  three) and on the Yes / No / Unknown questions. When Unknown is chosen, a notes box opens under a
+  gentle header, in place of W15's "Why it is unknown. Up to 1,000 characters.": on a tick list
+  "Please provide any information relevant to these questions"; on the order-of-protection
+  question "Please provide any information relevant to whether this case involves an order of
+  protection"; on the family question "Please provide any information relevant to whether your
+  client has US citizen or green card family members". The box opens under Unknown only, not under
+  No or "None of these apply" (the probation step's advice question is the exception, W20). The
+  codes and keys are unchanged (`unknown`, the `…UnknownWhy` keys, 1,000 characters).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
