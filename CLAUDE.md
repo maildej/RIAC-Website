@@ -36,7 +36,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 
 ## Technical setup
 
-- **Plain static HTML/CSS.** No build step, no frameworks, no Jekyll (`.nojekyll` disables it). JavaScript is limited to a few small plain scripts in `js/` (the advisory search, the map tooltips, the download-request form). One external dependency: Google Fonts (Source Serif 4 + Inter) loaded via a `<link>` in each page's `<head>`.
+- **Plain static HTML/CSS.** No build step, no frameworks, no Jekyll (`.nojekyll` disables it). JavaScript is limited to small plain scripts in `js/` (the advisory search, the map tooltips, the download-request form), plus the referral form's and the portal's, which are larger but still plain JavaScript with no library and no build step. External dependencies: Google Fonts (Source Serif 4 + Inter) loaded via a `<link>` in each page's `<head>`, and, on the form and the portal only, Cloudflare's Turnstile bot check, loaded from `challenges.cloudflare.com` when it is needed.
 - **Hosting:** GitHub Pages, deployed from the `main` branch of a GitHub repo.
 - **Domain:** `nyriac.com`, registered at **Wix**. Wix does not allow domain transfers or nameserver changes, so DNS is managed inside Wix: A records point the apex domain to GitHub Pages' IPs, and a CNAME points `www` to the GitHub Pages address. The `CNAME` file in this folder tells GitHub Pages the custom domain. See `SETUP.md` for the exact records.
 
@@ -47,9 +47,13 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `index.html` | Landing page: hero with the **clickable region map** (inline SVG), what we do, who we serve |
 | `advisories.html` | List of downloadable practice advisory PDFs |
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
-| `intake.html` | Intake forms landing page: download the criminal or non-criminal PDF intake form. **Deliberately still PDF-only** until the referral form goes live (see "The referral form and the attorney portal") |
-| `p9vt3xk6qz1md7bw/` | **Unlisted test pages** for the online intake route (`nyriac.com/p9vt3xk6qz1md7bw/`). All `noindex` and linked from nowhere. `index.html` is the front door (two cards: start a new case / add to an existing case); `new-case.html` embeds the **Airtable form** in the page; `new-case-handoff.html` is the same page but sends the attorney to airtable.com — the two exist to be compared, then one is deleted; `supplemental.html` is a placeholder until that form is published. Currently points at **Region 2's** form only. ⚠️ **Superseded:** Airtable's form has been closed to the public since 15 October 2026, so these pages no longer work. RIAC's own referral pages replace them (see "The referral form and the attorney portal" below), and this folder is deleted when those go live |
+| `intake.html` | **Send A Case** (W2 1; the address is kept): two cards, **Send Us A New Case** (the form, orange) and **Your Referrals** (the portal's sign-in), with the paper intake forms beneath |
+| `referral.html` | **The referral form**, nine steps drawn by `js/referral.js` from `js/referral-data.js`, sent to the worker. See "The referral form and the attorney portal" |
+| `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Add To This Referral), both run by `js/portal.js`. Links inside use `../` |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
+| `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
+| `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the worker's address and the Turnstile key. Change wording here | 
+| `js/referral.js`, `js/portal.js` | The form and the portal: drawing, checking, uploading files one at a time, sending | 
 | `images/symbols.svg` | The symbols on the advisory, intake and home-page cards, one `<symbol id="i-…">` each — see "Design rules" below |
 | `images/riac-mark.svg` | Colored map mark used as the header logo on every page |
 | `images/favicon.svg` | Browser tab icon (navy square + map) |
@@ -64,8 +68,8 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 
 ## Unlisted pages, and what "unlisted" is actually worth
 
-The intake test folder is deliberately not linked from anywhere, and its pages carry
-`noindex, nofollow`.
+The general lesson, from the intake test folder this site once had (deleted with the build of the referral form):
+a page can be left unlinked and carry `noindex, nofollow` (as `portal/add.html` does).
 
 ⚠️ **It is not secret, and nothing should be built assuming otherwise.** This repository is
 **public** — GitHub Pages requires it on a free plan — so **every path in it is discoverable by
@@ -179,8 +183,8 @@ The point of the command is that a chat can be closed at any moment without losi
 
 - Navigation (header) and footer are copied into each page — when editing them, update **every
   page that carries them**: `index.html`, `advisories.html`, `intake.html`, `contact.html`,
-  `request.html`, `thanks.html` and `404.html`, plus the test pages in `p9vt3xk6qz1md7bw/`.
-- Pages use relative links (`advisories.html`); only `404.html` and the test pages use absolute links (`/advisories.html`) because they are served from other addresses.
+  `request.html`, `thanks.html`, `404.html`, `referral.html`, and `portal/index.html` and `portal/add.html` (whose links start `../`).
+- Pages use relative links (`advisories.html`); only `404.html` uses absolute links (`/advisories.html`) because it is served from other addresses; the portal's pages, one folder down, use `../`.
 - To publish changes: commit and push to `main` (or upload the changed files via github.com); GitHub Pages redeploys automatically in ~1 minute.
 
 ### Design rules
@@ -216,13 +220,13 @@ repository), without sharing any of their code.
   symbols. Do not use stock or clip-art pictures, or images from the training slides: most are
   not licensed for a public website.
 
-### The referral form and the attorney portal (being built)
+### The referral form and the attorney portal (built, not yet live)
 
 Attorneys will send a new case through a form on this site, and sign in to an attorney portal
-to see their referrals and add to them. Both are being built by the chat "Website - [W] nyriac.com
-referral and portal pages (Local)"; the owner's decisions on them are coded W1, W2 and so on.
-Nothing visible is built before the owner says "build", and nothing is pushed to `main` before
-the owner says yes to that push.
+to see their referrals and add to them. Both were designed and then built (on the owner's "build", 18 October
+2026) by the chats "Website - [W] nyriac.com referral and portal pages (Local)" and its successor "…, continued
+(Local)"; the owner's decisions on them are coded W1, W2 and so on. **Nothing is pushed to `main` before the owner
+says yes to that push: merging is what publishes it.**
 
 ⚠️ **The pages send to a private worker** (a small program on Cloudflare), never straight into
 the database. The worker is built in a private repository. This repository is public, so
@@ -233,8 +237,9 @@ and gives back, agreed with the worker's chat. On the desktop the pages are prev
 The agreed contract (draft 12, 18 October 2026, which adds W20's one change to draft 11: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
-`riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It is copied
-into this repository with the build.
+`riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It stays there: it
+names the tester's own email addresses, which do not belong in this public repository. `js/referral-data.js` holds
+every key and code the pages send.
 
 - **File limits** (the owner's RW3 1): up to 20 files a referral or addition, 25 MB each, 100 MB
   together. The pages read them from the worker's answer rather than writing them in, show them
@@ -254,7 +259,33 @@ into this repository with the build.
 - **A referral's reference** (RW6 1) looks like `R2-261016-7KQ4MX`: the centre's code, the New
   York date, and six characters with no 0, O, 1, I, L or U. The pages show it exactly as the
   worker gives it (the mockups' shorter `R2-0142` is only a stand-in).
-- **Still with the owner:** the bot-check key.
+- **Still with the owner:** the bot-check key. Until it is made, `js/referral-data.js` carries Cloudflare's published
+  test key, which always passes: **the real key must be in before any go-live.**
+
+**How the build works** (18 October 2026, tested against the worker running locally):
+
+- `referral.html` holds only the page's frame; `js/referral.js` draws the nine steps from `js/referral-data.js`, one at
+  a time, re-drawing the step when a choice changes what is shown. A question hidden by an earlier answer is not sent.
+  Choices are sent as their codes; the words on screen can change in `referral-data.js` alone.
+- **While the form is open the answers are held in the browser tab** (`sessionStorage`), so a reload does not lose
+  them; closing the tab, or Send, clears them. Files cannot survive a reload unless they had finished uploading.
+- **Files** (W28): at the Documents step Cloudflare's check runs, then the worker's first call makes a batch naming
+  the county or the center chosen, which returns that center's limits; each file then uploads as soon as it is chosen,
+  one at a time, with its own progress bar. A batch past its hour, or made for another center, is made again (one more
+  check) and the files sent again. **Send** posts the referral with an `Idempotency-Key`, so a retry never sends it
+  twice.
+- **The portal** keeps its session in a cookie for `/portal/` only; the sign-in link's token comes after `#`, is read
+  and cleared from the address bar at once, and works only with the secret this browser kept when it asked.
+- **Each page has a security policy** (a `<meta>` Content-Security-Policy) allowing scripts only from this site and
+  Cloudflare's check, and connections only to the worker's two addresses (the live one and `localhost:8789` for
+  testing). No inline scripts or styles.
+- **Testing locally:** the worker chat starts the worker on `localhost:8789` with stand-ins; serve this folder on
+  `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
+  (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
+  referral, one referral for each case type and route, and the portal end to end. All passed on 18 October 2026.
+- **Wording drafted in the build, still to be put to the owner:** the words for the worker's refusals (the error
+  states); the descriptions of the document kinds the paper form does not name (family court pleadings, probation
+  paperwork, the completed intake form, the immigration advice, transcripts); the check-and-send step's heading.
 
 **Settled:**
 
@@ -658,9 +689,12 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 **Website:**
 
-- **The referral form and the attorney portal** (see the section of that name above). Until they
-  go live, `intake.html` stays PDF-only. Airtable's own form is no longer public, so it is
-  **not** linked from this site.
+- **The referral form and the attorney portal** (see the section of that name above): **built on the branch
+  `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
+  come: the owner looks at it; the wording still open (the error states, the paper form's "Before you receive RIAC
+  advice" warnings, the old form's typing slips, the drafted document descriptions); the owner's Turnstile key; CS5's
+  security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
+  Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
   Claude, and no session can see a real Outlook. Send a test to an address that has never
   received mail from the sender before.

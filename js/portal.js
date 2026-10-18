@@ -1,0 +1,447 @@
+// The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
+// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes") and W6 1 in CLAUDE.md.
+// The session is kept in a cookie for /portal/ only; the worker ends it after 12 hours at most.
+(function () {
+  'use strict';
+
+  var D = window.RIAC_REF;
+  var CFG = D.CONFIG;
+  var app = document.getElementById('portal-app');
+  if (!app || !D) return;
+  var PAGE = app.getAttribute('data-page');
+  var SECRET_KEY = 'riac-portal-secret';
+  var COOKIE = 'riac_portal';
+  var turnstileId = null;
+
+  // ---------- Helpers ------------------------------------------------------------------------------------------------
+
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      var v = attrs[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === 'class') el.className = v;
+      else if (k === 'text') el.textContent = v;
+      else if (k === 'on') Object.keys(v).forEach(function (e) { el.addEventListener(e, v[e]); });
+      else if (k === 'value') el.value = v;
+      else if (k === 'disabled' || k === 'open') el[k] = !!v;
+      else el.setAttribute(k, v === true ? '' : v);
+    });
+    (kids || []).forEach(function (c) { if (c !== null && c !== undefined && c !== false) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return el;
+  }
+  function clear() {
+    if (turnstileId !== null && window.turnstile) { try { window.turnstile.remove(turnstileId); } catch (e) { /* gone */ } turnstileId = null; }
+    app.textContent = '';
+  }
+  function fmtDay(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][parseInt(p[1], 10) - 1];
+    return m + ' ' + parseInt(p[2], 10) + ', ' + p[0];
+  }
+  function fmtWhen(iso) {
+    try { return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', dateStyle: 'long', timeStyle: 'short' }).format(new Date(iso)); }
+    catch (e) { return iso; }
+  }
+  function fmtBytes(n) { if (n >= 1048576) { var m = n / 1048576; return (Math.abs(m - Math.round(m)) < 0.05 ? String(Math.round(m)) : m.toFixed(1)) + ' MB'; } return Math.max(1, Math.round(n / 1024)) + ' KB'; }
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    var b = new Uint8Array(16); crypto.getRandomValues(b); b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    var x = Array.prototype.map.call(b, function (n) { return ('0' + n.toString(16)).slice(-2); }).join('');
+    return x.slice(0, 8) + '-' + x.slice(8, 12) + '-' + x.slice(12, 16) + '-' + x.slice(16, 20) + '-' + x.slice(20);
+  }
+
+  // ---------- The session ------------------------------------------------------------------------------------------
+
+  function session() {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + COOKIE + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  function setSession(v) {
+    document.cookie = COOKIE + '=' + encodeURIComponent(v) + '; Path=/portal/; SameSite=Strict' + (location.protocol === 'https:' ? '; Secure' : '');
+  }
+  function endSession() { document.cookie = COOKIE + '=; Path=/portal/; SameSite=Strict; Max-Age=0' + (location.protocol === 'https:' ? '; Secure' : ''); }
+
+  function api(method, path, body, headers) {
+    var hd = body ? { 'Content-Type': 'application/json' } : {};
+    var s = session();
+    if (s) hd.Authorization = 'Bearer ' + s;
+    Object.keys(headers || {}).forEach(function (k) { hd[k] = headers[k]; });
+    return fetch(CFG.worker + path, { method: method, headers: hd, body: body ? JSON.stringify(body) : undefined, credentials: 'omit', mode: 'cors' })
+      .then(function (res) {
+        return res.text().then(function (t) {
+          var b = {}; try { b = t ? JSON.parse(t) : {}; } catch (e) { b = {}; }
+          if (res.status === 401 && b.error === 'signed-out') { endSession(); }
+          return { status: res.status, body: b, retryAfter: parseInt(res.headers.get('Retry-After') || '0', 10) };
+        });
+      }, function () { return { status: 0, body: {} }; });
+  }
+
+  function randomSecret() {
+    var b = new Uint8Array(32); crypto.getRandomValues(b);
+    return btoa(String.fromCharCode.apply(null, b)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function sha256hex(s) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (n) { return ('0' + n.toString(16)).slice(-2); }).join('');
+    });
+  }
+  function loadTurnstile(cb) {
+    if (window.turnstile) { cb(); return; }
+    var s = document.getElementById('cf-turnstile-js');
+    if (!s) {
+      s = document.createElement('script');
+      s.id = 'cf-turnstile-js';
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    s.addEventListener('load', function () { cb(); });
+  }
+
+  // ---------- Sign in (W4 1) -----------------------------------------------------------------------------------------
+
+  function signInCard(email, message) {
+    clear();
+    var token = null;
+    var input = h('input', { type: 'email', id: 'si-email', autocomplete: 'email', maxlength: '254', value: email || '' });
+    var msg = h('p', { class: 'field-err', id: 'si-msg', role: 'alert', text: message || '' });
+    var bot = h('div', { class: 'bot-check', id: 'bot-check' });
+    var btn = h('button', { type: 'button', class: 'btn btn-navy', on: { click: ask } }, ['Email Me A Sign-In Link']);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') ask(); });
+    var card = h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Sign in' }),
+      h('div', { class: 'field' }, [h('label', { for: 'si-email', text: 'Your email address' }),
+        h('span', { class: 'desc', text: 'The address you send referrals from. Office staff: your own address, once your RIAC has given you access to your office’s referrals.' }), input]),
+      bot, msg, btn,
+      h('p', { class: 'small', text: 'No password: we email you a link that works once, for 15 minutes, in this browser only.' })]);
+    app.appendChild(card);
+    app.appendChild(h('p', { class: 'under-card' }, ['Not sent us a case yet? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
+    loadTurnstile(function () {
+      if (!document.getElementById('bot-check')) return;
+      turnstileId = window.turnstile.render('#bot-check', { sitekey: CFG.turnstileKey, theme: 'light', callback: function (t) { token = t; },
+        'expired-callback': function () { token = null; } });
+    });
+    function ask() {
+      var e = input.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { msg.textContent = 'Please enter your email address, like name@example.org.'; input.focus(); return; }
+      if (!token) { msg.textContent = 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
+      btn.disabled = true; btn.textContent = 'Sending…';
+      var secret = randomSecret();
+      try { localStorage.setItem(SECRET_KEY, secret); } catch (x) { /* a browser that blocks storage cannot sign in */ }
+      sha256hex(secret).then(function (proof) {
+        return api('POST', '/v1/portal/sign-in', { email: e, turnstile: token, browserProof: proof });
+      }).then(function (r) {
+        if (r.status === 202) { checkEmail(e); return; }
+        btn.disabled = false; btn.textContent = 'Email Me A Sign-In Link';
+        if (r.status === 429) msg.textContent = 'Too many sign-in requests from here. Please wait a few minutes and try again.';
+        else if (r.status === 403) msg.textContent = 'The check that you are not a robot did not pass. Please reload the page and try again.';
+        else msg.textContent = 'The link could not be sent just now. Please try again in a few minutes.';
+        if (window.turnstile && turnstileId !== null) { window.turnstile.reset(turnstileId); token = null; }
+      });
+    }
+  }
+
+  function checkEmail(email) {
+    clear();
+    app.appendChild(h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Check your email' }),
+      h('p', null, ['If ', h('strong', { text: email }), ' can see referrals, an email from ', h('strong', { text: 'portal@nyriac.com' }), ' is on its way with your sign-in link.']),
+      h('p', { class: 'tinted' }, [h('strong', { text: 'Open the link on this device, in this browser.' }), ' It will not work anywhere else, so that a forwarded email lets nobody in.']),
+      h('p', { class: 'small', text: 'It works once, within 15 minutes. Nothing after a few minutes? Look in your junk folder, or send another.' }),
+      h('button', { type: 'button', class: 'btn btn-navy', on: { click: function () { signInCard(email); } } }, ['Send Another Link']),
+      h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { signInCard(''); } } }, ['Use A Different Email Address'])]));
+  }
+
+  function linkInvalid() {
+    clear();
+    app.appendChild(h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'This sign-in link cannot be used' }),
+      h('p', { text: 'It has been used already, it is more than 15 minutes old, or it was opened in a different browser from the one that asked for it.' }),
+      h('p', { class: 'small', text: 'Ask for a new link in the browser you will use, then open the email on the same device.' }),
+      h('button', { type: 'button', class: 'btn btn-navy', on: { click: function () { signInCard(''); } } }, ['Email Me A New Link'])]));
+  }
+
+  // The link from the email: https://nyriac.com/portal/#t=<token>
+  function fromLink() {
+    var m = location.hash.match(/^#t=([A-Za-z0-9_-]+)$/);
+    if (!m) return false;
+    history.replaceState(null, '', location.pathname);
+    var secret = null;
+    try { secret = localStorage.getItem(SECRET_KEY); } catch (e) { /* none */ }
+    app.textContent = '';
+    app.appendChild(h('p', { class: 'under-card', text: 'Signing you in…' }));
+    if (!secret) { linkInvalid(); return true; }
+    api('POST', '/v1/portal/session', { token: m[1], browserSecret: secret }).then(function (r) {
+      try { localStorage.removeItem(SECRET_KEY); } catch (e) { /* none */ }
+      if (r.status === 200 && r.body.session) { setSession(r.body.session); list(); }
+      else linkInvalid();
+    });
+    return true;
+  }
+
+  // ---------- The list (W5 1, "W5 yes") ----------------------------------------------------------------------------------
+
+  function statusPill(r) {
+    var t = r.status || '';
+    return h('span', { class: 'status' + (/waiting for documents/i.test(t) ? ' waiting' : ''), text: (r.isOpen ? '' : 'Closed: ') + t });
+  }
+  function marked(text, term) {   // the text, with each match of the search term marked (as text, never as HTML)
+    var frag = document.createDocumentFragment();
+    text = text || '';
+    if (!term) { frag.appendChild(document.createTextNode(text)); return frag; }
+    var lower = text.toLowerCase(), t = term.toLowerCase(), i = 0, j;
+    while ((j = lower.indexOf(t, i)) !== -1) {
+      if (j > i) frag.appendChild(document.createTextNode(text.slice(i, j)));
+      frag.appendChild(h('mark', { text: text.slice(j, j + t.length) }));
+      i = j + t.length;
+    }
+    if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
+    return frag;
+  }
+  function matches(r, term) {
+    if (!term) return true;
+    term = term.toLowerCase();
+    return [r.clientName, r.court, r.docket, r.reference, r.caseNumber, r.attorneyName].some(function (v) { return v && String(v).toLowerCase().indexOf(term) !== -1; });
+  }
+  function table(rows, term, staff) {
+    var tb = h('tbody');
+    rows.forEach(function (r) {
+      var client = h('td', null, [h('div', { class: 'cl' }, [marked(r.clientName, term)]),
+        h('div', { class: 'sub' }, ['Reference ', marked(r.reference, term), r.caseNumber ? ' · Case ' : '', r.caseNumber ? h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]) : '']),
+        staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
+      var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
+      var rec = h('td', null, [h('div', { text: fmtDay(r.receivedOn) }), r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]);
+      tb.appendChild(h('tr', null, [client, court, rec, h('td', null, [statusPill(r)]),
+        h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Add To This Referral' })])]));
+    });
+    return h('table', { class: 'ref-table' }, [h('thead', null, [h('tr', null, ['Client', 'Court', 'Received', 'Where it stands', ''].map(function (t) {
+      return h('th', { scope: 'col', text: t });
+    }))]), tb]);
+  }
+
+  function list() {
+    if (!session()) { signInCard(''); return; }
+    clear();
+    app.appendChild(h('p', { class: 'under-card', text: 'Loading your referrals…' }));
+    api('GET', '/v1/portal/referrals').then(function (r) {
+      if (r.status === 401) { signInCard('', 'You have been signed out. Please sign in again.'); return; }
+      if (r.status !== 200) { clear(); app.appendChild(h('div', { class: 'empty-note', text: 'Your referrals cannot be shown just now. Please try again in a few minutes.' })); return; }
+      drawList(r.body);
+    });
+  }
+
+  function drawList(data) {
+    clear();
+    var me = data.me || {};
+    var staff = me.isAttorney === false;
+    var name = me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email;
+    var left = h('div', null, [h('div', { class: 'who', text: name })]);
+    if (me.office) left.appendChild(h('div', { class: 'office', text: me.office }));
+    if (me.name) left.appendChild(h('div', { class: 'contact', text: [me.email || data.email, me.phone].filter(Boolean).join(' · ') }));
+    left.appendChild(h('div', { class: 'note', text: 'These are the details RIAC holds for you. If one is wrong, tell your RIAC.' }));
+    var side = h('div', { class: 'side' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: signOut } }, ['Sign Out']),
+      h('span', { text: 'You stay signed in until you close this browser, or for 12 hours at most.' })]);
+    app.appendChild(h('div', { class: 'me-card' }, [left, side]));
+
+    var search = h('input', { type: 'search', id: 'ref-search', placeholder: 'Search by name, court or number', 'aria-label': 'Search your referrals by name, court or number' });
+    app.appendChild(h('div', { class: 'list-head' }, [h('h2', { text: 'RIAC Referrals:' }), search]));
+    app.appendChild(h('p', { class: 'list-note', text: 'Newest first. A referral sent in the last few minutes may take a little while to appear here.' }));
+    var area = h('div', { 'aria-live': 'polite' });
+    app.appendChild(area);
+    app.appendChild(h('p', { class: 'under-card' }, ['Sending a new one? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
+
+    var all = (data.referrals || []).slice().sort(function (a, b) { return (b.receivedOn || '').localeCompare(a.receivedOn || ''); });
+    function draw() {
+      var term = search.value.trim();
+      area.textContent = '';
+      var open = all.filter(function (r) { return r.isOpen && matches(r, term); });
+      var closed = all.filter(function (r) { return !r.isOpen; });
+      var closedHits = closed.filter(function (r) { return matches(r, term); });
+      if (open.length) area.appendChild(table(open, term, staff));
+      else area.appendChild(h('div', { class: 'empty-note', text: term ? 'No open referral matches “' + term + '”.' : 'No open referrals.' }));
+      if (closed.length) {
+        var det = h('details', { class: 'closed-box', open: !!term && closedHits.length > 0 }, [h('summary', null, ['Closed referrals ',
+          h('span', { text: term ? '(' + closedHits.length + ' of ' + closed.length + ' match' + (closedHits.length === 1 ? 'es' : '') + ')' : '(' + closed.length + ')' })])]);
+        if (closedHits.length) det.appendChild(table(closedHits, term, staff));
+        area.appendChild(det);
+      }
+    }
+    search.addEventListener('input', draw);
+    draw();
+  }
+
+  function signOut() {
+    api('POST', '/v1/portal/sign-out').then(function () { endSession(); signInCard('', 'You are signed out.'); });
+  }
+
+  // ---------- Add To This Referral (W6 1) --------------------------------------------------------------------------------
+
+  var KINDS = ['rap-sheet', 'charging-documents', 'immigration-documents', 'other'];
+  var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false };
+
+  function addPage() {
+    if (!session()) { location.replace('./'); return; }
+    var ref = decodeURIComponent(location.hash.slice(1));
+    clear();
+    app.appendChild(h('p', { class: 'under-card', text: 'Loading…' }));
+    api('GET', '/v1/portal/referrals').then(function (r) {
+      if (r.status === 401) { location.replace('./'); return; }
+      var found = r.status === 200 && (r.body.referrals || []).filter(function (x) { return x.reference === ref; })[0];
+      clear();
+      app.appendChild(h('a', { class: 'back-link', href: './', text: '‹ Back To Your Referrals' }));
+      if (!found) { app.appendChild(h('div', { class: 'empty-note', text: 'This referral is not in your list. Go back to Your Referrals and choose it there.' })); return; }
+      drawAdd(found);
+      api('POST', '/v1/uploads', {}).then(function (b) {
+        if (b.status === 201) { A.batch = b.body; showLimits(); pump(); }
+        else setLimits('Files cannot be added just now. You can still send a message.');
+      });
+    });
+  }
+
+  function which(r) {
+    return h('div', { class: 'which' }, [h('span', { class: 'cl', text: r.clientName }), h('span', { text: 'Reference ' + r.reference }),
+      h('span', { text: [r.court, r.docket].filter(Boolean).join(' · ') }), statusPill(r)]);
+  }
+  function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }
+  function showLimits() {
+    setLimits('Documents: up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word, JPEG, PNG or HEIC.');
+  }
+
+  function drawAdd(r) {
+    var msg = h('textarea', { id: 'add-message', maxlength: '6000', rows: '4' });
+    var near = h('p', { class: 'near-limit', 'aria-live': 'polite' });
+    msg.addEventListener('input', function () {
+      var n = msg.value.length;
+      near.textContent = n >= 5000 ? n.toLocaleString('en-US') + ' of 6,000 characters. A longer account can be attached as a file.' : '';
+    });
+    var docs = h('div');
+    KINDS.forEach(function (kind) { docs.appendChild(docRow(kind)); });
+    var err = h('div', { id: 'add-err', role: 'alert' });
+    var sendBtn = h('button', { type: 'button', class: 'btn btn-navy', id: 'add-send', on: { click: function () { sendAddition(r); } } }, ['Send To RIAC']);
+    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Add to this referral' }), h('div', { class: 'inner ref-q' }, [which(r),
+      h('div', { class: 'field' }, [h('label', { for: 'add-message', text: 'Your message to RIAC' }), msg, near]),
+      h('p', { class: 'limits', id: 'add-limits', text: 'Checking the file limits…' }), docs, err,
+      h('div', { class: 'add-actions' }, [h('a', { class: 'btn btn-plain', href: './', text: 'Cancel' }), sendBtn])])]);
+    app.appendChild(card);
+  }
+
+  function docRow(kind) {
+    var info = kind === 'other' ? { name: 'Something else' } : D.DOCS[kind];
+    var id = 'a-' + kind;
+    var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
+    input.addEventListener('change', function () { addFiles(kind, input.files); input.value = ''; });
+    var right = h('div', { id: id + '-files' });
+    var row = h('div', { class: 'add-doc', id: id }, [h('span', { class: 'nm', text: info.name }), right, h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input]);
+    if (kind === 'other') {
+      right.appendChild(h('div', { class: 'field other-what' }, [h('label', { for: 'a-other-note', text: 'What is it?' }),
+        h('input', { type: 'text', id: 'a-other-note', maxlength: '200', placeholder: 'One line: it becomes RIAC’s description of the document' })]));
+    }
+    return row;
+  }
+  function addFiles(kind, files) {
+    Array.prototype.forEach.call(files, function (file) {
+      var id = uuid();
+      A.files[id] = file;
+      A.list.push({ id: id, kind: kind, name: file.name, size: file.size, state: 'queued', pct: 0, fileId: null, error: '' });
+    });
+    drawFiles(); pump();
+  }
+  function drawFiles() {
+    KINDS.forEach(function (kind) {
+      var holder = document.getElementById('a-' + kind + '-files');
+      if (!holder) return;
+      var old = holder.querySelector('.files'); if (old) old.remove();
+      var mine = A.list.filter(function (f) { return f.kind === kind; });
+      if (!mine.length) { if (kind !== 'other' && !holder.querySelector('.sub')) holder.appendChild(h('span', { class: 'sub drop-note', text: 'None chosen' })); return; }
+      var none = holder.querySelector('.sub'); if (none) none.remove();
+      holder.appendChild(h('ul', { class: 'files' }, mine.map(function (f) {
+        var st;
+        if (f.state === 'done') st = h('span', { class: 'fstate ok', text: '✓ Uploaded' });
+        else if (f.state === 'failed') st = h('span', { class: 'fstate bad', text: f.error || 'Did not upload' });
+        else { var bar = h('span'); bar.style.width = (f.pct || 0) + '%'; st = h('span', { class: 'fstate' }, [h('span', { class: 'bar', 'aria-hidden': 'true' }, [bar]), ' ' + (f.pct || 0) + '%']); }
+        return h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) }), st,
+          h('button', { type: 'button', class: 'link-btn', on: { click: function () { A.list = A.list.filter(function (x) { return x.id !== f.id; }); delete A.files[f.id]; drawFiles(); } } }, ['Remove'])]);
+      })));
+    });
+  }
+  function pump() {
+    if (A.pumping || !A.batch) return;
+    var f = A.list.filter(function (x) { return x.state === 'queued'; })[0];
+    if (!f) return;
+    var file = A.files[f.id];
+    var done = A.list.filter(function (x) { return x.state === 'done'; });
+    var total = done.reduce(function (n, x) { return n + x.size; }, 0);
+    if (file.size > A.batch.maxFileBytes) { f.state = 'failed'; f.error = 'Over the ' + fmtBytes(A.batch.maxFileBytes) + ' limit for one file.'; drawFiles(); pump(); return; }
+    if (done.length >= A.batch.maxFiles || total + file.size > A.batch.maxTotalBytes) { f.state = 'failed'; f.error = 'Over the limit for files in all.'; drawFiles(); pump(); return; }
+    A.pumping = true; f.state = 'uploading';
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', CFG.worker + '/v1/uploads/' + encodeURIComponent(A.batch.uploadId) + '/files');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + session());
+    xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+    xhr.setRequestHeader('X-File-Name', encodeURIComponent(file.name));
+    xhr.upload.onprogress = function (e) { if (e.lengthComputable) { f.pct = Math.round(e.loaded / e.total * 100); drawFiles(); } };
+    xhr.onload = function () {
+      A.pumping = false;
+      var b = {}; try { b = JSON.parse(xhr.responseText || '{}'); } catch (e) { /* */ }
+      if (xhr.status === 201 && b.fileId) { f.state = 'done'; f.fileId = b.fileId; }
+      else { f.state = 'failed'; f.error = xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.' : xhr.status === 413 ? 'Too large to send.' : 'Did not upload.'; }
+      drawFiles(); pump();
+    };
+    xhr.onerror = function () { A.pumping = false; f.state = 'failed'; f.error = 'Did not upload. Check your connection.'; drawFiles(); pump(); };
+    xhr.send(file);
+    drawFiles();
+  }
+
+  function sendAddition(r) {
+    if (A.sending) return;
+    var err = document.getElementById('add-err');
+    err.textContent = '';
+    var message = document.getElementById('add-message').value.trim();
+    var note = (document.getElementById('a-other-note') || {}).value || '';
+    note = note.replace(/[\r\n]+/g, ' ').trim();
+    if (A.list.some(function (f) { return f.state === 'queued' || f.state === 'uploading'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Please wait for every file to finish uploading.' })); return; }
+    if (A.list.some(function (f) { return f.state === 'failed'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Remove the files that did not upload, or choose them again.' })); return; }
+    var docs = A.list.filter(function (f) { return f.state === 'done'; }).map(function (f) { return { kind: f.kind, fileField: f.fileId, note: f.kind === 'other' ? note : null }; });
+    if (!message && !docs.length) { err.appendChild(h('div', { class: 'err-summary', text: 'Please write a message to RIAC, or choose at least one file.' })); return; }
+    if (docs.some(function (d) { return d.kind === 'other'; }) && !note) { err.appendChild(h('div', { class: 'err-summary', text: 'Please say what the "Something else" file is.' })); return; }
+    if (!A.batch) { err.appendChild(h('div', { class: 'err-summary', text: 'Files cannot be added just now. Please try again in a few minutes.' })); return; }
+    A.key = A.key || uuid();
+    A.sending = true;
+    var btn = document.getElementById('add-send'); btn.disabled = true; btn.textContent = 'Sending…';
+    api('POST', '/v1/portal/referrals/' + encodeURIComponent(r.reference) + '/additions', { uploadId: A.batch.uploadId, addition: { message: message || null, documents: docs } }, { 'Idempotency-Key': A.key })
+      .then(function (res) {
+        A.sending = false;
+        if (res.status === 201) { added(r, res.body, message, docs); return; }
+        btn.disabled = false; btn.textContent = 'Send To RIAC';
+        if (res.status === 401) { location.replace('./'); return; }
+        var t = res.status === 404 ? 'This referral is not one you can add to.' : res.status === 0
+          ? 'It may not have been sent: the connection failed. Press Send To RIAC again; it will not arrive twice.'
+          : 'It could not be sent just now. Please try again in a few minutes; it will not arrive twice.';
+        err.appendChild(h('div', { class: 'err-summary', text: t }));
+      });
+  }
+
+  function added(r, body, message, docs) {
+    clear();
+    app.appendChild(h('a', { class: 'back-link', href: './', text: '‹ Back To Your Referrals' }));
+    var names = docs.map(function (d) {
+      var f = A.list.filter(function (x) { return x.fileId === d.fileField; })[0];
+      return h('li', { text: (d.kind === 'other' ? 'Something else (' + d.note + ')' : D.DOCS[d.kind].name) + ': ' + (f ? f.name : '') });
+    });
+    app.appendChild(h('div', { class: 'add-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), 'Added to the referral']),
+      h('div', { class: 'inner' }, [which(r), h('p', { text: 'Received ' + fmtWhen(body.receivedAt) + '. RIAC sees it with this referral.' }),
+        h('p', null, [h('strong', { text: 'What you sent:' })]),
+        message ? h('p', { class: 'copy-rows' }, [h('span', { class: 'pre', text: message })]) : null,
+        names.length ? h('ul', { class: 'added-list' }, names) : null,
+        h('div', { class: 'add-actions' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF']),
+          h('a', { class: 'btn btn-navy', href: './', text: 'Back To Your Referrals' })])])]));
+    A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false };
+  }
+
+  // ---------- Start ------------------------------------------------------------------------------------------------------
+
+  if (PAGE === 'add') addPage();
+  else {
+    if (!fromLink()) list();
+    window.addEventListener('hashchange', fromLink);   // the link opened in a tab already showing this page
+  }
+})();
