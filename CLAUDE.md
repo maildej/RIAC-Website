@@ -431,6 +431,14 @@ into this repository with the build.
   script. The guidance is the box's description for screen readers (`aria-describedby`). Chosen
   over the help under the box (as steps 2 to 5 were first drawn) and between the question and the
   box.
+- **W18 1** (18 October 2026, the owner's own request for a lighter grey): **all the form's grey
+  guidance** (inside the boxes, under the questions, the length notes, the step hints) is
+  **`#6b7786`**, a little lighter than the site's `--muted`: the lightest grey that still meets the
+  usual accessibility standard for text this size (4.6 to 1 on the white card; the standard asks
+  4.5). It is the form's own variable, so the rest of the site keeps `--muted`. Chosen over half way
+  (`#8c95a1`, 3.0 to 1) and a browser's own in-box grey (`#a3aab3`, 2.3 to 1), both below the
+  standard. ⚠️ Do not lighten it further without asking: the guidance carries rules the attorney has
+  to follow.
 
 ## Working across two computers
 
