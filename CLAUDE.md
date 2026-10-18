@@ -397,7 +397,12 @@ into this repository with the build.
   orange when chosen; ticking either clears the others, and the reverse; the explanation box
   under Unknown (1,000 characters); a required list needs a tick before Next. The owner's
   change: **each list must read visually as a group (a bolder outline)**. Chosen over plain tick
-  boxes in two columns. The redraw goes back to the owner before "build".
+  boxes in two columns. **Settled on the redraw ("W15 b")**: each list sits in its own
+  **square-cornered box with a 2 px outline** (navy at about half strength), inside the rounded
+  form card, the rounded tiles inside it (the owner's rule for boxes inside boxes: rounded,
+  square, rounded); **the question sits in a pale navy band across the top of its box**, so it
+  plainly belongs to that list; "Select any which may apply" beneath the band. Chosen over the
+  outline alone.
 
 ## Working across two computers
 
