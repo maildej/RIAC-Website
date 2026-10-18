@@ -514,6 +514,33 @@ into this repository with the build.
   *5,612 of 6,000 characters. A longer account can be attached as a file at step 8.*, in the
   orange-brown of a warning; the page still stops accepting text at the limit. This replaces RW4
   1's note near every long answer and W16's note under each long box. Chosen over no line at all.
+- **W25 yes, with the owner's change** (18 October 2026): step 6 for **family court or divorce**,
+  the old form's labels word for word (its "opposing or involved parties" are rows at step 7). In
+  the boxes:
+  - Case description: *e.g. "Accused of disciplining child 5-10 times with a paddle, resulting in
+    red marks"; "wants to divorce spouse (who sponsored her green card). DV allegations from both
+    sides likely."* / *Please provide an overview of what your client is facing / wants to
+    accomplish*
+  - Offers & likely outcome: *e.g. "Petitioner would withdraw if client consents to a one-year
+    order of protection"; "client wants joint custody and will not admit to neglect"* / *Please
+    record (1) any existing or likely offer to resolve this case and (2) your client's current
+    objectives. (Even your best guess is very helpful information.)*
+  - Children: **the numbered list sits outside the box**, between the question and the box (the
+    owner's change): *For each child, please note (1) the child's date of birth AND country of
+    birth and (2) whether they are the biological or adopted children of your client and their
+    spouse. If a child was not born in the U.S., please also include (3) their current immigration
+    status and (4) when they received it.* The box holds the example only: *e.g. "Maria, born March
+    3, 2015 in Mexico; biological child of client and spouse; green card since 2019"*
+  - Marriage: *e.g. "Married June 12, 2018 at the Onondaga County Clerk's Office; religious
+    ceremony in Pakistan in 2017, never registered"* / *Please include the date and physical
+    location the marriage was solemnized, and highlight any less common situation, such as an
+    arranged marriage, a religious or customary marriage NOT registered with civil authorities, or
+    a possibly bigamous one*
+  - Spouse's immigration status: *e.g. "U.S. citizen since 2012"; "green card since 2016"*
+
+  The two Yes / No / Unsure questions and the three tick lists as the old form, W15 and W21;
+  "Marriage Or Divorce" shows when Divorce is ticked, "Money And Support" when Divorce, Custody or
+  Family Court (Other) is.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
