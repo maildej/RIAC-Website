@@ -422,8 +422,7 @@ into this repository with the build.
     much detail as possible if this is unclear (many immigration consequences depend on commission
     date)
 
-  The length note ("Up to 6,000 characters. A longer account can be attached as a file.") stays
-  under each long box. **How it is built:** a box's own placeholder text cannot mix italic and
+  (The standing length note under each long box is replaced by W24 2.) **How it is built:** a box's own placeholder text cannot mix italic and
   plain, so the guidance is an element laid over the box: the box and the guidance share one grid
   cell, so an empty box opens as tall as its guidance; once anything is typed, CSS hides the
   guidance (`:placeholder-shown`, with a placeholder of a single space) but keeps its room, so the
@@ -509,6 +508,12 @@ into this repository with the build.
   client's current objectives. (Even your best guess is very helpful information.)* No
   6,000-character note under it (the owner, with W23 2). Chosen over the Criminal Case wording
   unchanged, and over leaving the question out.
+- **W24 2** (18 October 2026, from the owner's "remember to remove the 6000 character warning"):
+  **no standing "Up to 6,000 characters…" note anywhere on the form.** Instead a line appears under
+  a box only once its answer nears the limit (from 5,000 of 6,000, or 900 of 1,000), for example
+  *5,612 of 6,000 characters. A longer account can be attached as a file at step 8.*, in the
+  orange-brown of a warning; the page still stops accepting text at the limit. This replaces RW4
+  1's note near every long answer and W16's note under each long box. Chosen over no line at all.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
