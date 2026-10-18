@@ -484,6 +484,22 @@ into this repository with the build.
   client has US citizen or green card family members". The box opens under Unknown only, not under
   No or "None of these apply" (the probation step's advice question is the exception, W20). The
   codes and keys are unchanged (`unknown`, the `…UnknownWhy` keys, 1,000 characters).
+- **W22 yes** (18 October 2026): step 6 for an **appeal**. "Did The Client Receive Formal
+  Immigration Advice Before Disposition?" keeps its four choices (Yes - From RIAC, Yes - From
+  Other Source, No, Unclear) with its old help above them (*Choose "Unclear" if you asked and
+  could not establish it — that is more useful to us than leaving this blank.*). Under either
+  Yes, "Details Of Immigration Advice Received By Client", in the box: *e.g. "Defense counsel told
+  client at the plea that it could affect immigration; client did not ask"* / *Please include (1)
+  what the client was advised, (2) at what point in the proceedings this advice was given and (3)
+  whether your client affirmatively asked counsel about immigration*. Under No or Unclear, a notes
+  box headed "Please provide any information relevant to whether your client received immigration
+  advice before the disposition", sent in the same key (`appeal.adviceDetails`), so the contract
+  does not change. Then "Details Of The Disposition", in the box: *e.g. "Pled guilty to PL
+  120.00(1) Assault 3rd on May 4, 2026; sentenced to 3 years probation"*. No 6,000-character note.
+  The old form's two uploads (the advice the client received; transcripts such as the plea
+  colloquy) move to step 8 as their own kinds, and the step ends with *You can attach a copy of any
+  immigration advice your client received, and any relevant transcripts (e.g. the plea colloquy),
+  at step 8, Documents.*
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
