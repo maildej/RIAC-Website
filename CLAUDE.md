@@ -390,6 +390,14 @@ into this repository with the build.
   Chosen over three boxes (month, day, year) for a date of birth. The owner asked why three boxes
   were recommended; the honest answer was that the downside of the date box is small (a few taps
   to reach an old year on a phone; the order follows the device's language setting).
+- **W15 2, with the owner's change** (17 October 2026): the screening tick lists are **tiles, two
+  lines high**, each choice a bordered tile of one size, the whole tile pressable, ticked ones
+  navy; read down the first column, then the second (one column on a phone, the same order);
+  "None of these apply" and "Unknown - PLEASE DESCRIBE WHY" as grey tiles beneath a dashed line,
+  orange when chosen; ticking either clears the others, and the reverse; the explanation box
+  under Unknown (1,000 characters); a required list needs a tick before Next. The owner's
+  change: **each list must read visually as a group (a bolder outline)**. Chosen over plain tick
+  boxes in two columns. The redraw goes back to the owner before "build".
 
 ## Working across two computers
 
