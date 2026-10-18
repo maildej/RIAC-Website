@@ -382,6 +382,14 @@ into this repository with the build.
   on the upload way an orange line says what comes next (the client's name, then the form at step
   8) with "Answer the questions here instead ›", and the step keeps only the case type and the
   urgency. Chosen over the old form's required "How Would You Like To Submit Your Referral?".
+- **W14 2** (17 October 2026): steps 4, **Client**, and 5, **Immigration**: the old form's
+  questions and help text exactly as they were, two short answers to a row on a computer, one on
+  a phone; entry and status dates stay free text (they are often estimates). **Every date that is
+  a date (date of birth, next court date, "advice needed by") uses the browser's own date box**,
+  which can be typed into on a computer and opens a calendar on a phone: one look throughout.
+  Chosen over three boxes (month, day, year) for a date of birth. The owner asked why three boxes
+  were recommended; the honest answer was that the downside of the date box is small (a few taps
+  to reach an old year on a phone; the order follows the device's language setting).
 
 ## Working across two computers
 
