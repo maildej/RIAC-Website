@@ -446,6 +446,32 @@ into this repository with the build.
   no guidance, and the first holds *"First name only. If in doubt, put a name in the next box."* The
   worker's key (`client.lastName`) and the database's field keep their names: only the page's label
   changes. Step 7's name boxes for other people follow the same labels.
+- **W20, redrawn with the owner's changes** (18 October 2026): step 6 for a **violation of
+  probation** (the case type is a violation of probation, not probation). Its heading says
+  "Violation of probation"; the step bar says **"Probation Violation"**, because "Violation Of
+  Probation" runs into "Other People" on a computer (measured). The old form's seven questions,
+  changed as follows:
+  - "Did RIAC Advise On The Underlying Criminal Case?": Yes, No, **Unknown** (not "Unknown -
+    PLEASE DESCRIBE WHY"). Under **Yes**, "RIAC Case Number For The Underlying Case" (in the box:
+    *If you know it*). Under **No or Unknown**, a notes box headed **"Please provide any
+    information relevant to whether your client received immigration advice prior to the
+    underlying conviction"** (the owner's words).
+  - **"Statute And Subsection Of <u>ALL</u> Convictions"** (ALL underlined; it replaces "… Of The
+    Underlying Conviction(s)"), in the box: *e.g. "PL 120.00(1) Assault 3rd"; "VTL 1192(3) DWI"*.
+  - "Original Sentence", in the box: *e.g. "3 years probation"; "6 months jail and 5 years
+    probation"*.
+  - "Current Allegations", with the Criminal Case allegations guidance word for word (W16).
+  - "Is There A Parallel Criminal Charge?" ("VOP - " dropped): Yes, No, **Unknown**. Under Yes,
+    "Details Of The Parallel Criminal Charge" (in the box: *e.g. "Petit Larceny, arrested May 3,
+    2026; pending in Syracuse City Court"*); under Unknown, a notes box headed "Please provide any
+    information relevant to whether there is a parallel criminal charge".
+  - **No "Up to 6,000 characters…" note on this step**: answers here will not come near it. The
+    limits themselves are unchanged.
+
+  ⚠️ The worker's contract changes with it: the notes about RIAC's advice
+  (`vop.underlyingAdvisedUnknownWhy`) now come with **No** as well as Unknown (told to the worker
+  chat, 18 October 2026). Narrow windows (below about 1,050 px) get the phone-style step bar, since
+  the longer step names collide there.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
