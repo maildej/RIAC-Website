@@ -582,6 +582,14 @@ into this repository with the build.
   New Jersey in 2019 for shoplifting; outcome unknown"*), and "Include Anything Else RIAC Needs To
   Know Here:". The page checks every document has an answer before Send. Chosen over the paper
   form's tick boxes beside each upload.
+- **W29 1** (18 October 2026): step 9, **Check And Send**, shows every answer **as the same
+  document as the copy kept after Send** (W1 1's letterhead and sections, "Not sent yet" where the
+  reference will go), with *Please read every answer. Change any section before you send; this is
+  also the copy you will keep.* and a **Change** link beside each section's heading, which opens
+  that step. The page ends with *Once sent, this referral cannot be changed here. To add to it
+  later, use Your Referrals.* (for a center reached by email: contact the center), a full-width
+  button named for the center (**Send To Central New York RIAC**), and Back. If the referral is
+  over 80 KB, Send stops and names the longest answer. Chosen over a card for each step.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
