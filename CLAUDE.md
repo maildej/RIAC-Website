@@ -405,6 +405,32 @@ into this repository with the build.
   outline alone. **Every answer box on the form, the explanation under Unknown included, grows
   as the attorney types**, so the whole answer is always visible (the owner checked, 17 October
   2026; the mockup's two-line box was only a drawing).
+- **W16, redrawn with the owner's changes** (17 October 2026): step 6, **Criminal Case**: the old
+  form's five questions in its order (the allegations, the offer, the offence date, "Screening - The
+  Incident" as W15's tiles, the details box); the co-defendant and complainant boxes are gone,
+  because those people are rows at step 7; the offence date stays free text, like the entry dates.
+  **A long answer's guidance is written inside its box**, in grey, rather than above or below it:
+  the example first, after "e.g.", **in italics**; a blank line; then the instruction. It disappears
+  as soon as anything is typed and comes back if the box is emptied. The owner's words:
+  - Allegations: *e.g. "Client alleged to have slapped complainant, his girlfriend. She is alleged
+    to have sustained a nose bleed and minor bruising"* / Please summarize the **ALLEGATIONS**
+    (underlined) at their worst - not what actually happened / can be proven
+  - Offer: *e.g. "Take it to trial unless they offer x"; "client would probably accept y type of
+    disposition"* / Please record (1) any existing or likely offer to dispose of this case and (2)
+    your client's current objectives. (Even your best guess is very helpful information.)
+  - Offence date: *e.g. "August 2, 2026"; "between January and March 2026"* / Please provide as
+    much detail as possible if this is unclear (many immigration consequences depend on commission
+    date)
+
+  The length note ("Up to 6,000 characters. A longer account can be attached as a file.") stays
+  under each long box. **How it is built:** a box's own placeholder text cannot mix italic and
+  plain, so the guidance is an element laid over the box: the box and the guidance share one grid
+  cell, so an empty box opens as tall as its guidance; once anything is typed, CSS hides the
+  guidance (`:placeholder-shown`, with a placeholder of a single space) but keeps its room, so the
+  box does not jump smaller at the first keystroke, and grows past it if the answer is longer. No
+  script. The guidance is the box's description for screen readers (`aria-describedby`). Chosen
+  over the help under the box (as steps 2 to 5 were first drawn) and between the question and the
+  box.
 
 ## Working across two computers
 
