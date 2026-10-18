@@ -439,6 +439,13 @@ into this repository with the build.
   and the answer ("If unknown, please leave blank."); the tick lists keep W15's line under their
   band. Paired boxes on a computer line up (each pair is a two-row subgrid). Chosen over the
   guidance between the question and the box.
+- **W19 yes** (18 October 2026, the owner's own idea): the client's name boxes are **"Client First
+  Name"** and **"Client Middle & Last Names"**, both required. The database's search for a client
+  already on file treats every word of the second box as a possible surname and reads only the
+  first letter of the first, so the label now says what the old help text said; the second box has
+  no guidance, and the first holds *"First name only. If in doubt, put a name in the next box."* The
+  worker's key (`client.lastName`) and the database's field keep their names: only the page's label
+  changes. Step 7's name boxes for other people follow the same labels.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
