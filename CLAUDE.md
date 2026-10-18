@@ -241,8 +241,8 @@ into this repository with the build.
   before files are chosen, and name the file any refusal is about.
 - **Answer lengths** (RW4 1): 6,000 characters for the answers written at length, 1,000 for other
   long answers, 200 short, 100 names. The whole referral is at most 80 KB, which the page checks at
-  Send, naming the longest answer if over. Near the long answers it says a longer account can be
-  attached as a file.
+  Send, naming the longest answer if over. That a longer account can be attached as a file is
+  said only once an answer nears its limit (W24 2).
 - **Senders:** the portal's sign-in emails come from `portal@nyriac.com` (one address for every
   centre), so the sign-in page may name it; receipts for a referral come from the centre's own
   referral address (`cny-referrals@nyriac.com` for Region 2).
