@@ -193,7 +193,7 @@
       Q('attorney.lastName', 'Attorney’s last name', 'name', { required: true })] },
     { type: 'pair', items: [Q('attorney.email', 'Attorney Email', 'email', { required: true }), Q('attorney.phone', 'Attorney Phone', 'tel')] },
     Q('attorney.officeType', 'Your Office Type', 'radio', { choices: CHOICES.officeType, cols: 2, required: true }),
-    Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Type part of the name to find it in the list.', show: isOffice }),
+    Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Type part of the name to find it', show: isOffice }),
     Q('attorney.officeNotListed', 'Office Not Listed?', 'check', { show: function (A) { return ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1; } }),
     Q('attorney.officeDetails', 'If Your Office Was Not Listed, Enter Office Details Here', 'note', {
       show: function (A) { return (A['attorney.officeNotListed'] === true && ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1) || ['none', 'non-profit'].indexOf(A['attorney.officeType']) !== -1; } })

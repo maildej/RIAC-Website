@@ -413,3 +413,14 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card .pre { white-space: pre-line; display: block; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem .9rem; }
 .add-card .inner > p { font-size: var(--fs-small); margin-bottom: .6rem; }
 .ref-table td:nth-child(3) { white-space: nowrap; }
+/* A tick box's label reads as an answer, not as a question */
+.ref-q .field > label.tick-line { display: flex; gap: .5rem; align-items: center; font-weight: 400; font-size: var(--fs-text); color: var(--ink); margin: 0; }
+.ref-q .field > label.tick-long { display: flex; gap: .6rem; align-items: flex-start; font-weight: 400; font-size: var(--fs-small); color: var(--ink); margin-bottom: 0; }
+.err-summary li { margin-top: .25rem; }
+.err-summary .link-btn { display: inline; font-weight: 400; color: #8a2c2c; }
+.err-summary strong { color: #8a2c2c; }
+.err-summary .err-link { color: #8a2c2c; }
+@media (max-width: 600px) {
+  .files .fname { grid-column: 1 / -1; }
+}
+.sq-body > .field-err { margin: -.4rem 0 1rem; }

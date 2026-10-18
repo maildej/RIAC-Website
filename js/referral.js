@@ -375,10 +375,11 @@
     ERRORS.forEach(function (e) {
       var w = document.getElementById(e.id + '-w') || q.querySelector('#' + e.id + '-w');
       if (!w) { var el = q.querySelector('#' + e.id); w = el && el.closest('.field, .tl, .sq-box'); }
-      if (w) { w.classList.add('has-err'); w.appendChild(h('span', { class: 'field-err', text: e.text })); }
+      if (w) { w.classList.add('has-err'); (w.querySelector(':scope > .sq-body') || w).appendChild(h('span', { class: 'field-err', text: e.text })); }
     });
     var list = h('ul', null, ERRORS.map(function (e) {
-      return h('li', null, [h('button', { type: 'button', class: 'link-btn', on: { click: function () {
+      return h('li', null, [h('a', { href: '#' + e.id, class: 'err-link', on: { click: function (ev) {
+        ev.preventDefault();
         var el = document.getElementById(e.id) || document.querySelector('#' + e.id + '-w input, #' + e.id + '-w textarea, #' + e.id + '-w select');
         if (el) { el.focus(); el.scrollIntoView({ block: 'center' }); }
       } } }, [e.label ? e.label + ': ' + e.text : e.text])]);
@@ -667,7 +668,7 @@
       var bar = h('span'); bar.style.width = (f.pct || 0) + '%';
       state = [h('span', { class: 'fstate' }, [h('span', { class: 'bar', 'aria-hidden': 'true' }, [bar]), ' ' + (f.pct || 0) + '%'])];
     } else state = [h('span', { class: 'fstate bad', text: f.error || 'Did not upload' })];
-    var act = f.state === 'failed' && FILES[f.id]
+    var act = f.state === 'failed' && FILES[f.id] && f.retry
       ? h('button', { type: 'button', class: 'link-btn', on: { click: function () { f.state = 'queued'; f.error = ''; pump(); render(); } } }, ['Try Again'])
       : h('button', { type: 'button', class: 'link-btn', on: { click: function () { removeFile(kind, f.id); } } }, [f.state === 'uploading' ? 'Cancel' : 'Remove']);
     return h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) })].concat(state, [act]));
@@ -725,13 +726,14 @@
       else if (xhr.status === 400 && expired(body)) { f.state = 'queued'; renewBatch(); return; }
       else {
         f.state = 'failed';
+        f.retry = [413, 415, 409].indexOf(xhr.status) === -1;
         f.error = xhr.status === 413 ? 'Too large to send.' : xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.'
           : xhr.status === 409 ? 'Over the limit of ' + S.batch.maxFiles + ' files, ' + fmtBytes(S.batch.maxTotalBytes) + ' in all.'
           : 'Did not upload. Check your connection and try again.';
       }
       save(); render(); pump();
     };
-    xhr.onerror = function () { delete XHRS[f.id]; pumping = false; f.state = 'failed'; f.error = 'Did not upload. Check your connection and try again.'; save(); render(); pump(); };
+    xhr.onerror = function () { delete XHRS[f.id]; pumping = false; f.state = 'failed'; f.retry = true; f.error = 'Did not upload. Check your connection and try again.'; save(); render(); pump(); };
     xhr.onabort = function () { pumping = false; pump(); };
     xhr.send(file);
   }
@@ -951,7 +953,8 @@
         if (!st.status) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please attach it, or say whether it was sent before, will follow, or is not available.' });
         else if (st.status === 'attached') {
           if (!st.files.length) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please choose the files, or another answer.' });
-          else if (st.files.some(function (f) { return f.state !== 'done'; })) errs.push({ id: 'd-' + kind, label: info.name, text: 'Wait for every file to upload, or remove the ones that did not.' });
+          else if (st.files.some(function (f) { return f.state === 'failed'; })) errs.push({ id: 'd-' + kind, label: info.name, text: 'Remove the files that could not be sent; the reason is beside each.' });
+          else if (st.files.some(function (f) { return f.state !== 'done'; })) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please wait for every file to finish uploading.' });
         }
       });
       return errs;
@@ -1159,11 +1162,26 @@
     'test-addresses-only': 'While the form is being tested, only a test email address can be used.', 'no-such-file': 'A file did not arrive. Please attach it again.',
     'too-large-for-email': 'The files are too large for this center, which receives referrals by email.', 'none-or-unknown-alone': 'None or Unknown cannot be ticked with other answers.'
   };
+  function stepOfKey(key) {   // which step asks this answer, so a refusal can take the attorney to it
+    var at = -1;
+    ['about', 'court', 'client', 'immigration'].forEach(function (sid) { if (at < 0 && flat(D.STEPS[sid]).some(function (q) { return q.key === key; })) at = STEP_IDS.indexOf(sid); });
+    if (at >= 0) return at;
+    if (/^doc\./.test(key)) return STEP_IDS.indexOf('documents');
+    if (/^(people|noOtherPeople|peopleNote)/.test(key)) return STEP_IDS.indexOf('people');
+    if (/^(route\.|outOfRegionNote)/.test(key)) return 0;
+    return STEP_IDS.indexOf('casetype');
+  }
   function workerErrors(fields) {
     var items = fields.map(function (f) {
       var q = findQuestion(f.key);
       var lab = q ? (q.labelHtml ? plain(q.label) : q.label) : f.key;
-      return h('li', { text: lab + ': ' + (PROBLEMS[f.problem] || 'This answer was not accepted (' + f.problem + ').') });
+      var id = fid(f.key);
+      return h('li', null, [h('a', { href: '#' + id, class: 'err-link', on: { click: function (ev) {
+        ev.preventDefault();
+        go(stepOfKey(f.key));
+        var el = document.getElementById(id) || document.querySelector('#' + id + '-w input, #' + id + '-w textarea, #' + id + '-w select');
+        if (el) { el.focus(); el.scrollIntoView({ block: 'center' }); }
+      } } }, [lab + ': ' + (PROBLEMS[f.problem] || 'This answer was not accepted (' + f.problem + ').')])]);
     });
     sendMessage([h('strong', { text: 'The center’s system did not accept the referral. Please change these answers and send again:' }), h('ul', null, items)], true);
   }
