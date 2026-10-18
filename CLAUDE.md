@@ -590,6 +590,13 @@ into this repository with the build.
   later, use Your Referrals.* (for a center reached by email: contact the center), a full-width
   button named for the center (**Send To Central New York RIAC**), and Back. If the referral is
   over 80 KB, Send stops and names the longest answer. Chosen over a card for each step.
+- **W30 1** (18 October 2026): **the printed copy** (Print Or Save As PDF, after Send). Only the
+  document prints, on US Letter: no site header, menu, footer or buttons. Page 1 carries the
+  letterhead and the reference, then when it was sent and where the receipt went; the sections
+  run in order; a heading is never left at the foot of a page, and no answer is split across pages
+  (`break-after: avoid` on headings, `break-inside: avoid` on each answer). **Every page's foot
+  reads "Referral R2-…" on the left and "Page 1 of 3" on the right**, no client name (CSS `@page`
+  margin boxes). Chosen over adding the client's name to the footer.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
