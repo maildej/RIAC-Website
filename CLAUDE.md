@@ -230,7 +230,7 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 11, 15 October 2026: the addresses, what each takes and gives back, the
+The agreed contract (draft 12, 18 October 2026, which adds W20's one change to draft 11: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It is copied
@@ -469,8 +469,9 @@ into this repository with the build.
     limits themselves are unchanged.
 
   ⚠️ The worker's contract changes with it: the notes about RIAC's advice
-  (`vop.underlyingAdvisedUnknownWhy`) now come with **No** as well as Unknown (told to the worker
-  chat, 18 October 2026). Narrow windows (below about 1,050 px) get the phone-style step bar, since
+  (`vop.underlyingAdvisedUnknownWhy`) now come with **No** as well as Unknown, and are still refused
+  under Yes; an empty box under No passes nothing on (contract draft 12, built and tested by the
+  worker chat, 18 October 2026; not yet deployed). Narrow windows (below about 1,050 px) get the phone-style step bar, since
   the longer step names collide there.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
