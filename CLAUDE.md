@@ -500,6 +500,15 @@ into this repository with the build.
   colloquy) move to step 8 as their own kinds, and the step ends with *You can attach a copy of any
   immigration advice your client received, and any relevant transcripts (e.g. the plea colloquy),
   at step 8, Documents.*
+- **W23 2** (18 October 2026): step 6 for **post-conviction relief** asks the Criminal Case
+  questions (W16) under a small heading "The case", then the Appeal questions (W22) under "The
+  conviction and the advice". Its "Existing Offer Or Likely Disposition" keeps its label and key
+  but its guidance is for after a conviction: *e.g. "DA will consent to vacate and allow a re-plea
+  to disorderly conduct"; "client's goal is a resentence of 364 days"* / *Please record (1) any
+  existing or likely offer if the conviction is vacated or the sentence changed and (2) your
+  client's current objectives. (Even your best guess is very helpful information.)* No
+  6,000-character note under it (the owner, with W23 2). Chosen over the Criminal Case wording
+  unchanged, and over leaving the question out.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
