@@ -646,7 +646,7 @@ every key and code the pages send.
   did not accept the referral. Please change these answers and send again:" with each answer as a link back to
   its step); the center's limit for today (RW5 1: the center's details, the PDFs and the answers to print);
   the form unable to load ("The form cannot load just now": try again in a few minutes, or send the intake
-  form). Pictures in `riac-handover\W\design\w31\` and `w31b\`.
+  form). Pictures in `riac-handover\W\design\w31\` and `w31b\`. **Confirmed on the redraw ("W31 yes").**
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
