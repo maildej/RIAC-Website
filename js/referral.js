@@ -325,7 +325,8 @@
     return row;
   }
 
-  var ERRORS = null;   // [{ id, text }] from the last Next or Send
+  var ERRORS = null;   // [{ id, text, empty }] from the last Next or Send
+  var ERRORS_NEW = false;   // true for the one drawing that shows them first
 
   function render(focusId) {
     var y = window.scrollY;
@@ -339,6 +340,8 @@
     var sid = STEP_IDS[S.step];
     ({ county: drawCounty, about: drawAbout, court: drawCourt, client: drawClient, immigration: drawImmigration,
       casetype: drawCaseType, people: drawPeople, documents: drawDocuments, check: drawCheck })[sid](q);
+    if (ERRORS && !ERRORS_NEW) pruneErrors();
+    ERRORS_NEW = false;
     if (ERRORS && ERRORS.length) showErrors(q);
     body.appendChild(q);
     card.appendChild(body);
@@ -367,26 +370,52 @@
 
   function tryNext(nx) {
     var errs = validate(STEP_IDS[S.step]);
-    if (errs.length) { ERRORS = errs; render(); var s = document.getElementById('err-summary'); if (s) { s.focus(); } return; }
+    if (errs.length) { setErrors(errs); return; }
     go(nx);
   }
 
-  function showErrors(q) {
-    ERRORS.forEach(function (e) {
-      var w = document.getElementById(e.id + '-w') || q.querySelector('#' + e.id + '-w');
-      if (!w) { var el = q.querySelector('#' + e.id); w = el && el.closest('.field, .tl, .sq-box'); }
-      if (w) { w.classList.add('has-err'); (w.querySelector(':scope > .sq-body') || w).appendChild(h('span', { class: 'field-err', text: e.text })); }
+  // W31, the owner's change: an answer still to give is outlined in red, with no words; only an answer that is there
+  // but cannot be used (an email address, a choice not from the list, a file) says why beside it. No list at the top:
+  // the page goes to the first one instead. The red goes as soon as the answer is given.
+  function errKey(e) { return e.id + '|' + e.text; }
+  function setErrors(errs) {
+    ERRORS = errs; ERRORS_NEW = true; render();
+    var first = app.querySelector('.has-err');
+    if (!first) return;
+    var el = first.querySelector('input:not([type="hidden"]), textarea, select');
+    first.scrollIntoView({ block: 'center' });
+    if (el) el.focus({ preventScroll: true });
+  }
+  function pruneErrors() {   // drop what has been put right since; never adds one
+    if (!ERRORS) return;
+    var now = validate(STEP_IDS[S.step], true).map(errKey);
+    ERRORS = ERRORS.filter(function (e) { return now.indexOf(errKey(e)) !== -1; });
+  }
+  function clearErr(w) {   // an answer typed into a box outlined in red: the red goes at once
+    var gone = app.querySelectorAll(w.dataset.grp ? '.has-err[data-grp="' + w.dataset.grp + '"]' : '.has-err[data-err="' + w.dataset.err + '"]');
+    Array.prototype.forEach.call(gone, function (x) {
+      x.classList.remove('has-err', 'err-empty');
+      Array.prototype.forEach.call(x.querySelectorAll('[aria-invalid]'), function (i) { i.removeAttribute('aria-invalid'); });
+      if (ERRORS) ERRORS = ERRORS.filter(function (e) { return e.id !== x.dataset.err; });
     });
-    var list = h('ul', null, ERRORS.map(function (e) {
-      return h('li', null, [h('a', { href: '#' + e.id, class: 'err-link', on: { click: function (ev) {
-        ev.preventDefault();
-        var el = document.getElementById(e.id) || document.querySelector('#' + e.id + '-w input, #' + e.id + '-w textarea, #' + e.id + '-w select');
-        if (el) { el.focus(); el.scrollIntoView({ block: 'center' }); }
-      } } }, [e.label ? e.label + ': ' + e.text : e.text])]);
-    }));
-    var box = h('div', { class: 'err-summary', id: 'err-summary', tabindex: '-1', role: 'alert' }, [h('strong', { text: 'Please check ' + (ERRORS.length === 1 ? 'this answer' : 'these ' + ERRORS.length + ' answers') + ':' }), list]);
-    var hd = q.querySelector('.hint') || q.querySelector('h2');
-    hd.insertAdjacentElement('afterend', box);
+  }
+
+  function showErrors(q) {
+    var empty = 0, grps = {};
+    ERRORS.forEach(function (e) {
+      if (e.grp) { if (grps[e.grp]) empty--; grps[e.grp] = true; }   // either of a group will do: counted once
+      var w = document.getElementById((e.wid || e.id) + '-w') || q.querySelector('#' + (e.wid || e.id) + '-w');
+      if (!w) { var el = q.querySelector('#' + e.id); w = el && (el.classList.contains('sq-box') ? el : el.closest('.field, .tl, .sq-box')); }
+      if (!w) return;
+      w.classList.add('has-err');
+      w.setAttribute('data-err', e.id);
+      if (e.grp) w.setAttribute('data-grp', e.grp);
+      Array.prototype.forEach.call(w.querySelectorAll('input, textarea, select'), function (i) { i.setAttribute('aria-invalid', 'true'); });
+      if (e.empty) { w.classList.add('err-empty'); empty++; }
+      else (w.querySelector(':scope > .sq-body') || w).appendChild(h('span', { class: 'field-err', text: e.text }));
+    });
+    // Said to a screen reader only: the red outline is what the page shows.
+    q.appendChild(h('p', { class: 'visually-hidden', role: 'status', text: empty ? (empty === 1 ? 'One answer is still needed; it is outlined in red.' : empty + ' answers are still needed; they are outlined in red.') : 'Please check the answers marked in red.' }));
   }
 
   // ---------- Step 1: County (W1, W7, W8, W10) --------------------------------------------------------------------
@@ -552,16 +581,16 @@
   function personStarted(p) { return ['firstName', 'lastName', 'dob', 'role', 'relationship'].some(function (k) { return p[k] && String(p[k]).trim(); }); }
   function addPerson() {
     var p = S.adding;
-    if (!personComplete(p)) { ERRORS = personErrors(p); render(); var s = document.getElementById('err-summary'); if (s) s.focus(); return false; }
+    if (!personComplete(p)) { setErrors(personErrors(p)); return false; }
     S.people.push({ firstName: p.firstName.trim(), lastName: p.lastName.trim(), dob: p.dob || null, role: p.role, relationship: (p.relationship || '').trim() });
     S.adding = {}; ERRORS = null; save(); render('p-first');
     return true;
   }
   function personErrors(p) {
     var e = [];
-    if (!p.firstName || !p.firstName.trim()) e.push({ id: 'p-first', label: 'First Name', text: 'Please give their first name, or remove what you typed.' });
-    if (!p.lastName || !p.lastName.trim()) e.push({ id: 'p-last', label: 'Middle & Last Names', text: 'Please give their middle and last names.' });
-    if (!p.role) e.push({ id: 'p-role', label: 'Their Role', text: 'Please choose their role.' });
+    if (!p.firstName || !p.firstName.trim()) e.push({ id: 'p-first', empty: true, text: 'first name' });
+    if (!p.lastName || !p.lastName.trim()) e.push({ id: 'p-last', empty: true, text: 'middle and last names' });
+    if (!p.role) e.push({ id: 'p-role', empty: true, text: 'role' });
     return e;
   }
 
@@ -929,32 +958,36 @@
 
   // ---------- Checking answers before Next --------------------------------------------------------------------------
 
-  function validate(sid) {
+  // dry: only look (used to take away the red once an answer is given); otherwise W27 2's safeguard may add a person.
+  function validate(sid, dry) {
     var errs = [];
     if (sid === 'county') {
-      if (!S.route.outside && !S.route.county) errs.push({ id: 'f-county', label: 'County', text: 'Please choose the county, or that the court is outside New York State.' });
-      else if ((S.route.outside || S.route.conflict) && !S.route.centre) errs.push({ id: 'f-centre', label: 'Center', text: 'Please choose the center that should receive this referral.' });
+      if (!S.route.outside && !S.route.county) errs.push({ id: 'f-county', empty: true, text: 'county' });
+      else if ((S.route.outside || S.route.conflict) && !S.route.centre) errs.push({ id: 'f-centre', empty: true, text: 'center' });
       return errs;
     }
     if (sid === 'people') {
-      if (!S.A.noOtherPeople) errs.push({ id: fid('noOtherPeople'), label: 'Is Anyone Else Involved In This Case?', text: 'Please answer Yes, No or Not known yet.' });
+      if (!S.A.noOtherPeople) errs.push({ id: fid('noOtherPeople') + '-0', wid: fid('noOtherPeople'), empty: true, text: 'anyone else' });
       if (S.A.noOtherPeople === 'yes') {
         if (personStarted(S.adding)) {   // W27 2's safeguard: details typed but not added are added now, or stopped on
-          if (personComplete(S.adding)) { S.people.push({ firstName: S.adding.firstName.trim(), lastName: S.adding.lastName.trim(), dob: S.adding.dob || null, role: S.adding.role, relationship: (S.adding.relationship || '').trim() }); S.adding = {}; save(); }
+          if (personComplete(S.adding)) { if (!dry) S.people.push({ firstName: S.adding.firstName.trim(), lastName: S.adding.lastName.trim(), dob: S.adding.dob || null, role: S.adding.role, relationship: (S.adding.relationship || '').trim() }); if (!dry) { S.adding = {}; save(); } }
           else return personErrors(S.adding);
         }
-        if (!S.people.length && !clean(S.A.peopleNote)) errs.push({ id: 'p-first', label: 'Other people', text: 'Please add a person, describe anyone whose name you do not know, or answer No or Not known yet.' });
+        if (!S.people.length && !clean(S.A.peopleNote) && !(dry && personComplete(S.adding))) {   // a person, or the note: either will do
+          errs.push({ id: 'p-box', empty: true, grp: 'people', text: 'a person' });
+          errs.push({ id: fid('peopleNote'), empty: true, grp: 'people', text: 'a person' });
+        }
       }
       return errs;
     }
     if (sid === 'documents') {
       D.docKinds(caseType(), S.sendAs).forEach(function (kind) {
         var st = docState(kind), info = D.DOCS[kind];
-        if (!st.status) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please attach it, or say whether it was sent before, will follow, or is not available.' });
+        if (!st.status) errs.push({ id: 'd-' + kind, empty: true, text: 'status' });
         else if (st.status === 'attached') {
-          if (!st.files.length) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please choose the files, or another answer.' });
-          else if (st.files.some(function (f) { return f.state === 'failed'; })) errs.push({ id: 'd-' + kind, label: info.name, text: 'Remove the files that could not be sent; the reason is beside each.' });
-          else if (st.files.some(function (f) { return f.state !== 'done'; })) errs.push({ id: 'd-' + kind, label: info.name, text: 'Please wait for every file to finish uploading.' });
+          if (!st.files.length) errs.push({ id: 'd-' + kind, empty: true, text: 'files' });
+          else if (st.files.some(function (f) { return f.state === 'failed'; })) errs.push({ id: 'd-' + kind, text: 'Remove the files that could not be sent; the reason is beside each.' });
+          else if (st.files.some(function (f) { return f.state !== 'done'; })) errs.push({ id: 'd-' + kind, text: 'Please wait for every file to finish uploading.' });
         }
       });
       return errs;
@@ -963,18 +996,17 @@
     flat(stepQuestions(sid)).forEach(function (q) {
       if (!q.key || !visible(q)) return;
       var v = S.A[q.key];
-      var label = q.labelHtml ? plain(q.label) : q.label;
       var id = q.type === 'ticks' ? fid(q.key) : q.type === 'radio' ? fid(q.key) + '-0' : fid(q.key, q.alias);
       if (q.required) {
-        if (q.type === 'ticks' && !(Array.isArray(v) && v.length)) errs.push({ id: fid(q.key) + '-' + q.choices[0].code, wid: fid(q.key), label: label, text: 'Please tick at least one, or None of these apply, or Unknown.' });
-        else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, label: label, text: q.type === 'radio' ? 'Please choose an answer.' : 'Please answer this question.' });
+        if (q.type === 'ticks' && !(Array.isArray(v) && v.length)) errs.push({ id: fid(q.key) + '-' + q.choices[0].code, wid: fid(q.key), empty: true, text: 'ticks' });
+        else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, wid: q.type === 'radio' ? fid(q.key) : null, empty: true, text: 'answer' });
       }
-      if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, label: label, text: 'Please enter an email address, like name@example.org.' });
+      if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
       if (q.type === 'search' && clean(v) && q.list === 'offices' && LISTS && LISTS.offices.indexOf(v.trim()) === -1) {
-        errs.push({ id: id, label: label, text: 'Please choose your office from the list, or tick Office Not Listed?' });
+        errs.push({ id: id, text: 'Please choose your office from the list, or tick Office Not Listed?' });
       }
       if (q.type === 'search' && clean(v) && q.list === 'courts' && LISTS && (LISTS.courts[S.route.county] || []).indexOf(v.trim()) === -1) {
-        errs.push({ id: id, label: label, text: 'Please choose the court from the list, or tick Court Not Listed / Non-NY Court?' });
+        errs.push({ id: id, text: 'Please choose the court from the list, or tick Court Not Listed / Non-NY Court?' });
       }
     });
     return errs;
@@ -1110,7 +1142,7 @@
     for (var i = 0; i < STEP_IDS.length - 1; i++) {
       if (skipped(STEP_IDS[i])) continue;
       var errs = validate(STEP_IDS[i]);
-      if (errs.length) { ERRORS = errs; S.step = i; render(); var s = document.getElementById('err-summary'); if (s) s.focus(); return; }
+      if (errs.length) { S.step = i; save(); setErrors(errs); return; }
     }
     if (!batchValid() || busyFiles()) {
       pendingSend = true;
@@ -1239,6 +1271,8 @@
 
   app.addEventListener('input', function (e) {
     var t = e.target;
+    var ew = t.closest('.err-empty');
+    if (ew && t.value && t.value.trim() && t.type !== 'radio' && t.type !== 'checkbox') clearErr(ew);
     if (t.dataset.key && (t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && ['text', 'email', 'tel', 'search', 'date'].indexOf(t.type) !== -1))) {
       S.A[t.dataset.key] = t.value;
       var n = document.getElementById(t.id + '-n');
@@ -1259,7 +1293,11 @@
     if (t.dataset.route === 'centre') { S.route.centre = t.value; save(); render(t.id); return; }
     if (t.dataset.file) { addFiles(t.dataset.file, t.files); return; }
     if (t.dataset.doc) { docState(t.dataset.doc).status = t.value; save(); render(t.id); if (t.value === 'attached') pump(); return; }
-    if (t.dataset.person === 'role' || t.dataset.person === 'dob') { S.adding[t.dataset.person] = t.value; save(); return; }
+    if (t.dataset.person === 'role' || t.dataset.person === 'dob') {
+      S.adding[t.dataset.person] = t.value; save();
+      var ew = t.closest('.err-empty'); if (ew && t.value) clearErr(ew);
+      return;
+    }
     if (!t.dataset.key) return;
     var k = t.dataset.key;
     if (t.dataset.ticks) {

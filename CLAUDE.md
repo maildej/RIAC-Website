@@ -283,9 +283,9 @@ every key and code the pages send.
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
   referral, one referral for each case type and route, and the portal end to end. All passed on 18 October 2026.
-- **Wording drafted in the build, still to be put to the owner:** the words for the worker's refusals (the error
-  states); the descriptions of the document kinds the paper form does not name (family court pleadings, probation
-  paperwork, the completed intake form, the immigration advice, transcripts); the check-and-send step's heading.
+- **Wording drafted in the build, still to be put to the owner:** the descriptions of the document kinds the paper
+  form does not name (family court pleadings, probation paperwork, the completed intake form, the immigration advice,
+  transcripts); the check-and-send step's heading. (The error messages are W31.)
 
 **Settled:**
 
@@ -628,6 +628,25 @@ every key and code the pages send.
   (`break-after: avoid` on headings, `break-inside: avoid` on each answer). **Every page's foot
   reads "Referral R2-…" on the left and "Page 1 of 3" on the right**, no client name (CSS `@page`
   margin boxes). Chosen over adding the client's name to the footer.
+- **W31, with the owner's change** (18 October 2026): **the error messages.** The owner's change: **an answer
+  still to be given is shown in red, with no words** ("the message description seems overkill"): its question
+  turns red and its box gets a red outline (a tick list or document box: red border and a pale red band; a
+  Yes / No question: a red bar down its left side). There is **no list of problems at the top of the step**;
+  pressing Next goes to the first red answer instead, and the red goes as soon as that answer is given. Where
+  either of two answers will do (Other People: add a person, or describe someone whose name is not known),
+  both are outlined. Screen readers are told how many answers are still needed (hidden text, `aria-invalid`).
+  **Words stay only where an answer is there but cannot be used:** an email address that is not one ("Please
+  enter an email address, like name@example.org."), an office or court typed but not chosen from the list, and
+  **files** (each refused file's reason on its row, e.g. "Over the 25 MB limit for one file." and "This kind
+  of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.", with "Remove the files that could not be sent;
+  the reason is beside each." and "Please wait for every file to finish uploading." under the box). **The
+  messages at Send are approved as drawn** (the owner: "the upload error and submission error are fine"): a
+  failed connection ("Your referral may not have been sent: the connection failed. Check your connection and
+  press Send again; it will not arrive twice."); the center's system refusing an answer ("The center's system
+  did not accept the referral. Please change these answers and send again:" with each answer as a link back to
+  its step); the center's limit for today (RW5 1: the center's details, the PDFs and the answers to print);
+  the form unable to load ("The form cannot load just now": try again in a few minutes, or send the intake
+  form). Pictures in `riac-handover\W\design\w31\` and `w31b\`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -691,7 +710,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the wording still open (the error states, the paper form's "Before you receive RIAC
+  come: the owner looks at it; the wording still open (the paper form's "Before you receive RIAC
   advice" warnings, the old form's typing slips, the drafted document descriptions); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.

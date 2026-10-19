@@ -156,8 +156,16 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .err-summary { background: #fdf0f0; border: 1px solid #e8b8b8; border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1.3rem; font-size: var(--fs-small); color: #8a2c2c; }
 .err-summary ul { margin: .3rem 0 0 1.2rem; }
 .field-err { display: block; color: var(--bad); font-size: var(--fs-small); font-weight: 600; margin-top: .3rem; }
-.has-err input, .has-err textarea, .has-err select { border-color: var(--bad); }
-.has-err.tl { border-color: var(--bad); }
+/* W31, the owner's change: an answer still to give shows in red, its question and its box, with no words. */
+.ref-q .field.has-err > label, .has-err > .plain-fieldset > legend, .tl.has-err > .lab, .sq-box.has-err > .sq-head .nm { color: var(--bad); }
+.field.has-err > input, .field.has-err > select, .field.has-err > textarea, .field.has-err > .inbox-wrap > textarea {
+  border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad);
+}
+.tl.has-err, .sq-box.has-err { border-color: var(--bad); }
+.tl.has-err > .lab, .sq-box.has-err > .sq-head { background: #fbeeee; border-bottom-color: #e8b8b8; }
+.field.has-err:has(> .plain-fieldset) { box-shadow: inset 3px 0 0 var(--bad); padding-left: .9rem; }
+.choose.has-err { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.choose.has-err > h3 { color: var(--bad); }
 
 /* ---------- Step 1: the county and its center (W1, W7, W8, W10) ---------- */
 
@@ -423,4 +431,4 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 @media (max-width: 600px) {
   .files .fname { grid-column: 1 / -1; }
 }
-.sq-body > .field-err { margin: -.4rem 0 1rem; }
+.sq-body > .field-err { margin: .5rem 0 1rem; }
