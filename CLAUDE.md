@@ -259,8 +259,10 @@ every key and code the pages send.
 - **A referral's reference** (RW6 1) looks like `R2-261016-7KQ4MX`: the centre's code, the New
   York date, and six characters with no 0, O, 1, I, L or U. The pages show it exactly as the
   worker gives it (the mockups' shorter `R2-0142` is only a stand-in).
-- **Still with the owner:** the bot-check key. Until it is made, `js/referral-data.js` carries Cloudflare's published
-  test key, which always passes: **the real key must be in before any go-live.**
+- **The bot-check key** (19 October 2026): the live pages use the site key of the owner's Turnstile widget "nyriac.com
+  referrals and portal" (Managed, nyriac.com and www.nyriac.com), `0x4AAAAAAFbnCVMLz6_diRwD` (six A's; copied from
+  Cloudflare), in `js/referral-data.js`; on localhost the pages keep Cloudflare's test key, which always passes. The
+  secret key is on the worker only (set by the owner), never in this repository.
 
 **How the build works** (18 October 2026, tested against the worker running locally):
 
@@ -762,7 +764,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
   come: the owner looks at it; the worker's contract draft 13 for
-  the Removal / USCIS step (W36); the owner's Turnstile key; CS5's
+  the Removal / USCIS step (W36); CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to

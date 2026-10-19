@@ -10,7 +10,7 @@
   var CONFIG = {
     worker: local ? 'http://localhost:8789' : 'https://riac-referrals.djackson-314.workers.dev',
     // Cloudflare's published test key (always passes) until the owner makes the real widget.
-    turnstileKey: local ? '1x00000000000000000000AA' : '1x00000000000000000000AA',
+    turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft'
   };
