@@ -283,9 +283,8 @@ every key and code the pages send.
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
   referral, one referral for each case type and route, and the portal end to end. All passed on 18 October 2026.
-- **Wording drafted in the build, still to be put to the owner:** the descriptions of the document kinds the paper
-  form does not name (family court pleadings, probation paperwork, the completed intake form, the immigration advice,
-  transcripts); the check-and-send step's heading. (The error messages are W31.)
+- **Wording drafted in the build, still to be put to the owner:** the check-and-send step's heading. (The error
+  messages are W31; the document descriptions W34.)
 
 **Settled:**
 
@@ -676,6 +675,11 @@ every key and code the pages send.
   question now reads "Date Of The Alleged Offense Or Misconduct (i.e. not simply arrest date)", matching its
   guidance. The worker's key `criminal.offenceDate` keeps its spelling: it is a code shared with the worker, not
   words on screen. The old form's other typing slips went with W16's offer guidance and W32's rewording.
+- **W34 yes** (19 October 2026): the descriptions drafted for the document kinds the paper form does not name, as
+  built: Completed RIAC Intake Form (*The intake form you filled in (the PDF)*), Family Court Pleadings (*The
+  petitions and any orders*), Violation Of Probation Paperwork (*The declaration of delinquency, and the original
+  sentence and conditions*), Immigration Advice The Client Received (*A copy of any written advice*), Transcripts
+  (*e.g. the plea colloquy*).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -739,7 +743,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the wording still open (the drafted document descriptions, the
+  come: the owner looks at it; the wording still open (the
   check-and-send step's heading); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
