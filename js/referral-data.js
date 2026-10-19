@@ -37,6 +37,27 @@
     { href: 'intake-forms/non-criminal-intake-form.pdf', text: 'Non-Criminal Intake Form (PDF)' }
   ];
 
+  // W32 1: the paper criminal form's "Before you receive RIAC advice", short (the owner's words), each with its
+  // advisory's symbol from the Practice Advisories page and a link straight to the PDF. Shown above Send for the case
+  // types the paper criminal form covers. If an advisory's file or title changes on advisories.html, change it here.
+  var STEPS_PDF = { doc: 'advisories/client-not-born-in-the-us.pdf', title: 'Steps You Must Take If Your Client Was Not Born In The U.S.' };
+  var ADVICE_FIRST = {
+    caseTypes: ['criminal', 'vop', 'appeal', 'post-conviction'],
+    items: [
+      { symbol: 'protection', bold: 'Orders of protection', text: ' require immediate steps by you.',
+        doc: 'advisories/domestic-orders-of-protection.pdf', title: 'Orders Of Protection: Steps You Must Take For Foreign-Born Clients' },
+      { symbol: 'steps', bold: 'ICE detainer, or an ICE arrest likely?', text: ' Review our advisory immediately.', doc: STEPS_PDF.doc, title: STEPS_PDF.title },
+      { symbol: 'stop', bold: 'No plea or diversion', text: ' without RIAC advice.',
+        doc: 'advisories/no-diversion-or-up-front-pleas-without-riac-advice.pdf', title: 'No Diversion Or Up-Front Pleas Without RIAC Advice' },
+      { symbol: 'acd', bold: 'No ACD', text: ' until you have gone through the ACD advisory with your client.',
+        doc: 'advisories/info-for-attorneys-and-clients-regarding-acds.pdf', title: 'Adjournments In Contemplation Of Dismissal (ACDs)' },
+      { symbol: 'interpreter', bold: 'No use of court interpreters for client conversations:', text: ' it’s not privileged!',
+        doc: 'advisories/court-interpreters-cannot-be-used-outside-court.pdf', title: 'Court Interpreters Cannot Be Used Outside Of Court' },
+      { symbol: 'individual', bold: 'Your client can refuse to speak with ICE,', text: ' even to confirm their name. Tell them.', doc: STEPS_PDF.doc, title: STEPS_PDF.title },
+      { symbol: 'consult', bold: 'We advise you, not your client:', text: ' please do not ask them to contact RIAC.' }
+    ]
+  };
+
   // The nine steps (W11 1). Step 6 is named for the case type.
   var CASE_TYPES = [
     { code: 'criminal', label: 'Criminal Case', step: 'Criminal Case', heading: 'Criminal case' },
@@ -269,7 +290,7 @@
   }
 
   window.RIAC_REF = {
-    CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
+    CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
     SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has
   };

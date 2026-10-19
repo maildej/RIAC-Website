@@ -1109,6 +1109,28 @@
 
   var pendingSend = false, sending = false;
 
+  // W32 1: the paper criminal form's "Before you receive RIAC advice", short, above Send. Each warning carries its
+  // advisory's symbol (images/symbols.svg, as on the Practice Advisories page) and opens the PDF in a new tab, so the
+  // form is not lost.
+  function symbol(name) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg'), use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', 'images/symbols.svg#i-' + name);
+    svg.appendChild(use);
+    return h('span', { class: 'symbol', 'aria-hidden': 'true' }, [svg]);
+  }
+  function adviceFirst() {
+    var AF = D.ADVICE_FIRST;
+    if (AF.caseTypes.indexOf(caseType()) === -1) return null;
+    return h('section', { class: 'advice-first', 'aria-labelledby': 'advice-first-h' }, [
+      h('h3', { id: 'advice-first-h', text: 'Before You Receive RIAC Advice' }),
+      h('ul', null, AF.items.map(function (it) {
+        var words = h('span', null, [h('b', { text: it.bold }), it.text]);
+        if (it.doc) words.appendChild(h('a', { href: it.doc, target: '_blank', rel: 'noopener', 'aria-label': 'Read the advisory: ' + it.title + ' (PDF, opens in a new tab)' }, ['Read the advisory ›']));
+        return h('li', null, [symbol(it.symbol), words]);
+      }))]);
+  }
+
   function drawCheck(q) {
     heading(q, 'Check and send', null);
     q.appendChild(copySheet({}));
@@ -1120,6 +1142,7 @@
     var c = centreOf(receivingCentre());
     var email = modeOf(receivingCentre()) === 'email';
     q.appendChild(h('div', { class: 'sendarea' }, [
+      adviceFirst(),
       h('p', null, email ? ['Once sent, this referral cannot be changed here. To add to it later, contact the center directly.']
         : ['Once sent, this referral cannot be changed here. To add to it later, use ', h('a', { href: 'portal/', text: 'Your Referrals' }), '.']),
       h('div', { id: 'send-msg', 'aria-live': 'polite' }),

@@ -52,7 +52,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Add To This Referral), both run by `js/portal.js`. Links inside use `../` |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
 | `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
-| `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the worker's address and the Turnstile key. Change wording here | 
+| `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the "Before You Receive RIAC Advice" warnings with their advisories' titles and PDF addresses (W32 1; a copy of what `advisories.html` lists); the worker's address and the Turnstile key. Change wording here | 
 | `js/referral.js`, `js/portal.js` | The form and the portal: drawing, checking, uploading files one at a time, sending | 
 | `images/symbols.svg` | The symbols on the advisory, intake and home-page cards, one `<symbol id="i-…">` each — see "Design rules" below |
 | `images/riac-mark.svg` | Colored map mark used as the header logo on every page |
@@ -647,6 +647,31 @@ every key and code the pages send.
   its step); the center's limit for today (RW5 1: the center's details, the PDFs and the answers to print);
   the form unable to load ("The form cannot load just now": try again in a few minutes, or send the intake
   form). Pictures in `riac-handover\W\design\w31\` and `w31b\`. **Confirmed on the redraw ("W31 yes").**
+- **W32 1, with the owner's changes** (18 October 2026): the paper criminal form's **"STEP 3: BEFORE YOU RECEIVE
+  RIAC ADVICE"** goes **on Check And Send, above the Send button**, so every attorney passes it before sending (as
+  on paper). Chosen over putting it after Send. The owner's changes: make it **visually appealing, in the style of
+  the Practice Advisories page**, and **keep each warning short, because each is one click from its advisory**.
+  Built as an orange panel like the featured advisory card, headed "Before You Receive RIAC Advice", **a row for
+  each warning with that advisory's own symbol beside it** (two across on a computer; chosen over tiles like small
+  advisory cards, which break each warning into short centred lines on a phone), and **"Read the advisory ›"**,
+  which opens the PDF itself in a new tab (one click, and the form is not lost; not through `request.html`, so no
+  Formspree request is used, and `robots.txt` already keeps the PDFs out of search). The words (the owner's):
+  - **Orders of protection** require immediate steps by you. (Orders Of Protection advisory)
+  - **ICE detainer, or an ICE arrest likely?** Review our advisory immediately. (Steps You Must Take If Your
+    Client Was Not Born In The U.S., which covers detainers; checked)
+  - **No plea or diversion** without RIAC advice. (No Diversion Or Up-Front Pleas)
+  - **No ACD** until you have gone through the ACD advisory with your client. (ACDs)
+  - **No use of court interpreters for client conversations:** it's not privileged! (Court Interpreters)
+  - **Your client can refuse to speak with ICE,** even to confirm their name. Tell them. (Steps You Must Take…,
+    which covers the right to remain silent and the Know Your Rights flyers)
+  - **We advise you, not your client:** please do not ask them to contact RIAC. (no advisory, no link)
+
+  Shown only for the case types the paper criminal form covers (criminal, violation of probation, appeal,
+  post-conviction); the non-criminal paper form has no such section, so not for family court or removal. The
+  courtroom advisory that the old ICE detainer line might have meant is one the owner sends directly, not a public
+  one, so it is not linked. The words, symbols and PDF addresses are in `js/referral-data.js` (`ADVICE_FIRST`):
+  **if an advisory's title on `advisories.html` changes, change it there too.** Pictures in
+  `riac-handover\W\design\w32\`, `w32b\` (the mockups) and `w32c\` (as built).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -710,8 +735,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the wording still open (the paper form's "Before you receive RIAC
-  advice" warnings, the old form's typing slips, the drafted document descriptions); the owner's Turnstile key; CS5's
+  come: the owner looks at it; the wording still open (the old form's typing slips, the drafted
+  document descriptions); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to

@@ -269,6 +269,21 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sendarea p { font-size: var(--fs-small); margin: 0; }
 .sendarea .btn { height: 3rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
 
+/* W32 1: "Before You Receive RIAC Advice" above Send, in the featured advisory card's orange, a row for each warning
+   with its advisory's symbol beside it; two across on a computer. */
+.advice-first { margin: .2rem 0 .4rem; border: 1px solid var(--r5); border-radius: 10px; background: color-mix(in srgb, var(--r5) 9%, white); overflow: hidden; }
+.advice-first h3 { background: var(--r5); color: #fff; font-family: var(--serif); font-size: var(--fs-card); line-height: 1.3; text-align: center; margin: 0; padding: .75rem 1rem; }
+.advice-first ul { list-style: none; margin: 0; padding: .8rem; display: grid; gap: .6rem; }
+.advice-first li { display: flex; gap: .8rem; align-items: center; padding: .6rem .8rem; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: var(--fs-small); line-height: 1.4; color: var(--ink); }
+.advice-first li b { color: var(--navy); }
+.advice-first li a { display: block; margin-top: .2rem; font-weight: 600; color: var(--navy); }
+.advice-first .symbol { width: 50px; height: 50px; }
+.advice-first .symbol svg { width: 31px; height: 31px; }
+@media (min-width: 700px) {
+  .advice-first ul { grid-template-columns: 1fr 1fr; }
+  .advice-first li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
 .sent-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
 .sent-card h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .9rem 1.6rem; display: flex; align-items: center; gap: .7rem; }
 .sent-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-small); }
