@@ -283,8 +283,8 @@ every key and code the pages send.
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
   referral, one referral for each case type and route, and the portal end to end. All passed on 18 October 2026.
-- **Wording drafted in the build, still to be put to the owner:** the check-and-send step's heading. (The error
-  messages are W31; the document descriptions W34.)
+- **All the wording drafted in the build has been put to the owner** (the error messages W31, the advice warnings
+  W32, the spelling W33, the document descriptions W34, step 9's name W35).
 
 **Settled:**
 
@@ -680,6 +680,9 @@ every key and code the pages send.
   petitions and any orders*), Violation Of Probation Paperwork (*The declaration of delinquency, and the original
   sentence and conditions*), Immigration Advice The Client Received (*A copy of any written advice*), Transcripts
   (*e.g. the plea colloquy*).
+- **W35, the owner's choice** (19 October 2026): **step 9 is "Review And Send"** on the step bar and "Review and
+  send" as its heading, in place of "Check And Send" (W11 1 and W29 1 above use the old name). Measured: it still
+  fits the step bar on a computer, at least 24 px clear of "Documents" at the narrowest computer width.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -743,8 +746,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the wording still open (the
-  check-and-send step's heading); the owner's Turnstile key; CS5's
+  come: the owner looks at it; the Removal / USCIS questions
+  (the owner's to set, or that step stays out of the first version); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to

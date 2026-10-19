@@ -105,7 +105,7 @@
   }
   function stepName(i) {
     if (STEP_IDS[i] === 'casetype') { var t = caseTypeInfo(); return t ? t.step : 'Case Type'; }
-    return ['County', 'About You', 'Court & Case', 'Client', 'Immigration', '', 'Other People', 'Documents', 'Check And Send'][i];
+    return ['County', 'About You', 'Court & Case', 'Client', 'Immigration', '', 'Other People', 'Documents', 'Review And Send'][i];
   }
   function nextIndex(i, dir) {
     var j = i + dir;
@@ -1012,7 +1012,7 @@
     return errs;
   }
 
-  // ---------- Step 9: Check And Send (W29 1) -------------------------------------------------------------------------
+  // ---------- Step 9: Review And Send (W29 1, W35) ------------------------------------------------------------------------
 
   function answerText(q, v) {
     if (q.type === 'ticks') {
@@ -1132,7 +1132,7 @@
   }
 
   function drawCheck(q) {
-    heading(q, 'Check and send', null);
+    heading(q, 'Review and send', null);
     q.appendChild(copySheet({}));
     if (!batchValid()) {
       q.appendChild(h('div', { class: 'bot-check', id: 'bot-check' }));
