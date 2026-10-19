@@ -95,7 +95,6 @@
   function caseTypeInfo() { return D.CASE_TYPES.filter(function (t) { return t.code === caseType(); })[0] || null; }
   function skipped(id) {
     if (S.sendAs === 'completed-form' && (id === 'immigration' || id === 'casetype' || id === 'people')) return true;
-    if (id === 'casetype' && caseType() === 'removal') return true;   // its questions are the owner's to set (W11 1)
     return false;
   }
   function stopped() {   // the form cannot go on past this step: the center is not online, or private counsel (W7, W12)
@@ -562,7 +561,7 @@
   function drawCaseType(q) {
     var t = caseTypeInfo();
     if (!t) { heading(q, 'Case details', 'Choose the case type at step 3 first.'); q.appendChild(actions({ noNext: true })); return; }
-    heading(q, t.heading, 'The questions for ' + (t.code === 'appeal' ? 'an appeal' : t.code === 'post-conviction' ? 'post-conviction relief' : t.code === 'family' ? 'family court or a divorce' : 'a ' + t.heading.toLowerCase()) + ', the case type chosen at step 3.');
+    heading(q, t.heading, t.code === 'removal' ? null : 'The questions for ' + (t.code === 'appeal' ? 'an appeal' : t.code === 'post-conviction' ? 'post-conviction relief' : t.code === 'family' ? 'family court or a divorce' : 'a ' + t.heading.toLowerCase()) + ', the case type chosen at step 3.');
     drawList(D.SECTIONS[t.code] || [], q);
     q.appendChild(actions());
   }
@@ -665,12 +664,13 @@
     var info = D.DOCS[kind];
     var st = docState(kind);
     var id = 'd-' + kind;
+    if (info.named) st.status = 'attached';   // W36: no choice to make, only files to add and name
     var statuses = [['attached', 'Attach Now']].concat(info.sentBefore ? [['sent-before', 'Sent Before']] : [], [['to-follow', 'To Follow'], ['unavailable', 'Not Available']]);
     var pills = h('div', { class: 'pills4' + (statuses.length === 3 ? ' three' : ''), role: 'radiogroup', 'aria-label': info.name });
     statuses.forEach(function (s) {
       pills.appendChild(h('label', { class: 'pill', for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }), s[1]]));
     });
-    var body = h('div', { class: 'sq-body' }, [pills]);
+    var body = h('div', { class: 'sq-body' }, info.named ? [] : [pills]);
     if (st.status === 'attached') {
       var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', 'data-file': kind,
         accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
@@ -700,7 +700,12 @@
     var act = f.state === 'failed' && FILES[f.id] && f.retry
       ? h('button', { type: 'button', class: 'link-btn', on: { click: function () { f.state = 'queued'; f.error = ''; pump(); render(); } } }, ['Try Again'])
       : h('button', { type: 'button', class: 'link-btn', on: { click: function () { removeFile(kind, f.id); } } }, [f.state === 'uploading' ? 'Cancel' : 'Remove']);
-    return h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) })].concat(state, [act]));
+    var li = h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) })].concat(state, [act]));
+    if (D.DOCS[kind].named) li.appendChild(h('div', { class: 'field fnote', id: 'n-' + f.id + '-w' }, [   // W36: what each file is
+      h('label', { for: 'n-' + f.id }, ['What is it? ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
+      h('input', { type: 'text', id: 'n-' + f.id, maxlength: '200', value: f.note || '', autocomplete: 'off', 'data-fnote': f.id, 'data-fkind': kind,
+        placeholder: 'e.g. Notice to Appear; I-213; denial of adjustment' })]));
+    return li;
   }
 
   function addFiles(kind, list) {
@@ -768,6 +773,7 @@
   }
   function expired(body) { return body && body.error === 'invalid' && (body.fields || []).some(function (x) { return x.key === 'uploadId' && (x.problem === 'expired' || x.problem === 'used'); }); }
   function renderFiles() {   // redraw only the progress bars, so typing elsewhere is not interrupted
+    var ae = document.activeElement, aid = ae && ae.dataset && ae.dataset.fnote ? ae.id : null, s0 = aid ? ae.selectionStart : 0, s1 = aid ? ae.selectionEnd : 0;
     allFiles().forEach(function (x) {
       var ul = document.querySelector('#d-' + x.kind + '-w .files');
       if (!ul) return;
@@ -775,6 +781,7 @@
       ul.textContent = '';
       st.files.forEach(function (f) { ul.appendChild(fileRow(x.kind, f)); });
     });
+    if (aid) { var el = document.getElementById(aid); if (el) { el.focus({ preventScroll: true }); try { el.setSelectionRange(s0, s1); } catch (e) { /* not a text box */ } } }   // a name being typed keeps its place
   }
 
   // Step 1 of the contract: a batch, carrying Cloudflare's bot check (W28: at the top of Documents).
@@ -868,7 +875,7 @@
       'protectionOrdersUnknownWhy', 'custody', 'details'],
     vop: ['underlyingAdvised', 'underlyingAdvisedUnknownWhy', 'underlyingCaseNumber', 'underlyingConvictions', 'originalSentence', 'allegations', 'parallelCharge',
       'parallelChargeUnknownWhy', 'parallelChargeDetails'],
-    criminal: ['allegations', 'offer', 'offenceDate', 'screeningIncident', 'screeningIncidentUnknownWhy', 'details'],
+    removal: ['issues'], criminal: ['allegations', 'offer', 'offenceDate', 'screeningIncident', 'screeningIncidentUnknownWhy', 'details'],
     appeal: ['adviceBefore', 'disposition', 'adviceDetails'],
     family: ['matterTypes', 'description', 'offer', 'children', 'marriage', 'spouseSponsored', 'affidavitOfSupport', 'spouseStatus', 'screeningMarriage',
       'screeningMarriageUnknownWhy', 'screeningChildren', 'screeningChildrenUnknownWhy', 'screeningMoney', 'screeningMoneyUnknownWhy', 'details']
@@ -903,7 +910,7 @@
   function buildReferral() {
     var A = shownAnswers();
     var ct = caseType();
-    var sections = { criminal: ct === 'criminal' || ct === 'post-conviction', vop: ct === 'vop', appeal: ct === 'appeal' || ct === 'post-conviction', family: ct === 'family' };
+    var sections = { criminal: ct === 'criminal' || ct === 'post-conviction', vop: ct === 'vop', appeal: ct === 'appeal' || ct === 'post-conviction', family: ct === 'family', removal: ct === 'removal' };
     var up = S.sendAs === 'completed-form';
     function section(name) {
       var o = {};
@@ -929,7 +936,7 @@
       vop: !up && sections.vop ? section('vop') : null,
       appeal: !up && sections.appeal ? section('appeal') : null,
       family: !up && sections.family ? section('family') : null,
-      removal: null,
+      removal: !up && sections.removal ? section('removal') : null,
       people: up ? [] : S.A.noOtherPeople === 'yes' ? S.people.map(function (p) {
         return { firstName: p.firstName, lastName: p.lastName, dob: p.dob || null, role: p.role, relationship: clean(p.relationship) };
       }) : [],
@@ -950,7 +957,8 @@
     var out = [];
     D.docKinds(caseType(), S.sendAs).forEach(function (kind) {
       var st = docState(kind);
-      if (st.status === 'attached') st.files.forEach(function (f) { if (f.state === 'done' && f.fileId) out.push({ kind: kind, fileField: f.fileId, status: 'attached', note: null }); });
+      var named = D.DOCS[kind].named;
+      if (st.status === 'attached' || named) st.files.forEach(function (f) { if (f.state === 'done' && f.fileId) out.push({ kind: kind, fileField: f.fileId, status: 'attached', note: named ? clean(f.note) : null }); });
       else if (st.status) out.push({ kind: kind, fileField: null, status: st.status, note: st.status === 'unavailable' ? clean(st.note) : null });
     });
     return out;
@@ -983,6 +991,12 @@
     if (sid === 'documents') {
       D.docKinds(caseType(), S.sendAs).forEach(function (kind) {
         var st = docState(kind), info = D.DOCS[kind];
+        if (info.named) {   // W36: none needed; any file must have finished, and each needs its name
+          if (st.files.some(function (f) { return f.state === 'failed'; })) errs.push({ id: 'd-' + kind, text: 'Remove the files that could not be sent; the reason is beside each.' });
+          else if (st.files.some(function (f) { return f.state !== 'done'; })) errs.push({ id: 'd-' + kind, text: 'Please wait for every file to finish uploading.' });
+          st.files.forEach(function (f) { if (f.state === 'done' && !clean(f.note)) errs.push({ id: 'n-' + f.id, empty: true, text: 'name' }); });
+          return;
+        }
         if (!st.status) errs.push({ id: 'd-' + kind, empty: true, text: 'status' });
         else if (st.status === 'attached') {
           if (!st.files.length) errs.push({ id: 'd-' + kind, empty: true, text: 'files' });
@@ -1065,7 +1079,8 @@
     var dr = [];
     D.docKinds(caseType(), S.sendAs).forEach(function (kind) {
       var st = docState(kind);
-      var t = st.status === 'attached' ? 'Attached: ' + st.files.map(function (f) { return f.name; }).join(', ')
+      var t = D.DOCS[kind].named ? (st.files.length ? st.files.map(function (f) { return (clean(f.note) || '—') + ' (' + f.name + ')'; }).join('; ') : 'None attached')
+        : st.status === 'attached' ? 'Attached: ' + st.files.map(function (f) { return f.name; }).join(', ')
         : st.status === 'sent-before' ? 'Sent before' : st.status === 'to-follow' ? 'To follow'
         : st.status === 'unavailable' ? 'Not available' + (clean(st.note) ? ': ' + st.note.trim() : '') : '—';
       dr.push([D.DOCS[kind].name, t]);
@@ -1303,6 +1318,7 @@
       if (t.dataset.key === 'outOfRegionNote') S.A.outOfRegionNote = t.value;
       save();
     } else if (t.dataset.person) { S.adding[t.dataset.person] = t.value; save(); }
+    else if (t.dataset.fnote) { var nf = docState(t.dataset.fkind).files.filter(function (x) { return x.id === t.dataset.fnote; })[0]; if (nf) { nf.note = t.value; save(); } }
     else if (t.dataset.docnote) { docState(t.dataset.docnote).note = t.value; save(); }
   });
   app.addEventListener('change', function (e) {

@@ -65,7 +65,7 @@
     { code: 'family', label: 'Family Court / Divorce', step: 'Family Court', heading: 'Family court or divorce' },
     { code: 'appeal', label: 'Appeal', step: 'Appeal', heading: 'Appeal' },
     { code: 'post-conviction', label: 'Post-Conviction Relief / Post-Disposition', step: 'Post-Conviction', heading: 'Post-conviction relief' },
-    { code: 'removal', label: 'Assistance With Removal Defense / USCIS', step: 'Removal', heading: 'Removal defense or USCIS' }
+    { code: 'removal', label: 'Assistance With Removal Defense / USCIS', step: 'Removal', heading: 'Removal defense or USCIS applications' }
   ];
 
   // Choice lists ---------------------------------------------------------------------------------------------------
@@ -202,7 +202,9 @@
         show: function (A) { return has(A, 'family.matterTypes', 'divorce') || has(A, 'family.matterTypes', 'family-other') || has(A, 'family.matterTypes', 'custody'); } }),
       Q('family.details', 'Family Court/Divorce - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { copy: 'Family court: details and explanations' })
     ],
-    removal: []
+    removal: [   // W36: one box (the owner's words)
+      Q('removal.issues', 'What Issues Would You Like Advice On?', 'long', { required: true, guidance: { eg: 'e.g. "Client is in removal proceedings based on a NY conviction - considering whether a vacatur is possible"; "Need help assessing whether client is inadmissible based on his record in association with an adjustment application"' } })
+    ]
   };
 
   // Steps 2 to 5 -------------------------------------------------------------------------------------------------
@@ -275,16 +277,19 @@
     'probation-paperwork': { name: 'Violation Of Probation Paperwork', desc: 'The declaration of delinquency, and the original sentence and conditions', sentBefore: false },
     'immigration-documents': { name: 'All Immigration Documents', desc: 'e.g. green card, work permit, USCIS receipt or passport visa', sentBefore: true },
     'immigration-advice': { name: 'Immigration Advice The Client Received', desc: 'A copy of any written advice', sentBefore: false },
-    transcripts: { name: 'Transcripts', desc: 'e.g. the plea colloquy', sentBefore: false }
+    transcripts: { name: 'Transcripts', desc: 'e.g. the plea colloquy', sentBefore: false },
+    // W36: files the attorney names one by one (the worker's kind `other`); no Attach Now / To Follow choice
+    other: { name: 'Your Documents', desc: 'Attach as many as you like, and say what each one is', sentBefore: false, named: true }
   };
   function docKinds(caseType, sendAs) {
     var k = [];
     if (sendAs === 'completed-form') k.push('completed-intake-form');
     k.push('rap-sheet');
-    if (['criminal', 'appeal', 'post-conviction', 'removal'].indexOf(caseType) !== -1) k.push('charging-documents');
+    if (['criminal', 'appeal', 'post-conviction'].indexOf(caseType) !== -1) k.push('charging-documents');
     if (caseType === 'family') k.push('family-court-pleadings');
     if (caseType === 'vop') k.push('probation-paperwork');
-    k.push('immigration-documents');
+    if (caseType === 'removal') k.push('other');   // W36: the RAP sheet, then the attorney's own named files
+    else k.push('immigration-documents');
     if (caseType === 'appeal' || caseType === 'post-conviction') k.push('immigration-advice', 'transcripts');
     return k;
   }

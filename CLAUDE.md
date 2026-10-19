@@ -391,8 +391,7 @@ every key and code the pages send.
   before, to follow or not available; RAP sheet completeness; anything else). On the upload way,
   Immigration, the case-type step and Other People are skipped (struck through on the bar) and
   Client asks only names and date of birth. Step labels sit on one line. The three fixes are
-  worded with the owner on their steps; the Removal questions (fix 2) are the owner's to set, and
-  until then that case type's step is left out. Chosen over seven longer steps.
+  worded with the owner on their steps; the Removal questions (fix 2) were set by the owner in W36. Chosen over seven longer steps.
 - **W12 1** (16 October 2026): step 2, **About You**: "Attorney's first name" and "Attorney's last
   name" side by side, both required (fix 1); Attorney Email (required) and Attorney Phone; Your
   Office Type, the six choices in two columns; the office found by typing part of its name, with
@@ -683,6 +682,22 @@ every key and code the pages send.
 - **W35, the owner's choice** (19 October 2026): **step 9 is "Review And Send"** on the step bar and "Review and
   send" as its heading, in place of "Check And Send" (W11 1 and W29 1 above use the old name). Measured: it still
   fits the step bar on a computer, at least 24 px clear of "Documents" at the narrowest computer width.
+- **W36 keep, with the owner's changes** (19 October 2026): the **Removal / USCIS** case type, set by the owner
+  (the old forms have no such section). Step 6 is headed **"Removal defense or USCIS applications"**, with no line
+  under the heading (the owner deleted "The questions for …"), and asks one required box, **"What Issues Would You
+  Like Advice On?"**, its guidance in the box: *e.g. "Client is in removal proceedings based on a NY conviction -
+  considering whether a vacatur is possible"; "Need help assessing whether client is inadmissible based on his
+  record in association with an adjustment application"* (key `removal.issues`, 6,000). At **Documents**, a removal
+  referral keeps the **Fingerprint RAP Sheet** box ("W36 keep": the record is the heart of the question, and the box
+  asks whether the RAP sheet is complete) and then has **"Your Documents"** (*Attach as many as you like, and say
+  what each one is*): no Attach Now / To Follow choice, any number of files, and under each file a required one-line
+  **"What is it?"** (200 characters; *e.g. Notice to Appear; I-213; denial of adjustment*), which becomes that
+  document's description at RIAC (the worker's kind `other`, one entry per file with its `note`). The accusatory
+  instruments and immigration documents boxes are not asked for removal. A name left empty is outlined in red (W31).
+  ⚠️ **Needs the worker's contract draft 13** (asked of the worker chat, 19 October 2026): draft 12 has no
+  `removal` answers and refuses `other` on a referral. Until the worker takes them, a removal referral will be
+  refused, so this case type must not go live before then. Tested against stand-ins (`riac-handover\W\tests\
+  w36-check.mjs`); pictures in `riac-handover\W\design\w36\` (mockup) and `w36c\` (as built).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -746,8 +761,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the Removal / USCIS questions
-  (the owner's to set, or that step stays out of the first version); the owner's Turnstile key; CS5's
+  come: the owner looks at it; the worker's contract draft 13 for
+  the Removal / USCIS step (W36); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
