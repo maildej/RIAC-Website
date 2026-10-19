@@ -137,7 +137,7 @@
             text: 'Please record (1) any existing or likely offer if the conviction is vacated or the sentence changed and (2) your client’s current objectives. (Even your best guess is very helpful information.)' }
         : { eg: 'e.g. "Take it to trial unless they offer x"; "client would probably accept y type of disposition"',
             text: 'Please record (1) any existing or likely offer to dispose of this case and (2) your client’s current objectives. (Even your best guess is very helpful information.)' } }),
-      Q('criminal.offenceDate', 'Date Of The Alleged Offence Or Misconduct (i.e. not simply arrest date)', 'long', { guidance:
+      Q('criminal.offenceDate', 'Date Of The Alleged Offense Or Misconduct (i.e. not simply arrest date)', 'long', { guidance:
         { eg: 'e.g. "August 2, 2026"; "between January and March 2026"', text: 'Please provide as much detail as possible if this is unclear (many immigration consequences depend on commission date)' } }),
       ticks('criminal.screeningIncident', 'Screening - The Incident', CHOICES.incident, { required: true, help: 'Select any which apply' }),
       Q('criminal.details', 'Criminal Case Info - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { copy: 'Criminal case: details and explanations' })

@@ -672,6 +672,10 @@ every key and code the pages send.
   one, so it is not linked. The words, symbols and PDF addresses are in `js/referral-data.js` (`ADVICE_FIRST`):
   **if an advisory's title on `advisories.html` changes, change it there too.** Pictures in
   `riac-handover\W\design\w32\`, `w32b\` (the mockups) and `w32c\` (as built).
+- **W33 offense** (19 October 2026): **US spelling, "offense", throughout the form's words**; the offense-date
+  question now reads "Date Of The Alleged Offense Or Misconduct (i.e. not simply arrest date)", matching its
+  guidance. The worker's key `criminal.offenceDate` keeps its spelling: it is a code shared with the worker, not
+  words on screen. The old form's other typing slips went with W16's offer guidance and W32's rewording.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -735,8 +739,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the wording still open (the old form's typing slips, the drafted
-  document descriptions); the owner's Turnstile key; CS5's
+  come: the owner looks at it; the wording still open (the drafted document descriptions, the
+  check-and-send step's heading); the owner's Turnstile key; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
