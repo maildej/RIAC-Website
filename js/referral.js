@@ -673,7 +673,7 @@
     var body = h('div', { class: 'sq-body' }, info.named ? [] : [pills]);
     if (st.status === 'attached') {
       var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', 'data-file': kind,
-        accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
+        accept: '.pdf,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
       var drop = h('div', { class: 'drop' }, [h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input, h('span', { class: 'drop-note', text: 'or drop them here' })]);
       drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('over'); });
       drop.addEventListener('dragleave', function () { drop.classList.remove('over'); });
@@ -761,7 +761,7 @@
       else {
         f.state = 'failed';
         f.retry = [413, 415, 409].indexOf(xhr.status) === -1;
-        f.error = xhr.status === 413 ? 'Too large to send.' : xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.'
+        f.error = xhr.status === 413 ? 'Too large to send.' : xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word (.docx), JPEG, PNG or HEIC.'
           : xhr.status === 409 ? 'Over the limit of ' + S.batch.maxFiles + ' files, ' + fmtBytes(S.batch.maxTotalBytes) + ' in all.'
           : 'Did not upload. Check your connection and try again.';
       }

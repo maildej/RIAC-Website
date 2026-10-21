@@ -261,7 +261,8 @@ names the tester's own email addresses, which do not belong in this public repos
 every key and code the pages send.
 
 - **File limits** (the owner's RW3 1): up to 20 files a referral or addition, 25 MB each, 100 MB
-  together. The pages read them from the worker's answer rather than writing them in, show them
+  together. **File types:** PDF, Word (.docx only; the old .doc is refused since 20 October 2026, security review CS5
+  finding 4), JPEG, PNG and HEIC; the pickers offer only these. The pages read them from the worker's answer rather than writing them in, show them
   before files are chosen, and name the file any refusal is about.
 - **Answer lengths** (RW4 1): 6,000 characters for the answers written at length, 1,000 for other
   long answers, 200 short, 100 names. The whole referral is at most 80 KB, which the page checks at
@@ -657,7 +658,7 @@ every key and code the pages send.
   **Words stay only where an answer is there but cannot be used:** an email address that is not one ("Please
   enter an email address, like name@example.org."), an office or court typed but not chosen from the list, and
   **files** (each refused file's reason on its row, e.g. "Over the 25 MB limit for one file." and "This kind
-  of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.", with "Remove the files that could not be sent;
+  of file cannot be sent: use PDF, Word (.docx), JPEG, PNG or HEIC." ("(.docx)" added 20 October 2026, when the old .doc was dropped: security review CS5, finding 4, the owner's yes), with "Remove the files that could not be sent;
   the reason is beside each." and "Please wait for every file to finish uploading." under the box). **The
   messages at Send are approved as drawn** (the owner: "the upload error and submission error are fine"): a
   failed connection ("Your referral may not have been sent: the connection failed. Check your connection and

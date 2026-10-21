@@ -303,7 +303,7 @@
   }
   function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }
   function showLimits() {
-    setLimits('Documents: up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word, JPEG, PNG or HEIC.');
+    setLimits('Documents: up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word (.docx), JPEG, PNG or HEIC.');
   }
 
   function drawAdd(r) {
@@ -327,7 +327,7 @@
   function docRow(kind) {
     var info = kind === 'other' ? { name: 'Something else' } : D.DOCS[kind];
     var id = 'a-' + kind;
-    var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
+    var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', accept: '.pdf,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
     input.addEventListener('change', function () { addFiles(kind, input.files); input.value = ''; });
     var right = h('div', { id: id + '-files' });
     var row = h('div', { class: 'add-doc', id: id }, [h('span', { class: 'nm', text: info.name }), right, h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input]);
@@ -383,7 +383,7 @@
       A.pumping = false;
       var b = {}; try { b = JSON.parse(xhr.responseText || '{}'); } catch (e) { /* */ }
       if (xhr.status === 201 && b.fileId) { f.state = 'done'; f.fileId = b.fileId; }
-      else { f.state = 'failed'; f.error = xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word, JPEG, PNG or HEIC.' : xhr.status === 413 ? 'Too large to send.' : 'Did not upload.'; }
+      else { f.state = 'failed'; f.error = xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word (.docx), JPEG, PNG or HEIC.' : xhr.status === 413 ? 'Too large to send.' : 'Did not upload.'; }
       drawFiles(); pump();
     };
     xhr.onerror = function () { A.pumping = false; f.state = 'failed'; f.error = 'Did not upload. Check your connection.'; drawFiles(); pump(); };
