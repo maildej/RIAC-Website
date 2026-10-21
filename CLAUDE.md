@@ -797,6 +797,14 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   come: the owner looks at it; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
+- **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
+  findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
+  (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14
+  by the worker chat. Check the report for anything still open before the go-live. Also live: the advisory search
+  display fix (#21).
+- **Before merging this branch**: `main` already has #20, #21 and #22, and this branch carries the same changes as
+  separate commits, so bring `main` into this branch first and check the result (the stylesheet's end and
+  `CLAUDE.md` are where the two meet).
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
   Claude, and no session can see a real Outlook. Send a test to an address that has never
   received mail from the sender before.
