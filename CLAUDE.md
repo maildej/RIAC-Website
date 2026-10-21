@@ -113,7 +113,7 @@ An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (l
 - **Decap is pinned** (security review CS5, finding 2, 20 October 2026): `admin/index.html` loads exactly
   `decap-cms@3.17.1` from unpkg with an integrity fingerprint, `sha384-d2pbrhjc5asvSK35gKkrgRIk0Wq+2CQynWnXtSsYWQawXCgBXhcAK737jBAKXT4T`,
   and `crossorigin="anonymous"`, so the browser refuses the file if unpkg ever serves anything else (before, `@^3.0.0`
-  loaded whatever 3.x unpkg offered). The fingerprint was checked against the same file in npm's own package.
+  loaded whatever 3.x unpkg offered). The fingerprint was checked against the same file in npm's own package. Live since 20 October 2026; the owner signed in afterwards and the advisory list opened.
   **Updating Decap means a new version number and a new fingerprint together**: hash the new file (`openssl dgst
   -sha384 -binary decap-cms.js | openssl base64 -A`), cross-check it with `npm pack decap-cms@<version>`, and change
   both in one edit; a new number with the old fingerprint leaves the admin page blank. The admin page has no
