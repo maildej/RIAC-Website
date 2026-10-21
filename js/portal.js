@@ -213,7 +213,9 @@
   function matches(r, term) {
     if (!term) return true;
     term = term.toLowerCase();
-    return [r.clientName, r.court, r.docket, r.reference, r.caseNumber, r.attorneyName].some(function (v) { return v && String(v).toLowerCase().indexOf(term) !== -1; });
+    if ([r.clientName, r.court, r.docket, r.reference, r.caseNumber, r.attorneyName].some(function (v) { return v && String(v).toLowerCase().indexOf(term) !== -1; })) return true;
+    // A reference ends in six digits (contract draft 14): read a typed O as 0 and I or L as 1, as the worker does.
+    return !!r.reference && String(r.reference).toLowerCase().indexOf(term.replace(/o/g, '0').replace(/[il]/g, '1')) !== -1;
   }
   function table(rows, term, staff) {
     var tb = h('tbody');

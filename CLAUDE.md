@@ -276,8 +276,9 @@ every key and code the pages send.
   refuses at the first step, before any file is sent ("daily-limit"); the page then shows the
   centre's contact details and the PDF forms, and keeps the attorney's answers on screen as a copy
   to print or save.
-- **A referral's reference** (RW6 1) looks like `R2-261016-7KQ4MX`: the centre's code, the New
-  York date, and six characters with no 0, O, 1, I, L or U. The pages show it exactly as the
+- **A referral's reference** (RW6 1, settled as digits in contract draft 14, 20 October 2026) looks like
+  `R2-261016-734062`: the centre's code, the New York date, and six random digits; an intake keyed in at RIAC has the
+  same form. The portal's search, like the worker, reads a typed O as 0 and I or L as 1. The pages show it exactly as the
   worker gives it (the mockups' shorter `R2-0142` is only a stand-in).
 - **The bot-check key** (19 October 2026): the live pages use the site key of the owner's Turnstile widget "nyriac.com
   referrals and portal" (Managed, nyriac.com and www.nyriac.com), `0x4AAAAAAFbnCVMLz6_diRwD` (six A's; copied from
