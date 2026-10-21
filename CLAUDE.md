@@ -728,6 +728,9 @@ every key and code the pages send.
   to end on 20 October 2026: removal to Region 2 with named files, to Erie by email, with no files, and on the upload
   way, all accepted, and the ten earlier test referrals still accepted (`w36-e2e.mjs`, `e2e-scenarios.mjs`). First tested against stand-ins (`riac-handover\W\tests\
   w36-check.mjs`); pictures in `riac-handover\W\design\w36\` (mockup) and `w36c\` (as built).
+- **W37 yes** (20 October 2026): with the portal's sign-in kept in the tab (security review CS5, finding 8), the line
+  beside Sign Out reads "You stay signed in until you close this tab, or for 12 hours at most." (it said "this
+  browser"; W5's card otherwise unchanged).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
