@@ -186,6 +186,17 @@ The point of the command is that a chat can be closed at any moment without losi
   `request.html`, `thanks.html`, `404.html`, `referral.html`, and `portal/index.html` and `portal/add.html` (whose links start `../`).
 - Pages use relative links (`advisories.html`); only `404.html` uses absolute links (`/advisories.html`) because it is served from other addresses; the portal's pages, one folder down, use `../`.
 - To publish changes: commit and push to `main` (or upload the changed files via github.com); GitHub Pages redeploys automatically in ~1 minute.
+- **Every public page carries a security policy** (a `<meta http-equiv="Content-Security-Policy">` right after
+  the charset line): scripts only from this site, no inline scripts or styles, fonts from Google, and on
+  `request.html` also Formspree. **A new page copies it, and colours or other styles go in `css/style.css`, never
+  in a `style="..."` attribute** (the policy would ignore it; the region colours are classes `.dot-r1`... and
+  `#region-1`...). The form and the portal have their own, wider policy. `admin/` has none yet: it needs Decap
+  pinned first (the security review's finding 2).
+- **The Download PDF button on `thanks.html` only ever points at one of this site's advisory PDFs**
+  (`advisories/<name>.pdf`, lower-case letters, digits and hyphens); anything else in the address leaves it on
+  `advisories.html`, and `request.html` passes nothing else on (`js/document-request.js`). It once took any
+  address, so a crafted link could run code on nyriac.com (security review CS5, finding 1, fixed 20 October 2026).
+  **Advisory PDF names must keep to that pattern.**
 
 ### Design rules
 
