@@ -451,3 +451,18 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 /* W36: the name under each file in "Your Documents" */
 .files .fnote { grid-column: 1 / -1; margin: .45rem 0 .1rem; }
 .ref-q .files .fnote > label { font-size: var(--fs-small); margin-bottom: .2rem; }
+
+/* The trial run (W39 1b): a band on the form and the portal while they are tested on nyriac.com with invented details.
+   Magenta is used nowhere else on the site. Its "Trial run" label fades three times as the page opens (4.8 seconds, inside
+   the five the accessibility standard allows), then stays; still for a device set to reduce motion. It goes at the
+   go-live, with the commit that added it. */
+.trial-band { --trial: #b0006e; background: var(--trial); color: #fff; border-radius: 8px; padding: .9rem 1.1rem;
+  margin: 0 0 1.4rem; font-size: var(--fs-small); line-height: 1.5; box-shadow: 0 3px 14px rgba(176,0,110,.25); }
+.trial-band p { margin: 0; }
+.trial-band p + p { margin-top: .35rem; }
+.trial-band a { color: #fff; text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
+.trial-tag { display: inline-block; background: #fff; color: var(--trial); font-family: var(--sans); font-size: var(--fs-label);
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: .18rem .55rem; border-radius: 3px;
+  margin-bottom: .45rem; animation: trial-fade 1.6s ease-in-out 3; }
+@keyframes trial-fade { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .trial-tag { animation: none; } }
