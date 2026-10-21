@@ -506,3 +506,10 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   #advisory-list h3 { min-height: 0; }
   :root { --fs-display: 1.9rem; }
 }
+
+/* Region colours for the dots in the region lists and the contact cards' top edge: set here, not in the
+   pages, so the pages' security policy needs no inline styles (security review, CS5). */
+.dot-r1 { background: var(--r1); } .dot-r2 { background: var(--r2); } .dot-r3 { background: var(--r3); }
+.dot-r4 { background: var(--r4); } .dot-r5 { background: var(--r5); } .dot-r6 { background: var(--r6); }
+#region-1 { --rc: var(--r1); } #region-2 { --rc: var(--r2); } #region-3 { --rc: var(--r3); }
+#region-4 { --rc: var(--r4); } #region-5 { --rc: var(--r5); } #region-6 { --rc: var(--r6); }

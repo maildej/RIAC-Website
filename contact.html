@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Find Your RIAC — RIAC</title>
   <meta name="description" content="Contact details for the six Regional Immigration Assistance Centers serving New York State, by county.">
@@ -124,12 +125,12 @@
 </svg>
       <p class="map-hint">Select your region on the map for contact details below</p>
       <ul class="legend">
-        <li><a href="#region-1"><span class="dot" style="background:var(--r1)"></span>1 &middot; Western New York</a></li>
-        <li><a href="#region-2"><span class="dot" style="background:var(--r2)"></span>2 &middot; Central New York</a></li>
-        <li><a href="#region-3"><span class="dot" style="background:var(--r3)"></span>3 &middot; Northern New York</a></li>
-        <li><a href="#region-4"><span class="dot" style="background:var(--r4)"></span>4 &middot; Hudson Valley</a></li>
-        <li><a href="#region-5"><span class="dot" style="background:var(--r5)"></span>5 &middot; New York City</a></li>
-        <li><a href="#region-6"><span class="dot" style="background:var(--r6)"></span>6 &middot; Long Island</a></li>
+        <li><a href="#region-1"><span class="dot dot-r1"></span>1 &middot; Western New York</a></li>
+        <li><a href="#region-2"><span class="dot dot-r2"></span>2 &middot; Central New York</a></li>
+        <li><a href="#region-3"><span class="dot dot-r3"></span>3 &middot; Northern New York</a></li>
+        <li><a href="#region-4"><span class="dot dot-r4"></span>4 &middot; Hudson Valley</a></li>
+        <li><a href="#region-5"><span class="dot dot-r5"></span>5 &middot; New York City</a></li>
+        <li><a href="#region-6"><span class="dot dot-r6"></span>6 &middot; Long Island</a></li>
       </ul>
     </div>
   </div>
@@ -140,7 +141,7 @@
 
     <div class="region-grid">
 
-      <div class="region-card" id="region-1" style="--rc: var(--r1)">
+      <div class="region-card" id="region-1">
         <span class="region-tag">Region 1</span>
         <h2>Western New York</h2>
         <p class="counties"><strong>Counties served</strong> Allegany, Cattaraugus, Cayuga, Chautauqua, Erie, Genesee, Livingston, Monroe, Niagara, Ontario, Orleans, Seneca, Steuben, Wayne, Wyoming, Yates</p>
@@ -152,7 +153,7 @@
         </div>
       </div>
 
-      <div class="region-card" id="region-2" style="--rc: var(--r2)">
+      <div class="region-card" id="region-2">
         <span class="region-tag">Region 2</span>
         <h2>Central New York</h2>
         <p class="counties"><strong>Counties served</strong> Broome, Chemung, Chenango, Cortland, Delaware, Herkimer, Jefferson, Lewis, Madison, Oneida, Onondaga, Oswego, Otsego, Schuyler, Tioga, Tompkins</p>
@@ -163,7 +164,7 @@
         </div>
       </div>
 
-      <div class="region-card" id="region-3" style="--rc: var(--r3)">
+      <div class="region-card" id="region-3">
         <span class="region-tag">Region 3</span>
         <h2>Northern New York</h2>
         <p class="counties"><strong>Counties served</strong> Albany, Clinton, Essex, Franklin, Fulton, Hamilton, Montgomery, Rensselaer, St.&nbsp;Lawrence, Saratoga, Schenectady, Schoharie, Warren, Washington</p>
@@ -174,7 +175,7 @@
         </div>
       </div>
 
-      <div class="region-card" id="region-4" style="--rc: var(--r4)">
+      <div class="region-card" id="region-4">
         <span class="region-tag">Region 4</span>
         <h2>Hudson Valley</h2>
         <p class="counties"><strong>Counties served</strong> Columbia, Dutchess, Greene, Orange, Putnam, Rockland, Sullivan, Ulster, Westchester</p>
@@ -186,7 +187,7 @@
         </div>
       </div>
 
-      <div class="region-card" id="region-5" style="--rc: var(--r5)">
+      <div class="region-card" id="region-5">
         <span class="region-tag">Region 5</span>
         <h2>New York City</h2>
         <p class="counties"><strong>Counties served</strong> Bronx, Kings (Brooklyn), New York (Manhattan), Queens, Richmond (Staten Island)</p>
@@ -198,7 +199,7 @@
         </div>
       </div>
 
-      <div class="region-card" id="region-6" style="--rc: var(--r6)">
+      <div class="region-card" id="region-6">
         <span class="region-tag">Region 6</span>
         <h2>Long Island</h2>
         <p class="counties"><strong>Counties served</strong> Nassau, Suffolk</p>
