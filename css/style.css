@@ -305,6 +305,9 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
    so the full-width featured card (plain .advisory-list) is unaffected. */
 #advisory-list { display: flex; flex-wrap: wrap; justify-content: center; }
 #advisory-list > li { flex: 0 1 320px; }
+/* The search hides a card by setting its hidden attribute; .advisory-list li's display: flex would otherwise
+   keep it showing (it did, until 20 October 2026). */
+#advisory-list > li[hidden] { display: none; }
 
 /* Navy title bar, with the advisory's symbol as a badge on its lower edge.
    The badge sits inside the h3 (hidden from screen readers), so the
