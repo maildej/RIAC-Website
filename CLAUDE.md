@@ -296,11 +296,17 @@ every key and code the pages send.
   one at a time, with its own progress bar. A batch past its hour, or made for another center, is made again (one more
   check) and the files sent again. **Send** posts the referral with an `Idempotency-Key`, so a retry never sends it
   twice.
-- **The portal** keeps its session in a cookie for `/portal/` only; the sign-in link's token comes after `#`, is read
+- **The portal** keeps its session in the browser tab only (`sessionStorage`, since 20 October 2026, security review
+  CS5 finding 8; it was a cookie for `/portal/`), so it is sent nowhere and ends when the tab closes: a portal page
+  opened in a new tab asks to sign in again ("Add To This Referral" opens in the same tab); the sign-in link's token comes after `#`, is read
   and cleared from the address bar at once, and works only with the secret this browser kept when it asked.
 - **Each page has a security policy** (a `<meta>` Content-Security-Policy) allowing scripts only from this site and
   Cloudflare's check, and connections only to the worker's two addresses (the live one and `localhost:8789` for
-  testing). No inline scripts or styles.
+  testing). No inline scripts or styles. **Framed by another site, the form and the portal draw nothing but a link to
+  open the page properly** (GitHub Pages cannot send the headers that forbid framing; security review CS5, finding 6).
+- **Go-live checklist** (security review CS5, finding 9), in the same step as the worker's MODE "live": **remove
+  `http://localhost:8789` from `connect-src` in the policy of `referral.html`, `portal/index.html` and
+  `portal/add.html`**; the live pages then talk only to the live worker.
 - **Testing locally:** the worker chat starts the worker on `localhost:8789` with stand-ins; serve this folder on
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal

@@ -11,6 +11,20 @@
   var app = document.getElementById('referral-app');
   if (!app || !D) return;
 
+  // Security review CS5, finding 6: this page never works inside another site's frame, where a hidden copy could be
+  // used to trick an attorney's clicks. Framed, it draws only a link to open it properly, and loads nothing else.
+  if (window.top !== window.self) {
+    var out = document.createElement('a');
+    out.href = location.href;
+    out.target = '_top';
+    out.textContent = 'Open this page on nyriac.com';
+    var para = document.createElement('p');
+    para.appendChild(out);
+    app.textContent = '';
+    app.appendChild(para);
+    return;
+  }
+
   var STEP_IDS = ['county', 'about', 'court', 'client', 'immigration', 'casetype', 'people', 'documents', 'check'];
   var LISTS = null;               // GET /v1/lists
   var FILES = {};                 // File objects by local id; kept in memory only

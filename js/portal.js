@@ -8,9 +8,23 @@
   var CFG = D.CONFIG;
   var app = document.getElementById('portal-app');
   if (!app || !D) return;
+
+  // Security review CS5, finding 6: this page never works inside another site's frame, where a hidden copy could be
+  // used to trick an attorney's clicks. Framed, it draws only a link to open it properly, and loads nothing else.
+  if (window.top !== window.self) {
+    var out = document.createElement('a');
+    out.href = location.href;
+    out.target = '_top';
+    out.textContent = 'Open this page on nyriac.com';
+    var para = document.createElement('p');
+    para.appendChild(out);
+    app.textContent = '';
+    app.appendChild(para);
+    return;
+  }
   var PAGE = app.getAttribute('data-page');
   var SECRET_KEY = 'riac-portal-secret';
-  var COOKIE = 'riac_portal';
+  var SESSION_KEY = 'riac_portal';
   var turnstileId = null;
 
   // ---------- Helpers ------------------------------------------------------------------------------------------------
@@ -54,14 +68,13 @@
 
   // ---------- The session ------------------------------------------------------------------------------------------
 
-  function session() {
-    var m = document.cookie.match(new RegExp('(?:^|; )' + COOKIE + '=([^;]*)'));
-    return m ? decodeURIComponent(m[1]) : null;
-  }
-  function setSession(v) {
-    document.cookie = COOKIE + '=' + encodeURIComponent(v) + '; Path=/portal/; SameSite=Strict' + (location.protocol === 'https:' ? '; Secure' : '');
-  }
-  function endSession() { document.cookie = COOKIE + '=; Path=/portal/; SameSite=Strict; Max-Age=0' + (location.protocol === 'https:' ? '; Secure' : ''); }
+  // Security review CS5, finding 8: the session is kept in this tab only (sessionStorage), never in a cookie, so it
+  // is sent nowhere and ends when the tab closes. A portal page opened in a new tab asks to sign in again.
+  function session() { try { return sessionStorage.getItem(SESSION_KEY); } catch (e) { return null; } }
+  function setSession(v) { try { sessionStorage.setItem(SESSION_KEY, v); } catch (e) { /* storage blocked: the page asks to sign in */ } }
+  function endSession() { try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* nothing kept */ } }
+  // Until 20 October 2026 the session was a cookie: clear any left behind.
+  document.cookie = SESSION_KEY + '=; Path=/portal/; SameSite=Strict; Max-Age=0' + (location.protocol === 'https:' ? '; Secure' : '');
 
   function api(method, path, body, headers) {
     var hd = body ? { 'Content-Type': 'application/json' } : {};
@@ -239,7 +252,7 @@
     if (me.name) left.appendChild(h('div', { class: 'contact', text: [me.email || data.email, me.phone].filter(Boolean).join(' · ') }));
     left.appendChild(h('div', { class: 'note', text: 'These are the details RIAC holds for you. If one is wrong, tell your RIAC.' }));
     var side = h('div', { class: 'side' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: signOut } }, ['Sign Out']),
-      h('span', { text: 'You stay signed in until you close this browser, or for 12 hours at most.' })]);
+      h('span', { text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]);
     app.appendChild(h('div', { class: 'me-card' }, [left, side]));
 
     var search = h('input', { type: 'search', id: 'ref-search', placeholder: 'Search by name, court or number', 'aria-label': 'Search your referrals by name, court or number' });
