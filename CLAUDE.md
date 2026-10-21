@@ -110,6 +110,14 @@ An unlisted, `noindex` admin page at `admin/index.html` running **Decap CMS** (l
 - Because GitHub Pages can't run server-side code, GitHub OAuth login is proxied through a **free Netlify site created only for this purpose** (Netlify doesn't host the actual site — nyriac.com stays on GitHub Pages). See `SETUP.md` for the one-time setup the owner needs to complete (registering a GitHub OAuth App, connecting Netlify, and adding `nyriac.com` as a domain on that Netlify site so its OAuth login recognizes requests from it), which fills in `site_domain` in `admin/config.yml`.
 - Uploads land in `advisories/` (PDF) and `advisories/source/` (Word doc) and create a small metadata entry under `cms/advisories/` that Decap uses for its list/search — this metadata isn't read by the public site. **Uploading a file here does not automatically add it as a card on `advisories.html`** — that step (title, summary, card styling) is still a manual edit, same as any other advisories.html change.
 - Only people with push access to the GitHub repo (or added as OAuth-approved users) can log in — that's the real access boundary, not the page's URL being unlisted.
+- **Decap is pinned** (security review CS5, finding 2, 20 October 2026): `admin/index.html` loads exactly
+  `decap-cms@3.17.1` from unpkg with an integrity fingerprint, `sha384-d2pbrhjc5asvSK35gKkrgRIk0Wq+2CQynWnXtSsYWQawXCgBXhcAK737jBAKXT4T`,
+  and `crossorigin="anonymous"`, so the browser refuses the file if unpkg ever serves anything else (before, `@^3.0.0`
+  loaded whatever 3.x unpkg offered). The fingerprint was checked against the same file in npm's own package.
+  **Updating Decap means a new version number and a new fingerprint together**: hash the new file (`openssl dgst
+  -sha384 -binary decap-cms.js | openssl base64 -A`), cross-check it with `npm pack decap-cms@<version>`, and change
+  both in one edit; a new number with the old fingerprint leaves the admin page blank. The admin page has no
+  security policy yet: one can only be tested with a real GitHub sign-in.
 
 ### Email signatures
 
