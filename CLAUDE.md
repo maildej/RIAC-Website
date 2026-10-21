@@ -234,7 +234,7 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 12, 18 October 2026, which adds W20's one change to draft 11: the addresses, what each takes and gives back, the
+The agreed contract (draft 13, 20 October 2026, which adds W36's removal answers and named files to draft 12: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It stays there: it
@@ -696,9 +696,10 @@ every key and code the pages send.
   **"What is it?"** (200 characters; *e.g. Notice to Appear; I-213; denial of adjustment*), which becomes that
   document's description at RIAC (the worker's kind `other`, one entry per file with its `note`). The accusatory
   instruments and immigration documents boxes are not asked for removal. A name left empty is outlined in red (W31).
-  ⚠️ **Needs the worker's contract draft 13** (asked of the worker chat, 19 October 2026): draft 12 has no
-  `removal` answers and refuses `other` on a referral. Until the worker takes them, a removal referral will be
-  refused, so this case type must not go live before then. Tested against stand-ins (`riac-handover\W\tests\
+  **The worker's contract draft 13** (20 October 2026) takes `removal.issues` (required on the questions way) and
+  `other` on any referral (attached only, note required, one line, 1 to 200); it is on the worker's main. Tested end
+  to end on 20 October 2026: removal to Region 2 with named files, to Erie by email, with no files, and on the upload
+  way, all accepted, and the ten earlier test referrals still accepted (`w36-e2e.mjs`, `e2e-scenarios.mjs`). First tested against stand-ins (`riac-handover\W\tests\
   w36-check.mjs`); pictures in `riac-handover\W\design\w36\` (mockup) and `w36c\` (as built).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
@@ -763,8 +764,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
   `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; the worker's contract draft 13 for
-  the Removal / USCIS step (W36); CS5's
+  come: the owner looks at it; CS5's
   security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
