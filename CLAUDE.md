@@ -253,7 +253,8 @@ nothing from the private repositories goes in it: no code, no database, table or
 IDs, and no keys. The pages know only the worker's public addresses and what each one takes
 and gives back, agreed with the worker's chat. On the desktop the pages are previewed on
 `http://localhost:8790` (the port is this chat's, given by the dispatcher), beside the worker on 8789.
-The agreed contract (draft 13, 20 October 2026, which adds W36's removal answers and named files to draft 12: the addresses, what each takes and gives back, the
+The agreed contract (draft 17, 20 October 2026; draft 13 added W36's removal answers and named files, draft 17 the
+client's address: the addresses, what each takes and gives back, the
 errors, and a short code for every answer on the form; files go up one at a time before the
 referral itself) is in the shared hand-over folder on the desktop,
 `riac-handover\RW\public-contract-draft.md` and `riac-handover\W\referral-keys.md`. It stays there: it
@@ -308,6 +309,20 @@ every key and code the pages send.
 - **Go-live checklist** (security review CS5, finding 9), in the same step as the worker's MODE "live": **remove
   `http://localhost:8789` from `connect-src` in the policy of `referral.html`, `portal/index.html` and
   `portal/add.html`**; the live pages then talk only to the live worker.
+- **The trial run, then the go-live** (agreed 20 October 2026 with the worker chat and the dispatcher; the full plan,
+  with every check, is `riac-handover\W\trial-plan.md` on the desktop). Each step waits for the owner's yes.
+  - **S0:** the deployed worker made able to take a test referral: the case-start chat's receiving side and what the
+    portal reads, the email tenant chat's two Microsoft registrations, the owner's secrets in Cloudflare. Until
+    then it answers "unavailable" to every Send. Started on the owner's W38 1.
+  - **S1:** the pages go on nyriac.com **unlisted**, shortly before the trial and only once S0 works (the dispatcher's
+    advice): a branch `claude/referral-trial` is this branch plus **one commit** that puts back the live site's menu
+    ("Intake Forms"), `intake.html` and `index.html`, and adds the trial band (W39) and `noindex` to the three new
+    pages. That branch is merged to `main`.
+  - **S2:** the trial on nyriac.com with invented details, example.com and the owner's two addresses only (the worker,
+    in test mode, refuses any other address). **S3:** fixes, then a go / no-go from the owner.
+  - **H1, H2:** the worker goes live first (the trial's rows deleted, MODE "live"), then on `main` **the trial commit
+    is reverted** and `localhost:8789` taken out of the three policies, in one pull request; that publishes Send A Case.
+    ⚠️ Worker first, so no real attorney ever meets "only a test email address can be used".
 - **Testing locally:** the worker chat starts the worker on `localhost:8789` with stand-ins; serve this folder on
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
@@ -731,6 +746,23 @@ every key and code the pages send.
 - **W37 yes** (20 October 2026): with the portal's sign-in kept in the tab (security review CS5, finding 8), the line
   beside Sign Out reads "You stay signed in until you close this tab, or for 12 hours at most." (it said "this
   browser"; W5's card otherwise unchanged).
+- **W38 1** (20 October 2026): the case-start chat and the email tenant chat were asked to start their parts of S0 (see
+  "The trial run, then the go-live" above). Chosen over waiting until each finished its current work.
+- **W39 1b, with the owner's change** (21 October 2026): during the trial the form and the portal pages carry a **magenta
+  "Trial run" band** under the page title: *"This page is being tested with invented details. Please do not enter a real
+  client's details here: nothing sent from it is treated as a real case. To send us a case today, use the intake
+  forms."* (linking `intake.html`). Magenta is used nowhere else on the site. The owner's change: **the white "Trial run"
+  label fades slowly out and in**; settled as **three fades as the page opens, then it stays on** (W39 1b), chosen over
+  fading all the time (the band scrolls away once the form is begun, and the accessibility standard asks that anything
+  blinking past five seconds can be stopped). Built as three fades of 1.6 seconds (4.8 in all; the mockup's 2.4 would
+  have run past five seconds), and still on a device set to reduce motion. The band comes off at H2. Chosen over no
+  band. Pictures in `riac-handover\W\design\w39\`.
+- **W40 1** (21 October 2026): **the client's address** (CS58 2, the owner in the case-start chat; contract draft 17) is
+  asked on the Client step **after the aliases question** and before country of birth, both ways of sending:
+  "Client's Address (If Known)", optional, several lines, up to 500 characters, with *e.g. "123 Main Street, Apt 4,
+  Syracuse, NY 13202"* in the box (key `client.address`). Chosen over straight after the date of birth, which would part
+  the aliases question from the name and date of birth it is about. Tested: sent with its line breaks on every route,
+  a longer one refused by the worker and linked back to the Client step (`e2e-scenarios.mjs`, `w40-check.mjs`).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -793,10 +825,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 **Website:**
 
 - **The referral form and the attorney portal** (see the section of that name above): **built on the branch
-  `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. Still to
-  come: the owner looks at it; CS5's
-  security review by a fresh chat and an OWASP ZAP scan; the soft go-live on invented data (CS13 1); the hard go-live.
-  Airtable's own form is no longer public, so it is **not** linked from this site.
+  `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. CS5's
+  security review is done. Still to come, in the order of "The trial run, then the go-live" above: S0 (other chats'
+  work, started 20 October 2026 on W38 1), then the unlisted trial pages, the trial on invented data (CS13 1), and the
+  go-live. Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14

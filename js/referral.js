@@ -145,7 +145,7 @@
 
   // ---------- Drawing a question ---------------------------------------------------------------------------------
 
-  function limitOf(q) { return { name: 100, short: 200, email: 254, tel: 40, long: 6000, note: 1000, search: 200 }[q.type] || 200; }
+  function limitOf(q) { return q.max || { name: 100, short: 200, email: 254, tel: 40, long: 6000, note: 1000, search: 200 }[q.type] || 200; }
 
   function guidanceNode(g) {
     if (!g) return null;
@@ -882,7 +882,7 @@
   var KEYS = {
     attorney: ['firstName', 'lastName', 'email', 'phone', 'officeType', 'office', 'officeNotListed', 'officeDetails', 'privateDetails'],
     case: ['caseType', 'urgentBy', 'sendAs'],
-    client: ['firstName', 'lastName', 'dob', 'aliases', 'aliasDetails', 'countryOfBirth', 'english', 'language', 'entryStatus', 'entryDate', 'currentStatus',
+    client: ['firstName', 'lastName', 'dob', 'aliases', 'aliasDetails', 'address', 'countryOfBirth', 'english', 'language', 'entryStatus', 'entryDate', 'currentStatus',
       'currentStatusDate', 'aNumber', 'pendingApplications', 'screeningClient', 'screeningClientUnknownWhy', 'screeningIce', 'screeningIceUnknownWhy',
       'screeningImmigration', 'screeningImmigrationUnknownWhy', 'immigrationAttorney', 'familyAny', 'familyAnyUnknownWhy', 'family', 'familyUnknownWhy', 'details'],
     court: ['name', 'notListed', 'notListedDetails', 'docket', 'nextDate', 'iceInvolvement', 'protectionOrder', 'protectionOrderUnknownWhy', 'protectionOrders',

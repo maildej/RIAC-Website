@@ -245,6 +245,7 @@
     Q('client.dob', 'Client DoB', 'date', { desc: 'If unknown, please leave blank.' }),
     Q('client.aliases', 'Any Known Aliases, Or Variations To The Name Or Date Of Birth?', 'radio', { choices: CHOICES.aliases, inline: true, required: true }),
     Q('client.aliasDetails', 'Details Of Known Aliases, Or Variations To The Name Or Date Of Birth', 'note', { show: function (A) { return has(A, 'client.aliases', 'yes'); } }),
+    Q('client.address', 'Client’s Address (If Known)', 'note', { max: 500, guidance: { eg: 'e.g. "123 Main Street, Apt 4, Syracuse, NY 13202"' } }),   // W40 1 (CS58 2): both ways
     { type: 'pair', way: 'questions', items: [Q('client.countryOfBirth', 'Client’s Country of Birth', 'short'), Q('client.language', 'Client’s Primary Language', 'short')] },
     Q('client.english', 'Client’s Level Of English', 'radio', { choices: CHOICES.english, inline: true, way: 'questions' })
   ];
