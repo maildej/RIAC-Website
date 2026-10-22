@@ -791,6 +791,11 @@ every key and code the pages send.
   answer (`receiptFrom`, asked of the worker chat 22 October 2026), so the page holds no copy of each centre's address;
   without it the card says only "Not in your inbox within a few minutes? Look in your Junk or Spam folder." Nothing
   shows when no receipt went. Chosen over the Junk sentence alone. Pictures in `riac-handover\W\design\w48\`.
+- **W53 1** (22 October 2026, the owner trying the portal on his phone: "This wording needs improvement"): the sign-in
+  card says under "Your email address" **"Use the email address you put on your referrals."** and under the button **"No
+  password needed. We'll email you a sign-in link: open it on this device, in this same browser, within 15 minutes.
+  Each link works once."** The old line for office staff is gone: letting staff sign in for their attorney is not built
+  yet. Chosen over keeping a line for office staff. Pictures in `riac-handover\W\design\w53\`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

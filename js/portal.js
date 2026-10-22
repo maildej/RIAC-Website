@@ -125,9 +125,9 @@
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') ask(); });
     var card = h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Sign in' }),
       h('div', { class: 'field' }, [h('label', { for: 'si-email', text: 'Your email address' }),
-        h('span', { class: 'desc', text: 'The address you send referrals from. Office staff: your own address, once your RIAC has given you access to your office’s referrals.' }), input]),
+        h('span', { class: 'desc', text: 'Use the email address you put on your referrals.' }), input]),   // W53 1
       bot, msg, btn,
-      h('p', { class: 'small', text: 'No password: we email you a link that works once, for 15 minutes, in this browser only.' })]);
+      h('p', { class: 'small', text: 'No password needed. We’ll email you a sign-in link: open it on this device, in this same browser, within 15 minutes. Each link works once.' })]);
     app.appendChild(card);
     app.appendChild(h('p', { class: 'under-card' }, ['Not sent us a case yet? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
     var botFailed = false;   // W46 1: the check failed (not merely unfinished), so say so rather than "please wait"
