@@ -796,6 +796,9 @@ every key and code the pages send.
   password needed. We'll email you a sign-in link: open it on this device, in this same browser, within 15 minutes.
   Each link works once."** The old line for office staff is gone: letting staff sign in for their attorney is not built
   yet. Chosen over keeping a line for office staff. Pictures in `riac-handover\W\design\w53\`.
+- **W54 1** (22 October 2026): **Region 2's email on this site is cny@nyriac.com** (Find Your RIAC, and the form's
+  centre card), matching the emails the worker sends and where replies to receipts go. It was RIAC2@ocbaacp.org.
+  Chosen over keeping the OCBA address and changing the emails.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -874,8 +877,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   Claude, and no session can see a real Outlook. Send a test to an address that has never
   received mail from the sender before.
 - **[Owner] Update the OneDrive signature file's Region 2 number** to **(315) 898-2593** in every
-  signature block it holds. An online session cannot reach OneDrive, and the individual staff
-  blocks exist only in that file.
+  signature block it holds, **and its Region 2 email to cny@nyriac.com** (W54 1, 22 October 2026). An online
+  session cannot reach OneDrive, and the individual staff blocks exist only in that file.
 - **[Owner, optional] Delete the Chief Defender survey's form in Formspree** (`mdaqzrpq`,
   "Chief Defender Referral Survey"). The survey page is gone from the site, so nothing posts to
   it; deleting it frees the slot. The responses already emailed to RIAC2@ocbaacp.org are not

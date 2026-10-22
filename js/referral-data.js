@@ -20,7 +20,7 @@
     R1: { name: 'Western New York RIAC (Region 1)', short: 'Western New York RIAC', colour: 'var(--r1)', blocks: [
       { org: 'Legal Aid Bureau of Buffalo', address: '290 Main Street, Suite 400, Buffalo, NY 14202', phone: '(716) 853-9555', tel: '+17168539555', ext: 'ext. 269', email: 'sfeal@labbuffalo.org' }] },
     R2: { name: 'Central New York RIAC (Region 2)', short: 'Central New York RIAC', colour: 'var(--r2)', blocks: [
-      { address: '109 South Warren Street, Suite 220, Syracuse, NY 13202', phone: '(315) 898-2593', tel: '+13158982593', email: 'RIAC2@ocbaacp.org' }] },
+      { address: '109 South Warren Street, Suite 220, Syracuse, NY 13202', phone: '(315) 898-2593', tel: '+13158982593', email: 'cny@nyriac.com' }] },
     R3: { name: 'Northern New York RIAC (Region 3)', short: 'Northern New York RIAC', colour: 'var(--r3)', blocks: [
       { address: '112 State Street, Suite 900, Albany, NY 12207', phone: '(518) 447-7708', tel: '+15184477708', email: 'ercan.kilic@albanycountyny.gov' }] },
     R4: { name: 'Hudson Valley RIAC (Region 4)', short: 'Hudson Valley RIAC', colour: 'var(--r4)', blocks: [
