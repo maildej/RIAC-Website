@@ -1294,7 +1294,11 @@
     document.title = 'Referral Sent — RIAC';
     app.textContent = '';
     var facts = [h('dt', { text: 'Reference' }), h('dd', { text: r.reference }), h('dt', { text: 'Sent' }), h('dd', { text: fmtWhen(r.sentAt) })];
-    if (r.receiptTo) facts.push(h('dt', { text: 'Receipt' }), h('dd', { text: 'emailed to ' + r.receiptTo }));
+    if (r.receiptTo) {   // W48 1: where the receipt comes from, and Junk (a new sender's receipts were junked in the trial)
+      var junk = 'Not in your inbox within a few minutes? Look in your Junk or Spam folder' + (r.receiptFrom ? ', and mark it “Not junk”.' : '.');
+      facts.push(h('dt', { text: 'Receipt' }), h('dd', null, ['emailed to ' + r.receiptTo,
+        h('span', { class: 'receipt-note' }, r.receiptFrom ? ['It comes from ', h('strong', { text: r.receiptFrom }), '. ' + junk] : [junk])]));
+    }
     var card = h('div', { class: 'sent-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), (email ? 'Emailed to ' : 'Sent to ') + c.short]),
       h('dl', { class: 'sent-facts' }, facts),
       h('div', { class: 'only-copy' }, [h('p', null, [h('strong', { text: 'This page is your only copy.' }), ' Nothing is kept on this website, so once you leave or close this page it cannot be shown again.']),

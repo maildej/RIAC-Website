@@ -785,6 +785,12 @@ every key and code the pages send.
   you are not a robot could not be completed. Please reload the page and try again."** (the form had said "did not
   load", wrong when it loaded and did not pass; the portal had said nothing until the button was pressed). Kept once in
   `js/referral-data.js`. Chosen over "did not pass", wrong when it never loaded.
+- **W48 1** (22 October 2026): after Send, under "Receipt: emailed to …", the card says **"It comes from
+  <sending address>. Not in your inbox within a few minutes? Look in your Junk or Spam folder, and mark it “Not
+  junk”."** In the trial a brand-new sender's receipts were put in Junk. The sending address comes from the worker's
+  answer (`receiptFrom`, asked of the worker chat 22 October 2026), so the page holds no copy of each centre's address;
+  without it the card says only "Not in your inbox within a few minutes? Look in your Junk or Spam folder." Nothing
+  shows when no receipt went. Chosen over the Junk sentence alone. Pictures in `riac-handover\W\design\w48\`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

@@ -293,6 +293,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sent-facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; padding: 1.2rem 1.6rem 0; font-size: var(--fs-small); }
 .sent-facts dt { color: var(--muted); }
 .sent-facts dd { color: var(--ink); font-weight: 600; }
+.receipt-note { display: block; margin-top: .35rem; font-weight: 400; }   /* W48 1 */
+.receipt-note strong { white-space: nowrap; }
 .only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }
 .only-copy p { margin: 0; }
 .only-copy .btn { background: var(--r5); color: #fff; flex: none; }
