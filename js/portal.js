@@ -130,15 +130,17 @@
       h('p', { class: 'small', text: 'No password: we email you a link that works once, for 15 minutes, in this browser only.' })]);
     app.appendChild(card);
     app.appendChild(h('p', { class: 'under-card' }, ['Not sent us a case yet? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
+    var botFailed = false;   // W46 1: the check failed (not merely unfinished), so say so rather than "please wait"
     loadTurnstile(function () {
       if (!document.getElementById('bot-check')) return;
-      turnstileId = window.turnstile.render('#bot-check', { sitekey: CFG.turnstileKey, theme: 'light', callback: function (t) { token = t; },
-        'expired-callback': function () { token = null; } });
+      turnstileId = window.turnstile.render('#bot-check', { sitekey: CFG.turnstileKey, theme: 'light', callback: function (t) { token = t; botFailed = false; },
+        'expired-callback': function () { token = null; },
+        'error-callback': function () { token = null; botFailed = true; msg.textContent = D.BOT_CHECK_FAILED; } });
     });
     function ask() {
       var e = input.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { msg.textContent = 'Please enter your email address, like name@example.org.'; input.focus(); return; }
-      if (!token) { msg.textContent = 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
+      if (!token) { msg.textContent = botFailed ? D.BOT_CHECK_FAILED : 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
       btn.disabled = true; btn.textContent = 'Sending…';
       var secret = randomSecret();
       try { localStorage.setItem(SECRET_KEY, secret); } catch (x) { /* a browser that blocks storage cannot sign in */ }

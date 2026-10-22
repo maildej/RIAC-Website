@@ -822,7 +822,7 @@
       if (!target || target.childElementCount) return;
       if (turnstileId !== null) { try { window.turnstile.remove(turnstileId); } catch (e) { /* already gone */ } turnstileId = null; }
       turnstileId = window.turnstile.render(target, { sitekey: CFG.turnstileKey, callback: onToken, theme: 'light',
-        'error-callback': function () { setLimits(['The check that you are not a robot did not load. Please reload the page.']); } });
+        'error-callback': function () { setLimits([D.BOT_CHECK_FAILED]); } });
     });
   }
   function renewBatch() {   // a batch past its hour, or made for another center: make a new one, and send the files again

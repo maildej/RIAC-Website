@@ -295,9 +295,12 @@
     return k;
   }
 
+  // W46 1: shown on the form and the portal's sign-in when Cloudflare's check fails to load or does not pass
+  var BOT_CHECK_FAILED = 'The check that you are not a robot could not be completed. Please reload the page and try again.';
+
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
-    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has
+    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED
   };
 })();

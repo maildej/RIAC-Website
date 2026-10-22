@@ -235,6 +235,9 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .fstate { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
 .fstate.ok { color: var(--r2); font-weight: 600; }
 .fstate.bad { color: var(--bad); font-weight: 600; white-space: normal; }
+/* W45 1: a file's error goes on its own line under the name (beside it, a long reason squeezed the name to a letter a line) */
+.files .fstate.bad { grid-column: 1 / -1; grid-row: 2; }
+.files li > .link-btn { grid-column: -2; }
 .bar { display: inline-block; width: 5rem; height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
 .bar span { display: block; height: 100%; background: var(--navy); }
 .sq-body .sub { margin: .9rem 0 1rem; }
@@ -445,6 +448,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .err-summary .err-link { color: #8a2c2c; }
 @media (max-width: 600px) {
   .files .fname { grid-column: 1 / -1; }
+  .files .fstate.bad, .files li > .link-btn { grid-column: auto; grid-row: auto; }   /* the name has its own line already */
 }
 .sq-body > .field-err { margin: .5rem 0 1rem; }
 

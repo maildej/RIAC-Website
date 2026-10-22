@@ -317,9 +317,16 @@ every key and code the pages send.
   - **S1:** the pages go on nyriac.com **unlisted**, shortly before the trial and only once S0 works (the dispatcher's
     advice): a branch `claude/referral-trial` is this branch plus **one commit** that puts back the live site's menu
     ("Intake Forms"), `intake.html` and `index.html`, and adds the trial band (W39) and `noindex` to the three new
-    pages. That branch is merged to `main`.
+    pages. That branch is merged to `main`. **Done 21 October 2026** (W41 1): `main` is the trial version.
   - **S2:** the trial on nyriac.com with invented details, example.com and the owner's two addresses only (the worker,
     in test mode, refuses any other address). **S3:** fixes, then a go / no-go from the owner.
+    **The emailed centres were tried on 21 October 2026** (W42, W44): four referrals sent and arrived with their files,
+    and every refusal behaved (a file past 2.8 MB, `.doc` and a `.doc` renamed `.docx`, an address outside the test
+    ones, Send pressed twice). Region 2 and the portal wait for the case-start chat's receiving side. ⚠️ Found then, and
+    the email chats' to settle before go-live: the emails reached Junk or showed as "Unverified" (sender
+    authentication for nyriac.com), and they name Regions 1 and 3 differently from this site.
+    ⚠️ **The trial is run from the owner's own Chrome (Claude in Chrome), not the app's built-in browser:** on nyriac.com
+    the real Cloudflare check refuses the built-in browser, even when a person ticks the box (error 600010).
   - **H1, H2:** the worker goes live first (the trial's rows deleted, MODE "live"), then on `main` **the trial commit
     is reverted** and `localhost:8789` taken out of the three policies, in one pull request; that publishes Send A Case.
     ⚠️ Worker first, so no real attorney ever meets "only a test email address can be used".
@@ -763,6 +770,19 @@ every key and code the pages send.
   Syracuse, NY 13202"* in the box (key `client.address`). Chosen over straight after the date of birth, which would part
   the aliases question from the name and date of birth it is about. Tested: sent with its line breaks on every route,
   a longer one refused by the worker and linked back to the Client step (`e2e-scenarios.mjs`, `w40-check.mjs`).
+- **W41 1** (21 October 2026): the unlisted trial pages went on nyriac.com as soon as the emailed centres could be
+  tried, without waiting for Region 2 (chosen over trying everything in one sitting later).
+- **W42 1, then W44 1** (21 October 2026): the trial's test referrals are sent by Claude with the owner at the desk, in
+  the owner's own Chrome, where Cloudflare's check passes by itself (W42's plan, the owner ticking the check in the
+  app's browser, failed: the check refuses that browser). Chosen over the owner sending them by hand.
+- **W45 1** (21 October 2026): when a file cannot be sent, **the reason goes on its own line under the file name**,
+  with Remove beside the name. On a computer a long reason beside the name had squeezed the name to a letter a line.
+  Phones were already right and are unchanged; the portal's file rows follow the same rule. Chosen over keeping the
+  reason beside a name held at a fixed width. Pictures in `riac-handover\W\design\w45\`.
+- **W46 1** (21 October 2026): when Cloudflare's check fails, the form and the portal's sign-in say **"The check that
+  you are not a robot could not be completed. Please reload the page and try again."** (the form had said "did not
+  load", wrong when it loaded and did not pass; the portal had said nothing until the button was pressed). Kept once in
+  `js/referral-data.js`. Chosen over "did not pass", wrong when it never loaded.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -824,11 +844,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 **Website:**
 
-- **The referral form and the attorney portal** (see the section of that name above): **built on the branch
-  `claude/epic-gould-6023c8`, not on `main`**, so nyriac.com still shows the old PDF-only Intake Forms page. CS5's
-  security review is done. Still to come, in the order of "The trial run, then the go-live" above: S0 (other chats'
-  work, started 20 October 2026 on W38 1), then the unlisted trial pages, the trial on invented data (CS13 1), and the
-  go-live. Airtable's own form is no longer public, so it is **not** linked from this site.
+- **The referral form and the attorney portal** (see the section of that name above): **on nyriac.com unlisted, as
+  a trial** (since 21 October 2026, W41 1); the menu still says Intake Forms and the old PDF-only page is what
+  attorneys see. CS5's security review is done. Still to come, in the order of "The trial run, then the go-live" above:
+  the trial of Region 2 and the portal (once the case-start chat's receiving side is in), the fixes (S3), the owner's
+  go / no-go, then the go-live (H1, H2). Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14
