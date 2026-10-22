@@ -322,9 +322,11 @@ every key and code the pages send.
     in test mode, refuses any other address). **S3:** fixes, then a go / no-go from the owner.
     **The emailed centres were tried on 21 October 2026** (W42, W44): four referrals sent and arrived with their files,
     and every refusal behaved (a file past 2.8 MB, `.doc` and a `.doc` renamed `.docx`, an address outside the test
-    ones, Send pressed twice). Region 2 and the portal wait for the case-start chat's receiving side. ⚠️ Found then, and
-    the email chats' to settle before go-live: the emails reached Junk or showed as "Unverified" (sender
-    authentication for nyriac.com), and they name Regions 1 and 3 differently from this site.
+    ones, Send pressed twice). Region 2 and the portal wait for the case-start chat's receiving side. Found then: at
+    Outlook.com the emails went to **Junk**. The email chat read the headers: nyriac.com's sender checks all pass, so
+    this is the receiving filter's judgement of a brand-new sender, not a fault to fix. (The "Unverified" tag was only
+    on the copy OCBA forwards on, whose mail filter rewrites links.) The emails also name Regions 1 and 3 differently
+    from this site; that is the worker chat's to settle with the owner.
     ⚠️ **The trial is run from the owner's own Chrome (Claude in Chrome), not the app's built-in browser:** on nyriac.com
     the real Cloudflare check refuses the built-in browser, even when a person ticks the box (error 600010).
   - **H1, H2:** the worker goes live first (the trial's rows deleted, MODE "live"), then on `main` **the trial commit
