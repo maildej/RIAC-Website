@@ -385,6 +385,11 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .list-head h2 { font-size: var(--fs-section); color: var(--navy); white-space: nowrap; }
 .list-head input[type="search"] { flex: 1; font: inherit; padding: .55rem .9rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .list-head input::placeholder { color: var(--help); font-style: italic; font-size: var(--fs-small); }
+/* W58 1: Sort beside the search, as wide as the list's last column; then All and the four groups, five buttons of one size */
+.list-head select { flex: 0 0 13rem; align-self: stretch; font: inherit; font-size: var(--fs-small); padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+.list-show { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin: .5rem 0 .7rem; }
+.list-show .count { display: inline-block; min-width: 1.5em; padding: 0 .4em; border-radius: 99px; background: #eceae3; color: #444; font-size: var(--fs-label); }
+.list-show .pill:has(input:checked) .count { background: color-mix(in srgb, var(--cream) 25%, transparent); color: var(--cream); }
 .list-note { font-size: var(--fs-small); color: var(--help); font-style: italic; margin-bottom: .8rem; }
 .ref-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: var(--fs-small); }
 .ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--navy); background: color-mix(in srgb, var(--navy) 4%, white); padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
@@ -392,16 +397,37 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-table tr:last-child td { border-bottom: 0; }
 .ref-table .cl { font-weight: 600; color: var(--ink); }
 .ref-table .sub { color: var(--muted); }
+.ref-table .nw { white-space: nowrap; } /* a reference never breaks at its hyphens */
 .case-no { display: inline-block; background: var(--navy); color: var(--cream); border-radius: 99px; padding: 0 .45rem; font-size: var(--fs-label); font-weight: 600; }
+.ref-table .status { display: block; } /* as wide as its column (W58 1) */
 .status { display: inline-block; background: #eceae3; color: #444; border-radius: 99px; padding: .15rem .7rem; font-size: var(--fs-label); font-weight: 600; text-align: center; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 20%, white); color: #8a4210; }
 .ref-table .act { text-align: right; white-space: nowrap; }
 .ref-table .act .btn { height: 2.1rem; display: inline-flex; align-items: center; padding: 0 .8rem; font-size: var(--fs-small); }
 mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
-.closed-box { background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-top: 1rem; }
-.closed-box > summary { cursor: pointer; padding: .7rem 1rem; font-family: var(--serif); font-weight: 600; color: var(--navy); }
-.closed-box > summary span { font-family: var(--sans); font-weight: 400; font-size: var(--fs-small); color: var(--muted); }
-.closed-box .ref-table { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.ref-group { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-top: 1rem; }
+.ref-group:first-child { margin-top: 0; }
+.ref-group > summary { cursor: pointer; padding: .7rem 1rem; font-family: var(--serif); font-weight: 600; color: var(--navy); }
+.ref-group > summary span { font-family: var(--sans); font-weight: 400; font-size: var(--fs-small); color: var(--muted); }
+.ref-group .ref-table { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.ref-group.you::before { content: ""; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 5px; background: var(--r5); border-radius: 10px 0 0 10px; }
+@media (min-width: 1101px) {
+  /* The columns line up from one group to the next; the client's takes what the others leave */
+  .ref-table { table-layout: fixed; }
+  .ref-table tr > :nth-child(2) { width: 20%; }
+  .ref-table tr > :nth-child(3) { width: 7.5rem; }
+  .ref-table tr > :nth-child(4) { width: 15.5rem; }
+  .ref-table tr > :nth-child(5) { width: 13rem; }
+}
+/* Narrower, each referral is a card of its own (a table this wide no longer fits) */
+@media (max-width: 1100px) {
+  .ref-table thead { display: none; }
+  .ref-table, .ref-table tbody, .ref-table tr, .ref-table td { display: block; width: 100%; }
+  .ref-table tr { border-bottom: 1px solid var(--line); padding: .5rem 0; }
+  .ref-table td { border: 0; padding: .25rem .9rem; }
+  .ref-table .act { text-align: left; }
+  .ref-table .act .btn { width: 100%; justify-content: center; }
+}
 .empty-note { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; font-size: var(--fs-small); color: var(--muted); }
 
 .back-link { display: inline-block; font-size: var(--fs-small); font-weight: 600; margin-bottom: .8rem; }
@@ -425,12 +451,9 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .me-card .side { text-align: left; justify-items: stretch; }
   .me-card .side .btn { justify-content: center; }
   .list-head { flex-direction: column; align-items: stretch; }
-  .ref-table thead { display: none; }
-  .ref-table, .ref-table tbody, .ref-table tr, .ref-table td { display: block; width: 100%; }
-  .ref-table tr { border-bottom: 1px solid var(--line); padding: .5rem 0; }
-  .ref-table td { border: 0; padding: .25rem .9rem; }
-  .ref-table .act { text-align: left; }
-  .ref-table .act .btn { width: 100%; justify-content: center; }
+  .list-head select { flex: none; width: 100%; }
+  .list-show { grid-template-columns: 1fr 1fr; }
+  .list-show .all { grid-column: 1 / -1; }
   .add-doc { grid-template-columns: 1fr; }
   .add-actions { flex-direction: column-reverse; }
 }

@@ -230,6 +230,10 @@ repository), without sharing any of their code.
   grid of equal buttons, and the home page's two buttons stack, full width. The one exception:
   on a computer the menu's "Practice Advisories" is wider than the other three, because four
   items that wide would push the menu onto a second row.
+- **Drop-downs, search bars and pills (status flags included) are full width, or the width of an
+  obvious column**, unless there is a reason not to (the owner, 22 October 2026, with W58 1). On
+  the portal's list: the search fills the line beside the heading, Sort is as wide as the
+  table's last column, and each status pill fills its column; on a phone each is full width.
 - **Symbols** (`images/symbols.svg`) are drawn for this site: solid navy shapes with one orange
   detail, on a 48-unit square. The navy follows the text colour; the cream and orange come from
   `--icon-fill` and `--icon-accent`, which `.symbol` sets. A page shows one with
@@ -799,6 +803,24 @@ every key and code the pages send.
 - **W54 1** (22 October 2026): **Region 2's email on this site is cny@nyriac.com** (Find Your RIAC, and the form's
   centre card), matching the emails the worker sends and where replies to receipts go. It was RIAC2@ocbaacp.org.
   Chosen over keeping the OCBA address and changing the emails.
+- **W58 1, with the owner's changes** (22 October 2026, after trying the portal): **the portal's list in four groups**,
+  every referral in one: **Received** (no case opened yet), **Waiting on you** (RIAC needs something from the
+  attorney, before or after a case is opened), **Case open** (the case number shows; also after advice is sent), and
+  **Closed**. The owner's own idea, in place of the first drawing's Open / Waiting on you / All; the labels are the
+  short ones suggested ("intake" and "pending case" are RIAC's words, not the attorney's). **Five buttons of one size**,
+  All and the four groups, each with its count (of the matches while searching); on a phone All runs full width over
+  two rows of two. **Sort** (Status, Newest first, Oldest first, Client name) sits beside the search, as wide as the
+  table's last column. Sorted by **Status**, All shows the four groups as boxes in that order, Waiting on you edged
+  orange and Closed folded (it opens when a search finds something in it); any other sort shows one list with each
+  referral's status on its row. Status is offered under All only. The view chosen is kept in the tab, so Back from Add
+  To This Referral finds it as it was. The owner's changes: **"Where it stands" is now "Status"** (the column and the
+  sort; W5 1 named it), and the design rule above on drop-downs, search bars and pills. On a computer the columns line
+  up from one group to the next; below 1,100 px wide each referral is a card (the table no longer fits). Chosen over
+  the case page's Show and Sort By drop-downs (the owner's inspiration: a drop-down suits the case page's many filters,
+  buttons the portal's five). **Waiting on you comes from the worker's `waitingOnYou`** (contract draft 20, with what
+  counts settled by the owner as W63 and built by the database chat); until the worker sends it, the page uses the
+  status "Waiting for documents". Pictures in `riac-handover\W\design\w58\`, `w58b\` (the mockups) and `w58c\` (as
+  built); checks in `riac-handover\W\tests\w58-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

@@ -1,5 +1,5 @@
 // The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
-// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes") and W6 1 in CLAUDE.md.
+// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1 and W58 1 in CLAUDE.md.
 // The session is kept in a cookie for /portal/ only; the worker ends it after 12 hours at most.
 (function () {
   'use strict';
@@ -219,20 +219,47 @@
     // A reference ends in six digits (contract draft 14): read a typed O as 0 and I or L as 1, as the worker does.
     return !!r.reference && String(r.reference).toLowerCase().indexOf(term.replace(/o/g, '0').replace(/[il]/g, '1')) !== -1;
   }
-  function table(rows, term, staff) {
+  // W58 1 (22 October 2026): every referral is in one of four groups. A closed one is Closed; an open one is Waiting on
+  // you if it needs something from the attorney (the worker's waitingOnYou, contract draft 20; until that is sent, the
+  // status that says so), otherwise Case open once RIAC has opened a case, and Received before then.
+  var GROUPS = [['received', 'Received'], ['you', 'Waiting on you'], ['case', 'Case open'], ['closed', 'Closed']];
+  var SORTS = [['status', 'Status'], ['newest', 'Newest first'], ['oldest', 'Oldest first'], ['client', 'Client name']];
+  var VIEW_KEY = 'riac-portal-view';
+  function groupOf(r) {
+    if (!r.isOpen) return 'closed';
+    if (typeof r.waitingOnYou === 'boolean' ? r.waitingOnYou : /waiting for documents/i.test(r.status || '')) return 'you';
+    return r.caseNumber ? 'case' : 'received';
+  }
+  var byName = window.Intl && Intl.Collator ? new Intl.Collator('en', { sensitivity: 'base' }).compare : function (a, b) { return a < b ? -1 : a > b ? 1 : 0; };
+  var SORT_BY = {
+    newest: function (a, b) { return (b.receivedOn || '').localeCompare(a.receivedOn || ''); },
+    oldest: function (a, b) { return (a.receivedOn || '').localeCompare(b.receivedOn || ''); },
+    client: function (a, b) { return byName(a.clientName || '', b.clientName || '') || SORT_BY.newest(a, b); }
+  };
+  // The view chosen is kept in this tab, so Back from Add To This Referral finds the list as it was left.
+  function keptView() {
+    var v = {};
+    try { v = JSON.parse(sessionStorage.getItem(VIEW_KEY) || '{}') || {}; } catch (e) { /* none kept */ }
+    var known = function (list, x) { return list.some(function (g) { return g[0] === x; }); };
+    return { show: v.show === 'all' || known(GROUPS, v.show) ? v.show : 'all', sort: known(SORTS, v.sort) ? v.sort : 'status' };
+  }
+  function keepView(v) { try { sessionStorage.setItem(VIEW_KEY, JSON.stringify(v)); } catch (e) { /* storage blocked: not kept */ } }
+
+  function table(rows, term, staff, head) {
     var tb = h('tbody');
     rows.forEach(function (r) {
       var client = h('td', null, [h('div', { class: 'cl' }, [marked(r.clientName, term)]),
-        h('div', { class: 'sub' }, ['Reference ', marked(r.reference, term), r.caseNumber ? ' · Case ' : '', r.caseNumber ? h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]) : '']),
+        h('div', { class: 'sub' }, [h('span', { class: 'nw' }, ['Reference ', marked(r.reference, term)]), r.caseNumber ? ' · ' : '',
+          r.caseNumber ? h('span', { class: 'nw' }, ['Case ', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)])]) : '']),
         staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
       var rec = h('td', null, [h('div', { text: fmtDay(r.receivedOn) }), r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]);
       tb.appendChild(h('tr', null, [client, court, rec, h('td', null, [statusPill(r)]),
         h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Add To This Referral' })])]));
     });
-    return h('table', { class: 'ref-table' }, [h('thead', null, [h('tr', null, ['Client', 'Court', 'Received', 'Where it stands', ''].map(function (t) {
+    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Court', 'Received', 'Status', ''].map(function (t) {
       return h('th', { scope: 'col', text: t });
-    }))]), tb]);
+    }))]) : null, tb]);
   }
 
   function list() {
@@ -259,29 +286,55 @@
       h('span', { text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]);
     app.appendChild(h('div', { class: 'me-card' }, [left, side]));
 
+    // W58 1: the search and Sort on one line (Sort over the list's last column), then five buttons of one size, All and
+    // the four groups, each with its count (of the matches while searching). Sorted by Status, All shows the four groups
+    // as boxes, Waiting on you edged orange and Closed folded; any other sort shows one list, each status on its row.
+    var view = keptView();
     var search = h('input', { type: 'search', id: 'ref-search', placeholder: 'Search by name, court or number', 'aria-label': 'Search your referrals by name, court or number' });
-    app.appendChild(h('div', { class: 'list-head' }, [h('h2', { text: 'RIAC Referrals:' }), search]));
-    app.appendChild(h('p', { class: 'list-note', text: 'Newest first. A referral sent in the last few minutes may take a little while to appear here.' }));
+    var sortSel = h('select', { id: 'ref-sort', 'aria-label': 'Sort your referrals' });
+    app.appendChild(h('div', { class: 'list-head' }, [h('h2', { text: 'RIAC Referrals:' }), search, sortSel]));
+    var buttons = [['all', 'All']].concat(GROUPS).map(function (g) {
+      var input = h('input', { type: 'radio', name: 'ref-show', value: g[0] });
+      var count = h('span', { class: 'count' });
+      input.addEventListener('change', function () { view.show = g[0]; keepView(view); draw(); });
+      return { id: g[0], input: input, count: count, label: h('label', { class: 'pill' + (g[0] === 'all' ? ' all' : '') }, [input, h('span', null, [g[1] + ' ', count])]) };
+    });
+    app.appendChild(h('div', { class: 'list-show', role: 'radiogroup', 'aria-label': 'Show' }, buttons.map(function (b) { return b.label; })));
+    app.appendChild(h('p', { class: 'list-note', text: 'A referral sent in the last few minutes may take a little while to appear here.' }));
     var area = h('div', { 'aria-live': 'polite' });
     app.appendChild(area);
     app.appendChild(h('p', { class: 'under-card' }, ['Sending a new one? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
 
-    var all = (data.referrals || []).slice().sort(function (a, b) { return (b.receivedOn || '').localeCompare(a.receivedOn || ''); });
+    var all = (data.referrals || []).slice();
     function draw() {
       var term = search.value.trim();
+      var hits = all.filter(function (r) { return matches(r, term); });
+      var inGroup = function (rows, g) { return rows.filter(function (r) { return g === 'all' || groupOf(r) === g; }); };
+      buttons.forEach(function (b) { b.input.checked = b.id === view.show; b.count.textContent = String(inGroup(hits, b.id).length); });
+      // Status sorts into the groups, so it is offered under All only; within one group it reads as Newest first.
+      var by = view.show !== 'all' && view.sort === 'status' ? 'newest' : view.sort;
+      sortSel.textContent = '';
+      SORTS.forEach(function (s) { if (s[0] !== 'status' || view.show === 'all') sortSel.appendChild(h('option', { value: s[0], text: 'Sort: ' + s[1] })); });
+      sortSel.value = by;
       area.textContent = '';
-      var open = all.filter(function (r) { return r.isOpen && matches(r, term); });
-      var closed = all.filter(function (r) { return !r.isOpen; });
-      var closedHits = closed.filter(function (r) { return matches(r, term); });
-      if (open.length) area.appendChild(table(open, term, staff));
-      else area.appendChild(h('div', { class: 'empty-note', text: term ? 'No open referral matches “' + term + '”.' : 'No open referrals.' }));
-      if (closed.length) {
-        var det = h('details', { class: 'closed-box', open: !!term && closedHits.length > 0 }, [h('summary', null, ['Closed referrals ',
-          h('span', { text: term ? '(' + closedHits.length + ' of ' + closed.length + ' match' + (closedHits.length === 1 ? 'es' : '') + ')' : '(' + closed.length + ')' })])]);
-        if (closedHits.length) det.appendChild(table(closedHits, term, staff));
-        area.appendChild(det);
+      var none = term ? 'No referral' + (view.show === 'all' ? '' : ' here') + ' matches “' + term + '”.'
+        : !all.length ? 'You have no referrals here yet.' : view.show === 'you' ? 'Nothing is waiting on you.' : 'None at the moment.';
+      if (view.show === 'all' && by === 'status') {
+        GROUPS.forEach(function (g) {
+          var rows = inGroup(hits, g[0]).sort(SORT_BY.newest);
+          if (!rows.length) return;
+          var total = inGroup(all, g[0]).length;
+          area.appendChild(h('details', { class: 'ref-group ' + g[0], open: g[0] !== 'closed' || !!term }, [h('summary', null, [g[1] + ' ',
+            h('span', { text: term ? '(' + rows.length + ' of ' + total + ' match' + (rows.length === 1 ? 'es' : '') + ')' : '(' + rows.length + ')' })]),
+            table(rows, term, staff, !area.childNodes.length)]));
+        });
+        if (!area.childNodes.length) area.appendChild(h('div', { class: 'empty-note', text: none }));
+        return;
       }
+      var rows = inGroup(hits, view.show).sort(SORT_BY[by]);
+      area.appendChild(rows.length ? table(rows, term, staff, true) : h('div', { class: 'empty-note', text: none }));
     }
+    sortSel.addEventListener('change', function () { view.sort = sortSel.value; keepView(view); draw(); });
     search.addEventListener('input', draw);
     draw();
   }
