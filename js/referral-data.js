@@ -12,7 +12,10 @@
     // Cloudflare's published test key (always passes) until the owner makes the real widget.
     turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
-    draftKey: 'riac-referral-draft'
+    draftKey: 'riac-referral-draft',
+    // Send RIAC An Update (W59 A): the kinds of update offered. An offer or a disposition is offered on nyriac.com only
+    // once RIAC's database files it as one (the worker chat says when); with one kind, "What is this about?" is not asked.
+    updateKinds: local ? ['message', 'offer', 'disposition'] : ['message']
   };
 
   // The centers. Their details are a copy of contact.html: if that page changes, change this too (W7 1).
@@ -298,9 +301,18 @@
   // W46 1: shown on the form and the portal's sign-in when Cloudflare's check fails to load or does not pass
   var BOT_CHECK_FAILED = 'The check that you are not a robot could not be completed. Please reload the page and try again.';
 
+  // W59 A: "What is this about?" on Send RIAC An Update, with the worker's codes (contract draft 21): the tile, the
+  // question over the box, and the name shown after Send. An offer or a disposition needs words (W68 a: a disposition
+  // marks the case disposed at RIAC). No descriptions and no guidance in the box (the owner).
+  var UPDATE_ABOUT = [
+    { code: 'message', tile: 'Note to RIAC', box: 'Your note to RIAC', sent: 'Note to RIAC' },
+    { code: 'offer', tile: 'Report an offer', box: 'The offer', sent: 'Offer' },
+    { code: 'disposition', tile: 'Report a disposition', box: 'The disposition', sent: 'Disposition' }
+  ];
+
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
-    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED
+    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, UPDATE_ABOUT: UPDATE_ABOUT
   };
 })();

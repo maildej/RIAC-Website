@@ -49,7 +49,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
 | `intake.html` | **Send A Case** (W2 1; the address is kept): two cards, **Send Us A New Case** (the form, orange) and **Your Referrals** (the portal's sign-in), with the paper intake forms beneath |
 | `referral.html` | **The referral form**, nine steps drawn by `js/referral.js` from `js/referral-data.js`, sent to the worker. See "The referral form and the attorney portal" |
-| `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Add To This Referral), both run by `js/portal.js`. Links inside use `../` |
+| `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Send RIAC An Update, once Add To This Referral), both run by `js/portal.js`. Links inside use `../` |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
 | `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
 | `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the "Before You Receive RIAC Advice" warnings with their advisories' titles and PDF addresses (W32 1; a copy of what `advisories.html` lists); the worker's address and the Turnstile key. Change wording here | 
@@ -308,7 +308,7 @@ every key and code the pages send.
   twice.
 - **The portal** keeps its session in the browser tab only (`sessionStorage`, since 20 October 2026, security review
   CS5 finding 8; it was a cookie for `/portal/`), so it is sent nowhere and ends when the tab closes: a portal page
-  opened in a new tab asks to sign in again ("Add To This Referral" opens in the same tab); the sign-in link's token comes after `#`, is read
+  opened in a new tab asks to sign in again ("Send RIAC An Update" opens in the same tab); the sign-in link's token comes after `#`, is read
   and cleared from the address bar at once, and works only with the secret this browser kept when it asked.
 - **Each page has a security policy** (a `<meta>` Content-Security-Policy) allowing scripts only from this site and
   Cloudflare's check, and connections only to the worker's two addresses (the live one and `localhost:8789` for
@@ -851,6 +851,34 @@ every key and code the pages send.
   Pictures in `riac-handover\W\design\w65\` (mockups) and `w65c\` (as built); checks `tests\w65-check.mjs`.
 - **W66 1** (22 October 2026): the smaller cream title card on **every page that has it**, not the portal only (see
   Design rules). Chosen over the portal's two pages only.
+- **W68 a** (22 October 2026): **a disposition the attorney reports through the portal marks the case disposed at
+  RIAC at once**, and staff then answer the database's follow-up question on it (which puts it in front of them). Chosen
+  over the note arriving marked "reported by the attorney" for staff to confirm, which nothing would have brought to
+  their attention. An offer is a label only.
+- **W59 A, with the owner's changes** (22 October 2026; the owner: "the note is almost an afterthought"): **Add To This
+  Referral becomes "Send RIAC An Update"** (the list's button, the page's title and its bar, "Send RIAC an update"), and
+  the page leads with the message: "What is this about?", **three tiles of one size, chosen first**: **Note to RIAC**
+  (chosen to start), **Report an offer**, **Report a disposition**; the question over the box follows the choice ("Your
+  note to RIAC", "The offer", "The disposition"); then **Documents (optional)**, the same boxes as before. The owner's
+  changes: **no description under the tiles and no guidance in the box**. An offer or a disposition needs words: with
+  none, the box turns red (W31, no words; files alone are not enough). After Send, "Sent to RIAC" and "What you sent:"
+  with the kind (Note to RIAC, Offer, Disposition). The referral at the top keeps its status in a column as wide as the
+  list's, full width on a phone (the full-width rule, W58 1). Sent as `addition.about` (`message`, `offer`,
+  `disposition`; contract draft 21). Tiles one above another below 900 px. Chosen over B (the box first, then ticking
+  "It reports an offer / a disposition"), whose guidance could not follow the kind. ⚠️ **On nyriac.com only Note to RIAC
+  is offered, with no question, until RIAC's database tags offers and dispositions** (the worker chat says when): then
+  `updateKinds` in `js/referral-data.js` becomes all three for the live site too. Localhost always shows all three.
+  The page promises no reply ("RIAC sees it with this referral"). Pictures in `riac-handover\W\design\w59\` (mockup)
+  and `w59c\` (as built); checks `tests\w59c-check.mjs`, and `tests\w59-e2e.mjs` against the worker chat's local worker.
+- **W69, the owner's layout** (22 October 2026): on the portal list, **under the client's name, labels with their values
+  lined up from card to card**: **Reference:** (the reference in an outlined pill; the owner's "reference is good", over
+  his first "RIAC Intake:", because the card after Send, the copy and the receipt all say Reference), **RIAC Case No:**
+  (the navy pill) once there is a case, **Received:** the date, and **Closed:** the date on a closed one. The Received
+  column goes, so the court and docket, one over the other, get a wider column. On the smallest phones (350 px and
+  under) each label sits over its value. **The "Attorney:" line is off** (the owner asked why another attorney's name
+  showed): it is for office staff signing in for an attorney, which is not built; until then the worker cannot tell
+  staff from the attorney, so the line and the search by attorney wait for it. Pictures `riac-handover\W\design\w69\`
+  (mockup) and `w59c\` (as built).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -919,9 +947,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   at the soft launch - I would like this fully operational, hidden from public view, so we can play with it. No real data
   will be going in until hard launch." The go-live (H1, H2) waits until the owner says "hard launch". Meanwhile, **the
   owner's portal additions**, one decision at a time, a mockup first: done and live, W58 1 (the list's groups, buttons
-  and Sort), W63 (what counts as waiting on you; the database side to build), W65 A and W66 1 (cards and title cards).
-  Still to decide: **W59** (Add To This Referral doubling as "message RIAC", offers and dispositions arriving tagged; first
-  ask whether an attorney's reported disposition marks the case disposed at once or only after staff check it), **W60**
+  and Sort), W63 (what counts as waiting on you; built by the database chat, sent by the worker since contract draft 20),
+  W65 A and W66 1 (cards and title cards). **Built on the branch `claude/portal-update`, waiting for the owner's yes to
+  publish: W59 A with W68 a (Send RIAC An Update) and W69 (the labelled cards).** Offers and dispositions then wait for
+  the database's tagging (see W59 A). Next to ask: whether a note or an offer sent through the portal should flag itself
+  to staff (today nothing does; only a disposition reaches them, W68 a). Still to decide: **W60**
   (cases with no online referral behind them: how far back), **W61** (what RIAC has received, per kind of document:
   a file arrived, or staff checked it), **W62** (passwords as well as emailed links; the worker chat advises passkeys if
   anything), and whether a court typed as "not listed" should show on the list as typed (a database change). Also S3's

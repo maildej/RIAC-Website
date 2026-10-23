@@ -360,7 +360,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .bot-check.done { min-height: 0; }
 
 /* ============================================================
-   The attorney portal (portal/): sign-in (W4 1), the list (W5 1, "W5 yes"), Add To This Referral (W6 1)
+   The attorney portal (portal/): sign-in (W4 1), the list (W5 1, "W5 yes"), Send RIAC An Update (W6 1, W59 A)
    ============================================================ */
 
 .sign-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; max-width: 26rem; margin: 0 auto; padding: 1.4rem 1.5rem 1.5rem; }
@@ -399,8 +399,16 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-table .sub { color: var(--muted); }
 .ref-table .nw { white-space: nowrap; } /* a reference never breaks at its hyphens */
 .case-no { display: inline-block; background: var(--navy); color: var(--cream); border-radius: 99px; padding: 0 .45rem; font-size: var(--fs-label); font-weight: 600; }
+/* Under the client's name, labels and values lined up from card to card (W69): the reference in an outlined pill, the
+   case number in the navy one */
+.kv { display: grid; grid-template-columns: 6.6rem max-content; gap: .3rem .5rem; align-items: center; margin: .4rem 0 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; white-space: nowrap; }
+.ref-pill { display: inline-block; white-space: nowrap; background: color-mix(in srgb, var(--navy) 7%, white); border: 1px solid color-mix(in srgb, var(--navy) 30%, white); color: var(--navy); border-radius: 99px; padding: .05rem .55rem; font-size: var(--fs-label); font-weight: 600; }
+.kv .case-no { padding: .1rem .55rem; }
+@media (max-width: 350px) { .kv { grid-template-columns: 1fr; row-gap: 0; } .kv dd { margin-bottom: .3rem; } } /* the smallest phones: each label over its value */
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list */
-.ref-table .status { display: flex; align-items: center; min-height: 2.1rem; } /* as tall as Add To This Referral (W65) */
+.ref-table .status { display: flex; align-items: center; min-height: 2.1rem; } /* as tall as Send RIAC An Update (W65) */
 .status { display: inline-block; background: color-mix(in srgb, var(--navy) 6%, white); color: var(--ink); border-left: 4px solid var(--navy); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: left; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 16%, white); border-left-color: var(--r5); color: #8a4210; }
 .status.closed { background: #f1efea; border-left-color: #a7a49b; color: var(--muted); }
@@ -418,10 +426,9 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   /* The columns line up from one group to the next; the client's takes what the others leave. Everything in a row
      centred on one line (the owner, W65). */
   .ref-table { table-layout: fixed; border-collapse: separate; border-spacing: 0 .55rem; margin: -.55rem 0; }
-  .ref-table tr > :nth-child(2) { width: 20%; }
-  .ref-table tr > :nth-child(3) { width: 7.5rem; }
-  .ref-table tr > :nth-child(4) { width: 15.5rem; }
-  .ref-table tr > :nth-child(5) { width: 13rem; }
+  .ref-table tr > :nth-child(2) { width: 27%; }
+  .ref-table tr > :nth-child(3) { width: 15.5rem; }
+  .ref-table tr > :nth-child(4) { width: 13rem; }
   .ref-table td { vertical-align: middle; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .ref-table td:first-child { border-left: 1px solid var(--line); border-radius: 10px 0 0 10px; }
   .ref-table td:last-child { border-right: 1px solid var(--line); border-radius: 0 10px 10px 0; }
@@ -443,9 +450,22 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
 .add-card > h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .8rem 1.4rem; display: flex; align-items: center; gap: .7rem; }
 .add-card .inner { padding: 1.2rem 1.4rem 1.4rem; }
-.which { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: center; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.2rem; }
-.which .cl { font-weight: 600; }
-.which .status { margin-left: auto; }
+/* The referral at the top of Send RIAC An Update: its status in a column as wide as the list's (W58 1), full width on a phone */
+.which { display: grid; grid-template-columns: 1fr 15.5rem; gap: .5rem 1rem; align-items: center; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.4rem; }
+.which .cl { font-weight: 600; color: var(--ink); }
+.which .sub { color: var(--muted); }
+.which .status { display: flex; align-items: center; min-height: 2.1rem; }
+/* "What is this about?" (W59 A): three tiles of one size, chosen like a radio button; one above another below 900 px */
+.about-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; }
+.about-tiles .tile { display: flex; margin: 0; padding: .3rem .6rem; gap: .45rem; font-size: var(--fs-small); font-weight: 600; color: var(--navy); } /* not the site's .field label */
+.about-tiles .tile .box { border-radius: 50%; }
+.about-tiles .tile:has(input:checked) .box { box-shadow: inset 0 0 0 3px #fff; }
+.about-tiles .tile:has(input:checked) .box::after { content: none; }
+.docs-head { border-top: 2px solid color-mix(in srgb, var(--navy) 20%, white); padding-top: 1rem; margin: .4rem 0 .5rem; }
+.docs-head .lab { font-weight: 600; color: var(--navy); }
+.docs-head .opt { color: var(--muted); font-size: var(--fs-small); }
+@media (max-width: 900px) { .about-tiles { grid-template-columns: 1fr; } }
+.about-tag { display: inline-block; white-space: nowrap; background: var(--navy); color: var(--cream); border-radius: 6px; padding: .1rem .5rem; font-size: var(--fs-label); font-weight: 600; }
 .add-doc { display: grid; grid-template-columns: 12rem 1fr auto; gap: .8rem; align-items: start; padding: .6rem 0; border-top: 1px solid var(--line); font-size: var(--fs-small); }
 .add-doc .nm { font-weight: 600; color: var(--navy); }
 .add-doc .btn { height: 2.2rem; display: inline-flex; align-items: center; padding: 0 .9rem; }
@@ -462,6 +482,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .list-show .all { grid-column: 1 / -1; }
   .add-doc { grid-template-columns: 1fr; }
   .add-actions { flex-direction: column-reverse; }
+  .which { grid-template-columns: 1fr; }
 }
 @media print {
   .back-link, .add-actions .btn { display: none !important; }
@@ -469,7 +490,6 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-small); }
 .add-card .pre { white-space: pre-line; display: block; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem .9rem; }
 .add-card .inner > p { font-size: var(--fs-small); margin-bottom: .6rem; }
-.ref-table td:nth-child(3) > div:first-child { white-space: nowrap; }
 /* A tick box's label reads as an answer, not as a question */
 .ref-q .field > label.tick-line { display: flex; gap: .5rem; align-items: center; font-weight: 400; font-size: var(--fs-text); color: var(--ink); margin: 0; }
 .ref-q .field > label.tick-long { display: flex; gap: .6rem; align-items: flex-start; font-weight: 400; font-size: var(--fs-small); color: var(--ink); margin-bottom: 0; }

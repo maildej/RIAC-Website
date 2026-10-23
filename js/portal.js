@@ -1,5 +1,5 @@
 // The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
-// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1 and W58 1 in CLAUDE.md.
+// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1 and W59 A in CLAUDE.md.
 // The session is kept in a cookie for /portal/ only; the worker ends it after 12 hours at most.
 (function () {
   'use strict';
@@ -212,10 +212,10 @@
     if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
     return frag;
   }
-  function matches(r, term) {
+  function matches(r, term, staff) {
     if (!term) return true;
     term = term.toLowerCase();
-    if ([r.clientName, r.court, r.docket, r.reference, r.caseNumber, r.attorneyName].some(function (v) { return v && String(v).toLowerCase().indexOf(term) !== -1; })) return true;
+    if ([r.clientName, r.court, r.docket, r.reference, r.caseNumber, staff ? r.attorneyName : null].some(function (v) { return v && String(v).toLowerCase().indexOf(term) !== -1; })) return true;
     // A reference ends in six digits (contract draft 14): read a typed O as 0 and I or L as 1, as the worker does.
     return !!r.reference && String(r.reference).toLowerCase().indexOf(term.replace(/o/g, '0').replace(/[il]/g, '1')) !== -1;
   }
@@ -236,7 +236,7 @@
     oldest: function (a, b) { return (a.receivedOn || '').localeCompare(b.receivedOn || ''); },
     client: function (a, b) { return byName(a.clientName || '', b.clientName || '') || SORT_BY.newest(a, b); }
   };
-  // The view chosen is kept in this tab, so Back from Add To This Referral finds the list as it was left.
+  // The view chosen is kept in this tab, so Back from Send RIAC An Update finds the list as it was left.
   function keptView() {
     var v = {};
     try { v = JSON.parse(sessionStorage.getItem(VIEW_KEY) || '{}') || {}; } catch (e) { /* none kept */ }
@@ -248,16 +248,21 @@
   function table(rows, term, staff, head) {
     var tb = h('tbody');
     rows.forEach(function (r) {
-      var client = h('td', null, [h('div', { class: 'cl' }, [marked(r.clientName, term)]),
-        h('div', { class: 'sub' }, [h('span', { class: 'nw' }, ['Reference ', marked(r.reference, term)]), r.caseNumber ? ' · ' : '',
-          r.caseNumber ? h('span', { class: 'nw' }, ['Case ', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)])]) : '']),
+      // W69 (the owner): under the client's name, each label with its value beside it, lined up from card to card. The
+      // date received is one of them, so the court and docket, one over the other, have the room its column had.
+      var facts = h('dl', { class: 'kv' });
+      var fact = function (k, v) { facts.appendChild(h('dt', { text: k })); facts.appendChild(h('dd', null, [v])); };
+      fact('Reference:', h('span', { class: 'ref-pill' }, [marked(r.reference, term)]));
+      if (r.caseNumber) fact('RIAC Case No:', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]));
+      fact('Received:', fmtDay(r.receivedOn));
+      if (r.closedOn) fact('Closed:', fmtDay(r.closedOn));
+      var client = h('td', null, [h('div', { class: 'cl' }, [marked(r.clientName, term)]), facts,
         staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
-      var rec = h('td', null, [h('div', { text: fmtDay(r.receivedOn) }), r.closedOn ? h('div', { class: 'sub' }, ['Closed ', h('span', { class: 'nw', text: fmtDay(r.closedOn) })]) : null]);
-      tb.appendChild(h('tr', null, [client, court, rec, h('td', null, [statusPill(r)]),
-        h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Add To This Referral' })])]));
+      tb.appendChild(h('tr', null, [client, court, h('td', null, [statusPill(r)]),
+        h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Send RIAC An Update' })])]));
     });
-    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Court', 'Received', 'Status', ''].map(function (t) {
+    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Court', 'Status', ''].map(function (t) {
       return h('th', { scope: 'col', text: t });
     }))]) : null, tb]);
   }
@@ -276,7 +281,9 @@
   function drawList(data) {
     clear();
     var me = data.me || {};
-    var staff = me.isAttorney === false;
+    // Each row's attorney is named for office staff signing in for an attorney, which is not built yet: until then the
+    // worker cannot tell staff from the attorney (isAttorney is always false), so the line stays off (W69).
+    var staff = false;
     // W65 A: three short lines. The name (until the worker can supply one, the address) and Sign Out; the office, email
     // and phone; how long the sign-in lasts.
     var name = me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email;
@@ -318,7 +325,7 @@
     var all = (data.referrals || []).slice();
     function draw() {
       var term = search.value.trim();
-      var hits = all.filter(function (r) { return matches(r, term); });
+      var hits = all.filter(function (r) { return matches(r, term, staff); });
       var inGroup = function (rows, g) { return rows.filter(function (r) { return g === 'all' || groupOf(r) === g; }); };
       buttons.forEach(function (b) { b.input.checked = b.id === view.show; b.count.textContent = String(inGroup(hits, b.id).length); });
       // Status sorts into the groups, so it is offered under All only; within one group it reads as Newest first.
@@ -353,10 +360,11 @@
     api('POST', '/v1/portal/sign-out').then(function () { endSession(); signInCard('', 'You are signed out.'); });
   }
 
-  // ---------- Add To This Referral (W6 1) --------------------------------------------------------------------------------
+  // ---------- Send RIAC An Update (W6 1, once Add To This Referral; W59 A) -------------------------------------------------
 
   var KINDS = ['rap-sheet', 'charging-documents', 'immigration-documents', 'other'];
-  var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false };
+  var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message' };
+  function aboutOf(code) { return D.UPDATE_ABOUT.filter(function (a) { return a.code === code; })[0] || D.UPDATE_ABOUT[0]; }
 
   function addPage() {
     if (!session()) { location.replace('./'); return; }
@@ -377,28 +385,41 @@
     });
   }
 
-  function which(r) {
-    return h('div', { class: 'which' }, [h('span', { class: 'cl', text: r.clientName }), h('span', { text: 'Reference ' + r.reference }),
-      h('span', { text: [r.court, r.docket].filter(Boolean).join(' · ') }), statusPill(r)]);
+  function which(r) {   // the referral, its status in a column of its own (full width on a phone: the owner's rule, W58 1)
+    return h('div', { class: 'which' }, [h('div', null, [h('div', { class: 'cl', text: r.clientName }),
+      h('div', { class: 'sub', text: ['Reference ' + r.reference, r.court, r.docket].filter(Boolean).join(' · ') })]), statusPill(r)]);
   }
   function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }
   function showLimits() {
-    setLimits('Documents: up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word (.docx), JPEG, PNG or HEIC.');
+    setLimits('Up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word (.docx), JPEG, PNG or HEIC.');
   }
 
+  // W59 A: the message leads ("What is this about?" first, when more than one kind is offered), documents follow.
   function drawAdd(r) {
+    var kinds = D.UPDATE_ABOUT.filter(function (a) { return CFG.updateKinds.indexOf(a.code) !== -1; });
+    A.about = kinds[0].code;
     var msg = h('textarea', { id: 'add-message', maxlength: '6000', rows: '4' });
     var near = h('p', { class: 'near-limit', 'aria-live': 'polite' });
     msg.addEventListener('input', function () {
       var n = msg.value.length;
       near.textContent = n >= 5000 ? n.toLocaleString('en-US') + ' of 6,000 characters. A longer account can be attached as a file.' : '';
+      if (n) { msgField.classList.remove('has-err'); msg.removeAttribute('aria-invalid'); }
     });
+    var label = h('label', { for: 'add-message', text: kinds[0].box });
+    var msgField = h('div', { class: 'field', id: 'add-message-field' }, [label, msg, near]);
+    var about = kinds.length < 2 ? null : h('div', { class: 'field' }, [h('fieldset', { class: 'plain-fieldset' }, [h('legend', { text: 'What is this about?' }),
+      h('div', { class: 'about-tiles' }, kinds.map(function (a) {
+        var input = h('input', { type: 'radio', name: 'add-about', value: a.code });
+        input.checked = a.code === A.about;
+        input.addEventListener('change', function () { A.about = a.code; label.textContent = a.box; msgField.classList.remove('has-err'); msg.removeAttribute('aria-invalid'); });
+        return h('label', { class: 'tile' }, [input, h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', { text: a.tile })]);
+      }))])]);
     var docs = h('div');
     KINDS.forEach(function (kind) { docs.appendChild(docRow(kind)); });
     var err = h('div', { id: 'add-err', role: 'alert' });
     var sendBtn = h('button', { type: 'button', class: 'btn btn-navy', id: 'add-send', on: { click: function () { sendAddition(r); } } }, ['Send To RIAC']);
-    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Add to this referral' }), h('div', { class: 'inner ref-q' }, [which(r),
-      h('div', { class: 'field' }, [h('label', { for: 'add-message', text: 'Your message to RIAC' }), msg, near]),
+    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC an update' }), h('div', { class: 'inner ref-q' }, [which(r), about, msgField,
+      h('div', { class: 'docs-head' }, [h('span', { class: 'lab', text: 'Documents' }), ' ', h('span', { class: 'opt', text: '(optional)' })]),
       h('p', { class: 'limits', id: 'add-limits', text: 'Checking the file limits…' }), docs, err,
       h('div', { class: 'add-actions' }, [h('a', { class: 'btn btn-plain', href: './', text: 'Cancel' }), sendBtn])])]);
     app.appendChild(card);
@@ -476,23 +497,35 @@
     var err = document.getElementById('add-err');
     err.textContent = '';
     var message = document.getElementById('add-message').value.trim();
+    var about = A.about;
+    var msgField = document.getElementById('add-message-field');
+    // An offer or a disposition needs its words (contract draft 21): the box turns red, with no words, as on the form
+    // (W31); a screen reader is told what is still needed.
+    var wordsNeeded = function () {
+      msgField.classList.add('has-err');
+      err.appendChild(h('p', { class: 'visually-hidden', text: 'The ' + (about === 'offer' ? 'offer' : 'disposition') + ' is still needed.' }));
+      document.getElementById('add-message').setAttribute('aria-invalid', 'true');
+      document.getElementById('add-message').focus();
+    };
     var note = (document.getElementById('a-other-note') || {}).value || '';
     note = note.replace(/[\r\n]+/g, ' ').trim();
     if (A.list.some(function (f) { return f.state === 'queued' || f.state === 'uploading'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Please wait for every file to finish uploading.' })); return; }
     if (A.list.some(function (f) { return f.state === 'failed'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Remove the files that did not upload, or choose them again.' })); return; }
     var docs = A.list.filter(function (f) { return f.state === 'done'; }).map(function (f) { return { kind: f.kind, fileField: f.fileId, note: f.kind === 'other' ? note : null }; });
-    if (!message && !docs.length) { err.appendChild(h('div', { class: 'err-summary', text: 'Please write a message to RIAC, or choose at least one file.' })); return; }
+    if (about !== 'message' && !message) { wordsNeeded(); return; }
+    if (!message && !docs.length) { err.appendChild(h('div', { class: 'err-summary', text: 'Please write a note to RIAC, or choose at least one file.' })); return; }
     if (docs.some(function (d) { return d.kind === 'other'; }) && !note) { err.appendChild(h('div', { class: 'err-summary', text: 'Please say what the "Something else" file is.' })); return; }
     if (!A.batch) { err.appendChild(h('div', { class: 'err-summary', text: 'Files cannot be added just now. Please try again in a few minutes.' })); return; }
     A.key = A.key || uuid();
     A.sending = true;
     var btn = document.getElementById('add-send'); btn.disabled = true; btn.textContent = 'Sending…';
-    api('POST', '/v1/portal/referrals/' + encodeURIComponent(r.reference) + '/additions', { uploadId: A.batch.uploadId, addition: { message: message || null, documents: docs } }, { 'Idempotency-Key': A.key })
+    api('POST', '/v1/portal/referrals/' + encodeURIComponent(r.reference) + '/additions', { uploadId: A.batch.uploadId, addition: { about: about, message: message || null, documents: docs } }, { 'Idempotency-Key': A.key })
       .then(function (res) {
         A.sending = false;
-        if (res.status === 201) { added(r, res.body, message, docs); return; }
+        if (res.status === 201) { added(r, res.body, message, docs, about); return; }
         btn.disabled = false; btn.textContent = 'Send To RIAC';
         if (res.status === 401) { location.replace('./'); return; }
+        if (res.status === 400 && (res.body.fields || []).some(function (f) { return f.key === 'addition.message' && f.problem === 'required'; })) { wordsNeeded(); return; }
         var t = res.status === 404 ? 'This referral is not one you can add to.' : res.status === 0
           ? 'It may not have been sent: the connection failed. Press Send To RIAC again; it will not arrive twice.'
           : 'It could not be sent just now. Please try again in a few minutes; it will not arrive twice.';
@@ -500,21 +533,21 @@
       });
   }
 
-  function added(r, body, message, docs) {
+  function added(r, body, message, docs, about) {
     clear();
     app.appendChild(h('a', { class: 'back-link', href: './', text: '‹ Back To Your Referrals' }));
     var names = docs.map(function (d) {
       var f = A.list.filter(function (x) { return x.fileId === d.fileField; })[0];
       return h('li', { text: (d.kind === 'other' ? 'Something else (' + d.note + ')' : D.DOCS[d.kind].name) + ': ' + (f ? f.name : '') });
     });
-    app.appendChild(h('div', { class: 'add-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), 'Added to the referral']),
+    app.appendChild(h('div', { class: 'add-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), 'Sent to RIAC']),
       h('div', { class: 'inner' }, [which(r), h('p', { text: 'Received ' + fmtWhen(body.receivedAt) + '. RIAC sees it with this referral.' }),
-        h('p', null, [h('strong', { text: 'What you sent:' })]),
+        h('p', null, [h('strong', { text: 'What you sent: ' }), h('span', { class: 'about-tag', text: aboutOf(about).sent })]),
         message ? h('p', { class: 'copy-rows' }, [h('span', { class: 'pre', text: message })]) : null,
         names.length ? h('ul', { class: 'added-list' }, names) : null,
         h('div', { class: 'add-actions' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF']),
           h('a', { class: 'btn btn-navy', href: './', text: 'Back To Your Referrals' })])])]));
-    A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false };
+    A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message' };
   }
 
   // ---------- Start ------------------------------------------------------------------------------------------------------
