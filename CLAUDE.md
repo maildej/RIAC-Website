@@ -924,8 +924,8 @@ every key and code the pages send.
   the portal runs up to about 20 minutes behind.) A kind RIAC lists that the page had no box for (the completed intake
   form, family court pleadings, probation paperwork, the immigration advice, transcripts) **gets a box of its own**, in the
   form's order, before Something else, so it can be attached there; "None chosen" is left out beside a state. The page
-  ignores a kind or state it does not know, and with no `documents` from the worker (the live worker until the database
-  side is in) shows no line and no states, as before. Words in `js/referral-data.js` (`DOC_STATES`). Chosen over "Still
+  ignores a kind or state it does not know, and with no `documents` from the worker shows no line and no states, as
+  before. The live worker sends `documents` since 23 October 2026 (about 1:15 AM, New York time). Words in `js/referral-data.js` (`DOC_STATES`). Chosen over "Still
   needed (one received Oct 5)" on one line in wider boxes. Pictures `riac-handover\W\design\w80\` (mockup) and `w80c\`
   (as built); checks `tests\w80-check.mjs` (1360 to 320 px) and `tests\w80-local.mjs` (the worker chat's local worker).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
@@ -1003,9 +1003,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   read it; a disposition already reaches them, W68 a), **W73 a** (a court typed as "not listed" shows on the list as the
   attorney typed it, where a listed court would be; live in the database since 23 October 2026) and
   **W60 c** (no cases without a referral behind them: email cases now arrive as intakes, and legacy cases, if ever
-  brought in, would be stubs). **W61 a** with **W80 1** (what RIAC has received, per kind of document): the page is
-  built (contract draft 22); the boxes appear once the live worker sends them, which waits for the database side and the
-  owner's yes in the database chat. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small
+  brought in, would be stubs). **W61 a** with **W80 1** (what RIAC has received, per kind of document): live
+  since 23 October 2026 (contract draft 22), the page and the worker both. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small
   finding is fixed by **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
