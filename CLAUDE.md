@@ -908,6 +908,13 @@ every key and code the pages send.
   check fails, Send comes back. The same when the worker answers at Send that the upload expired (the note says so).
   Chosen over leaving the check where it was and changing its note. Pictures `riac-handover\W\design\s3\` (mockup) and
   `w77c\` (as built); checks `tests\w77-check.mjs`.
+- **W78 1** (23 October 2026): on **Send RIAC An Update** the files sit in a narrow column beside each kind of document,
+  so on a computer the size, "✓ Uploaded" and Remove beside a file's name had squeezed the name to a letter a line.
+  **At every width a file's name now has its own line, with its state (or the reason it was refused) and Remove under
+  it, and no size**: the phone's arrangement, which W45 1 kept. The form's own file rows are unchanged (W45 1). Chosen
+  over the name, size and Remove on one line with the state under them, where a long name still wrapped over two to four
+  lines. Pictures `riac-handover\W\design\w78\` (mockup) and `w78c\` (as built); checks `tests\w45-portal-check.mjs`
+  (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

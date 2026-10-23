@@ -473,6 +473,13 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-doc .btn { height: 2.2rem; display: inline-flex; align-items: center; padding: 0 .9rem; }
 .add-doc .files { margin: 0; }
 .add-doc .other-what { margin-top: .4rem; }
+/* W78 1: the files sit in a narrow column, so at every width a file's name has its own line, with its state (or the
+   reason it was refused) and Remove under it, and no size: as on a phone (beside them, the name was squeezed to a letter
+   a line) */
+.add-doc .files li { grid-template-columns: 1fr auto; }
+.add-doc .files .fsize { display: none; }
+.add-doc .files .fname { grid-column: 1 / -1; }
+.add-doc .files .fstate.bad, .add-doc .files li > .link-btn { grid-column: auto; grid-row: auto; }
 .added-list { font-size: var(--fs-small); margin: .4rem 0 1rem 1.2rem; }
 .add-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.2rem; }
 .add-actions .btn { min-width: 9rem; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; }
