@@ -490,6 +490,31 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .doc-state .also { font-weight: 400; }
 .doc-state.need { background: color-mix(in srgb, var(--r5) 16%, white); border-left-color: var(--r5); color: #8a4210; }
 .doc-state.grey { background: #f1efea; border-left-color: #a7a49b; color: var(--muted); }
+/* W82 1 (the owner: "a little big/doughy"): the portal's tag line smaller at every width; on Send RIAC An Update the
+   questions at the case info's size, the tiles' words and the kinds' names regular, the note box three lines to start, and
+   each kind's name, state and button on one line (Something else in line with its box) */
+.portal-head p { font-size: var(--fs-small); }
+.add-card .ref-q .field > label, .add-card .plain-fieldset > legend, .add-card .docs-head .lab { font-size: var(--fs-small); }
+.add-card .about-tiles .tile, .add-card .add-doc .nm { font-weight: 400; }
+#add-message { min-height: 5.6rem; }
+.add-card .add-doc .other-what { margin-bottom: 0; }
+@media (min-width: 761px) {
+  /* the state box and the files become the row's own cells: the name, state and button centred on the first line, the
+     files under the state; Something else's name and button centred on its box, "What is it?" over it */
+  .add-doc { align-items: center; row-gap: .45rem; }
+  .add-doc > div { display: contents; }
+  .add-doc .nm { grid-column: 1; grid-row: 1; }
+  .add-doc > .btn { grid-column: 3; grid-row: 1; }
+  .add-doc .doc-state, .add-doc .drop-note { grid-column: 2; grid-row: 1; margin: 0; }
+  .add-doc .files { grid-column: 2; min-width: 0; }
+  .add-doc .doc-state ~ .files { grid-row: 2; }
+  .add-doc:not(#a-other):not(:has(.doc-state)):has(.files) { align-items: start; }
+  #a-other .other-what { display: contents; }
+  #a-other .other-what > label { grid-column: 2; grid-row: 1; margin: 0; }
+  #a-other .other-what > input { grid-column: 2; grid-row: 2; }
+  #a-other .nm, #a-other > .btn { grid-row: 2; }
+  #a-other .files { grid-row: 3; }
+}
 .added-list { font-size: var(--fs-small); margin: .4rem 0 1rem 1.2rem; }
 .add-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.2rem; }
 .add-actions .btn { min-width: 9rem; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; }

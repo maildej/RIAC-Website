@@ -227,8 +227,8 @@ repository), without sharing any of their code.
   one column and each keeps its own height.
 - **The cream title card** at the top of Practice Advisories, Send A Case, the referral form and the portal's two pages
   is kept small (W66 1, 22 October 2026: it read as "too large/doughy"): the title at `--fs-section`, the line under
-  it at `--fs-text` (`--fs-small` on a phone), little padding. The navy title card (Find Your RIAC, the request and
-  thanks pages) is unchanged.
+  it at `--fs-text` (`--fs-small` on a phone; on the portal's two pages `--fs-small` at every width, W82 1), little
+  padding. The navy title card (Find Your RIAC, the request and thanks pages) is unchanged.
 - **Buttons and pills in a group are the same width and height**, unless there is a reason not
   to — the rule the database pages follow. On a phone the four menu buttons are a two-by-two
   grid of equal buttons, and the home page's two buttons stack, full width. The one exception:
@@ -928,6 +928,17 @@ every key and code the pages send.
   before. The live worker sends `documents` since 23 October 2026 (about 1:15 AM, New York time). Words in `js/referral-data.js` (`DOC_STATES`). Chosen over "Still
   needed (one received Oct 5)" on one line in wider boxes. Pictures `riac-handover\W\design\w80\` (mockup) and `w80c\`
   (as built); checks `tests\w80-check.mjs` (1360 to 320 px) and `tests\w80-local.mjs` (the worker chat's local worker).
+- **W82 1** (23 October 2026, the owner on the live page: "The fonts used look a little big/doughy. The case info at the
+  top is good."): **the portal's tag line** under "Your Referrals" reads *Review the status of cases referred to the RIAC,
+  upload additional documents and send messages about specific cases.* (the owner's words), at `--fs-small` at every width
+  (class `portal-head`; the other cream title cards keep theirs). On **Send RIAC An Update**: the questions ("What is this
+  about?", "Your note to RIAC", "What is it?", "Documents") at `--fs-small`, the case info's size, still semibold; the
+  tiles' words and the kinds' names regular (the site loads Inter at 400 and 600 only); the note box opens three lines tall
+  (it read as one line, "which suggests it won't expand") and still grows; on a computer each kind's name, state box and
+  button are centred on one line, its files under the state box (the box's holder is `display: contents`, so its parts
+  are the row's own cells), and Something else's name and button are centred on its box, "What is it?" over it. The
+  form's own sizes are unchanged (W26 2). Chosen over the questions smaller with every weight kept. Pictures
+  `riac-handover\W\design\w82\` (mockup) and `w82c\` (as built); checks `tests\w82-check.mjs` (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
