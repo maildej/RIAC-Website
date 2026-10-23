@@ -271,6 +271,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sendarea { max-width: 52rem; margin: 1.4rem auto 0; display: grid; gap: .7rem; }
 .sendarea p { font-size: var(--fs-small); margin: 0; }
 .sendarea .btn { height: 3rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
+.sendarea .bot-check, .sendarea .limits { margin: 0; }   /* W77 1: the renewed check and its note beside Send */
 
 /* W32 1: "Before You Receive RIAC Advice" above Send, in the featured advisory card's orange, a row for each warning
    with its advisory's symbol beside it; two across on a computer. */

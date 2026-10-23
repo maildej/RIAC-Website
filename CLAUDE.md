@@ -892,6 +892,22 @@ every key and code the pages send.
   document is a box of its own**, its name in a band, as on the form's Documents step (built at once, for today's page
   too). Waits for the database and the worker (the worker chat proposes the contract). Pictures
   `riac-handover\W\design\w61\` and `w61b\`.
+- **W62 a** (23 October 2026; the owner had asked "is there a reason not to do passwords AND email sign ons as login
+  options?"): **no passwords; the portal keeps the emailed sign-in link only, for now.** The owner: "we will do w62-b at
+  some point": **passkeys** (Face ID, a fingerprint or Windows Hello), offered after the first emailed sign-in, the link
+  kept as the fallback; nothing is built for them until the owner says. Passwords were advised against (the worker chat):
+  a reset goes by email anyway, so they add a second way in without taking one away; reused passwords; a store of them is
+  private information under New York's SHIELD Act; lockouts anyone could cause; a paid Cloudflare plan and several days'
+  work. A 30-day "keep me signed in on this device" was not chosen (it would undo the security review's sign-in that ends
+  with the tab, CS5 finding 8). Pictures `riac-handover\W\design\w62\`.
+- **W77 1** (23 October 2026, S3's small finding): when the upload has lapsed (past its hour), Review and send asks for
+  Cloudflare's check again. **The check and its one note now sit beside Send**, under "Once sent, this referral cannot be
+  changed here…" (they were above the advice panel, and pressing Send added a second, near-identical note by the
+  button). Pressing Send before the check is done **changes that note's words in place** ("One more check that you are
+  not a robot, then the referral is sent."), and **the button reads "Sending…", greyed, until the referral goes**; if the
+  check fails, Send comes back. The same when the worker answers at Send that the upload expired (the note says so).
+  Chosen over leaving the check where it was and changing its note. Pictures `riac-handover\W\design\s3\` (mockup) and
+  `w77c\` (as built); checks `tests\w77-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -965,13 +981,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   dispositions offered since W72), W69 (the labelled cards) and W74 a (no client name). Decided, for the database chats,
   nothing on the page: **W71 a** (a note or an offer sent through the portal flags itself to staff until someone has
   read it; a disposition already reaches them, W68 a), **W73 a** (a court typed as "not listed" shows on the list as the
-  attorney typed it, where a listed court would be; the database chat waits for the owner's yes in its own chat) and
+  attorney typed it, where a listed court would be; live in the database since 23 October 2026) and
   **W60 c** (no cases without a referral behind them: email cases now arrive as intakes, and legacy cases, if ever
   brought in, would be stubs). Decided, waiting for the database and the worker: **W61 a** (what RIAC has received, per
-  kind of document). Still to decide: **W62** (passwords as well as emailed links; the worker chat advises passkeys if
-  anything).
-  Also S3's one small finding: on Review, when the upload is renewed at Send, two near-identical "one more check" notes
-  show.
+  kind of document; the worker's contract draft 22). **W62 a**: emailed links only for now; passkeys later, when the
+  owner says. S3's small finding is fixed by **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6

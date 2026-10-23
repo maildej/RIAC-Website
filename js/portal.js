@@ -1,6 +1,6 @@
 // The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
 // documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1 and W59 A in CLAUDE.md.
-// The session is kept in a cookie for /portal/ only; the worker ends it after 12 hours at most.
+// The session is kept in this tab only (sessionStorage); the worker ends it after 12 hours at most.
 (function () {
   'use strict';
 

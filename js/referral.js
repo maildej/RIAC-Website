@@ -822,7 +822,7 @@
       if (!target || target.childElementCount) return;
       if (turnstileId !== null) { try { window.turnstile.remove(turnstileId); } catch (e) { /* already gone */ } turnstileId = null; }
       turnstileId = window.turnstile.render(target, { sitekey: CFG.turnstileKey, callback: onToken, theme: 'light',
-        'error-callback': function () { setLimits([D.BOT_CHECK_FAILED]); } });
+        'error-callback': function () { stopPending(); setLimits([D.BOT_CHECK_FAILED]); } });
     });
   }
   function renewBatch() {   // a batch past its hour, or made for another center: make a new one, and send the files again
@@ -854,11 +854,11 @@
         render();
         pump();
       } else if (r.status === 503 && r.body.error === 'daily-limit') {
-        showDailyLimit();
+        stopPending(); showDailyLimit();
       } else if (r.status === 403) {
-        setLimits(['The check that you are not a robot did not pass. Please reload the page and try again.']);
+        stopPending(); setLimits(['The check that you are not a robot did not pass. Please reload the page and try again.']);
       } else {
-        setLimits(['Files cannot be sent just now. Please try again in a few minutes.']);
+        stopPending(); setLimits(['Files cannot be sent just now. Please try again in a few minutes.']);
       }
     });
   }
@@ -1160,23 +1160,33 @@
       }))]);
   }
 
+  // W77 1: when the upload has lapsed, the robot check and its one note sit beside Send. Pressed before the check is
+  // done, Send changes that note's words in place, and the button reads "Sending…" until the referral goes.
+  var pendingNote = null;
+  function sendWaiting() { return sending || (pendingSend && (!batchValid() || busyFiles())); }
+  function stopPending() {   // the check or the batch failed: Send can be pressed again
+    pendingSend = false; pendingNote = null;
+    var b = document.getElementById('send-btn');
+    if (b && !sending) { b.disabled = false; b.textContent = 'Send To ' + centreOf(receivingCentre()).short + ' ›'; }
+  }
+
   function drawCheck(q) {
     heading(q, 'Review and send', null);
     q.appendChild(copySheet({}));
-    if (!batchValid()) {
-      q.appendChild(h('div', { class: 'bot-check', id: 'bot-check' }));
-      q.appendChild(h('p', { class: 'limits', id: 'limits', text: 'Before Send, one more check that you are not a robot.' }));
-      setTimeout(startBotCheck, 0);
-    }
+    var check = batchValid() ? [] : [h('div', { class: 'bot-check', id: 'bot-check' }),
+      h('p', { class: 'limits', id: 'limits', text: pendingSend && pendingNote ? pendingNote : 'Before Send, one more check that you are not a robot.' })];
+    if (check.length) setTimeout(startBotCheck, 0);
     var c = centreOf(receivingCentre());
     var email = modeOf(receivingCentre()) === 'email';
+    var waiting = sendWaiting();
     q.appendChild(h('div', { class: 'sendarea' }, [
       adviceFirst(),
       h('p', null, email ? ['Once sent, this referral cannot be changed here. To add to it later, contact the center directly.']
-        : ['Once sent, this referral cannot be changed here. To add to it later, use ', h('a', { href: 'portal/', text: 'Your Referrals' }), '.']),
+        : ['Once sent, this referral cannot be changed here. To add to it later, use ', h('a', { href: 'portal/', text: 'Your Referrals' }), '.'])]
+      .concat(check, [
       h('div', { id: 'send-msg', 'aria-live': 'polite' }),
-      h('button', { type: 'button', class: 'btn btn-navy', id: 'send-btn', disabled: sending, on: { click: send } }, [sending ? 'Sending…' : 'Send To ' + c.short + ' ›']),
-      h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { go(nextIndex(S.step, -1)); } } }, ['‹ Back'])]));
+      h('button', { type: 'button', class: 'btn btn-navy', id: 'send-btn', disabled: waiting, on: { click: send } }, [waiting ? 'Sending…' : 'Send To ' + c.short + ' ›']),
+      h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { go(nextIndex(S.step, -1)); } } }, ['‹ Back'])])));
   }
 
   function sendMessage(kids, bad) {
@@ -1198,10 +1208,11 @@
     }
     if (!batchValid() || busyFiles()) {
       pendingSend = true;
-      if (!batchValid()) renewBatch(); else render();
-      sendMessage([batchValid() ? 'Waiting for the files to finish uploading, then sending…' : 'One more check that you are not a robot, then the referral is sent.']);
+      if (!batchValid()) { pendingNote = 'One more check that you are not a robot, then the referral is sent.'; renewBatch(); }
+      else { render(); sendMessage(['Waiting for the files to finish uploading, then sending…']); }
       return;
     }
+    pendingNote = null;
     var referral = buildReferral();
     var bytes = new TextEncoder().encode(JSON.stringify({ uploadId: S.batch.uploadId, referral: referral })).length;
     if (bytes > CFG.maxReferralBytes) { tooLong(); return; }
@@ -1217,7 +1228,7 @@
       if (r.status === 429 && tries < 6) { sendMessage(['Sending…']); setTimeout(function () { post(referral, tries + 1); }, Math.max(1, r.retryAfter || 5) * 1000); return; }
       sending = false; render();
       if (r.status === 0) { sendMessage(['Your referral may not have been sent: the connection failed. Check your connection and press Send again; it will not arrive twice.'], true); return; }
-      if (r.status === 400 && expired(r.body)) { pendingSend = true; renewBatch(); sendMessage(['The upload had expired. One more check that you are not a robot, then the files and the referral are sent again.']); return; }
+      if (r.status === 400 && expired(r.body)) { pendingSend = true; pendingNote = 'The upload had expired. One more check that you are not a robot, then the files and the referral are sent again.'; renewBatch(); return; }
       if (r.status === 400 && r.body.error === 'invalid') { workerErrors(r.body.fields || []); return; }
       if (r.status === 413) { tooLong(r.body.fields && r.body.fields[0] && r.body.fields[0].key); return; }
       if (r.status === 503 && r.body.error === 'daily-limit') { showDailyLimit(); return; }
