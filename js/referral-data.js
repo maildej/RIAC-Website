@@ -13,9 +13,9 @@
     turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft',
-    // Send RIAC An Update (W59 A): the kinds of update offered. An offer or a disposition is offered on nyriac.com only
-    // once RIAC's database files it as one (the worker chat says when); with one kind, "What is this about?" is not asked.
-    updateKinds: local ? ['message', 'offer', 'disposition'] : ['message']
+    // Send RIAC An Update (W59 A): the kinds of update offered; with one kind, "What is this about?" is not asked. Offers
+    // and dispositions on nyriac.com too since RIAC's database files them as such (W72, 23 October 2026).
+    updateKinds: ['message', 'offer', 'disposition']
   };
 
   // The centers. Their details are a copy of contact.html: if that page changes, change this too (W7 1).

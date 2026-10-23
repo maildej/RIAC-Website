@@ -865,9 +865,10 @@ every key and code the pages send.
   with the kind (Note to RIAC, Offer, Disposition). The referral at the top keeps its status in a column as wide as the
   list's, full width on a phone (the full-width rule, W58 1). Sent as `addition.about` (`message`, `offer`,
   `disposition`; contract draft 21). Tiles one above another below 900 px. Chosen over B (the box first, then ticking
-  "It reports an offer / a disposition"), whose guidance could not follow the kind. ⚠️ **On nyriac.com only Note to RIAC
-  is offered, with no question, until RIAC's database tags offers and dispositions** (the worker chat says when): then
-  `updateKinds` in `js/referral-data.js` becomes all three for the live site too. Localhost always shows all three.
+  "It reports an offer / a disposition"), whose guidance could not follow the kind. Published first with Note to RIAC
+  alone on nyriac.com (no question shown) while RIAC's database could not yet tag offers and dispositions; **all three
+  since W72** (23 October 2026, once the database chat had the tagging live). `updateKinds` in `js/referral-data.js`
+  lists the kinds offered; with one, the question is not asked.
   The page promises no reply ("RIAC sees it with this referral"). Pictures in `riac-handover\W\design\w59\` (mockup)
   and `w59c\` (as built); checks `tests\w59c-check.mjs`, and `tests\w59-e2e.mjs` against the worker chat's local worker.
 - **W69, the owner's layout** (22 October 2026): on the portal list, **under the client's name, labels with their values
@@ -948,9 +949,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   will be going in until hard launch." The go-live (H1, H2) waits until the owner says "hard launch". Meanwhile, **the
   owner's portal additions**, one decision at a time, a mockup first: done and live, W58 1 (the list's groups, buttons
   and Sort), W63 (what counts as waiting on you; built by the database chat, sent by the worker since contract draft 20),
-  W65 A and W66 1 (cards and title cards). **Built on the branch `claude/portal-update`, waiting for the owner's yes to
-  publish: W59 A with W68 a (Send RIAC An Update) and W69 (the labelled cards).** Offers and dispositions then wait for
-  the database's tagging (see W59 A). Next to ask: whether a note or an offer sent through the portal should flag itself
+  W65 A and W66 1 (cards and title cards), W59 A with W68 a (Send RIAC An Update, live 22 October 2026; offers and
+  dispositions offered since W72) and W69 (the labelled cards). Next to ask: whether a note or an offer sent through the portal should flag itself
   to staff (today nothing does; only a disposition reaches them, W68 a). Still to decide: **W60**
   (cases with no online referral behind them: how far back), **W61** (what RIAC has received, per kind of document:
   a file arrived, or staff checked it), **W62** (passwords as well as emailed links; the worker chat advises passkeys if
