@@ -880,6 +880,10 @@ every key and code the pages send.
   showed): it is for office staff signing in for an attorney, which is not built; until then the worker cannot tell
   staff from the attorney, so the line and the search by attorney wait for it. Pictures `riac-handover\W\design\w69\`
   (mockup) and `w59c\` (as built).
+- **W74 a** (23 October 2026): a referral that holds no client name (one keyed in at RIAC without it; the form always
+  asks) shows **"Client name not recorded"** in grey italics where the name goes, on the list, at the top of Send RIAC
+  An Update and on the card after Send. Chosen over the card starting at "Reference:". Pictures
+  `riac-handover\W\design\w74\`; check `tests\w74-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -950,12 +954,15 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   owner's portal additions**, one decision at a time, a mockup first: done and live, W58 1 (the list's groups, buttons
   and Sort), W63 (what counts as waiting on you; built by the database chat, sent by the worker since contract draft 20),
   W65 A and W66 1 (cards and title cards), W59 A with W68 a (Send RIAC An Update, live 22 October 2026; offers and
-  dispositions offered since W72) and W69 (the labelled cards). Next to ask: whether a note or an offer sent through the portal should flag itself
-  to staff (today nothing does; only a disposition reaches them, W68 a). Still to decide: **W60**
-  (cases with no online referral behind them: how far back), **W61** (what RIAC has received, per kind of document:
-  a file arrived, or staff checked it), **W62** (passwords as well as emailed links; the worker chat advises passkeys if
-  anything), and whether a court typed as "not listed" should show on the list as typed (a database change). Also S3's
-  one small finding: on Review, when the upload is renewed at Send, two near-identical "one more check" notes show.
+  dispositions offered since W72), W69 (the labelled cards) and W74 a (no client name). Decided, for the database chats,
+  nothing on the page: **W71 a** (a note or an offer sent through the portal flags itself to staff until someone has
+  read it; a disposition already reaches them, W68 a), **W73 a** (a court typed as "not listed" shows on the list as the
+  attorney typed it, where a listed court would be; the database chat waits for the owner's yes in its own chat) and
+  **W60 c** (no cases without a referral behind them: email cases now arrive as intakes, and legacy cases, if ever
+  brought in, would be stubs). Still to decide: **W61** (what RIAC has received, per kind of document: a file arrived,
+  or staff checked it) and **W62** (passwords as well as emailed links; the worker chat advises passkeys if anything).
+  Also S3's one small finding: on Review, when the upload is renewed at Send, two near-identical "one more check" notes
+  show.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6

@@ -212,6 +212,10 @@
     if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
     return frag;
   }
+  // W74 a: a referral keyed in at RIAC may hold no client name; the card says so rather than starting at Reference
+  function clientName(r, term) {
+    return r.clientName ? h('div', { class: 'cl' }, [marked(r.clientName, term)]) : h('div', { class: 'cl none', text: 'Client name not recorded' });
+  }
   function matches(r, term, staff) {
     if (!term) return true;
     term = term.toLowerCase();
@@ -256,7 +260,7 @@
       if (r.caseNumber) fact('RIAC Case No:', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]));
       fact('Received:', fmtDay(r.receivedOn));
       if (r.closedOn) fact('Closed:', fmtDay(r.closedOn));
-      var client = h('td', null, [h('div', { class: 'cl' }, [marked(r.clientName, term)]), facts,
+      var client = h('td', null, [clientName(r, term), facts,
         staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
       tb.appendChild(h('tr', null, [client, court, h('td', null, [statusPill(r)]),
@@ -386,7 +390,7 @@
   }
 
   function which(r) {   // the referral, its status in a column of its own (full width on a phone: the owner's rule, W58 1)
-    return h('div', { class: 'which' }, [h('div', null, [h('div', { class: 'cl', text: r.clientName }),
+    return h('div', { class: 'which' }, [h('div', null, [clientName(r),
       h('div', { class: 'sub', text: ['Reference ' + r.reference, r.court, r.docket].filter(Boolean).join(' · ') })]), statusPill(r)]);
   }
   function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }

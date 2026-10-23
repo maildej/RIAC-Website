@@ -396,6 +396,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--navy); padding: .3rem .8rem 0; }
 .ref-table td { padding: .7rem .8rem; background: #fff; }
 .ref-table .cl { font-weight: 600; color: var(--ink); }
+.ref-table .cl.none, .which .cl.none { color: var(--help); font-style: italic; font-weight: 400; } /* W74 a: Client name not recorded */
 .ref-table .sub { color: var(--muted); }
 .ref-table .nw { white-space: nowrap; } /* a reference never breaks at its hyphens */
 .case-no { display: inline-block; background: var(--navy); color: var(--cream); border-radius: 99px; padding: 0 .45rem; font-size: var(--fs-label); font-weight: 600; }
