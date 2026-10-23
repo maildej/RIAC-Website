@@ -480,6 +480,16 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-doc .files .fsize { display: none; }
 .add-doc .files .fname { grid-column: 1 / -1; }
 .add-doc .files .fstate.bad, .add-doc .files li > .link-btn { grid-column: auto; grid-row: auto; }
+/* W61 a, W80 1: beside each kind, what RIAC has of it, in boxes of one size over its files (full width on a phone), in the
+   status box's tones: navy when received, orange when RIAC still needs one (the day the last arrived under it), grey for
+   what the attorney said */
+.doc-key { font-size: var(--fs-small); color: var(--muted); margin: -.2rem 0 .6rem; }
+.add-doc > div { min-width: 0; }   /* at 320 px a file's row would widen its column, and the state box with it */
+.doc-state { display: flex; flex-direction: column; justify-content: center; width: 12rem; max-width: 100%; min-height: 2.2rem; box-sizing: border-box; border-left: 4px solid var(--navy); border-radius: 6px; padding: .25rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.3; background: color-mix(in srgb, var(--navy) 6%, white); color: var(--ink); }
+.doc-state:not(:last-child) { margin-bottom: .45rem; }
+.doc-state .also { font-weight: 400; }
+.doc-state.need { background: color-mix(in srgb, var(--r5) 16%, white); border-left-color: var(--r5); color: #8a4210; }
+.doc-state.grey { background: #f1efea; border-left-color: #a7a49b; color: var(--muted); }
 .added-list { font-size: var(--fs-small); margin: .4rem 0 1rem 1.2rem; }
 .add-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.2rem; }
 .add-actions .btn { min-width: 9rem; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; }
@@ -496,6 +506,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
      Documents step (W28), so the kinds no longer run together */
   .add-doc { border: 2px solid color-mix(in srgb, var(--navy) 55%, white); padding: 0 .9rem .9rem; margin-bottom: .8rem; gap: .6rem; }
   .add-doc .nm { margin: 0 -.9rem; padding: .55rem .9rem; background: color-mix(in srgb, var(--navy) 8%, white); border-bottom: 1px solid color-mix(in srgb, var(--navy) 25%, white); }
+  .doc-state { width: 100%; margin-top: .2rem; }
 }
 @media print {
   .back-link, .add-actions .btn { display: none !important; }

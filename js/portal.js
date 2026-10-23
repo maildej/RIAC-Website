@@ -1,5 +1,6 @@
 // The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
-// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1 and W59 A in CLAUDE.md.
+// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1, W59 A and W61 a with
+// W80 1 in CLAUDE.md.
 // The session is kept in this tab only (sessionStorage); the worker ends it after 12 hours at most.
 (function () {
   'use strict';
@@ -366,9 +367,29 @@
 
   // ---------- Send RIAC An Update (W6 1, once Add To This Referral; W59 A) -------------------------------------------------
 
-  var KINDS = ['rap-sheet', 'charging-documents', 'immigration-documents', 'other'];
-  var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message' };
+  var KINDS = ['rap-sheet', 'charging-documents', 'immigration-documents'];
+  var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message', kinds: [] };
   function aboutOf(code) { return D.UPDATE_ABOUT.filter(function (a) { return a.code === code; })[0] || D.UPDATE_ABOUT[0]; }
+
+  // W61 a: what RIAC has of each kind of document for this referral (contract draft 22), a kind or state the page does
+  // not know ignored. W80 1: a kind RIAC lists that has no box here gets one, in the referral's order; Something else last.
+  function knownDocs(r) {
+    return (Array.isArray(r.documents) ? r.documents : []).filter(function (d) { return d && d.kind !== 'other' && D.DOCS[d.kind] && D.DOC_STATES[d.state]; });
+  }
+  function kindsFor(r) {
+    var listed = knownDocs(r).map(function (d) { return d.kind; });
+    return Object.keys(D.DOCS).filter(function (k) { return k !== 'other' && (KINDS.indexOf(k) !== -1 || listed.indexOf(k) !== -1); }).concat('other');
+  }
+  function shortDay(iso) {   // "Oct 20"; the year too when it is not this year's
+    return iso.slice(0, 4) === String(new Date().getFullYear()) ? fmtDay(iso).replace(/, \d{4}$/, '') : fmtDay(iso);
+  }
+  function docState(r, kind) {
+    var d = knownDocs(r).filter(function (x) { return x.kind === kind; })[0];
+    if (!d) return null;
+    var s = D.DOC_STATES[d.state], day = /^\d{4}-\d{2}-\d{2}$/.test(d.on || '') ? shortDay(d.on) : '';
+    return h('span', { class: 'doc-state' + (s.tone ? ' ' + s.tone : '') }, [h('span', null, [s.tick ? h('span', { 'aria-hidden': 'true', text: '✓ ' }) : null,
+      s.text + (d.state === 'received' && day ? ' ' + day : '')]), d.state === 'needed' && day ? h('span', { class: 'also', text: s.also + ' ' + day }) : null]);
+  }
 
   function addPage() {
     if (!session()) { location.replace('./'); return; }
@@ -419,22 +440,24 @@
         return h('label', { class: 'tile' }, [input, h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', { text: a.tile })]);
       }))])]);
     var docs = h('div');
-    KINDS.forEach(function (kind) { docs.appendChild(docRow(kind)); });
+    A.kinds = kindsFor(r);
+    A.kinds.forEach(function (kind) { docs.appendChild(docRow(kind, r)); });
     var err = h('div', { id: 'add-err', role: 'alert' });
     var sendBtn = h('button', { type: 'button', class: 'btn btn-navy', id: 'add-send', on: { click: function () { sendAddition(r); } } }, ['Send To RIAC']);
     var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC an update' }), h('div', { class: 'inner ref-q' }, [which(r), about, msgField,
       h('div', { class: 'docs-head' }, [h('span', { class: 'lab', text: 'Documents' }), ' ', h('span', { class: 'opt', text: '(optional)' })]),
+      Array.isArray(r.documents) ? h('p', { class: 'doc-key', text: D.DOC_STATES_NOTE }) : null,
       h('p', { class: 'limits', id: 'add-limits', text: 'Checking the file limits…' }), docs, err,
       h('div', { class: 'add-actions' }, [h('a', { class: 'btn btn-plain', href: './', text: 'Cancel' }), sendBtn])])]);
     app.appendChild(card);
   }
 
-  function docRow(kind) {
+  function docRow(kind, r) {
     var info = kind === 'other' ? { name: 'Something else' } : D.DOCS[kind];
     var id = 'a-' + kind;
     var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', accept: '.pdf,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
     input.addEventListener('change', function () { addFiles(kind, input.files); input.value = ''; });
-    var right = h('div', { id: id + '-files' });
+    var right = h('div', { id: id + '-files' }, [kind === 'other' ? null : docState(r, kind)]);
     var row = h('div', { class: 'add-doc', id: id }, [h('span', { class: 'nm', text: info.name }), right, h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input]);
     if (kind === 'other') {
       right.appendChild(h('div', { class: 'field other-what' }, [h('label', { for: 'a-other-note', text: 'What is it?' }),
@@ -451,12 +474,13 @@
     drawFiles(); pump();
   }
   function drawFiles() {
-    KINDS.forEach(function (kind) {
+    A.kinds.forEach(function (kind) {
       var holder = document.getElementById('a-' + kind + '-files');
       if (!holder) return;
       var old = holder.querySelector('.files'); if (old) old.remove();
       var mine = A.list.filter(function (f) { return f.kind === kind; });
-      if (!mine.length) { if (kind !== 'other' && !holder.querySelector('.sub')) holder.appendChild(h('span', { class: 'sub drop-note', text: 'None chosen' })); return; }
+      // Beside a state (W61 a), "None chosen" says nothing more, so it is left out (W80 1)
+      if (!mine.length) { if (kind !== 'other' && !holder.querySelector('.sub, .doc-state')) holder.appendChild(h('span', { class: 'sub drop-note', text: 'None chosen' })); return; }
       var none = holder.querySelector('.sub'); if (none) none.remove();
       holder.appendChild(h('ul', { class: 'files' }, mine.map(function (f) {
         var st;
@@ -551,7 +575,7 @@
         names.length ? h('ul', { class: 'added-list' }, names) : null,
         h('div', { class: 'add-actions' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF']),
           h('a', { class: 'btn btn-navy', href: './', text: 'Back To Your Referrals' })])])]));
-    A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message' };
+    A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message', kinds: [] };
   }
 
   // ---------- Start ------------------------------------------------------------------------------------------------------
