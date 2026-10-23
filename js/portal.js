@@ -261,11 +261,14 @@
     var tb = h('tbody');
     rows.forEach(function (r) {
       // W69 (the owner): under the client's name, each label with its value beside it, lined up from card to card. The
-      // date received is one of them, so the court and docket, one over the other, have the room its column had.
+      // date received is one of them, so the court and docket, one over the other, have the room its column had. W84 2b:
+      // once a case is open its number leads, and the reference is the quiet "Intake Reference:" row under it.
       var facts = h('dl', { class: 'kv' });
-      var fact = function (k, v) { facts.appendChild(h('dt', { text: k })); facts.appendChild(h('dd', null, [v])); };
-      fact('Reference:', h('span', { class: 'ref-pill' }, [marked(r.reference, term)]));
-      if (r.caseNumber) fact('RIAC Case No:', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]));
+      var fact = function (k, v, cls) { facts.appendChild(h('dt', { class: cls, text: k })); facts.appendChild(h('dd', { class: cls }, [v])); };
+      if (r.caseNumber) {
+        fact('RIAC Case No:', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]));
+        fact('Intake Reference:', marked(r.reference, term), 'was');
+      } else fact('Reference:', h('span', { class: 'ref-pill' }, [marked(r.reference, term)]));
       fact('Received:', fmtDay(r.receivedOn));
       if (r.closedOn) fact('Closed:', fmtDay(r.closedOn));
       var client = h('td', null, [clientName(r, term), facts,
@@ -418,8 +421,13 @@
   }
 
   function which(r) {   // the referral, its status in a column of its own (full width on a phone: the owner's rule, W58 1)
-    return h('div', { class: 'which' }, [h('div', null, [clientName(r),
-      h('div', { class: 'sub', text: ['Reference ' + r.reference, r.court, r.docket].filter(Boolean).join(' · ') })]), statusPill(r)]);
+    var where = [r.court, r.docket].filter(Boolean);
+    // W84 2b: once a case is open its number leads, and the reference moves to a quiet line beneath
+    var info = r.caseNumber
+      ? [h('div', { class: 'sub' }, [h('span', { class: 'case-line', text: 'RIAC Case No ' + r.caseNumber }), where.length ? ' · ' + where.join(' · ') : null]),
+        h('div', { class: 'was-ref', text: 'Intake Reference ' + r.reference })]
+      : [h('div', { class: 'sub', text: ['Reference ' + r.reference].concat(where).join(' · ') })];
+    return h('div', { class: 'which' }, [h('div', null, [clientName(r)].concat(info)), statusPill(r)]);
   }
   function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }
   function showLimits() {

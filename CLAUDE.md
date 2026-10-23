@@ -877,8 +877,9 @@ every key and code the pages send.
   lined up from card to card**: **Reference:** (the reference in an outlined pill; the owner's "reference is good", over
   his first "RIAC Intake:", because the card after Send, the copy and the receipt all say Reference), **RIAC Case No:**
   (the navy pill) once there is a case, **Received:** the date, and **Closed:** the date on a closed one. The Received
-  column goes, so the court and docket, one over the other, get a wider column. On the smallest phones (350 px and
-  under) each label sits over its value. **The "Attorney:" line is off** (the owner asked why another attorney's name
+  column goes, so the court and docket, one over the other, get a wider column. On the smallest phones (below 360 px
+  since W84 2b; 350 px before) each label sits over its value. Once a case is open, W84 2b changes the first two rows.
+  **The "Attorney:" line is off** (the owner asked why another attorney's name
   showed): it is for office staff signing in for an attorney, which is not built; until then the worker cannot tell
   staff from the attorney, so the line and the search by attorney wait for it. Pictures `riac-handover\W\design\w69\`
   (mockup) and `w59c\` (as built).
@@ -964,6 +965,17 @@ every key and code the pages send.
   well, orange that something is needed from the attorney, grey closed or as the attorney said. The words read at 7.2 to
   1 on green, 6.3 on orange, 4.9 on grey. Chosen over the outline alone, navy kept. Pictures `riac-handover\W\design\w88\`
   (mockup) and `w88c\` (as built); checks `tests\w88-check.mjs`.
+- **W84 2b** (23 October 2026; the owner: "Once a case is opened, the intake reference should be de-emphasized and the
+  case reference should be the only prominent one (e.g. "Was Reference R2-123454)", then "2, but in italics - and would
+  intake reference fit?"): **once a case is open, its number leads and the reference is quiet.** On the list's cards the
+  rows are **RIAC Case No:** (the navy pill), ***Intake Reference:*** (label and value in grey italics, the value at
+  `--fs-label`, no pill), Received and Closed; before a case opens, **Reference:** and its outlined pill as W69. To fit
+  the longer label the label column is 7.6rem on every card (they still line up), and each label sits over its value
+  below 360 px (was 350). On Send RIAC An Update, and on the card after Send, the case info reads **"RIAC Case No
+  4121** · court · docket" (the number in dark bold), with *"Intake Reference R2-…"* in grey italics beneath. The search
+  still finds a referral by its reference. Chosen over the reference as a grey line under the labels ("1"); "Intake
+  Reference" is the owner's wording, in place of the "Was Reference:" first drawn. Pictures `riac-handover\W\design\w84\` (mockup,
+  `W84-2b-*` the one chosen) and `w84c\` (as built); checks `tests\w84-check.mjs` (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1042,11 +1054,12 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   brought in, would be stubs). **W61 a** with **W80 1** (what RIAC has received, per kind of document): live
   since 23 October 2026 (contract draft 22), the page and the worker both. Then, from the owner's look at the live
   page (23 October 2026): **W82 1** (lighter type, the tag line, centred rows), **W83 1 with W87 2b** (offer and
-  disposition as tick tiles with symbols) and **W88 1** (green, outlined status boxes). The worker sends an email receipt
+  disposition as tick tiles with symbols), **W88 1** (green, outlined status boxes) and **W84 2b** (once a case is open,
+  the case number leads, the reference shown as "Intake Reference"). The worker sends an email receipt
   for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23). Still to
-  put to the owner, a mockup first: **W84** (once a case is open, the case number the prominent one, the reference shown
-  as "Was Reference R2-…") and **W86** (whether the card after an update names where its receipt went, as W48 1's card
-  does after a referral). Passed to the database chat: a note subject naming the kinds of document when an update carries
+  put to the owner, a mockup first: **W86** (whether the card after an update names where its receipt went, as W48 1's
+  card does after a referral) and **W90** (a removal or USCIS referral has no court and no county: what the form's county
+  and court questions should ask for it). Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
