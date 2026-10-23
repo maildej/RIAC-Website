@@ -819,8 +819,9 @@ every key and code the pages send.
   referral's status on its row. Status is offered under All only. The view chosen is kept in the tab, so Back from Add
   To This Referral finds it as it was. The owner's changes: **"Where it stands" is now "Status"** (the column and the
   sort; W5 1 named it), and the design rule above on drop-downs, search bars and pills. **The status is no longer a
-  pill but a tinted box with rounded corners and a coloured left edge** ("A", the owner's choice): navy, orange (with
-  brown words) when waiting on the attorney, grey when closed; the words at the left; as wide as its column, and on
+  pill but a tinted box with rounded corners and a coloured left edge** ("A", the owner's choice): navy (green, outlined,
+  since W88 1), orange (with brown words) when waiting on the attorney, grey when closed; the words at the left; as wide
+  as its column, and on
   the Add To This Referral page too. Chosen over a white box with a thin border ("B"), which read like a box to type
   into beside the white Add To This Referral button. On a computer the columns line
   up from one group to the next; below 1,100 px wide each referral is a card (the table no longer fits). Chosen over
@@ -955,6 +956,14 @@ every key and code the pages send.
   big and padded"), **what the attorney types on this page is at the case info's size**, a little closer to the box's
   edges. Chosen over the tick tiles under the box, and over the symbols at the tiles' right end. Pictures
   `riac-handover\W\design\w83\`, `w87\` (mockups) and `w83c\` (as built); checks `tests\w83-check.mjs` (1360 to 320 px).
+- **W88 1** (23 October 2026; the owner: "can you put an outline around the advice being prepared (it melts) - also,
+  shouldn't this be pale green to denote everything is good?"): **every status box is outlined in its own colour** (on
+  the case info's grey panel at the top of Send RIAC An Update it had melted), and **green when all is well**, for
+  Received and Case open (the site's own green, `--r2`, as "✓ Uploaded"); orange when waiting on the attorney and grey
+  when closed, as before. **The documents' "✓ Received" is green to match**, so across the portal green means all is
+  well, orange that something is needed from the attorney, grey closed or as the attorney said. The words read at 7.2 to
+  1 on green, 6.3 on orange, 4.9 on grey. Chosen over the outline alone, navy kept. Pictures `riac-handover\W\design\w88\`
+  (mockup) and `w88c\` (as built); checks `tests\w88-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1031,8 +1040,15 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   attorney typed it, where a listed court would be; live in the database since 23 October 2026) and
   **W60 c** (no cases without a referral behind them: email cases now arrive as intakes, and legacy cases, if ever
   brought in, would be stubs). **W61 a** with **W80 1** (what RIAC has received, per kind of document): live
-  since 23 October 2026 (contract draft 22), the page and the worker both. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small
-  finding is fixed by **W77 1**.
+  since 23 October 2026 (contract draft 22), the page and the worker both. Then, from the owner's look at the live
+  page (23 October 2026): **W82 1** (lighter type, the tag line, centred rows), **W83 1 with W87 2b** (offer and
+  disposition as tick tiles with symbols) and **W88 1** (green, outlined status boxes). The worker sends an email receipt
+  for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23). Still to
+  put to the owner, a mockup first: **W84** (once a case is open, the case number the prominent one, the reference shown
+  as "Was Reference R2-…") and **W86** (whether the card after an update names where its receipt went, as W48 1's card
+  does after a referral). Passed to the database chat: a note subject naming the kinds of document when an update carries
+  only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
+  **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
