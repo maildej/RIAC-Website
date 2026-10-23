@@ -484,6 +484,10 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .add-doc { grid-template-columns: 1fr; }
   .add-actions { flex-direction: column-reverse; }
   .which { grid-template-columns: 1fr; }
+  /* W61 a (the owner): on a phone each kind of document is a box of its own, its name in a band, as on the form's
+     Documents step (W28), so the kinds no longer run together */
+  .add-doc { border: 2px solid color-mix(in srgb, var(--navy) 55%, white); padding: 0 .9rem .9rem; margin-bottom: .8rem; gap: .6rem; }
+  .add-doc .nm { margin: 0 -.9rem; padding: .55rem .9rem; background: color-mix(in srgb, var(--navy) 8%, white); border-bottom: 1px solid color-mix(in srgb, var(--navy) 25%, white); }
 }
 @media print {
   .back-link, .add-actions .btn { display: none !important; }

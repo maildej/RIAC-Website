@@ -884,6 +884,14 @@ every key and code the pages send.
   asks) shows **"Client name not recorded"** in grey italics where the name goes, on the list, at the top of Send RIAC
   An Update and on the card after Send. Chosen over the card starting at "Reference:". Pictures
   `riac-handover\W\design\w74\`; check `tests\w74-check.mjs`.
+- **W61 a, with the owner's changes** (23 October 2026): **Send RIAC An Update will show what RIAC has for each kind of
+  document**, beside its box: **Received** with the date, **Still needed** (orange), **To follow, as you said** or **Not
+  available** (grey). **A file that arrived counts as received at once** (from the form, an update, or one staff filed);
+  staff can still mark a kind as needed. Chosen over "received" only once staff have checked it. The owner's changes:
+  **the state boxes one size** (a column of their own on a computer, full width on a phone), and **on a phone each kind of
+  document is a box of its own**, its name in a band, as on the form's Documents step (built at once, for today's page
+  too). Waits for the database and the worker (the worker chat proposes the contract). Pictures
+  `riac-handover\W\design\w61\` and `w61b\`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -959,8 +967,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   read it; a disposition already reaches them, W68 a), **W73 a** (a court typed as "not listed" shows on the list as the
   attorney typed it, where a listed court would be; the database chat waits for the owner's yes in its own chat) and
   **W60 c** (no cases without a referral behind them: email cases now arrive as intakes, and legacy cases, if ever
-  brought in, would be stubs). Still to decide: **W61** (what RIAC has received, per kind of document: a file arrived,
-  or staff checked it) and **W62** (passwords as well as emailed links; the worker chat advises passkeys if anything).
+  brought in, would be stubs). Decided, waiting for the database and the worker: **W61 a** (what RIAC has received, per
+  kind of document). Still to decide: **W62** (passwords as well as emailed links; the worker chat advises passkeys if
+  anything).
   Also S3's one small finding: on Review, when the upload is renewed at Send, two near-identical "one more check" notes
   show.
   Airtable's own form is no longer public, so it is **not** linked from this site.
