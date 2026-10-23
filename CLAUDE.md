@@ -443,7 +443,7 @@ every key and code the pages send.
   the case type, its label short on the step bar (Criminal Case, Probation, Appeal,
   Post-Conviction, Family Court, Removal); post-conviction asks the criminal and the appeal
   questions. The questions are the old public form's, word for word, placed as follows: About You
-  (the attorney's names, email, phone, office type, office); Court & Case (case type; answer here
+  (the attorney's names, email, phone, office type, office); Court & Case (case type, at step 1 since W90 2; answer here
   or upload a completed intake form instead; advice needed by; court, docket, next date; custody;
   orders of protection; ICE involvement; details); Client (names, date of birth, other names or
   dates of birth; country of birth, English, language); Immigration (entry and current status and
@@ -463,7 +463,7 @@ every key and code the pages send.
   Next is disabled. The old help text's "all six centers" line goes. Chosen over the old form's
   warning with a firm-details box and the form going on.
 - **W13 2** (16 October 2026): step 3, **Court & Case**: the old form's questions word for word,
-  **Case Type first** (six choices, two columns), asked on both ways (fix 3); "If this case is
+  **Case Type first** (six choices, two columns), asked on both ways (fix 3; at the top of step 1 since W90 2); "If this case is
   urgent…"; the court found by typing, from the county's courts, with "Court Not Listed / Non-NY
   Court?"; Docket No. and Next Court Date side by side; ICE INVOLVEMENT in a tinted tick box; the
   order-of-protection question, its tick list opening under Yes; custody status (seven choices,
@@ -985,7 +985,23 @@ every key and code the pages send.
   Junk sentence is kept once in `js/referral-data.js` (`RECEIPT_JUNK`) for both cards. Chosen over one short sentence,
   "A receipt was emailed to …", with no sender or Junk advice (an attorney's first emailed receipt may be an update's,
   for a referral keyed in at RIAC). Pictures `riac-handover\W\design\w86\` (mockup) and `w86c\` (as built); checks
-  `tests\w86-check.mjs`.
+  `tests\w86-check.mjs`. Live since 23 October 2026.
+- **W90 2, with the owner's words** (23 October 2026; the owner, through the case-start chat: "for USCIS cases, there is
+  no court and no county - so I just want to make sure the intake takes this into account (e.g. allowing for what county
+  are you in, as opposed to what county is the court in)"): **the case type is asked first, at the top of step 1**
+  ("Case type and county", *The kind of case, and the county that decides which regional center receives your
+  referral.*), **and the county question follows it.** For Removal / USCIS it reads **"County where your office is"**,
+  with *For removal defense or a USCIS application, your office location decides which regional center receives your
+  referral.* (the owner's sentence, with the word "application" his left out), and the list ends "My office is outside
+  New York State"; for every other case type as before. A county chosen stays when the case type changes. **Step 3 for
+  Removal / USCIS** asks no court, Court Not Listed, docket or next court date; in their place **"Immigration Court Or
+  USCIS Office (If Any)"** (*e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"*; the new key
+  `court.immigrationOffice`, one line of up to 200, removal and the questions way only: contract draft 24) and **"Next
+  Hearing Or Interview Date (If Any)"** (sent as `court.nextDate`); the urgency, ICE involvement, order of protection, custody and
+  details stay. Step 3's line is now *The court, and where things stand.*, and on Review and send the first section is
+  "Case Type & County". The county still picks the centre; for removal it is the attorney's office's, which the worker,
+  database and case-start chats were told. Chosen over keeping the case type at step 3 with one line for removal under
+  the county ("1"). Pictures `riac-handover\W\design\w90\` (mockup) and `w90c\` (as built); checks `tests\w90-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1067,8 +1083,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   disposition as tick tiles with symbols), **W88 1** (green, outlined status boxes) and **W84 2b** (once a case is open,
   the case number leads, the reference shown as "Intake Reference"). The worker sends an email receipt
   for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23), and
-  **W86 1** has the card after an update say where it went. Still to put to the owner, a mockup first: **W90** (a removal
-  or USCIS referral has no court and no county: what the form's county and court questions should ask for it) and **W91**
+  **W86 1** has the card after an update say where it went. **W90 2**: for a removal or USCIS referral the case type
+  comes first and the county is the attorney's office's, with the immigration court or USCIS office in place of the
+  court. Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries

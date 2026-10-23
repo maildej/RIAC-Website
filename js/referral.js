@@ -493,15 +493,26 @@
     return list;
   }
 
+  // W90 2: the case type first, then the county, worded by it: removal defense and USCIS applications have no county
+  // court, so their county is the attorney's office's
+  function countyWords() {
+    return caseType() === 'removal'
+      ? { label: 'County where your office is', outside: 'My office is outside New York State' }
+      : { label: 'County where the case is pending', outside: 'The court is outside New York State' };
+  }
   function drawCounty(q) {
-    heading(q, 'Which county is the case in?', 'The county decides which regional center receives your referral.');
+    heading(q, 'Case type and county', 'The kind of case, and the county that decides which regional center receives your referral.');
+    drawList(D.STEPS.county, q);
+    var words = countyWords();
     var sel = h('select', { id: 'f-county', class: 'big', 'data-route': 'county' });
     sel.appendChild(h('option', { value: '', text: 'Choose a county' }));
     LISTS.counties.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (c) {
       sel.appendChild(h('option', { value: c.name, text: c.name, selected: !S.route.outside && S.route.county === c.name }));
     });
-    sel.appendChild(h('option', { value: OUTSIDE, text: 'The court is outside New York State', selected: S.route.outside }));
-    q.appendChild(h('div', { class: 'field', id: 'f-county-w' }, [h('label', { for: 'f-county', text: 'County where the case is pending' }), sel]));
+    sel.appendChild(h('option', { value: OUTSIDE, text: words.outside, selected: S.route.outside }));
+    q.appendChild(h('div', { class: 'field', id: 'f-county-w' }, [h('label', { for: 'f-county', text: words.label }),
+      caseType() === 'removal' ? h('span', { class: 'desc', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }) : null, sel]));
+    if (caseType() === 'removal') sel.setAttribute('aria-describedby', 'f-county-d');
 
     var cc = countyCentre();
     if (S.route.outside) {
@@ -548,7 +559,7 @@
   }
 
   function drawCourt(q) {
-    heading(q, 'Court and case', 'The kind of case, the court, and where things stand.');
+    heading(q, 'Court and case', 'The court, and where things stand.');
     if (S.sendAs === 'completed-form') {   // W13 2
       q.appendChild(h('div', { class: 'upload-on' }, ['You are sending a completed RIAC intake form. Next you give the client’s name, then upload the form at step 8, with any other documents. ',
         h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'questions'; save(); render(); } } }, ['Answer the questions here instead ›'])]));
@@ -574,8 +585,8 @@
 
   function drawCaseType(q) {
     var t = caseTypeInfo();
-    if (!t) { heading(q, 'Case details', 'Choose the case type at step 3 first.'); q.appendChild(actions({ noNext: true })); return; }
-    heading(q, t.heading, t.code === 'removal' ? null : 'The questions for ' + (t.code === 'appeal' ? 'an appeal' : t.code === 'post-conviction' ? 'post-conviction relief' : t.code === 'family' ? 'family court or a divorce' : 'a ' + t.heading.toLowerCase()) + ', the case type chosen at step 3.');
+    if (!t) { heading(q, 'Case details', 'Choose the case type at step 1 first.'); q.appendChild(actions({ noNext: true })); return; }
+    heading(q, t.heading, t.code === 'removal' ? null : 'The questions for ' + (t.code === 'appeal' ? 'an appeal' : t.code === 'post-conviction' ? 'post-conviction relief' : t.code === 'family' ? 'family court or a divorce' : 'a ' + t.heading.toLowerCase()) + ', the case type chosen at step 1.');
     drawList(D.SECTIONS[t.code] || [], q);
     q.appendChild(actions());
   }
@@ -886,7 +897,7 @@
       'currentStatusDate', 'aNumber', 'pendingApplications', 'screeningClient', 'screeningClientUnknownWhy', 'screeningIce', 'screeningIceUnknownWhy',
       'screeningImmigration', 'screeningImmigrationUnknownWhy', 'immigrationAttorney', 'familyAny', 'familyAnyUnknownWhy', 'family', 'familyUnknownWhy', 'details'],
     court: ['name', 'notListed', 'notListedDetails', 'docket', 'nextDate', 'iceInvolvement', 'protectionOrder', 'protectionOrderUnknownWhy', 'protectionOrders',
-      'protectionOrdersUnknownWhy', 'custody', 'details'],
+      'protectionOrdersUnknownWhy', 'custody', 'details', 'immigrationOffice'],
     vop: ['underlyingAdvised', 'underlyingAdvisedUnknownWhy', 'underlyingCaseNumber', 'underlyingConvictions', 'originalSentence', 'allegations', 'parallelCharge',
       'parallelChargeUnknownWhy', 'parallelChargeDetails'],
     removal: ['issues'], criminal: ['allegations', 'offer', 'offenceDate', 'screeningIncident', 'screeningIncidentUnknownWhy', 'details'],
@@ -900,7 +911,7 @@
   // The answers the attorney can see now, by key (a hidden question's answer is not sent).
   function shownAnswers() {
     var out = {};
-    var ids = ['about', 'court', 'client', 'immigration'];
+    var ids = ['county', 'about', 'court', 'client', 'immigration'];
     if (!skipped('casetype')) ids.push('casetype');
     ids.forEach(function (sid) {
       if (skipped(sid)) return;
@@ -984,6 +995,7 @@
   function validate(sid, dry) {
     var errs = [];
     if (sid === 'county') {
+      if (!caseType()) errs.push({ id: fid('case.caseType') + '-0', wid: fid('case.caseType'), empty: true, text: 'answer' });   // W90 2
       if (!S.route.outside && !S.route.county) errs.push({ id: 'f-county', empty: true, text: 'county' });
       else if ((S.route.outside || S.route.conflict) && !S.route.centre) errs.push({ id: 'f-centre', empty: true, text: 'center' });
       return errs;
@@ -1069,12 +1081,13 @@
   function copySections() {
     var secs = [];
     var rc = receivingCentre();
-    var county = [['County where the case is pending', S.route.outside ? 'The court is outside New York State' : S.route.county || '—'], ['Center', centreOf(rc).name]];
+    var words = countyWords();
+    var county = rowsFor(D.STEPS.county).concat([[words.label, S.route.outside ? words.outside : S.route.county || '—'], ['Center', centreOf(rc).name]]);
     if (S.route.conflict) { county.push(['Reason for this center', 'The county’s own center has a conflict']); if (clean(S.A.outOfRegionNote)) county.push(['About the conflict', S.A.outOfRegionNote.trim()]); }
-    secs.push(['County', county, 0]);
+    secs.push(['Case Type & County', county, 0]);
     secs.push(['About You', rowsFor(D.STEPS.about), 1]);
     var court = rowsFor(D.STEPS.court);
-    court.splice(1, 0, ['How it is sent', S.sendAs === 'completed-form' ? 'A completed RIAC intake form, attached' : 'Answered on this form']);
+    court.unshift(['How it is sent', S.sendAs === 'completed-form' ? 'A completed RIAC intake form, attached' : 'Answered on this form']);
     secs.push(['Court & Case', court, 2]);
     secs.push(['Client', rowsFor(D.STEPS.client), 3]);
     if (!skipped('immigration')) secs.push(['Immigration', rowsFor(D.STEPS.immigration), 4]);
@@ -1245,7 +1258,7 @@
   }
   function findQuestion(key) {
     var found = null;
-    ['about', 'court', 'client', 'immigration'].forEach(function (sid) { flat(D.STEPS[sid]).forEach(function (q) { if (q.key === key) found = found || q; }); });
+    ['county', 'about', 'court', 'client', 'immigration'].forEach(function (sid) { flat(D.STEPS[sid]).forEach(function (q) { if (q.key === key) found = found || q; }); });
     Object.keys(D.SECTIONS).forEach(function (s) { flat(D.SECTIONS[s]).forEach(function (q) { if (q.key === key) found = found || q; }); });
     return found;
   }
@@ -1259,7 +1272,7 @@
   };
   function stepOfKey(key) {   // which step asks this answer, so a refusal can take the attorney to it
     var at = -1;
-    ['about', 'court', 'client', 'immigration'].forEach(function (sid) { if (at < 0 && flat(D.STEPS[sid]).some(function (q) { return q.key === key; })) at = STEP_IDS.indexOf(sid); });
+    ['county', 'about', 'court', 'client', 'immigration'].forEach(function (sid) { if (at < 0 && flat(D.STEPS[sid]).some(function (q) { return q.key === key; })) at = STEP_IDS.indexOf(sid); });
     if (at >= 0) return at;
     if (/^doc\./.test(key)) return STEP_IDS.indexOf('documents');
     if (/^(people|noOtherPeople|peopleNote)/.test(key)) return STEP_IDS.indexOf('people');

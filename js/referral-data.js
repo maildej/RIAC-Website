@@ -225,14 +225,25 @@
       show: function (A) { return (A['attorney.officeNotListed'] === true && ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1) || ['none', 'non-profit'].indexOf(A['attorney.officeType']) !== -1; } })
   ];
 
+  // W90 2: the case type is asked first, at step 1, so the county question can follow it (for removal / USCIS there is
+  // no county court: the county is the attorney's office's)
+  var COUNTY = [
+    Q('case.caseType', 'Case Type', 'radio', { choices: CASE_TYPES.map(function (t) { return C(t.code, t.label); }), cols: 2, required: true })
+  ];
+  // W90 2: removal defense and USCIS applications have no county court, so no court, docket or court date; the
+  // immigration court or USCIS office, and the next hearing or interview date, in their place
+  function notRemoval(A) { return A['case.caseType'] !== 'removal'; }
+  function isRemoval(A) { return A['case.caseType'] === 'removal'; }
   var COURT = [
-    Q('case.caseType', 'Case Type', 'radio', { choices: CASE_TYPES.map(function (t) { return C(t.code, t.label); }), cols: 2, required: true }),
     Q('case.urgentBy', 'If this case is urgent, please state when advice is needed by (leave blank otherwise):', 'date', { copy: 'Advice needed by' }),
-    Q('court.name', 'Court', 'search', { list: 'courts', way: 'questions', show: function (A, X) { return !!X.county && A['court.notListed'] !== true; } }),
-    Q('court.notListed', 'Court Not Listed / Non-NY Court?', 'check', { way: 'questions', show: function (A, X) { return !!X.county; } }),
+    Q('court.name', 'Court', 'search', { list: 'courts', way: 'questions', show: function (A, X) { return !!X.county && A['court.notListed'] !== true && notRemoval(A); } }),
+    Q('court.notListed', 'Court Not Listed / Non-NY Court?', 'check', { way: 'questions', show: function (A, X) { return !!X.county && notRemoval(A); } }),
     Q('court.notListedDetails', 'Court Not Listed - Details', 'note', { required: true, way: 'questions',
-      show: function (A, X) { return A['court.notListed'] === true || !X.county; } }),
-    { type: 'pair', way: 'questions', items: [Q('court.docket', 'Docket No.', 'short'), Q('court.nextDate', 'Next Court Date', 'date')] },
+      show: function (A, X) { return (A['court.notListed'] === true || !X.county) && notRemoval(A); } }),
+    { type: 'pair', way: 'questions', items: [Q('court.docket', 'Docket No.', 'short', { show: notRemoval }), Q('court.nextDate', 'Next Court Date', 'date', { show: notRemoval })] },
+    { type: 'pair', way: 'questions', items: [Q('court.immigrationOffice', 'Immigration Court Or USCIS Office (If Any)', 'short', {
+        guidance: { eg: 'e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"' }, show: isRemoval }),
+      Q('court.nextDate', 'Next Hearing Or Interview Date (If Any)', 'date', { alias: true, show: isRemoval, copy: 'Next hearing or interview date' })] },
     Q('court.iceInvolvement', '<strong>ICE INVOLVEMENT:</strong> Select if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client', 'check', { long: true, labelHtml: true, way: 'questions', copy: 'ICE involvement' }),
     Q('court.protectionOrder', 'Does This Case Involve An Order Of Protection In Any Way?', 'radio', { choices: YNU, inline: true, required: true, way: 'questions',
       unknownNote: 'Please provide any information relevant to whether this case involves an order of protection' }),
@@ -329,7 +340,7 @@
 
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
-    STEPS: { about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
+    STEPS: { county: COUNTY, about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
     SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
     DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE
   };
