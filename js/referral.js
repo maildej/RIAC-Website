@@ -1306,7 +1306,7 @@
     app.textContent = '';
     var facts = [h('dt', { text: 'Reference' }), h('dd', { text: r.reference }), h('dt', { text: 'Sent' }), h('dd', { text: fmtWhen(r.sentAt) })];
     if (r.receiptTo) {   // W48 1: where the receipt comes from, and Junk (a new sender's receipts were junked in the trial)
-      var junk = 'Not in your inbox within a few minutes? Look in your Junk or Spam folder' + (r.receiptFrom ? ', and mark it “Not junk”.' : '.');
+      var junk = D.RECEIPT_JUNK + (r.receiptFrom ? ', and mark it “Not junk”.' : '.');
       facts.push(h('dt', { text: 'Receipt' }), h('dd', null, ['emailed to ' + r.receiptTo,
         h('span', { class: 'receipt-note' }, r.receiptFrom ? ['It comes from ', h('strong', { text: r.receiptFrom }), '. ' + junk] : [junk])]));
     }

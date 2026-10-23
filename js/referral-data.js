@@ -301,6 +301,10 @@
   // W46 1: shown on the form and the portal's sign-in when Cloudflare's check fails to load or does not pass
   var BOT_CHECK_FAILED = 'The check that you are not a robot could not be completed. Please reload the page and try again.';
 
+  // W48 1, W86 1: under "Receipt: emailed to …" after a referral and after an update (in the trial a brand-new sender's
+  // receipts went to Junk). "Not junk" only when the worker names the sending address.
+  var RECEIPT_JUNK = 'Not in your inbox within a few minutes? Look in your Junk or Spam folder';
+
   // W59 A, W83 1: on Send RIAC An Update, with the worker's codes (contract draft 21): a note to RIAC unless the attorney
   // ticks "Report an offer" or "Report a disposition" (one at most), each tick tile with its symbol (W87 2b); the
   // question over the box, and the name shown after Send. An offer or a disposition needs words (W68 a: a disposition
@@ -326,7 +330,7 @@
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
-    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, UPDATE_ABOUT: UPDATE_ABOUT,
+    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
     DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE
   };
 })();

@@ -975,7 +975,17 @@ every key and code the pages send.
   4121** · court · docket" (the number in dark bold), with *"Intake Reference R2-…"* in grey italics beneath. The search
   still finds a referral by its reference. Chosen over the reference as a grey line under the labels ("1"); "Intake
   Reference" is the owner's wording, in place of the "Was Reference:" first drawn. Pictures `riac-handover\W\design\w84\` (mockup,
-  `W84-2b-*` the one chosen) and `w84c\` (as built); checks `tests\w84-check.mjs` (1360 to 320 px).
+  `W84-2b-*` the one chosen) and `w84c\` (as built); checks `tests\w84-check.mjs` (1360 to 320 px). Live since 23
+  October 2026.
+- **W86 1** (23 October 2026): since the worker's RW13 every update gets an email receipt, and **the "Sent to RIAC" card
+  after Send RIAC An Update says where it went, in W48 1's words**: under "Received …", **"Receipt:** emailed to
+  <address>." and beneath it "It comes from **<the centre's referral address>**. Not in your inbox within a few minutes?
+  Look in your Junk or Spam folder, and mark it “Not junk”." Both addresses come from the worker's answer (`receiptTo`,
+  `receiptFrom`, contract draft 23); without `receiptFrom` only the Junk sentence, and nothing when no receipt went. The
+  Junk sentence is kept once in `js/referral-data.js` (`RECEIPT_JUNK`) for both cards. Chosen over one short sentence,
+  "A receipt was emailed to …", with no sender or Junk advice (an attorney's first emailed receipt may be an update's,
+  for a referral keyed in at RIAC). Pictures `riac-handover\W\design\w86\` (mockup) and `w86c\` (as built); checks
+  `tests\w86-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1056,10 +1066,12 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   page (23 October 2026): **W82 1** (lighter type, the tag line, centred rows), **W83 1 with W87 2b** (offer and
   disposition as tick tiles with symbols), **W88 1** (green, outlined status boxes) and **W84 2b** (once a case is open,
   the case number leads, the reference shown as "Intake Reference"). The worker sends an email receipt
-  for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23). Still to
-  put to the owner, a mockup first: **W86** (whether the card after an update names where its receipt went, as W48 1's
-  card does after a referral) and **W90** (a removal or USCIS referral has no court and no county: what the form's county
-  and court questions should ask for it). Passed to the database chat: a note subject naming the kinds of document when an update carries
+  for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23), and
+  **W86 1** has the card after an update say where it went. Still to put to the owner, a mockup first: **W90** (a removal
+  or USCIS referral has no court and no county: what the form's county and court questions should ask for it) and **W91**
+  (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
+  a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
+  holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.

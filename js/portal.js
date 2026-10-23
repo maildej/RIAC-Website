@@ -585,6 +585,15 @@
       });
   }
 
+  // W86 1: where the update's receipt went (contract draft 23), in W48 1's words, as the card after a referral; nothing
+  // when no receipt went
+  function receipt(body) {
+    if (!body.receiptTo) return null;
+    var junk = D.RECEIPT_JUNK + (body.receiptFrom ? ', and mark it “Not junk”.' : '.');
+    return h('p', { class: 'add-receipt' }, [h('strong', { text: 'Receipt: ' }), 'emailed to ' + body.receiptTo + '.',
+      h('span', { class: 'receipt-note' }, body.receiptFrom ? ['It comes from ', h('strong', { text: body.receiptFrom }), '. ' + junk] : [junk])]);
+  }
+
   function added(r, body, message, docs, about) {
     clear();
     app.appendChild(h('a', { class: 'back-link', href: './', text: '‹ Back To Your Referrals' }));
@@ -594,6 +603,7 @@
     });
     app.appendChild(h('div', { class: 'add-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), 'Sent to RIAC']),
       h('div', { class: 'inner' }, [which(r), h('p', { text: 'Received ' + fmtWhen(body.receivedAt) + '. RIAC sees it with this referral.' }),
+        receipt(body),
         h('p', null, [h('strong', { text: 'What you sent: ' }), h('span', { class: 'about-tag', text: aboutOf(about).sent })]),
         message ? h('p', { class: 'copy-rows' }, [h('span', { class: 'pre', text: message })]) : null,
         names.length ? h('ul', { class: 'added-list' }, names) : null,
