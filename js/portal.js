@@ -277,20 +277,30 @@
     clear();
     var me = data.me || {};
     var staff = me.isAttorney === false;
+    // W65 A: three short lines. The name (until the worker can supply one, the address) and Sign Out; the office, email
+    // and phone; how long the sign-in lasts.
     var name = me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email;
-    var left = h('div', null, [h('div', { class: 'who', text: name })]);
-    if (me.office) left.appendChild(h('div', { class: 'office', text: me.office }));
-    if (me.name) left.appendChild(h('div', { class: 'contact', text: [me.email || data.email, me.phone].filter(Boolean).join(' · ') }));
-    left.appendChild(h('div', { class: 'note', text: 'These are the details RIAC holds for you. If one is wrong, tell your RIAC.' }));
-    var side = h('div', { class: 'side' }, [h('button', { type: 'button', class: 'btn btn-plain', on: { click: signOut } }, ['Sign Out']),
-      h('span', { text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]);
-    app.appendChild(h('div', { class: 'me-card' }, [left, side]));
+    var card = h('div', { class: 'me-card' }, [h('div', { class: 'top' }, [h('div', { class: 'who', text: name }),
+      h('button', { type: 'button', class: 'btn btn-plain', on: { click: signOut } }, ['Sign Out'])])]);
+    var contact = (me.name ? [me.email || data.email, me.phone] : [me.phone]).filter(Boolean).join(' · ');
+    if (me.office || contact) card.appendChild(h('div', { class: 'line' }, [me.office ? h('b', { text: me.office }) : null, me.office && contact ? ' · ' : null, contact]));
+    card.appendChild(h('p', { class: 'notes', text: 'You stay signed in until you close this tab, or for 12 hours at most.' }));
+    app.appendChild(card);
 
     // W58 1: the search and Sort on one line (Sort over the list's last column), then five buttons of one size, All and
     // the four groups, each with its count (of the matches while searching). Sorted by Status, All shows the four groups
-    // as boxes, Waiting on you edged orange and Closed folded; any other sort shows one list, each status on its row.
+    // as their own headings, Closed folded; any other sort shows one list, each status on its row.
     var view = keptView();
-    var search = h('input', { type: 'search', id: 'ref-search', placeholder: 'Search by name, court or number', 'aria-label': 'Search your referrals by name, court or number' });
+    var search = h('input', { type: 'search', id: 'ref-search', 'aria-label': 'Search your referrals by name, court, referral reference or docket number' });
+    // The owner's wording; on a phone it does not fit the box, so a shorter form there, and shorter again on the smallest.
+    var mq = function (q) { return window.matchMedia ? window.matchMedia(q) : { matches: false }; };
+    var narrow = mq('(max-width: 600px)'), tiny = mq('(max-width: 380px)');
+    var hint = function () {
+      search.placeholder = tiny.matches ? 'Name, court, reference, docket' : narrow.matches ? 'Search: name, court, reference or docket'
+        : 'Search by name, court, referral reference or docket number';
+    };
+    hint();
+    [narrow, tiny].forEach(function (m) { if (m.addEventListener) m.addEventListener('change', hint); });
     var sortSel = h('select', { id: 'ref-sort', 'aria-label': 'Sort your referrals' });
     app.appendChild(h('div', { class: 'list-head' }, [h('h2', { text: 'RIAC Referrals:' }), search, sortSel]));
     var buttons = [['all', 'All']].concat(GROUPS).map(function (g) {

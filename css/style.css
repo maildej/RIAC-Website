@@ -459,9 +459,11 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .page-head p.full { max-width: none; }
 .page-head .map-panel { max-width: 32rem; margin: 2.2rem auto 0; }
 
-.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); padding-top: 1.4rem; padding-bottom: 1.6rem; }
-.page-head-alt h1 { color: var(--navy); }
-.page-head-alt p { color: var(--ink); }
+/* The cream title card, kept small on every page that has it (W66 1, 22 October 2026: it read as "too large/doughy") */
+.page-head-alt { margin-bottom: 1rem; }
+.page-head-alt .wrap { background: var(--cream); color: var(--ink); border: 2px solid var(--navy); padding-top: .8rem; padding-bottom: .9rem; }
+.page-head-alt h1 { color: var(--navy); font-size: var(--fs-section); margin-bottom: .15rem; }
+.page-head-alt p { color: var(--ink); font-size: var(--fs-text); }
 
 /* ---------- Footer ---------- */
 
@@ -503,6 +505,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
                 background: rgba(247,242,224,.07); }
   .site-nav a::before { display: none; }
   .page-head h1 { font-size: var(--fs-section); }
+  .page-head-alt p { font-size: var(--fs-small); }
   .hero-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
   .section-intro { text-align: left; }
   .advisory-list li.featured h3 { font-size: var(--fs-card); }

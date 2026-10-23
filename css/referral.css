@@ -373,13 +373,13 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .under-card { text-align: center; font-size: var(--fs-small); color: var(--muted); margin-top: 1.2rem; }
 .under-card a { font-weight: 600; }
 
-.me-card { background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--navy); border-radius: 10px; padding: 1.1rem 1.4rem; display: flex; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.6rem; }
-.me-card .who { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); font-weight: 600; }
-.me-card .office { font-weight: 600; font-size: var(--fs-small); color: var(--navy); }
-.me-card .contact, .me-card .note { font-size: var(--fs-small); color: var(--muted); }
-.me-card .note { margin-top: .3rem; }
-.me-card .side { text-align: right; font-size: var(--fs-small); color: var(--muted); display: grid; gap: .5rem; justify-items: end; align-content: start; }
-.me-card .side .btn { height: 2.3rem; display: inline-flex; align-items: center; padding: 0 1.1rem; }
+/* The signed-in person's card (W65 A): the name and Sign Out, then the office, email and phone, then how long it lasts */
+.me-card { background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--navy); border-radius: 10px; padding: .7rem .8rem .75rem 1rem; margin-bottom: 1.1rem; }
+.me-card .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.me-card .who { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.me-card .top .btn { flex: none; height: 2.1rem; display: inline-flex; align-items: center; padding: 0 .85rem; }
+.me-card .line, .me-card .notes { font-size: var(--fs-small); color: var(--muted); margin-top: .15rem; }
+.me-card .line b { color: var(--navy); font-weight: 600; }
 
 .list-head { display: flex; align-items: center; gap: 1rem; margin-bottom: .4rem; }
 .list-head h2 { font-size: var(--fs-section); color: var(--navy); white-space: nowrap; }
@@ -391,42 +391,49 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .list-show .count { display: inline-block; min-width: 1.5em; padding: 0 .4em; border-radius: 99px; background: #eceae3; color: #444; font-size: var(--fs-label); }
 .list-show .pill:has(input:checked) .count { background: color-mix(in srgb, var(--cream) 25%, transparent); color: var(--cream); }
 .list-note { font-size: var(--fs-small); color: var(--help); font-style: italic; margin-bottom: .8rem; }
-.ref-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: var(--fs-small); }
-.ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--navy); background: color-mix(in srgb, var(--navy) 4%, white); padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
-.ref-table td { padding: .7rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-.ref-table tr:last-child td { border-bottom: 0; }
+/* Each referral its own white card with a slight shadow (W65 A): rows set apart on a computer, cards on a phone */
+.ref-table { width: 100%; font-size: var(--fs-small); }
+.ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--navy); padding: .3rem .8rem 0; }
+.ref-table td { padding: .7rem .8rem; background: #fff; }
 .ref-table .cl { font-weight: 600; color: var(--ink); }
 .ref-table .sub { color: var(--muted); }
 .ref-table .nw { white-space: nowrap; } /* a reference never breaks at its hyphens */
 .case-no { display: inline-block; background: var(--navy); color: var(--cream); border-radius: 99px; padding: 0 .45rem; font-size: var(--fs-label); font-weight: 600; }
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list */
-.ref-table .status { display: block; }
+.ref-table .status { display: flex; align-items: center; min-height: 2.1rem; } /* as tall as Add To This Referral (W65) */
 .status { display: inline-block; background: color-mix(in srgb, var(--navy) 6%, white); color: var(--ink); border-left: 4px solid var(--navy); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: left; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 16%, white); border-left-color: var(--r5); color: #8a4210; }
 .status.closed { background: #f1efea; border-left-color: #a7a49b; color: var(--muted); }
 .ref-table .act { text-align: right; white-space: nowrap; }
 .ref-table .act .btn { height: 2.1rem; display: inline-flex; align-items: center; padding: 0 .8rem; font-size: var(--fs-small); }
 mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
-.ref-group { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-top: 1rem; }
+/* A group is a heading over its cards, no box round them; Waiting on you's heading brown with an orange arrow */
+.ref-group { margin-top: 1.1rem; }
 .ref-group:first-child { margin-top: 0; }
-.ref-group > summary { cursor: pointer; padding: .7rem 1rem; font-family: var(--serif); font-weight: 600; color: var(--navy); }
+.ref-group > summary { cursor: pointer; padding: .2rem .1rem .55rem; font-family: var(--serif); font-weight: 600; color: var(--navy); }
 .ref-group > summary span { font-family: var(--sans); font-weight: 400; font-size: var(--fs-small); color: var(--muted); }
-.ref-group .ref-table { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
-.ref-group.you::before { content: ""; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 5px; background: var(--r5); border-radius: 10px 0 0 10px; }
+.ref-group.you > summary { color: #8a4210; }
+.ref-group.you > summary::marker { color: var(--r5); }
 @media (min-width: 1101px) {
-  /* The columns line up from one group to the next; the client's takes what the others leave */
-  .ref-table { table-layout: fixed; }
+  /* The columns line up from one group to the next; the client's takes what the others leave. Everything in a row
+     centred on one line (the owner, W65). */
+  .ref-table { table-layout: fixed; border-collapse: separate; border-spacing: 0 .55rem; margin: -.55rem 0; }
   .ref-table tr > :nth-child(2) { width: 20%; }
   .ref-table tr > :nth-child(3) { width: 7.5rem; }
   .ref-table tr > :nth-child(4) { width: 15.5rem; }
   .ref-table tr > :nth-child(5) { width: 13rem; }
+  .ref-table td { vertical-align: middle; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .ref-table td:first-child { border-left: 1px solid var(--line); border-radius: 10px 0 0 10px; }
+  .ref-table td:last-child { border-right: 1px solid var(--line); border-radius: 0 10px 10px 0; }
+  .ref-table tbody tr { border-radius: 10px; box-shadow: 0 1px 2px rgba(18, 38, 63, .06), 0 2px 6px rgba(18, 38, 63, .07); }
 }
 /* Narrower, each referral is a card of its own (a table this wide no longer fits) */
 @media (max-width: 1100px) {
   .ref-table thead { display: none; }
   .ref-table, .ref-table tbody, .ref-table tr, .ref-table td { display: block; width: 100%; }
-  .ref-table tr { border-bottom: 1px solid var(--line); padding: .5rem 0; }
-  .ref-table td { border: 0; padding: .25rem .9rem; }
+  .ref-table tr { background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 1px 2px rgba(18, 38, 63, .06), 0 2px 6px rgba(18, 38, 63, .07); margin-top: .6rem; padding: .45rem 0; }
+  .ref-table tbody tr:first-child { margin-top: 0; }
+  .ref-table td { padding: .25rem .9rem; background: none; }
   .ref-table .act { text-align: left; }
   .ref-table .act .btn { width: 100%; justify-content: center; }
 }
@@ -449,9 +456,6 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-actions .btn { min-width: 9rem; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; }
 
 @media (max-width: 760px) {
-  .me-card { flex-direction: column; }
-  .me-card .side { text-align: left; justify-items: stretch; }
-  .me-card .side .btn { justify-content: center; }
   .list-head { flex-direction: column; align-items: stretch; }
   .list-head select { flex: none; width: 100%; }
   .list-show { grid-template-columns: 1fr 1fr; }

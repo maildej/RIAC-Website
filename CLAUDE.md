@@ -225,6 +225,10 @@ repository), without sharing any of their code.
   page the stylesheet does it (each card is a two-row CSS subgrid); on the advisories page
   `js/advisory-search.js` measures and matches them, except on a phone, where the cards are in
   one column and each keeps its own height.
+- **The cream title card** at the top of Practice Advisories, Send A Case, the referral form and the portal's two pages
+  is kept small (W66 1, 22 October 2026: it read as "too large/doughy"): the title at `--fs-section`, the line under
+  it at `--fs-text` (`--fs-small` on a phone), little padding. The navy title card (Find Your RIAC, the request and
+  thanks pages) is unchanged.
 - **Buttons and pills in a group are the same width and height**, unless there is a reason not
   to — the rule the database pages follow. On a phone the four menu buttons are a two-by-two
   grid of equal buttons, and the home page's two buttons stack, full width. The one exception:
@@ -825,6 +829,28 @@ every key and code the pages send.
   counts settled by the owner as W63 and built by the database chat); until the worker sends it, the page uses the
   status "Waiting for documents". Pictures in `riac-handover\W\design\w58\`, `w58b\`, `w58d\` (the mockups) and
   `w58c\` (as built); checks in `riac-handover\W\tests\w58-check.mjs`.
+- **W63, the owner's yes to the recommendations** (22 October 2026): what counts as **Waiting on you**, for the
+  database chat's formula behind `waitingOnYou`: (1) RIAC has asked the attorney to get in touch and is waiting for them
+  to (the stage RIAC's reminders chase): yes; (2) the attorney has been in contact: only while documents are actually
+  outstanding from the attorney (where RIAC has the next move, the status words stop saying "Waiting for documents"); (3) advice
+  sent with the case still open: not for now (to revisit with W59, reporting a disposition). Closed is never waiting.
+  Nothing more is needed on the page.
+- **W65 A, with the owner's corrections** (22 October 2026), on the portal list: **the signed-in person's card is three
+  short lines**: the name (the address until the worker can supply a name) with a small Sign Out beside it; the office
+  in bold, email and phone; "You stay signed in until you close this tab, or for 12 hours at most." **"These are the
+  details RIAC holds for you. If one is wrong, tell your RIAC." is gone** (the owner: it "doesn't really do anything";
+  W5 1 had it). **Each referral is its own white card with a slight shadow**, set apart by a small gap, with no box round
+  a group: the group's name is a heading over its cards ("Waiting on you" in brown with an orange arrow; W58 1's boxes
+  and orange edge are gone). On a computer the rows are the cards, the column headings kept once at the top, and
+  **everything in a row is centred on one line** (the owner's "vertical centering ... rather than top alignment"); the
+  status box is as tall as Add To This Referral, its words centred. On a phone each card stacks as before, the status box
+  and the button one width and height. Chosen over B (the name at text size on one line with the details, and the cards
+  inside group boxes). **The search reads "Search by name, court, referral reference or docket number"** (the owner's
+  words; it also finds case numbers and, for office staff, attorneys); on a phone "Search: name, court, reference or
+  docket", and on the smallest phones "Name, court, reference, docket", since the full words do not fit the box.
+  Pictures in `riac-handover\W\design\w65\` (mockups) and `w65c\` (as built); checks `tests\w65-check.mjs`.
+- **W66 1** (22 October 2026): the smaller cream title card on **every page that has it**, not the portal only (see
+  Design rules). Chosen over the portal's two pages only.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
