@@ -914,9 +914,19 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 
 - **The referral form and the attorney portal** (see the section of that name above): **on nyriac.com unlisted, as
   a trial** (since 21 October 2026, W41 1); the menu still says Intake Forms and the old PDF-only page is what
-  attorneys see. CS5's security review is done. Still to come, in the order of "The trial run, then the go-live" above:
-  the trial of Region 2 and the portal (once the case-start chat's receiving side is in), the fixes (S3), the owner's
-  go / no-go, then the go-live (H1, H2). Airtable's own form is no longer public, so it is **not** linked from this site.
+  attorneys see. CS5's security review is done. **The trial (S2) is complete** (22 October 2026: the emailed centres,
+  Region 2, receipts, the portal's sign-in, list and an addition). **W56, the owner's go / no-go: not yet.** "We are still
+  at the soft launch - I would like this fully operational, hidden from public view, so we can play with it. No real data
+  will be going in until hard launch." The go-live (H1, H2) waits until the owner says "hard launch". Meanwhile, **the
+  owner's portal additions**, one decision at a time, a mockup first: done and live, W58 1 (the list's groups, buttons
+  and Sort), W63 (what counts as waiting on you; the database side to build), W65 A and W66 1 (cards and title cards).
+  Still to decide: **W59** (Add To This Referral doubling as "message RIAC", offers and dispositions arriving tagged; first
+  ask whether an attorney's reported disposition marks the case disposed at once or only after staff check it), **W60**
+  (cases with no online referral behind them: how far back), **W61** (what RIAC has received, per kind of document:
+  a file arrived, or staff checked it), **W62** (passwords as well as emailed links; the worker chat advises passkeys if
+  anything), and whether a court typed as "not listed" should show on the list as typed (a database change). Also S3's
+  one small finding: on Review, when the upload is renewed at Send, two near-identical "one more check" notes show.
+  Airtable's own form is no longer public, so it is **not** linked from this site.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14
