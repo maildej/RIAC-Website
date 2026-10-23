@@ -233,7 +233,7 @@ repository), without sharing any of their code.
 - **Drop-downs, search bars and pills (status flags included) are full width, or the width of an
   obvious column**, unless there is a reason not to (the owner, 22 October 2026, with W58 1). On
   the portal's list: the search fills the line beside the heading, Sort is as wide as the
-  table's last column, and each status pill fills its column; on a phone each is full width.
+  table's last column, and each status box fills its column; on a phone each is full width.
 - **Symbols** (`images/symbols.svg`) are drawn for this site: solid navy shapes with one orange
   detail, on a 48-unit square. The navy follows the text colour; the cream and orange come from
   `--icon-fill` and `--icon-accent`, which `.symbol` sets. A page shows one with
@@ -814,13 +814,17 @@ every key and code the pages send.
   orange and Closed folded (it opens when a search finds something in it); any other sort shows one list with each
   referral's status on its row. Status is offered under All only. The view chosen is kept in the tab, so Back from Add
   To This Referral finds it as it was. The owner's changes: **"Where it stands" is now "Status"** (the column and the
-  sort; W5 1 named it), and the design rule above on drop-downs, search bars and pills. On a computer the columns line
+  sort; W5 1 named it), and the design rule above on drop-downs, search bars and pills. **The status is no longer a
+  pill but a tinted box with rounded corners and a coloured left edge** ("A", the owner's choice): navy, orange (with
+  brown words) when waiting on the attorney, grey when closed; the words at the left; as wide as its column, and on
+  the Add To This Referral page too. Chosen over a white box with a thin border ("B"), which read like a box to type
+  into beside the white Add To This Referral button. On a computer the columns line
   up from one group to the next; below 1,100 px wide each referral is a card (the table no longer fits). Chosen over
   the case page's Show and Sort By drop-downs (the owner's inspiration: a drop-down suits the case page's many filters,
   buttons the portal's five). **Waiting on you comes from the worker's `waitingOnYou`** (contract draft 20, with what
   counts settled by the owner as W63 and built by the database chat); until the worker sends it, the page uses the
-  status "Waiting for documents". Pictures in `riac-handover\W\design\w58\`, `w58b\` (the mockups) and `w58c\` (as
-  built); checks in `riac-handover\W\tests\w58-check.mjs`.
+  status "Waiting for documents". Pictures in `riac-handover\W\design\w58\`, `w58b\`, `w58d\` (the mockups) and
+  `w58c\` (as built); checks in `riac-handover\W\tests\w58-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

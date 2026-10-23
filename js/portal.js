@@ -195,9 +195,9 @@
 
   // ---------- The list (W5 1, "W5 yes") ----------------------------------------------------------------------------------
 
-  function statusPill(r) {
-    var t = r.status || '';
-    return h('span', { class: 'status' + (/waiting for documents/i.test(t) ? ' waiting' : ''), text: (r.isOpen ? '' : 'Closed: ') + t });
+  function statusPill(r) {   // a tinted box with a coloured left edge (W58 1): orange when waiting on you, grey when closed
+    var g = groupOf(r);
+    return h('span', { class: 'status' + (g === 'you' ? ' waiting' : g === 'closed' ? ' closed' : ''), text: (r.isOpen ? '' : 'Closed: ') + (r.status || '') });
   }
   function marked(text, term) {   // the text, with each match of the search term marked (as text, never as HTML)
     var frag = document.createDocumentFragment();
@@ -253,7 +253,7 @@
           r.caseNumber ? h('span', { class: 'nw' }, ['Case ', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)])]) : '']),
         staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
-      var rec = h('td', null, [h('div', { text: fmtDay(r.receivedOn) }), r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]);
+      var rec = h('td', null, [h('div', { text: fmtDay(r.receivedOn) }), r.closedOn ? h('div', { class: 'sub' }, ['Closed ', h('span', { class: 'nw', text: fmtDay(r.closedOn) })]) : null]);
       tb.appendChild(h('tr', null, [client, court, rec, h('td', null, [statusPill(r)]),
         h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Add To This Referral' })])]));
     });
