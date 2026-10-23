@@ -13,8 +13,8 @@
     turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft',
-    // Send RIAC An Update (W59 A): the kinds of update offered; with one kind, "What is this about?" is not asked. Offers
-    // and dispositions on nyriac.com too since RIAC's database files them as such (W72, 23 October 2026).
+    // Send RIAC An Update (W59 A): the kinds of update offered, a note always; each other kind is a tick tile (W83 1).
+    // Offers and dispositions on nyriac.com too since RIAC's database files them as such (W72, 23 October 2026).
     updateKinds: ['message', 'offer', 'disposition']
   };
 
@@ -301,13 +301,14 @@
   // W46 1: shown on the form and the portal's sign-in when Cloudflare's check fails to load or does not pass
   var BOT_CHECK_FAILED = 'The check that you are not a robot could not be completed. Please reload the page and try again.';
 
-  // W59 A: "What is this about?" on Send RIAC An Update, with the worker's codes (contract draft 21): the tile, the
+  // W59 A, W83 1: on Send RIAC An Update, with the worker's codes (contract draft 21): a note to RIAC unless the attorney
+  // ticks "Report an offer" or "Report a disposition" (one at most), each tick tile with its symbol (W87 2b); the
   // question over the box, and the name shown after Send. An offer or a disposition needs words (W68 a: a disposition
   // marks the case disposed at RIAC). No descriptions and no guidance in the box (the owner).
   var UPDATE_ABOUT = [
-    { code: 'message', tile: 'Note to RIAC', box: 'Your note to RIAC', sent: 'Note to RIAC' },
-    { code: 'offer', tile: 'Report an offer', box: 'The offer', sent: 'Offer' },
-    { code: 'disposition', tile: 'Report a disposition', box: 'The disposition', sent: 'Disposition' }
+    { code: 'message', box: 'Your note to RIAC', sent: 'Note to RIAC' },
+    { code: 'offer', tile: 'Report an offer', sym: 'i-plea', box: 'The offer', sent: 'Offer' },
+    { code: 'disposition', tile: 'Report a disposition', sym: 'i-disposition', box: 'The disposition', sent: 'Disposition' }
   ];
 
   // W61 a, W80 1: on Send RIAC An Update, beside each kind of document, what RIAC has of it (contract draft 22's `state`):

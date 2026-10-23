@@ -45,6 +45,13 @@
     (kids || []).forEach(function (c) { if (c !== null && c !== undefined && c !== false) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
     return el;
   }
+  function symbol(name) {   // one of the site's symbols (images/symbols.svg), for the eye only
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg'), use = document.createElementNS(NS, 'use');
+    use.setAttribute('href', '../images/symbols.svg#' + name);
+    svg.appendChild(use);
+    return h('span', { class: 'tile-sym', 'aria-hidden': 'true' }, [svg]);
+  }
   function clear() {
     if (turnstileId !== null && window.turnstile) { try { window.turnstile.remove(turnstileId); } catch (e) { /* gone */ } turnstileId = null; }
     app.textContent = '';
@@ -419,10 +426,11 @@
     setLimits('Up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word (.docx), JPEG, PNG or HEIC.');
   }
 
-  // W59 A: the message leads ("What is this about?" first, when more than one kind is offered), documents follow.
+  // W59 A, W83 1: a note to RIAC unless the attorney ticks "Report an offer" or "Report a disposition" (one at most: one
+  // update is filed as one kind at RIAC), above the box; the box's question follows the tick. Documents follow.
   function drawAdd(r) {
-    var kinds = D.UPDATE_ABOUT.filter(function (a) { return CFG.updateKinds.indexOf(a.code) !== -1; });
-    A.about = kinds[0].code;
+    var ticks = D.UPDATE_ABOUT.filter(function (a) { return a.code !== 'message' && CFG.updateKinds.indexOf(a.code) !== -1; });
+    A.about = 'message';
     var msg = h('textarea', { id: 'add-message', maxlength: '6000', rows: '4' });
     var near = h('p', { class: 'near-limit', 'aria-live': 'polite' });
     msg.addEventListener('input', function () {
@@ -430,14 +438,22 @@
       near.textContent = n >= 5000 ? n.toLocaleString('en-US') + ' of 6,000 characters. A longer account can be attached as a file.' : '';
       if (n) { msgField.classList.remove('has-err'); msg.removeAttribute('aria-invalid'); }
     });
-    var label = h('label', { for: 'add-message', text: kinds[0].box });
+    var label = h('label', { for: 'add-message', text: aboutOf('message').box });
     var msgField = h('div', { class: 'field', id: 'add-message-field' }, [label, msg, near]);
-    var about = kinds.length < 2 ? null : h('div', { class: 'field' }, [h('fieldset', { class: 'plain-fieldset' }, [h('legend', { text: 'What is this about?' }),
-      h('div', { class: 'about-tiles' }, kinds.map(function (a) {
-        var input = h('input', { type: 'radio', name: 'add-about', value: a.code });
-        input.checked = a.code === A.about;
-        input.addEventListener('change', function () { A.about = a.code; label.textContent = a.box; msgField.classList.remove('has-err'); msg.removeAttribute('aria-invalid'); });
-        return h('label', { class: 'tile' }, [input, h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', { text: a.tile })]);
+    var inputs = [];
+    // W87 2b: each tile's symbol and words centred on it, the tick as far from its left as from its top and bottom
+    var about = !ticks.length ? null : h('div', { class: 'field' }, [h('fieldset', { class: 'plain-fieldset' }, [
+      h('legend', { class: 'visually-hidden', text: 'Does this update report an offer or a disposition? Tick one, or neither for a note.' }),
+      h('div', { class: 'about-ticks' }, ticks.map(function (a) {
+        var input = h('input', { type: 'checkbox', name: 'add-about', value: a.code });
+        inputs.push(input);
+        input.addEventListener('change', function () {
+          inputs.forEach(function (o) { if (o !== input) o.checked = false; });
+          A.about = input.checked ? a.code : 'message';
+          label.textContent = aboutOf(A.about).box;
+          msgField.classList.remove('has-err'); msg.removeAttribute('aria-invalid');
+        });
+        return h('label', { class: 'tile' }, [input, h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', { class: 'mid' }, [symbol(a.sym), h('span', { text: a.tile })])]);
       }))])]);
     var docs = h('div');
     A.kinds = kindsFor(r);

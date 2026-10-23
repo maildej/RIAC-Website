@@ -857,7 +857,8 @@ every key and code the pages send.
   their attention. An offer is a label only.
 - **W59 A, with the owner's changes** (22 October 2026; the owner: "the note is almost an afterthought"): **Add To This
   Referral becomes "Send RIAC An Update"** (the list's button, the page's title and its bar, "Send RIAC an update"), and
-  the page leads with the message: "What is this about?", **three tiles of one size, chosen first**: **Note to RIAC**
+  the page leads with the message (since W83 1, two tick tiles in place of the three: see there): "What is this about?",
+  **three tiles of one size, chosen first**: **Note to RIAC**
   (chosen to start), **Report an offer**, **Report a disposition**; the question over the box follows the choice ("Your
   note to RIAC", "The offer", "The disposition"); then **Documents (optional)**, the same boxes as before. The owner's
   changes: **no description under the tiles and no guidance in the box**. An offer or a disposition needs words: with
@@ -939,6 +940,21 @@ every key and code the pages send.
   are the row's own cells), and Something else's name and button are centred on its box, "What is it?" over it. The
   form's own sizes are unchanged (W26 2). Chosen over the questions smaller with every weight kept. Pictures
   `riac-handover\W\design\w82\` (mockup) and `w82c\` (as built); checks `tests\w82-check.mjs` (1360 to 320 px).
+- **W83 1, with W87 2b** (23 October 2026; the owner: "the note to RIAC seems a bit redundant - they are all notes to
+  RIAC? So maybe make report an offer and report a disposition check boxes and only have those two?"): on **Send RIAC An
+  Update**, "What is this about?" and **Note to RIAC** go; above the box, **two tick tiles of one size, "Report an offer"
+  and "Report a disposition"**; neither ticked sends a note. **Ticking one unticks the other** (one update is filed as
+  one kind at RIAC; the worker chat's advice, so `addition.about` is unchanged); the box's question still follows the
+  tick. A screen reader hears "Does this update report an offer or a disposition? Tick one, or neither for a note." The
+  owner then asked for symbols that read easily (W87): **the handshake** (`i-plea`, the plea advisory's) for an offer and
+  **a gavel on an orange block** (`i-disposition`, new: the judge's gavel without its question) for a disposition, set
+  **before the words, the symbol and words centred on the tile, and the tick as far from the tile's left as from its top
+  and bottom** (the owner's "2, but"): each tile is three columns, a square one for the tick, the middle, and an empty one
+  as wide as the first. On phones 380 px wide or less the tiles are a little shorter and the symbols smaller, so "Report a
+  disposition" keeps to one line; below about 355 px the words wrap, both tiles together. With it (the owner: "a little
+  big and padded"), **what the attorney types on this page is at the case info's size**, a little closer to the box's
+  edges. Chosen over the tick tiles under the box, and over the symbols at the tiles' right end. Pictures
+  `riac-handover\W\design\w83\`, `w87\` (mockups) and `w83c\` (as built); checks `tests\w83-check.mjs` (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

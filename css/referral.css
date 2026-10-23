@@ -457,16 +457,24 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .which .cl { font-weight: 600; color: var(--ink); }
 .which .sub { color: var(--muted); }
 .which .status { display: flex; align-items: center; min-height: 2.1rem; }
-/* "What is this about?" (W59 A): three tiles of one size, chosen like a radio button; one above another below 900 px */
-.about-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; }
-.about-tiles .tile { display: flex; margin: 0; padding: .3rem .6rem; gap: .45rem; font-size: var(--fs-small); font-weight: 600; color: var(--navy); } /* not the site's .field label */
-.about-tiles .tile .box { border-radius: 50%; }
-.about-tiles .tile:has(input:checked) .box { box-shadow: inset 0 0 0 3px #fff; }
-.about-tiles .tile:has(input:checked) .box::after { content: none; }
+/* "Report an offer" and "Report a disposition" (W83 1, W87 2b): two tick tiles of one size, each in three columns, the
+   tick centred in a square first column (as far from the tile's left as from its top and bottom), the symbol and words
+   centred on the tile, an empty third column as wide as the first; one above the other below 900 px */
+.about-ticks { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: .45rem; }
+.about-ticks .tile { display: grid; grid-template-columns: calc(3rem - 2px) 1fr calc(3rem - 2px); gap: 0; min-height: 3rem; margin: 0; padding: 0; font-size: var(--fs-small); color: var(--navy); } /* not the site's .field label */
+.about-ticks .tile .box { justify-self: center; }
+.about-ticks .tile .mid { display: flex; align-items: center; justify-content: center; gap: .55rem; padding: .3rem 0; text-align: center; }
+.tile-sym { flex: none; display: grid; place-items: center; color: var(--navy); --icon-fill: #fff; --icon-accent: var(--r5); }
+.tile-sym svg { width: 32px; height: 32px; }
 .docs-head { border-top: 2px solid color-mix(in srgb, var(--navy) 20%, white); padding-top: 1rem; margin: .4rem 0 .5rem; }
 .docs-head .lab { font-weight: 600; color: var(--navy); }
 .docs-head .opt { color: var(--muted); font-size: var(--fs-small); }
-@media (max-width: 900px) { .about-tiles { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .about-ticks { grid-template-columns: 1fr; } }
+@media (max-width: 380px) {   /* most phones: a shorter tile and symbol, so "Report a disposition" keeps to one line */
+  .about-ticks .tile { grid-template-columns: calc(2.4rem - 2px) 1fr calc(2.4rem - 2px); min-height: 2.4rem; }
+  .about-ticks .tile .mid { gap: .45rem; padding: .2rem 0; }
+  .tile-sym svg { width: 28px; height: 28px; }
+}
 .about-tag { display: inline-block; white-space: nowrap; background: var(--navy); color: var(--cream); border-radius: 6px; padding: .1rem .5rem; font-size: var(--fs-label); font-weight: 600; }
 .add-doc { display: grid; grid-template-columns: 12rem 1fr auto; gap: .8rem; align-items: start; padding: .6rem 0; border-top: 1px solid var(--line); font-size: var(--fs-small); }
 .add-doc .nm { font-weight: 600; color: var(--navy); }
@@ -495,8 +503,11 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
    each kind's name, state and button on one line (Something else in line with its box) */
 .portal-head p { font-size: var(--fs-small); }
 .add-card .ref-q .field > label, .add-card .plain-fieldset > legend, .add-card .docs-head .lab { font-size: var(--fs-small); }
-.add-card .about-tiles .tile, .add-card .add-doc .nm { font-weight: 400; }
-#add-message { min-height: 5.6rem; }
+.add-card .about-ticks .tile, .add-card .add-doc .nm { font-weight: 400; }
+/* W83 1: what the attorney types at the case info's size too, a little closer to the edges (the owner: "a little big
+   and padded"); the note box still opens three lines tall */
+.add-card #add-message, .add-card #a-other-note { font-size: var(--fs-small); padding: .5rem .7rem; }
+#add-message { min-height: 5.2rem; }
 .add-card .add-doc .other-what { margin-bottom: 0; }
 @media (min-width: 761px) {
   /* the state box and the files become the row's own cells: the name, state and button centred on the first line, the

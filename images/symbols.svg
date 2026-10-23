@@ -146,6 +146,20 @@
     </g>
   </symbol>
 
+  <!-- Send RIAC An Update, a disposition (W87): the judge's gavel without its question, on an orange block -->
+  <symbol id="i-disposition" viewBox="0 0 48 48">
+    <g>
+      <g style="fill: currentColor" transform="translate(6 -1) rotate(-45 17 21)">
+        <rect x="5" y="11" width="24" height="11" rx="3"/>
+        <rect x="14.5" y="21" width="5" height="21" rx="2.5"/>
+      </g>
+      <g style="fill: none; stroke: var(--icon-fill, #fff); stroke-linecap: round; stroke-linejoin: round" stroke-width="2" transform="translate(6 -1) rotate(-45 17 21)">
+        <path d="M10 11.5v10M24 11.5v10"/>
+      </g>
+      <rect style="fill: var(--icon-accent, #ef7c28)" x="8" y="39" width="27" height="5.5" rx="2"/>
+    </g>
+  </symbol>
+
   <!-- Intake: criminal cases, a fingerprint (the RAP sheet every criminal intake needs): a loop
        pattern, generated as contour lines, so edit it as a whole rather than ridge by ridge. -->
   <symbol id="i-criminal" viewBox="0 0 48 48">
