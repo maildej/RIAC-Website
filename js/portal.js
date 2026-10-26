@@ -235,7 +235,9 @@
   // you if it needs something from the attorney (the worker's waitingOnYou, contract draft 20; until that is sent, the
   // status that says so), otherwise Case open once RIAC has opened a case, and Received before then.
   var GROUPS = [['received', 'Received'], ['you', 'Waiting on you'], ['case', 'Case open'], ['closed', 'Closed']];
-  var SORTS = [['status', 'Status'], ['newest', 'Newest first'], ['oldest', 'Oldest first'], ['client', 'Client name']];
+  // The Sort drop-down (on a phone, W99 1) offers the first four; the others come from the column headings on a computer
+  var SORTS = [['status', 'Status'], ['newest', 'Newest first'], ['oldest', 'Oldest first'], ['client', 'Client name'],
+    ['client-za', 'Client name, Z to A'], ['court', 'Court'], ['court-za', 'Court, Z to A']];
   var VIEW_KEY = 'riac-portal-view';
   function groupOf(r) {
     if (!r.isOpen) return 'closed';
@@ -246,7 +248,10 @@
   var SORT_BY = {
     newest: function (a, b) { return (b.receivedOn || '').localeCompare(a.receivedOn || ''); },
     oldest: function (a, b) { return (a.receivedOn || '').localeCompare(b.receivedOn || ''); },
-    client: function (a, b) { return byName(a.clientName || '', b.clientName || '') || SORT_BY.newest(a, b); }
+    client: function (a, b) { return byName(a.clientName || '', b.clientName || '') || SORT_BY.newest(a, b); },
+    'client-za': function (a, b) { return byName(b.clientName || '', a.clientName || '') || SORT_BY.newest(a, b); },
+    court: function (a, b) { return byName(a.court || '', b.court || '') || SORT_BY.newest(a, b); },
+    'court-za': function (a, b) { return byName(b.court || '', a.court || '') || SORT_BY.newest(a, b); }
   };
   // The view chosen is kept in this tab, so Back from Send RIAC An Update finds the list as it was left.
   function keptView() {
@@ -256,6 +261,22 @@
     return { show: v.show === 'all' || known(GROUPS, v.show) ? v.show : 'all', sort: known(SORTS, v.sort) ? v.sort : 'status' };
   }
   function keepView(v) { try { sessionStorage.setItem(VIEW_KEY, JSON.stringify(v)); } catch (e) { /* storage blocked: not kept */ } }
+
+  // W99 1 (the owner: "column sorter toggles"): on a computer each heading is a button that sorts by its column, a second
+  // press the other way round: Client A to Z, Received newest first, Court A to Z; Status sorts into the four groups, one
+  // way only, and under All only (as the drop-down's Status). The column sorted by is navy with one arrow, the others grey
+  // with a faint pair. On a phone, where each referral is a card, the Sort drop-down does it.
+  var COLS = [['Client', 'client', 'client-za'], ['Received', 'newest', 'oldest'], ['Court', 'court', 'court-za'], ['Status', 'status', null], ['']];
+  function headRow(hd) {
+    return h('tr', null, COLS.map(function (c, i) {
+      if (!c[1] || (c[1] === 'status' && hd.show !== 'all')) return h('th', { scope: 'col', text: c[0] });
+      var on = hd.by === c[1] ? 'first' : hd.by === c[2] ? 'second' : null;
+      var up = on && (c[1] === 'newest' ? on === 'second' : on === 'first' && c[1] !== 'status');
+      return h('th', { scope: 'col', 'aria-sort': !on ? 'none' : c[1] === 'status' ? 'other' : up ? 'ascending' : 'descending' }, [
+        h('button', { type: 'button', class: 'th-sort' + (on ? ' on ' + (up ? 'up' : 'down') : ''), on: { click: function () { hd.pick(on === 'first' && c[2] ? c[2] : c[1], i); } } },
+          [c[0], h('span', { class: 'arr', 'aria-hidden': 'true' }, [h('span', { class: 'a-up' }), h('span', { class: 'a-dn' })])])]);
+    }));
+  }
 
   function table(rows, term, staff, head) {
     var tb = h('tbody');
@@ -278,9 +299,7 @@
       tb.appendChild(h('tr', null, [client, received, court, h('td', null, [statusPill(r)]),
         h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Send RIAC An Update' })])]));
     });
-    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Received', 'Court', 'Status', ''].map(function (t) {
-      return h('th', { scope: 'col', text: t });
-    }))]) : null, tb]);
+    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [headRow(head)]) : null, tb]);
   }
 
   function list() {
@@ -310,9 +329,10 @@
     card.appendChild(h('p', { class: 'notes', text: 'You stay signed in until you close this tab, or for 12 hours at most.' }));
     app.appendChild(card);
 
-    // W58 1: the search and Sort on one line (Sort over the list's last column), then five buttons of one size, All and
-    // the four groups, each with its count (of the matches while searching). Sorted by Status, All shows the four groups
-    // as their own headings, Closed folded; any other sort shows one list, each status on its row.
+    // W58 1: the search and Sort on one line (Sort over the list's last column; on a computer the column headings sort
+    // instead, W99 1), then five buttons of one size, All and the four groups, each with its count (of the matches while
+    // searching). Sorted by Status, All shows the four groups as their own headings, Closed folded; any other sort shows
+    // one list, each status on its row.
     var view = keptView();
     var search = h('input', { type: 'search', id: 'ref-search', 'aria-label': 'Search your referrals by name, court, referral reference or docket number' });
     // The owner's wording; on a phone it does not fit the box, so a shorter form there, and shorter again on the smallest.
@@ -347,8 +367,13 @@
       // Status sorts into the groups, so it is offered under All only; within one group it reads as Newest first.
       var by = view.show !== 'all' && view.sort === 'status' ? 'newest' : view.sort;
       sortSel.textContent = '';
-      SORTS.forEach(function (s) { if (s[0] !== 'status' || view.show === 'all') sortSel.appendChild(h('option', { value: s[0], text: 'Sort: ' + s[1] })); });
+      SORTS.forEach(function (s, i) { if ((i < 4 || s[0] === by) && (s[0] !== 'status' || view.show === 'all')) sortSel.appendChild(h('option', { value: s[0], text: 'Sort: ' + s[1] })); });
       sortSel.value = by;
+      // the headings sort on a computer; the one pressed keeps the focus once the list is drawn again
+      var hd = { by: by, show: view.show, pick: function (s, col) {
+        view.sort = s; keepView(view); draw();
+        var b = area.querySelector('thead th:nth-child(' + (col + 1) + ') button'); if (b) b.focus();
+      } };
       area.textContent = '';
       var none = term ? 'No referral' + (view.show === 'all' ? '' : ' here') + ' matches “' + term + '”.'
         : !all.length ? 'You have no referrals here yet.' : view.show === 'you' ? 'Nothing is waiting on you.' : 'None at the moment.';
@@ -359,13 +384,13 @@
           var total = inGroup(all, g[0]).length;
           area.appendChild(h('details', { class: 'ref-group ' + g[0], open: g[0] !== 'closed' || !!term }, [h('summary', null, [g[1] + ' ',
             h('span', { text: term ? '(' + rows.length + ' of ' + total + ' match' + (rows.length === 1 ? 'es' : '') + ')' : '(' + rows.length + ')' })]),
-            table(rows, term, staff, !area.childNodes.length)]));
+            table(rows, term, staff, !area.childNodes.length && hd)]));
         });
         if (!area.childNodes.length) area.appendChild(h('div', { class: 'empty-note', text: none }));
         return;
       }
       var rows = inGroup(hits, view.show).sort(SORT_BY[by]);
-      area.appendChild(rows.length ? table(rows, term, staff, true) : h('div', { class: 'empty-note', text: none }));
+      area.appendChild(rows.length ? table(rows, term, staff, hd) : h('div', { class: 'empty-note', text: none }));
     }
     sortSel.addEventListener('change', function () { view.sort = sortSel.value; keepView(view); draw(); });
     search.addEventListener('input', draw);

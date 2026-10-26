@@ -394,7 +394,17 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .list-note { font-size: var(--fs-small); color: var(--help); font-style: italic; margin-bottom: .8rem; }
 /* Each referral its own white card with a slight shadow (W65 A): rows set apart on a computer, cards on a phone */
 .ref-table { width: 100%; font-size: var(--fs-small); }
-.ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--navy); padding: .3rem .8rem 0; }
+.ref-table th { text-align: left; font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: .3rem .8rem 0; }
+/* W99 1: on a computer the headings sort; the column sorted by navy with one arrow, the others grey with a faint pair */
+.th-sort { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; }
+.th-sort:hover { text-decoration: underline; text-underline-offset: 3px; }
+.th-sort.on { color: var(--navy); }
+.th-sort .arr { display: inline-grid; gap: 2px; }
+.th-sort .arr span { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; opacity: .3; }
+.th-sort .a-up { border-bottom: 5px solid currentColor; }
+.th-sort .a-dn { border-top: 5px solid currentColor; }
+.th-sort.on .arr span { opacity: 1; }
+.th-sort.on.up .a-dn, .th-sort.on.down .a-up { display: none; }
 .ref-table td { padding: .7rem .8rem; background: #fff; }
 .ref-table .cl { font-weight: 600; color: var(--ink); }
 .ref-table .cl.none, .which .cl.none { color: var(--help); font-style: italic; font-weight: 400; } /* W74 a: Client name not recorded */
@@ -442,6 +452,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .ref-table tr > :nth-child(4) { width: 15.5rem; }
   .ref-table tr > :nth-child(5) { width: 13rem; }
   .ref-table .rcv .kv { display: none; }
+  .list-head select { display: none; } /* the headings sort here (W99 1) */
   .ref-table td { vertical-align: middle; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .ref-table td:first-child { border-left: 1px solid var(--line); border-radius: 10px 0 0 10px; }
   .ref-table td:last-child { border-right: 1px solid var(--line); border-radius: 0 10px 10px 0; }

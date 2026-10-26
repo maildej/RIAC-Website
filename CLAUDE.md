@@ -236,8 +236,9 @@ repository), without sharing any of their code.
   items that wide would push the menu onto a second row.
 - **Drop-downs, search bars and pills (status flags included) are full width, or the width of an
   obvious column**, unless there is a reason not to (the owner, 22 October 2026, with W58 1). On
-  the portal's list: the search fills the line beside the heading, Sort is as wide as the
-  table's last column, and each status box fills its column; on a phone each is full width.
+  the portal's list: the search fills the line beside the heading (on a computer the column
+  headings sort, W99 1; below that Sort is a full-width drop-down), and each status box fills its
+  column; on a phone each is full width.
 - **Never a pill directly above or below plain left-aligned text** (the owner, 26 October 2026, with W95 2c: "a general
   design problem"): with the pill's edge on the text's edge its words look indented, with its words on the text's edge
   the pill looks off to the left, and splitting the difference looks wrong too. Make both pills, or keep them apart.
@@ -817,7 +818,7 @@ every key and code the pages send.
   short ones suggested ("intake" and "pending case" are RIAC's words, not the attorney's). **Five buttons of one size**,
   All and the four groups, each with its count (of the matches while searching); on a phone All runs full width over
   two rows of two. **Sort** (Status, Newest first, Oldest first, Client name) sits beside the search, as wide as the
-  table's last column. Sorted by **Status**, All shows the four groups as boxes in that order, Waiting on you edged
+  table's last column (since W99 1 only below computer width; on a computer the column headings sort). Sorted by **Status**, All shows the four groups as boxes in that order, Waiting on you edged
   orange and Closed folded (it opens when a search finds something in it); any other sort shows one list with each
   referral's status on its row. Status is offered under All only. The view chosen is kept in the tab, so Back from Add
   To This Referral finds it as it was. The owner's changes: **"Where it stands" is now "Status"** (the column and the
@@ -1023,6 +1024,16 @@ every key and code the pages send.
   numbers ("1"), and over the two pills one width ("2b", which turned the navy pill into a heavy bar louder than the
   name). The case info at the top of Send RIAC An Update is unchanged (W84 2b). Pictures `riac-handover\W\design\w95\`
   (mockups; `W95-2c-*` the one chosen) and `w95c\` (as built); checks `tests\w95-check.mjs` (1360 to 320 px).
+- **W99 1** (26 October 2026; the owner: "Is it possible to give column sorter toggles?"): on a computer **the column
+  headings sort the list**: a press on Client sorts A to Z, Received newest first, Court A to Z, and a second press on
+  the same heading reverses it; Status sorts into the four groups (W58 1), one way only, and is a plain heading when one
+  group is shown, as the drop-down's Status was. The heading sorted by is navy with one arrow (and `aria-sort`); the
+  others are grey with a faint pair of arrows, so they read as something to press; the pressed heading keeps the
+  keyboard's focus. **On a computer the Sort drop-down goes and the search fills the line**; on a phone, where each
+  referral is a card with no headings, the drop-down stays with its four (Status, Newest first, Oldest first, Client
+  name), plus the one in use if a heading chose another. The choice is kept in the tab as before. Chosen over keeping the
+  drop-down on a computer as well ("2"). Pictures `riac-handover\W\design\w99\` (mockup) and `w99c\` (as built); checks
+  `tests\w99-check.mjs`; `tests\w58-check.mjs` now sorts with the headings on a computer.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1107,8 +1118,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   **W86 1** has the card after an update say where it went. **W90 2**: for a removal or USCIS referral the case type
   comes first and the county is the attorney's office's, with the immigration court or USCIS office in place of the
   court (live since 23 October 2026). Then the owner's five points on the portal list (26 October 2026), one decision at a
-  time: **W95 2c** (the numbers as pills under the name, Received a column; built, not yet published); still to put,
-  **W99** (sorting by clicking a column heading, the owner's question), **W96** (the status box's words centred, the box
+  time: **W95 2c** (the numbers as pills under the name, Received a column) and **W99 1** (sorting by the column
+  headings on a computer), both built, not yet published; still to put, **W96** (the status box's words centred, the box
   perhaps narrower), **W97** ("Send RIAC An Update" smaller, grey, with a symbol, "Send a message"), **W98** (the
   signed-in card folded into the cream "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
