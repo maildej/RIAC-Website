@@ -37,12 +37,13 @@
   function fresh() {
     return { v: 1, step: 0, visited: 0, A: {}, sendAs: 'questions',
       route: { county: null, outside: false, conflict: false, centre: null, note: '' },
-      people: [], adding: {}, docs: {}, batch: null, send: null };
+      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null };
   }
   function load() {
     try {
       var s = JSON.parse(sessionStorage.getItem(CFG.draftKey) || 'null');
       if (!s || s.v !== 1) return null;
+      s.charges = s.charges || [];
       Object.keys(s.docs || {}).forEach(function (k) {   // files cannot survive a reload unless they had finished
         s.docs[k].files = (s.docs[k].files || []).filter(function (f) { return f.state === 'done'; });
       });
@@ -206,6 +207,7 @@
     if (q.type === 'para') { f.appendChild(h('p', { class: 'desc', text: q.desc })); return f; }
 
     if (q.type === 'ticks') return tickList(q);
+    if (q.type === 'charges') return chargesField(q);
     if (q.type === 'check') {
       var cb = h('input', { type: 'checkbox', id: id, 'data-key': q.key, checked: A[q.key] === true });
       var lab = h('label', { class: q.long ? 'tick-long' : 'tick-line', for: id }, [cb]);
@@ -278,6 +280,160 @@
       if (val.indexOf('unknown') !== -1) box.appendChild(field({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
     }
     return box;
+  }
+
+  // ---------- Charges (W101 1a) -------------------------------------------------------------------------------------
+  // A search over RIAC's list of New York offenses (js/offenses.js, public law only): each charge chosen becomes a line
+  // with its class and, on a Penal Law line, an "Attempted" tick; a charge not in the list can be added as typed.
+  // Optional. Sent as criminal.charges, the law, statute and tier exactly as the list has them.
+
+  var CH = D.CHARGES;
+  var OFFENSES = null;          // the list, read once: { law, statute, tier, name, cls, att, unknown, sk, words }
+  var chargeQuery = '';         // what is typed in the search box (not kept after a reload)
+  var chargeActive = 0;
+  var chargeShown = [];
+  var UNKNOWN_SUB = / - SUBSECTION UNKNOWN$/;
+  var ORDINALS = { first: '1st', second: '2nd', third: '3rd', fourth: '4th', fifth: '5th', sixth: '6th', seventh: '7th' };
+
+  function offenses() {
+    if (OFFENSES) return OFFENSES;
+    OFFENSES = [];
+    var src = window.RIAC_OFFENSES;
+    if (src) Object.keys(src.laws).forEach(function (law) {
+      src.laws[law].forEach(function (r) {
+        OFFENSES.push({ law: law, statute: r[0], tier: r[1], name: r[2], cls: r[3], att: r[4], unknown: UNKNOWN_SUB.test(r[0]),
+          sk: r[0].replace(UNKNOWN_SUB, '').toLowerCase().replace(/[^0-9a-z]/g, ''),
+          words: (r[2] + ' ' + (CH.law[law] || '') + ' ' + law).toLowerCase().split(/[^0-9a-z]+/).filter(Boolean) });
+      });
+    });
+    return OFFENSES;
+  }
+  // By statute number ("120.00(1)", "PL 120", "1192(3)") or by name ("assault 3", "robbery second degree", "dwi").
+  function chargeMatches(text) {
+    var q = text.toLowerCase().replace(/§/g, ' ').trim(), law = null;
+    var m = q.match(/^(p\.?\s?l\.?|penal\s+law|v\.?\s?t\.?\s?l\.?|vehicle\s+(and|&)\s+traffic\s+law)(\s+|$|(?=\d))/);
+    if (m) { law = /^p/.test(m[1]) ? 'Penal Law' : 'VTL'; q = q.slice(m[0].length).trim(); }
+    if (!q) return [];
+    var list = offenses().filter(function (o) { return !law || o.law === law; });
+    var out = [];
+    if (/^\d/.test(q)) {
+      var qk = q.replace(/[^0-9a-z]/g, '');
+      out = list.filter(function (o) { return o.sk.indexOf(qk) === 0; });
+    }
+    if (!out.length) {
+      var words = q.split(/[^0-9a-z]+/).filter(function (w) { return w && ['in', 'the', 'of', 'degree'].indexOf(w) === -1; })
+        .map(function (w) { return ORDINALS[w] || w; });
+      if (!words.length) return [];
+      out = list.filter(function (o) { return words.every(function (w) { return o.words.some(function (x) { return x.indexOf(w) === 0; }); }); });
+      out.sort(function (a, b) { return (b.words[0].indexOf(words[0]) === 0) - (a.words[0].indexOf(words[0]) === 0); });   // names starting with it first
+    }
+    return out;
+  }
+  function chargeStatute(c) { return (CH.law[c.law] || c.law) + ' ' + c.statute.replace(UNKNOWN_SUB, ''); }
+  function chargeName(c) { return c.name.replace(/ — /g, ', ') + (UNKNOWN_SUB.test(c.statute) ? ', ' + CH.unknownSub : ''); }
+  function canAttempt(c) { return c.law === 'Penal Law' && !!CH.classes[c.att]; }
+  function chargeClass(c, attempted) { return attempted ? (CH.classes[c.att] ? CH.classes[c.att] + CH.asAttempt : '') : CH.classes[c.cls] || ''; }
+  function chargeLabel(c) {   // the line in words: the copy, and the label sent with it
+    if (c.typed) return c.typed + ' (' + CH.typedNote.charAt(0).toLowerCase() + CH.typedNote.slice(1) + ')';
+    var at = c.attempted && canAttempt(c), cl = chargeClass(c, at);
+    return (at ? CH.attempted + ' ' : '') + chargeStatute(c) + ' ' + chargeName(c) + (cl ? ' (' + cl + ')' : '');
+  }
+  function chargeOut(c) {
+    if (c.typed) return { typed: c.typed };
+    return { law: c.law, statute: c.statute, tier: c.tier, attempted: !!c.attempted && canAttempt(c), label: chargeLabel(c).slice(0, 200) };
+  }
+
+  function chargeLine(c, i) {
+    var wid = 'chg-' + i;
+    var what = h('span', { class: 'what', id: wid });
+    if (c.typed) {
+      what.appendChild(h('span', { class: 'st', text: '“' + c.typed + '”' }));
+      what.appendChild(h('span', { class: 'note', text: CH.typedNote }));
+    } else {
+      what.appendChild(h('span', { class: 'st', text: (c.attempted && canAttempt(c) ? CH.attempted + ' ' : '') + chargeStatute(c) }));
+      what.appendChild(document.createTextNode(' ' + chargeName(c)));
+      var cl = chargeClass(c, c.attempted && canAttempt(c));
+      if (cl) what.appendChild(h('span', { class: 'cls', text: cl }));
+    }
+    var li = h('li', { class: c.typed || !canAttempt(c) ? 'no-att' : null }, [what]);
+    if (!c.typed && canAttempt(c)) {
+      li.appendChild(h('label', { class: 'att', for: wid + '-a' }, [h('input', { type: 'checkbox', id: wid + '-a', checked: !!c.attempted, 'aria-describedby': wid,
+        on: { change: function (e) { c.attempted = e.target.checked; save(); render(wid + '-a'); } } }), CH.attempted]));
+    }
+    li.appendChild(h('button', { type: 'button', class: 'link-btn rm', 'aria-describedby': wid,
+      on: { click: function () { S.charges.splice(i, 1); save(); render(fid('criminal.charges')); } } }, ['Remove']));
+    return li;
+  }
+
+  function chargesField(q) {
+    var id = fid(q.key);
+    var f = h('div', { class: 'field charges', id: id + '-w' });
+    f.appendChild(labelNode(q, id));
+    var dn = descNode(q); if (dn) f.appendChild(dn);
+    if (S.charges.length) f.appendChild(h('ul', { class: 'cp-lines', 'aria-label': q.label }, S.charges.map(chargeLine)));
+    if (S.charges.length >= CH.max) { f.appendChild(h('p', { class: 'desc', text: CH.full })); return f; }
+    var g = S.charges.length ? h('span', null, [h('span', { text: CH.another })]) : guidanceNode(q.guidance);
+    g.className = 'inbox-hint'; g.id = id + '-g'; g.setAttribute('aria-hidden', 'true');
+    var input = h('input', { type: 'search', id: id, class: 'inbox', placeholder: ' ', autocomplete: 'off', maxlength: '200', value: chargeQuery,
+      role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': id + '-m', 'aria-describedby': id + '-d ' + id + '-g' });
+    var list = h('ul', { class: 'cp-matches', id: id + '-m', role: 'listbox', 'aria-label': 'Offenses that match', hidden: true });
+    var status = h('span', { class: 'visually-hidden', role: 'status' });
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+    function draw() {
+      list.textContent = '';
+      var text = input.value.trim();
+      if (!text) { close(); status.textContent = ''; return; }
+      var all = chargeMatches(text);
+      chargeShown = all.slice(0, 8).concat([{ typed: text.slice(0, 200) }]);
+      if (chargeActive >= chargeShown.length || chargeActive < 0) chargeActive = 0;
+      chargeShown.forEach(function (o, i) {
+        var li;
+        if (o.typed) {
+          if (all.length > 8 || !all.length) list.appendChild(h('li', { class: 'more', role: 'presentation', text: all.length ? CH.more : CH.none }));
+          li = h('li', { class: 'typed-row' }, [h('span', { class: 'what' }, [CH.addTyped[0], h('span', { class: 'q', text: '“' + o.typed + '”' }), CH.addTyped[1]])]);
+        } else {
+          var w = h('span', { class: 'what' }, [h('span', { class: 'st', text: chargeStatute(o) }), ' ' + o.name.replace(/ — /g, ', ')]);
+          if (o.unknown) { w.appendChild(document.createTextNode(', ')); w.appendChild(h('span', { class: 'sub', text: CH.unknownSub })); }
+          li = h('li', null, [w, chargeClass(o, false) ? h('span', { class: 'cls', text: chargeClass(o, false) }) : null]);
+        }
+        li.id = id + '-o' + i;
+        li.setAttribute('role', 'option');
+        li.setAttribute('aria-selected', i === chargeActive ? 'true' : 'false');
+        if (i === chargeActive) li.classList.add('on');
+        li.addEventListener('mousedown', function (e) { e.preventDefault(); });   // keeps the box focused
+        li.addEventListener('click', function () { pickCharge(o); });
+        list.appendChild(li);
+      });
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      input.setAttribute('aria-activedescendant', id + '-o' + chargeActive);
+      var on = document.getElementById(id + '-o' + chargeActive); if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest' });
+      status.textContent = (all.length ? (all.length === 1 ? 'One offense matches.' : all.length + ' offenses match.') : CH.none) + ' Use the arrow keys, then Enter.';
+    }
+    input.addEventListener('input', function () { chargeQuery = input.value; chargeActive = 0; draw(); });
+    input.addEventListener('focus', function () { if (input.value.trim()) draw(); });
+    input.addEventListener('blur', close);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (list.hidden) { draw(); return; }
+        chargeActive = (chargeActive + (e.key === 'ArrowDown' ? 1 : -1) + chargeShown.length) % chargeShown.length;
+        draw();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!list.hidden && chargeShown[chargeActive]) pickCharge(chargeShown[chargeActive]);
+      } else if (e.key === 'Escape' && !list.hidden) { e.preventDefault(); close(); }
+    });
+    f.appendChild(h('div', { class: 'cp-search' }, [h('div', { class: 'inbox-wrap short' }, [input, g]), list, status]));
+    return f;
+  }
+  function pickCharge(o) {
+    var c = o.typed ? { typed: o.typed } : { law: o.law, statute: o.statute, tier: o.tier, name: o.name, cls: o.cls, att: o.att, attempted: false };
+    var twice = S.charges.some(function (x) { return o.typed ? x.typed === o.typed : x.law === c.law && x.statute === c.statute && x.tier === c.tier; });
+    if (!twice && S.charges.length < CH.max) S.charges.push(c);
+    chargeQuery = ''; chargeActive = 0; chargeShown = [];
+    save();
+    render(fid('criminal.charges'));
   }
 
   function drawList(list, parent) {
@@ -916,7 +1072,7 @@
     ids.forEach(function (sid) {
       if (skipped(sid)) return;
       flat(stepQuestions(sid)).forEach(function (q) {
-        if (!q.key || q.type === 'para' || q.type === 'subhead' || !visible(q)) return;
+        if (!q.key || q.type === 'para' || q.type === 'subhead' || q.type === 'charges' || !visible(q)) return;
         var v = S.A[q.key];
         if (q.type === 'ticks') {
           v = Array.isArray(v) ? v.slice() : [];
@@ -971,6 +1127,7 @@
       rapSheetComplete: null, rapSheetMore: null,
       anythingElse: clean(S.A.anythingElse)
     };
+    if (r.criminal && S.charges.length) r.criminal.charges = S.charges.map(chargeOut);   // W101 1a: only when chosen
     var rap = docState('rap-sheet');
     if (rap.status === 'attached' || rap.status === 'sent-before') {
       r.rapSheetComplete = S.A.rapSheetComplete || null;
@@ -1042,6 +1199,7 @@
         else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, wid: q.type === 'radio' ? fid(q.key) : null, empty: true, text: 'answer' });
       }
       if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
+      if (q.type === 'charges' && chargeQuery.trim() && S.charges.length < CH.max) errs.push({ id: id, text: CH.notChosen });
       if (q.type === 'search' && clean(v) && q.list === 'offices' && LISTS && LISTS.offices.indexOf(v.trim()) === -1) {
         errs.push({ id: id, text: 'Please choose your office from the list, or tick Office Not Listed?' });
       }
@@ -1055,6 +1213,7 @@
   // ---------- Step 9: Review And Send (W29 1, W35) ------------------------------------------------------------------------
 
   function answerText(q, v) {
+    if (q.type === 'charges') return S.charges.length ? S.charges.map(chargeLabel).join('\n') : '—';
     if (q.type === 'ticks') {
       v = Array.isArray(v) ? v : [];
       if (!v.length) return '—';
@@ -1281,6 +1440,7 @@
   }
   function workerErrors(fields) {
     var items = fields.map(function (f) {
+      f = { key: String(f.key).replace(/\[\d+\].*$/, ''), problem: f.problem };   // one charge of several: the question itself
       var q = findQuestion(f.key);
       var lab = q ? (q.labelHtml ? plain(q.label) : q.label) : f.key;
       var id = fid(f.key);

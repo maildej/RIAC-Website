@@ -132,8 +132,33 @@
   var ALLEGATIONS = { eg: 'e.g. "Client alleged to have slapped complainant, his girlfriend. She is alleged to have sustained a nose bleed and minor bruising"',
     html: 'Please summarize the <u>ALLEGATIONS</u> at their worst - not what actually happened / can be proven' };
 
+  // W101 1a: the charges, chosen from RIAC's list of New York offenses (js/offenses.js, public law only) or added as
+  // typed; optional. Each line shows the charge's class, and a Penal Law line has an "Attempted" tick. Sent as
+  // criminal.charges, the law, statute and tier exactly as the list has them.
+  var CHARGES = {
+    max: 30,
+    law: { 'Penal Law': 'PL', 'VTL': 'VTL', 'Tax Law': 'Tax Law' },
+    unknownSub: 'subdivision not known',
+    classes: { 'A-I Felony': 'Class A-I felony', 'A-II Felony': 'Class A-II felony', 'B Felony': 'Class B felony', 'C Felony': 'Class C felony',
+      'D Felony': 'Class D felony', 'E Felony': 'Class E felony', 'A Misdemeanor': 'Class A misdemeanor', 'B Misdemeanor': 'Class B misdemeanor',
+      'Unclassified Misdemeanor': 'Unclassified misdemeanor', 'Violation': 'Violation', 'Traffic Infraction': 'Traffic infraction',
+      'Non-criminal': 'Not a crime', 'Depends on Priors': 'Class depends on prior convictions',
+      'Varies Based on Sub-Section': 'Class depends on the subdivision', 'Depends on Underlying Offense': 'Class depends on the underlying offense',
+      'Specific Penalty Laid Out In Statute': 'Penalty set by the statute' },
+    attempted: 'Attempted', asAttempt: ', as an attempt',
+    typedNote: 'Added as you typed it: not in the list',
+    addTyped: ['Not in the list? Add ', ' as you typed it'],
+    more: 'More match: type more of the statute number or name',
+    none: 'Nothing in the list matches.',
+    another: 'Add another charge: type its statute number or name',
+    full: 'That is the most this form takes. Please describe any other charges in the allegations below.',
+    notChosen: 'Please choose the charge from the list, or add it as you typed it.'
+  };
+
   var CRIMINAL = function (post) {
     return [
+      Q('criminal.charges', 'Charges (If Known)', 'charges', { desc: 'Optional. Choose each charge from RIAC’s list of New York offenses. Not sure of the statute? Leave this empty and describe the allegations below.',
+        guidance: { eg: 'e.g. "120.00(1)"; "assault 3rd"; "DWI"', text: 'Type a statute number or the offense’s name' }, copy: 'Charges' }),
       Q('criminal.allegations', 'Attorney’s Summary of Misconduct Allegations', 'long', { guidance: ALLEGATIONS, limitNote: true }),
       Q('criminal.offer', 'Existing Offer Or Likely Disposition', 'long', { limitNote: !post, guidance: post
         ? { eg: 'e.g. "DA will consent to vacate and allow a re-plea to disorderly conduct"; "client’s goal is a resentence of 364 days"',
@@ -342,6 +367,6 @@
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { county: COUNTY, about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
     SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
-    DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE
+    DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE, CHARGES: CHARGES
   };
 })();

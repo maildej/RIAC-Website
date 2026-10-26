@@ -211,6 +211,36 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .people-list li:last-child { border-bottom: 0; }
 .people-list .acts { white-space: nowrap; display: flex; gap: .8rem; align-items: flex-start; }
 .ref-q select.role { width: 100%; }
+
+/* ---------- Step 6: Charges (W101 1a) ---------- */
+
+/* Each charge chosen is a line (as Other People's): the charge, its class beneath, an "Attempted" tick on a Penal Law
+   line, Remove. The search box holds its guidance inside (W17); the matches drop down under it. */
+.cp-lines { list-style: none; margin: 0 0 .7rem; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
+.cp-lines li { display: grid; grid-template-columns: 1fr auto 4.2rem; align-items: center; gap: .35rem 1rem; padding: .6rem 1rem; border-bottom: 1px solid var(--line); font-size: var(--fs-small); }
+.cp-lines li:last-child { border-bottom: 0; }
+.cp-lines .what { min-width: 0; grid-column: 1; overflow-wrap: anywhere; }
+.cp-lines .att { grid-column: 2; display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap; margin: 0; font-weight: 400; font-size: var(--fs-small); color: var(--ink); }
+.cp-lines .att input { margin: 0; width: auto; accent-color: var(--navy); }
+.cp-lines .rm { grid-column: 3; justify-self: end; line-height: 1.5; }
+.cp-lines .st { font-weight: 600; color: var(--navy); }
+.cp-lines .cls { display: block; color: var(--muted); font-size: var(--fs-label); margin-top: .1rem; }
+.cp-lines .note { display: block; color: var(--help); font-style: italic; font-size: var(--fs-label); margin-top: .1rem; }
+.cp-search { position: relative; }
+.inbox-wrap.short input.inbox:not(:placeholder-shown) + .inbox-hint { display: none; }
+.field.has-err .cp-search input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.cp-matches { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 5; list-style: none; margin: 0; padding: .25rem 0;
+  background: #fff; border: 1px solid #c3c9d2; border-radius: 8px; box-shadow: 0 6px 18px rgba(18, 38, 63, .14); }
+.cp-matches[hidden] { display: none; }
+.cp-matches li { display: flex; align-items: baseline; gap: 1rem; padding: .5rem .85rem; font-size: var(--fs-small); cursor: pointer; }
+.cp-matches li.on { background: color-mix(in srgb, var(--navy) 7%, white); }
+.cp-matches .what { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.cp-matches .st { font-weight: 600; color: var(--navy); }
+.cp-matches .cls { color: var(--muted); font-size: var(--fs-label); white-space: nowrap; }
+.cp-matches .sub { color: var(--help); font-style: italic; }
+.cp-matches li.more { cursor: default; color: var(--help); font-style: italic; }
+.cp-matches li.typed-row { border-top: 1px dashed var(--line); margin-top: .25rem; padding-top: .6rem; color: var(--navy); }
+.cp-matches li.typed-row .q { font-weight: 600; }
 .sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
 
 /* ---------- Step 8: Documents (W28) ---------- */
@@ -332,6 +362,13 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   .files li { grid-template-columns: 1fr auto; }
   .files .fsize { display: none; }
   .people-list li { flex-direction: column; gap: .3rem; }
+  .cp-lines li { grid-template-columns: 1fr auto; }   /* the charge has the width; the tick and Remove on a row under it */
+  .cp-lines .what { grid-column: 1 / -1; }
+  .cp-lines .att { grid-column: 1; justify-self: start; }
+  .cp-lines .rm { grid-column: 2; }
+  .cp-lines li.no-att .what { grid-column: 1; }       /* no tick: Remove stays beside the charge */
+  .cp-matches li { display: block; }
+  .cp-matches .cls { display: block; margin-top: .05rem; white-space: normal; }
   .centre { flex-wrap: wrap; row-gap: .25rem; }
   .centre .tag { margin-left: 2.6rem; }
   .copy-sheet { padding: 1.4rem 1.1rem 1.2rem; }

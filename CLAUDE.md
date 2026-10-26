@@ -54,6 +54,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
 | `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the "Before You Receive RIAC Advice" warnings with their advisories' titles and PDF addresses (W32 1; a copy of what `advisories.html` lists); the worker's address and the Turnstile key. Change wording here | 
 | `js/referral.js`, `js/portal.js` | The form and the portal: drawing, checking, uploading files one at a time, sending | 
+| `js/offenses.js` | RIAC's list of New York offenses for the form's charge picker (W101 1a): public law only, made by a chat from RIAC's own list, never edited by hand |
 | `images/symbols.svg` | The symbols on the advisory, intake and home-page cards and in the portal (its tick tiles, "Send a message"), one `<symbol id="i-…">` each — see "Design rules" below |
 | `images/riac-mark.svg` | Colored map mark used as the header logo on every page |
 | `images/favicon.svg` | Browser tab icon (navy square + map) |
@@ -1082,6 +1083,35 @@ every key and code the pages send.
   a block ("2", taller on a computer). Pictures `riac-handover\W\design\w98\` (mockup) and `w98c\` (as built); checks
   `tests\w98-check.mjs` (W65's card checks retired); `tests\w59-e2e.mjs` and `tests\e2e-portal.mjs` (the worker chat's
   local worker) pass. Live since 26 October 2026.
+- **W101 1a** (26 October 2026; W91, the owner's yes in the dispatcher's chat on 23 October: "a static public list,
+  optional, free text kept, staff confirm"): on a **criminal** or **post-conviction** referral (the questions way), step 6
+  opens with **"Charges (If Known)"**, *Optional. Choose each charge from RIAC's list of New York offenses. Not sure of
+  the statute? Leave this empty and describe the allegations below.* The search box holds its guidance inside (W17: *e.g.
+  "120.00(1)"; "assault 3rd"; "DWI"* / *Type a statute number or the offense's name*). A number ("120.00(1)", "PL 120",
+  "1192(3)") or words ("assault 3", "robbery second degree") drop down up to eight matches, each with its class, a
+  section's "subdivision not known" after its subdivisions, and last **"Not in the list? Add "…" as you typed it"**; the
+  first is chosen to start, the arrow keys move, Enter or a click takes it. **Each charge chosen becomes a line** (as
+  Other People's) with its class beneath and Remove; **a Penal Law line has an "Attempted" tick**, and ticked it reads
+  "Attempted PL 160.10(1) Robbery 2nd", *Class D felony, as an attempt* (the class from PL 110.05, in the list); a charge
+  added as typed reads *Added as you typed it: not in the list*. On a phone the tick and Remove sit on a row under the
+  charge. No charge twice; 30 at most. A search typed but not chosen stops Next with "Please choose the charge from the
+  list, or add it as you typed it." (W31's kind of words for a choice not from a list). Review and send, and the copy,
+  list the charges one a line. Not on a violation of probation (its convictions box stays words) or the upload way.
+  Chosen over plain lines with no class or tick ("2"), and over criminal only ("c") or probation too ("b").
+  **The list is `js/offenses.js`, public law only**, made from RIAC's own list of offenses in its database: each
+  offense's law, statute and prior-offense tier **written exactly as RIAC's list has them** (together they pick out one
+  offense there, so the database can match a chosen charge; the database chat's rule), its name, its class and its class
+  as an attempt; the definitions sections left out (1,852 of 2,018 on 26 October 2026; about 16 KB as sent). **Nothing
+  else from the database goes in it**: no notes, no immigration-consequence columns, no IDs. It does not change by
+  itself: when RIAC's list changes, a chat makes it again with the scripts in `riac-handover\W\tools\` on the desktop (a
+  read of those six columns only, then `build-offenses.mjs`). A line made from an older list that no longer matches is
+  kept by the database as typed words, so nothing is lost. **Sent as `criminal.charges`**, only when a charge is chosen:
+  each `{ law, statute, tier, attempted, label }` (the label the line in words, for the emailed centres and as the
+  database's fallback) or `{ typed }`; proposed to the worker chat on 26 October 2026, its contract draft to follow.
+  Classes beyond a felony, misdemeanor or violation read "Traffic infraction", "Not a crime", "Class depends on prior
+  convictions", "Class depends on the subdivision", "Class depends on the underlying offense" and "Penalty set by the
+  statute" (`CHARGES` in `js/referral-data.js`). Pictures `riac-handover\W\design\w101\` (mockup) and `w101c\` (as
+  built); checks `tests\w101-check.mjs` (1360 and 390 px, and Send to the worker chat's local worker).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1173,7 +1203,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   once; the database's attorney-friendly closed words (W96 1's note 4) live the same day, each on one line. **W91** (the
   charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from a
   fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
-  holds public law only): put to the owner as **W101** (26 October 2026), a mockup in `riac-handover\W\design\w101\`. Passed to the database chat: a note subject naming the kinds of document when an update carries
+  holds public law only): **W101 1a**, built 26 October 2026, not yet published; it goes live only once the worker
+  takes `criminal.charges` (the worker chat's) and the owner says yes. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
