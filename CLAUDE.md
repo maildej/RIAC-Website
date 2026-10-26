@@ -1214,7 +1214,25 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   send one test referral with a charge from my Chrome afterwards"; no chat can send a live referral, since Cloudflare's
   check passes only in the owner's own browser). Then the database chat checks the intake shows the charges. **Live
   since 26 October 2026** (4:20 PM, after the database's side and the worker's push); checked on nyriac.com: the files,
-  and the picker drawing its matches. Passed to the database chat: a note subject naming the kinds of document when an update carries
+  and the picker drawing its matches. The owner's test referral with three charges went through at 4:48 PM
+  (R2-261026-701846, its receipt arrived; "The charge selector worked really well"); the database chat to confirm the
+  charges on its intake. **Next, from his comments as he sent it** (in full in `riac-handover\W\open-decisions.md`,
+  "Dan's comments (1)" to "(9)"), each a mockup first:
+  - **W103, the form's look as a whole**: "no visual delineation between title/box/helper text/actual text/next title",
+    the guidance inside boxes "looks like it has already been filled in", the text "big and doughy"; tighter, smaller,
+    "like a dashboard"; his idea of the question on the left and the answer on the right, full width, not two columns;
+    choices grouped (the custody status), the case types as cards with symbols, an ICE symbol (a red triangle) with
+    its tick centred, the family tiles coloured by parent / spouse / child; the county a search-and-choose list, and the
+    office and court searches showing their matches in a list under the box, as the charges do; every box that holds
+    words at least two lines tall; on Documents "Attach Now" dashed and the other three grey (Documents' boxes "have
+    better visual separation than elsewhere"); "Court And Case - Details & Explanations..." and the like reworded for
+    attorneys; choosing "Detained - Immigration Custody" ticks ICE involvement. This reverses W16, W17 1 (guidance
+    inside boxes) and W14 2 (two answers to a row). The charges box's cursor sits half way down its guidance until
+    something is typed (found by the owner): fix with W103.
+  - **W104**: "a way for an attorney to submit a new case through the portal, where it pre-populates their contact
+    information" (needs the worker chat).
+  - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
+    prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
