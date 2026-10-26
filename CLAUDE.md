@@ -1215,8 +1215,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   check passes only in the owner's own browser). Then the database chat checks the intake shows the charges. **Live
   since 26 October 2026** (4:20 PM, after the database's side and the worker's push); checked on nyriac.com: the files,
   and the picker drawing its matches. The owner's test referral with three charges went through at 4:48 PM
-  (R2-261026-701846, its receipt arrived; "The charge selector worked really well"); the database chat to confirm the
-  charges on its intake. **Next, from his comments as he sent it** (in full in `riac-handover\W\open-decisions.md`,
+  (R2-261026-701846, its receipt arrived; "The charge selector worked really well"). **Confirmed by the database chat**:
+  all three charges arrived on its intake as chosen, the two from the list each matched to its one offense (the
+  attempted one with its attempt class, as the page showed), the typed one kept as typed. **Next, from his comments as he sent it** (in full in `riac-handover\W\open-decisions.md`,
   "Dan's comments (1)" to "(9)"), each a mockup first:
   - **W103, the form's look as a whole**: "no visual delineation between title/box/helper text/actual text/next title",
     the guidance inside boxes "looks like it has already been filled in", the text "big and doughy"; tighter, smaller,
