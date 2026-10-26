@@ -1050,10 +1050,13 @@ every key and code the pages send.
   database chat's (its RR17, RR18), passed on through the dispatcher on 26 October 2026. That chat found the database
   already sends generic words for a closed referral, not its closing codes (this chat had wrongly said otherwise), and
   that five began "Closed: ", which the page's own "Closed: " doubled; **the page now adds "Closed: " only where the
-  words do not already begin with it**, so it reads right with the words of today and of RR18 alike. Four of today's
-  closed wordings run to two balanced lines in the narrower box; one line holds about 24 characters with "Closed: ".
-  Chosen over centring the words and keeping the width ("2"). Pictures `riac-handover\W\design\w96\` (mockup) and
-  `w96c\` (as built); checks `tests\w96-check.mjs`. Live since 26 October 2026, with the "Closed: " fix.
+  words do not already begin with it**, so it reads right with the words of today and of RR18 alike. One line of the
+  box holds about 24 characters with "Closed: ". **The database's words for a closed referral, live since 26 October
+  2026** (the owner's choice in the database chat), each beginning "Closed: " and each on one line: "Closed: see our
+  email", "Closed: advice sent", "Closed: no advice needed", "Closed: case concluded" and "Closed: no response" (four of
+  the earlier wordings had run to two lines). Chosen over centring the words and keeping the width ("2"). Pictures
+  `riac-handover\W\design\w96\` (mockup) and `w96c\` (as built); checks `tests\w96-check.mjs`. Live since 26 October
+  2026, with the "Closed: " fix.
 - **W97 1** (26 October 2026; the owner: "send riac an update text is too big and doesn't read as an action button. maybe
   have it as a grey button with a symbol just saying send a message?"): each referral's button on the list is **a grey
   "Send a message"**: a cool grey (`#eef0f3`, outlined `#c3c9d2`, darker under the mouse), apart from the warm grey of a
@@ -1165,13 +1168,12 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   court (live since 23 October 2026). Then the owner's five points on the portal list (26 October 2026), one decision at a
   time: **W95 2c** (the numbers as pills under the name, Received a column), **W99 1** (sorting by the column headings
   on a computer), **W96 1** (the status box's words centred, the box narrower) and **W97 1** (a grey "Send a message"
-  button with an envelope; the page it opens "Send RIAC a message"), built, not yet published; the attorney-friendly
-  status words (W96 1's note 4) with the database chat; and **W98 1** (the signed-in details inside the cream "Your
-  Referrals" card). All five live since 26 October 2026 (W100 yes), with a closed referral saying "Closed: " once. The database
-  chat is rewording the closed statuses (RR17, RR18; the owner asked whether "Closed: No Response" fits one line: it does). Still to put to the owner, a mockup first: **W91**
-  (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
-  a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
-  holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries
+  button with an envelope; the page it opens "Send RIAC a message"); and **W98 1** (the signed-in details inside the
+  cream "Your Referrals" card). All five live since 26 October 2026 (W100 yes), with a closed referral saying "Closed: "
+  once; the database's attorney-friendly closed words (W96 1's note 4) live the same day, each on one line. **W91** (the
+  charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from a
+  fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
+  holds public law only): put to the owner as **W101** (26 October 2026), a mockup in `riac-handover\W\design\w101\`. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
