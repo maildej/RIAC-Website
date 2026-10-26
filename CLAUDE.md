@@ -1107,7 +1107,12 @@ every key and code the pages send.
   read of those six columns only, then `build-offenses.mjs`). A line made from an older list that no longer matches is
   kept by the database as typed words, so nothing is lost. **Sent as `criminal.charges`**, only when a charge is chosen:
   each `{ law, statute, tier, attempted, label }` (the label the line in words, for the emailed centres and as the
-  database's fallback) or `{ typed }`; proposed to the worker chat on 26 October 2026, its contract draft to follow.
+  database's fallback) or `{ typed }`: **contract draft 25** (26 October 2026; 0 to 30; statute and tier one line of up
+  to 60, the label up to 200, typed 1 to 200; `attempted` true only on Penal Law; the same charge twice kept once; a
+  problem comes back as `criminal.charges[n].…`, which the page links to the question; the worker checks no charge
+  against the list; an emailed centre's email lists each label under "Charges"). ⚠️ **The live worker refuses a key it
+  does not know, so the page goes live only after the worker's push**, which waits for the database to take the charges
+  (RR21, the owner's, in the database chat).
   Classes beyond a felony, misdemeanor or violation read "Traffic infraction", "Not a crime", "Class depends on prior
   convictions", "Class depends on the subdivision", "Class depends on the underlying offense" and "Penalty set by the
   statute" (`CHARGES` in `js/referral-data.js`). Pictures `riac-handover\W\design\w101\` (mockup) and `w101c\` (as
@@ -1203,8 +1208,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   once; the database's attorney-friendly closed words (W96 1's note 4) live the same day, each on one line. **W91** (the
   charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from a
   fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
-  holds public law only): **W101 1a**, built 26 October 2026, not yet published; it goes live only once the worker
-  takes `criminal.charges` (the worker chat's) and the owner says yes. Passed to the database chat: a note subject naming the kinds of document when an update carries
+  holds public law only): **W101 1a**, built 26 October 2026, not yet published. In order: the database takes the charges
+  (RR21, the owner's, in the database chat), the worker chat pushes its side (contract draft 25), then this page on the
+  owner's yes (W102). Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
