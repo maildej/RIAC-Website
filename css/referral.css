@@ -400,18 +400,22 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-table .cl.none, .which .cl.none { color: var(--help); font-style: italic; font-weight: 400; } /* W74 a: Client name not recorded */
 .ref-table .sub { color: var(--muted); }
 .ref-table .nw { white-space: nowrap; } /* a reference never breaks at its hyphens */
-.case-no { display: inline-block; background: var(--navy); color: var(--cream); border-radius: 99px; padding: 0 .45rem; font-size: var(--fs-label); font-weight: 600; }
-/* Under the client's name, labels and values lined up from card to card (W69): the reference in an outlined pill, the
-   case number in the navy one. W84 2b: once a case is open the reference is "Intake Reference:", grey italics, no pill;
-   the label column is as wide as that label */
-.kv { display: grid; grid-template-columns: 7.6rem max-content; gap: .3rem .5rem; align-items: center; margin: .4rem 0 0; }
+/* Under the client's name its numbers, each pill saying what it is (W95 2c): "RIAC Case No 4121" navy, one height with
+   the reference's outlined pill; once a case is open the reference's pill is grey and its words italic (W84 2b: no longer
+   in use). Each pill its own width. On the smallest phones the grey pill is wider than the card, so its number goes under
+   "Intake Reference" */
+.nums { display: grid; justify-items: start; gap: .3rem; margin: .35rem 0 0; }
+.case-no { display: inline-block; background: var(--navy); color: var(--cream); border: 1px solid var(--navy); border-radius: 99px; padding: .1rem .55rem; font-size: var(--fs-label); font-weight: 600; }
+.ref-pill { display: inline-block; white-space: nowrap; background: color-mix(in srgb, var(--navy) 7%, white); border: 1px solid color-mix(in srgb, var(--navy) 30%, white); color: var(--navy); border-radius: 99px; padding: .1rem .55rem; font-size: var(--fs-label); font-weight: 600; }
+.ref-pill.was { background: #f1efea; border-color: #d9d6cd; color: var(--muted); font-style: italic; font-weight: 400; }
+@media (max-width: 359px) { .ref-pill.was { white-space: normal; border-radius: 10px; } }
+/* The dates: a column of their own on a computer (W95 2c), the date alone, a closed one's under it; on a phone labelled
+   lines under the numbers, lined up from card to card (W69) */
+.kv { display: grid; grid-template-columns: 5.6rem max-content; gap: .3rem .5rem; align-items: center; margin: 0; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; white-space: nowrap; }
-.kv .was { font-style: italic; }
-.kv dd.was { color: var(--muted); font-size: var(--fs-label); }
-.ref-pill { display: inline-block; white-space: nowrap; background: color-mix(in srgb, var(--navy) 7%, white); border: 1px solid color-mix(in srgb, var(--navy) 30%, white); color: var(--navy); border-radius: 99px; padding: .05rem .55rem; font-size: var(--fs-label); font-weight: 600; }
-.kv .case-no { padding: .1rem .55rem; }
-@media (max-width: 359px) { .kv { grid-template-columns: 1fr; row-gap: 0; } .kv dd { margin-bottom: .3rem; } } /* the smallest phones: each label over its value */
+.rcv-wide { white-space: nowrap; }
+.rcv-wide .sub { font-size: var(--fs-label); margin-top: .15rem; }
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list. W88 1:
    outlined in its own colour (on the case info's grey panel it had melted), and green when all is well (the site's
    green, as "✓ Uploaded"); orange when waiting on the attorney, grey when closed */
@@ -430,12 +434,14 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .ref-group.you > summary { color: #8a4210; }
 .ref-group.you > summary::marker { color: var(--r5); }
 @media (min-width: 1101px) {
-  /* The columns line up from one group to the next; the client's takes what the others leave. Everything in a row
-     centred on one line (the owner, W65). */
+  /* The columns line up from one group to the next. Everything in a row centred on one line (the owner, W65). */
   .ref-table { table-layout: fixed; border-collapse: separate; border-spacing: 0 .55rem; margin: -.55rem 0; }
-  .ref-table tr > :nth-child(2) { width: 27%; }
-  .ref-table tr > :nth-child(3) { width: 15.5rem; }
-  .ref-table tr > :nth-child(4) { width: 13rem; }
+  /* W95 2c: the client's column as wide as its widest pill, then Received; the court takes what is left */
+  .ref-table tr > :nth-child(1) { width: 17.5rem; }
+  .ref-table tr > :nth-child(2) { width: 9.8rem; }
+  .ref-table tr > :nth-child(4) { width: 15.5rem; }
+  .ref-table tr > :nth-child(5) { width: 13rem; }
+  .ref-table .rcv .kv { display: none; }
   .ref-table td { vertical-align: middle; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .ref-table td:first-child { border-left: 1px solid var(--line); border-radius: 10px 0 0 10px; }
   .ref-table td:last-child { border-right: 1px solid var(--line); border-radius: 0 10px 10px 0; }
@@ -448,6 +454,9 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .ref-table tr { background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 1px 2px rgba(18, 38, 63, .06), 0 2px 6px rgba(18, 38, 63, .07); margin-top: .6rem; padding: .45rem 0; }
   .ref-table tbody tr:first-child { margin-top: 0; }
   .ref-table td { padding: .25rem .9rem; background: none; }
+  .ref-table .rcv-wide { display: none; }
+  .ref-table td.rcv { padding-top: 0; }
+  .ref-table .nums { margin-bottom: .3rem; }
   .ref-table .act { text-align: left; }
   .ref-table .act .btn { width: 100%; justify-content: center; }
 }

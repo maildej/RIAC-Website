@@ -238,6 +238,9 @@ repository), without sharing any of their code.
   obvious column**, unless there is a reason not to (the owner, 22 October 2026, with W58 1). On
   the portal's list: the search fills the line beside the heading, Sort is as wide as the
   table's last column, and each status box fills its column; on a phone each is full width.
+- **Never a pill directly above or below plain left-aligned text** (the owner, 26 October 2026, with W95 2c: "a general
+  design problem"): with the pill's edge on the text's edge its words look indented, with its words on the text's edge
+  the pill looks off to the left, and splitting the difference looks wrong too. Make both pills, or keep them apart.
 - **Symbols** (`images/symbols.svg`) are drawn for this site: solid navy shapes with one orange
   detail, on a 48-unit square. The navy follows the text colour; the cream and orange come from
   `--icon-fill` and `--icon-accent`, which `.symbol` sets. A page shows one with
@@ -879,6 +882,8 @@ every key and code the pages send.
   (the navy pill) once there is a case, **Received:** the date, and **Closed:** the date on a closed one. The Received
   column goes, so the court and docket, one over the other, get a wider column. On the smallest phones (below 360 px
   since W84 2b; 350 px before) each label sits over its value. Once a case is open, W84 2b changes the first two rows.
+  **Since W95 2c the numbers are pills with no labels and Received is a column again**; the labelled lines remain only
+  for the dates on a phone.
   **The "Attorney:" line is off** (the owner asked why another attorney's name
   showed): it is for office staff signing in for an attorney, which is not built; until then the worker cannot tell
   staff from the attorney, so the line and the search by attorney wait for it. Pictures `riac-handover\W\design\w69\`
@@ -976,7 +981,7 @@ every key and code the pages send.
   still finds a referral by its reference. Chosen over the reference as a grey line under the labels ("1"); "Intake
   Reference" is the owner's wording, in place of the "Was Reference:" first drawn. Pictures `riac-handover\W\design\w84\` (mockup,
   `W84-2b-*` the one chosen) and `w84c\` (as built); checks `tests\w84-check.mjs` (1360 to 320 px). Live since 23
-  October 2026.
+  October 2026. **On the list, W95 2c replaces the labelled rows**: the reference is a grey pill once a case is open.
 - **W86 1** (23 October 2026): since the worker's RW13 every update gets an email receipt, and **the "Sent to RIAC" card
   after Send RIAC An Update says where it went, in W48 1's words**: under "Received …", **"Receipt:** emailed to
   <address>." and beneath it "It comes from **<the centre's referral address>**. Not in your inbox within a few minutes?
@@ -1002,6 +1007,22 @@ every key and code the pages send.
   "Case Type & County". The county still picks the centre; for removal it is the attorney's office's, which the worker,
   database and case-start chats were told. Chosen over keeping the case type at step 3 with one line for removal under
   the county ("1"). Pictures `riac-handover\W\design\w90\` (mockup) and `w90c\` (as built); checks `tests\w90-check.mjs`.
+  Live since 23 October 2026.
+- **W95 2c, with the owner's change** (26 October 2026; the owner: "the intake reference and riac case number should drop
+  beneath the client name, (2) the received date should be its own column"): on the portal list, **under the client's
+  name its numbers, each in a pill that says what it is, with no labels**: before a case is open the outlined pill
+  **"Reference R2-…"**; once one is open the navy pill **"RIAC Case No 4121"** over a **gentle grey pill, "Intake
+  Reference R2-…"** in italics (no longer in use; W84 2b), each pill its own width and one height. **Received is a column
+  of its own** after Client, the date alone, and on a closed referral "Closed Aug 12, 2026" under it, smaller and grey; on
+  a phone, where each referral is a card, the dates stay labelled lines under the numbers, lined up from card to card. On
+  a computer the client's column is 17.5rem (its widest pill), Received 9.8rem, and the court takes what is left. On the
+  smallest phones (below 360 px) the grey pill's number goes under "Intake Reference" inside it. The owner's change, from
+  a general design rule of his: **a pill directly above or below plain left-aligned text never looks right** (the pill's
+  edge with the text's edge makes its words look indented; the words with the text's makes the pill look off to the
+  left), so the reference stays a pill rather than the plain grey line first drawn. Chosen over the labels kept for the
+  numbers ("1"), and over the two pills one width ("2b", which turned the navy pill into a heavy bar louder than the
+  name). The case info at the top of Send RIAC An Update is unchanged (W84 2b). Pictures `riac-handover\W\design\w95\`
+  (mockups; `W95-2c-*` the one chosen) and `w95c\` (as built); checks `tests\w95-check.mjs` (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1085,7 +1106,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   for every update since 23 October 2026 too (the worker chat's RW13, the owner's yes there; contract draft 23), and
   **W86 1** has the card after an update say where it went. **W90 2**: for a removal or USCIS referral the case type
   comes first and the county is the attorney's office's, with the immigration court or USCIS office in place of the
-  court. Still to put to the owner, a mockup first: **W91**
+  court (live since 23 October 2026). Then the owner's five points on the portal list (26 October 2026), one decision at a
+  time: **W95 2c** (the numbers as pills under the name, Received a column; built, not yet published); still to put,
+  **W99** (sorting by clicking a column heading, the owner's question), **W96** (the status box's words centred, the box
+  perhaps narrower), **W97** ("Send RIAC An Update" smaller, grey, with a symbol, "Send a message"), **W98** (the
+  signed-in card folded into the cream "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries

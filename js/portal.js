@@ -260,24 +260,25 @@
   function table(rows, term, staff, head) {
     var tb = h('tbody');
     rows.forEach(function (r) {
-      // W69 (the owner): under the client's name, each label with its value beside it, lined up from card to card. The
-      // date received is one of them, so the court and docket, one over the other, have the room its column had. W84 2b:
-      // once a case is open its number leads, and the reference is the quiet "Intake Reference:" row under it.
-      var facts = h('dl', { class: 'kv' });
-      var fact = function (k, v, cls) { facts.appendChild(h('dt', { class: cls, text: k })); facts.appendChild(h('dd', { class: cls }, [v])); };
-      if (r.caseNumber) {
-        fact('RIAC Case No:', h('span', { class: 'case-no' }, [marked(String(r.caseNumber), term)]));
-        fact('Intake Reference:', marked(r.reference, term), 'was');
-      } else fact('Reference:', h('span', { class: 'ref-pill' }, [marked(r.reference, term)]));
-      fact('Received:', fmtDay(r.receivedOn));
-      if (r.closedOn) fact('Closed:', fmtDay(r.closedOn));
-      var client = h('td', null, [clientName(r, term), facts,
+      // W95 2c (the owner): under the client's name its numbers, each in a pill that says what it is, no labels: once a
+      // case is open "RIAC Case No 4121" (navy) over "Intake Reference R2-…" (grey: no longer in use; W84 2b), before then
+      // "Reference R2-…". The date received is a column of its own; on a phone, where each referral is a card, the dates
+      // are labelled lines under the numbers (W69's lined-up labels).
+      var ref = function (words) { return [words, h('span', { class: 'nw' }, [marked(r.reference, term)])]; };
+      var nums = h('div', { class: 'nums' }, r.caseNumber
+        ? [h('span', { class: 'case-no' }, ['RIAC Case No ', marked(String(r.caseNumber), term)]), h('span', { class: 'ref-pill was' }, ref('Intake Reference '))]
+        : [h('span', { class: 'ref-pill' }, ref('Reference '))]);
+      var client = h('td', null, [clientName(r, term), nums,
         staff && r.attorneyName ? h('div', { class: 'sub' }, ['Attorney: ', marked(r.attorneyName, term)]) : null]);
+      var dates = h('dl', { class: 'kv' }, [h('dt', { text: 'Received:' }), h('dd', { text: fmtDay(r.receivedOn) })]);
+      if (r.closedOn) { dates.appendChild(h('dt', { text: 'Closed:' })); dates.appendChild(h('dd', { text: fmtDay(r.closedOn) })); }
+      var received = h('td', { class: 'rcv' }, [h('div', { class: 'rcv-wide' }, [h('div', { text: fmtDay(r.receivedOn) }),
+        r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]), dates]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
-      tb.appendChild(h('tr', null, [client, court, h('td', null, [statusPill(r)]),
+      tb.appendChild(h('tr', null, [client, received, court, h('td', null, [statusPill(r)]),
         h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Send RIAC An Update' })])]));
     });
-    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Court', 'Status', ''].map(function (t) {
+    return h('table', { class: 'ref-table' }, [head ? h('thead', null, [h('tr', null, ['Client', 'Received', 'Court', 'Status', ''].map(function (t) {
       return h('th', { scope: 'col', text: t });
     }))]) : null, tb]);
   }
