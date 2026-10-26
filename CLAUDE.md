@@ -1209,8 +1209,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from a
   fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only): **W101 1a**, built 26 October 2026, not yet published. In order: the database takes the charges
-  (RR21, the owner's, in the database chat), the worker chat pushes its side (contract draft 25), then this page on the
-  owner's yes (W102). Passed to the database chat: a note subject naming the kinds of document when an update carries
+  (RR21, the owner's, in the database chat), the worker chat pushes its side (contract draft 25), then this page:
+  **W102 yes** (the owner, 26 October 2026: "publish the charge picker once the worker side is live and checked"). Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
