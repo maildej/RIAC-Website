@@ -1026,7 +1026,8 @@ every key and code the pages send.
   left), so the reference stays a pill rather than the plain grey line first drawn. Chosen over the labels kept for the
   numbers ("1"), and over the two pills one width ("2b", which turned the navy pill into a heavy bar louder than the
   name). The case info at the top of Send RIAC An Update is unchanged (W84 2b). Pictures `riac-handover\W\design\w95\`
-  (mockups; `W95-2c-*` the one chosen) and `w95c\` (as built); checks `tests\w95-check.mjs` (1360 to 320 px).
+  (mockups; `W95-2c-*` the one chosen) and `w95c\` (as built); checks `tests\w95-check.mjs` (1360 to 320 px). Live
+  since 26 October 2026 (W100 yes, with W96 1 to W99 1).
 - **W99 1** (26 October 2026; the owner: "Is it possible to give column sorter toggles?"): on a computer **the column
   headings sort the list**: a press on Client sorts A to Z, Received newest first, Court A to Z, and a second press on
   the same heading reverses it; Status sorts into the four groups (W58 1), one way only, and is a plain heading when one
@@ -1036,7 +1037,7 @@ every key and code the pages send.
   referral is a card with no headings, the drop-down stays with its four (Status, Newest first, Oldest first, Client
   name), plus the one in use if a heading chose another. The choice is kept in the tab as before. Chosen over keeping the
   drop-down on a computer as well ("2"). Pictures `riac-handover\W\design\w99\` (mockup) and `w99c\` (as built); checks
-  `tests\w99-check.mjs`; `tests\w58-check.mjs` now sorts with the headings on a computer.
+  `tests\w99-check.mjs`; `tests\w58-check.mjs` now sorts with the headings on a computer. Live since 26 October 2026.
 - **W96 1, with the owner's notes** (26 October 2026; the owner: "the case status bar text should be centered (and
   possibly narrowed, unless this is set at the size of whatever the maximum width one is"): it was not sized to the
   widest status but filled its 15.5rem column. Now **the status box's words are centred**, and on a computer **its column
@@ -1052,7 +1053,7 @@ every key and code the pages send.
   words do not already begin with it**, so it reads right with the words of today and of RR18 alike. Four of today's
   closed wordings run to two balanced lines in the narrower box; one line holds about 24 characters with "Closed: ".
   Chosen over centring the words and keeping the width ("2"). Pictures `riac-handover\W\design\w96\` (mockup) and
-  `w96c\` (as built); checks `tests\w96-check.mjs`.
+  `w96c\` (as built); checks `tests\w96-check.mjs`. Live since 26 October 2026, with the "Closed: " fix.
 - **W97 1** (26 October 2026; the owner: "send riac an update text is too big and doesn't read as an action button. maybe
   have it as a grey button with a symbol just saying send a message?"): each referral's button on the list is **a grey
   "Send a message"**: a cool grey (`#eef0f3`, outlined `#c3c9d2`, darker under the mouse), apart from the warm grey of a
@@ -1064,7 +1065,7 @@ every key and code the pages send.
   email receipt for one still says "Update Received" and "to send another update": the worker chat's, only if the owner
   wants them to match. Chosen over the page keeping its old name ("2"). Pictures `riac-handover\W\design\w97\`
   (mockup) and `w97c\` (as built); checks `tests\w97-check.mjs`; `tests\w59-e2e.mjs` (with the worker chat's local
-  worker) updated for W95 2c and W97 1 and passing.
+  worker) updated for W95 2c and W97 1 and passing. Live since 26 October 2026.
 - **W98 1** (26 October 2026; the owner: "the signed in card on the portal should be incorporated into the your referrals
   card in a structured format"): **the signed-in details go inside the cream "Your Referrals" title card**, no card of
   their own (W65 A's). Under the tag line, a thin rule, then **labelled fields**: Signed in as (the name, ", Esq." for an
@@ -1077,7 +1078,7 @@ every key and code the pages send.
   them (the sign-in screen, Sign Out). Send RIAC A Message is unchanged. Chosen over a label-beside-value list centred as
   a block ("2", taller on a computer). Pictures `riac-handover\W\design\w98\` (mockup) and `w98c\` (as built); checks
   `tests\w98-check.mjs` (W65's card checks retired); `tests\w59-e2e.mjs` and `tests\e2e-portal.mjs` (the worker chat's
-  local worker) pass.
+  local worker) pass. Live since 26 October 2026.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1166,7 +1167,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   on a computer), **W96 1** (the status box's words centred, the box narrower) and **W97 1** (a grey "Send a message"
   button with an envelope; the page it opens "Send RIAC a message"), built, not yet published; the attorney-friendly
   status words (W96 1's note 4) with the database chat; and **W98 1** (the signed-in details inside the cream "Your
-  Referrals" card). All five built on one branch, not yet published; a closed referral now says "Closed: " once. Still to put to the owner, a mockup first: **W91**
+  Referrals" card). All five live since 26 October 2026 (W100 yes), with a closed referral saying "Closed: " once. The database
+  chat is rewording the closed statuses (RR17, RR18; the owner asked whether "Closed: No Response" fits one line: it does). Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries
