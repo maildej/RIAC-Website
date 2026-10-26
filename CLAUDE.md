@@ -239,6 +239,9 @@ repository), without sharing any of their code.
   the portal's list: the search fills the line beside the heading (on a computer the column
   headings sort, W99 1; below that Sort is a full-width drop-down), and each status box fills its
   column; on a phone each is full width.
+- **A button or box that wraps never leaves one word alone on its last line** (the owner, 26 October 2026, with W96
+  1): `text-wrap: balance` on `.btn` (in `style.css`, written before `white-space`, which would otherwise be overridden
+  and make every button wrap) and on the status boxes.
 - **Never a pill directly above or below plain left-aligned text** (the owner, 26 October 2026, with W95 2c: "a general
   design problem"): with the pill's edge on the text's edge its words look indented, with its words on the text's edge
   the pill looks off to the left, and splitting the difference looks wrong too. Make both pills, or keep them apart.
@@ -1034,6 +1037,19 @@ every key and code the pages send.
   name), plus the one in use if a heading chose another. The choice is kept in the tab as before. Chosen over keeping the
   drop-down on a computer as well ("2"). Pictures `riac-handover\W\design\w99\` (mockup) and `w99c\` (as built); checks
   `tests\w99-check.mjs`; `tests\w58-check.mjs` now sorts with the headings on a computer.
+- **W96 1, with the owner's notes** (26 October 2026; the owner: "the case status bar text should be centered (and
+  possibly narrowed, unless this is set at the size of whatever the maximum width one is"): it was not sized to the
+  widest status but filled its 15.5rem column. Now **the status box's words are centred**, and on a computer **its column
+  is 13.2rem** (a box of 186 px: every open status on one line, the longest "Received, being reviewed" at 179 px, and the
+  common closed ones), the court taking the 37 px saved; the same column at the top of Send RIAC An Update. A long
+  status wraps onto two lines, centred. The owner's notes: **(1) a box or button that wraps never leaves one word alone
+  on its last line** (`text-wrap: balance` on `.btn` and `.status`; see Design rules); (2) the column narrows with the
+  box; (3) the update button shrinks next (W97); (4) **the status words should be more attorney-friendly and generic,
+  closed ones above all (conflict cases)**: a closed referral shows the database's closing code as staff typed it after
+  "Closed: ", so attorneys read RIAC's own shorthand. The words are made in the database, not on this page, so that is
+  the database chat's, passed on through the dispatcher on 26 October 2026; the page will show whatever words it sends.
+  Chosen over centring the words and keeping the width ("2"). Pictures `riac-handover\W\design\w96\` (mockup) and
+  `w96c\` (as built); checks `tests\w96-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1118,9 +1134,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   **W86 1** has the card after an update say where it went. **W90 2**: for a removal or USCIS referral the case type
   comes first and the county is the attorney's office's, with the immigration court or USCIS office in place of the
   court (live since 23 October 2026). Then the owner's five points on the portal list (26 October 2026), one decision at a
-  time: **W95 2c** (the numbers as pills under the name, Received a column) and **W99 1** (sorting by the column
-  headings on a computer), both built, not yet published; still to put, **W96** (the status box's words centred, the box
-  perhaps narrower), **W97** ("Send RIAC An Update" smaller, grey, with a symbol, "Send a message"), **W98** (the
+  time: **W95 2c** (the numbers as pills under the name, Received a column), **W99 1** (sorting by the column headings
+  on a computer) and **W96 1** (the status box's words centred, the box narrower), built, not yet published; the
+  attorney-friendly status words (W96 1's note 4) with the database chat; still to put, **W97** ("Send RIAC An Update" smaller, grey, with a symbol, "Send a message"), **W98** (the
   signed-in card folded into the cream "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file

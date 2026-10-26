@@ -135,6 +135,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-
 .hero .lede { color: rgba(247,242,224,.85); font-size: var(--fs-lede); margin-bottom: 1.8rem; max-width: 34rem; }
 
 .btn {
+  /* where a button may wrap, never one word alone on its last line (the owner, W96 1). Before white-space, which sets
+     whether it wraps at all: text-wrap after it would make every button wrap */
+  text-wrap: balance;
   display: inline-block; text-decoration: none; font: inherit; font-size: var(--fs-small); font-weight: 600;
   padding: .7rem 1.5rem; border-radius: 6px; letter-spacing: .02em; line-height: 1.4;
   margin: 0 .6rem .6rem 0; white-space: nowrap; border: none; cursor: pointer;

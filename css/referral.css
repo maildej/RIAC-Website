@@ -429,8 +429,9 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list. W88 1:
    outlined in its own colour (on the case info's grey panel it had melted), and green when all is well (the site's
    green, as "✓ Uploaded"); orange when waiting on the attorney, grey when closed */
-.ref-table .status { display: flex; align-items: center; min-height: 2.1rem; } /* as tall as Send RIAC An Update (W65) */
-.status { display: inline-block; background: color-mix(in srgb, var(--r2) 11%, white); color: #1d5a2a; border: 1px solid color-mix(in srgb, var(--r2) 40%, white); border-left: 4px solid var(--r2); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: left; }
+.ref-table .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; } /* as tall as Send RIAC An Update (W65) */
+/* W96 1: the words centred, and a status that wraps never leaves one word alone on its last line */
+.status { display: inline-block; background: color-mix(in srgb, var(--r2) 11%, white); color: #1d5a2a; border: 1px solid color-mix(in srgb, var(--r2) 40%, white); border-left: 4px solid var(--r2); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: center; text-wrap: balance; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 16%, white); border-color: color-mix(in srgb, var(--r5) 45%, white); border-left-color: var(--r5); color: #8a4210; }
 .status.closed { background: #f1efea; border-color: #d9d6cd; border-left-color: #a7a49b; color: var(--muted); }
 .ref-table .act { text-align: right; white-space: nowrap; }
@@ -449,7 +450,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   /* W95 2c: the client's column as wide as its widest pill, then Received; the court takes what is left */
   .ref-table tr > :nth-child(1) { width: 17.5rem; }
   .ref-table tr > :nth-child(2) { width: 9.8rem; }
-  .ref-table tr > :nth-child(4) { width: 15.5rem; }
+  .ref-table tr > :nth-child(4) { width: 13.2rem; } /* W96 1: every open status on one line, the rest to the court */
   .ref-table tr > :nth-child(5) { width: 13rem; }
   .ref-table .rcv .kv { display: none; }
   .list-head select { display: none; } /* the headings sort here (W99 1) */
@@ -478,12 +479,12 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card > h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .8rem 1.4rem; display: flex; align-items: center; gap: .7rem; }
 .add-card .inner { padding: 1.2rem 1.4rem 1.4rem; }
 /* The referral at the top of Send RIAC An Update: its status in a column as wide as the list's (W58 1), full width on a phone */
-.which { display: grid; grid-template-columns: 1fr 15.5rem; gap: .5rem 1rem; align-items: center; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.4rem; }
+.which { display: grid; grid-template-columns: 1fr 13.2rem; gap: .5rem 1rem; align-items: center; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.4rem; }
 .which .cl { font-weight: 600; color: var(--ink); }
 .which .sub { color: var(--muted); }
 .which .case-line { color: var(--ink); font-weight: 600; } /* W84 2b: the case number leads, the reference beneath */
 .which .was-ref { color: var(--muted); font-size: var(--fs-label); font-style: italic; margin-top: .4rem; }
-.which .status { display: flex; align-items: center; min-height: 2.1rem; }
+.which .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; }
 /* "Report an offer" and "Report a disposition" (W83 1, W87 2b): two tick tiles of one size, each in three columns, the
    tick centred in a square first column (as far from the tile's left as from its top and bottom), the symbol and words
    centred on the tile, an empty third column as wide as the first; one above the other below 900 px */
