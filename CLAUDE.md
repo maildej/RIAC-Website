@@ -843,8 +843,8 @@ every key and code the pages send.
   outstanding from the attorney (where RIAC has the next move, the status words stop saying "Waiting for documents"); (3) advice
   sent with the case still open: not for now (to revisit with W59, reporting a disposition). Closed is never waiting.
   Nothing more is needed on the page.
-- **W65 A, with the owner's corrections** (22 October 2026), on the portal list: **the signed-in person's card is three
-  short lines**: the name (the address until the worker can supply a name) with a small Sign Out beside it; the office
+- **W65 A, with the owner's corrections** (22 October 2026), on the portal list (**since W98 1 the signed-in details
+  are inside the cream title card**, no card of their own): **the signed-in person's card is three short lines**: the name (the address until the worker can supply a name) with a small Sign Out beside it; the office
   in bold, email and phone; "You stay signed in until you close this tab, or for 12 hours at most." **"These are the
   details RIAC holds for you. If one is wrong, tell your RIAC." is gone** (the owner: it "doesn't really do anything";
   W5 1 had it). **Each referral is its own white card with a slight shadow**, set apart by a small gap, with no box round
@@ -1065,6 +1065,19 @@ every key and code the pages send.
   wants them to match. Chosen over the page keeping its old name ("2"). Pictures `riac-handover\W\design\w97\`
   (mockup) and `w97c\` (as built); checks `tests\w97-check.mjs`; `tests\w59-e2e.mjs` (with the worker chat's local
   worker) updated for W95 2c and W97 1 and passing.
+- **W98 1** (26 October 2026; the owner: "the signed in card on the portal should be incorporated into the your referrals
+  card in a structured format"): **the signed-in details go inside the cream "Your Referrals" title card**, no card of
+  their own (W65 A's). Under the tag line, a thin rule, then **labelled fields**: Signed in as (the name, ", Esq." for an
+  attorney; the address while the worker supplies no name), Office, Email (only beside a name) and Phone, each only when
+  the worker sends it, each **a small capitalised grey label over its value** (as the list's column headings), the name
+  semibold navy; **Sign Out** last; "You stay signed in until you close this tab, or for 12 hours at most." beneath, small
+  grey italics. On a computer the fields side by side in one centred row, Sign Out at its end; on a phone one under
+  another, centred, Sign Out full width (a long office may wrap at a space on the smallest phones; the email never breaks).
+  The title card is the page's own HTML, so `js/portal.js` adds the details when the list is drawn and `clear()` removes
+  them (the sign-in screen, Sign Out). Send RIAC A Message is unchanged. Chosen over a label-beside-value list centred as
+  a block ("2", taller on a computer). Pictures `riac-handover\W\design\w98\` (mockup) and `w98c\` (as built); checks
+  `tests\w98-check.mjs` (W65's card checks retired); `tests\w59-e2e.mjs` and `tests\e2e-portal.mjs` (the worker chat's
+  local worker) pass.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1152,8 +1165,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   time: **W95 2c** (the numbers as pills under the name, Received a column), **W99 1** (sorting by the column headings
   on a computer), **W96 1** (the status box's words centred, the box narrower) and **W97 1** (a grey "Send a message"
   button with an envelope; the page it opens "Send RIAC a message"), built, not yet published; the attorney-friendly
-  status words (W96 1's note 4) with the database chat; still to put, **W98** (the signed-in card folded into the cream
-  "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
+  status words (W96 1's note 4) with the database chat; and **W98 1** (the signed-in details inside the cream "Your
+  Referrals" card). All five built on one branch, not yet published; a closed referral now says "Closed: " once. Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries

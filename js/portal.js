@@ -55,6 +55,8 @@
   function clear() {
     if (turnstileId !== null && window.turnstile) { try { window.turnstile.remove(turnstileId); } catch (e) { /* gone */ } turnstileId = null; }
     app.textContent = '';
+    var fold = document.querySelector('.portal-head .me-fold');   // the signed-in details (W98 1), outside the app
+    if (fold) fold.parentNode.removeChild(fold);
   }
   function fmtDay(iso) {
     if (!iso) return '';
@@ -322,15 +324,16 @@
     // Each row's attorney is named for office staff signing in for an attorney, which is not built yet: until then the
     // worker cannot tell staff from the attorney (isAttorney is always false), so the line stays off (W69).
     var staff = false;
-    // W65 A: three short lines. The name (until the worker can supply one, the address) and Sign Out; the office, email
-    // and phone; how long the sign-in lasts.
-    var name = me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email;
-    var card = h('div', { class: 'me-card' }, [h('div', { class: 'top' }, [h('div', { class: 'who', text: name }),
-      h('button', { type: 'button', class: 'btn btn-plain', on: { click: signOut } }, ['Sign Out'])])]);
-    var contact = (me.name ? [me.email || data.email, me.phone] : [me.phone]).filter(Boolean).join(' · ');
-    if (me.office || contact) card.appendChild(h('div', { class: 'line' }, [me.office ? h('b', { text: me.office }) : null, me.office && contact ? ' · ' : null, contact]));
-    card.appendChild(h('p', { class: 'notes', text: 'You stay signed in until you close this tab, or for 12 hours at most.' }));
-    app.appendChild(card);
+    // W98 1 (the owner: "the signed in card ... incorporated into the your referrals card in a structured format"): in
+    // the cream title card, under its line, the details as labelled fields (each only when the worker sends it; the
+    // address is "Signed in as" until it can supply a name), Sign Out, and how long the sign-in lasts.
+    var fields = [['Signed in as', me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email, 'who'], ['Office', me.office],
+      ['Email', me.name ? me.email || data.email : null], ['Phone', me.phone]].filter(function (f) { return f[1]; });
+    var head = document.querySelector('.portal-head .wrap');
+    if (head) head.appendChild(h('div', { class: 'me-fold' }, [h('div', { class: 'me-row' }, [
+      h('dl', { class: 'me-fields' }, fields.map(function (f) { return h('div', { class: f[2] }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]); })),
+      h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out'])]),
+      h('p', { class: 'me-note', text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]));
 
     // W58 1: the search and Sort on one line (Sort over the list's last column; on a computer the column headings sort
     // instead, W99 1), then five buttons of one size, All and the four groups, each with its count (of the matches while
