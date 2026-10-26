@@ -1045,9 +1045,12 @@ every key and code the pages send.
   status wraps onto two lines, centred. The owner's notes: **(1) a box or button that wraps never leaves one word alone
   on its last line** (`text-wrap: balance` on `.btn` and `.status`; see Design rules); (2) the column narrows with the
   box; (3) the update button shrinks next (W97); (4) **the status words should be more attorney-friendly and generic,
-  closed ones above all (conflict cases)**: a closed referral shows the database's closing code as staff typed it after
-  "Closed: ", so attorneys read RIAC's own shorthand. The words are made in the database, not on this page, so that is
-  the database chat's, passed on through the dispatcher on 26 October 2026; the page will show whatever words it sends.
+  closed ones above all (conflict cases)**. The words are made in the database, not on this page, so they are the
+  database chat's (its RR17, RR18), passed on through the dispatcher on 26 October 2026. That chat found the database
+  already sends generic words for a closed referral, not its closing codes (this chat had wrongly said otherwise), and
+  that five began "Closed: ", which the page's own "Closed: " doubled; **the page now adds "Closed: " only where the
+  words do not already begin with it**, so it reads right with the words of today and of RR18 alike. Four of today's
+  closed wordings run to two balanced lines in the narrower box; one line holds about 24 characters with "Closed: ".
   Chosen over centring the words and keeping the width ("2"). Pictures `riac-handover\W\design\w96\` (mockup) and
   `w96c\` (as built); checks `tests\w96-check.mjs`.
 - **W97 1** (26 October 2026; the owner: "send riac an update text is too big and doesn't read as an action button. maybe

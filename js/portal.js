@@ -204,8 +204,9 @@
   // ---------- The list (W5 1, "W5 yes") ----------------------------------------------------------------------------------
 
   function statusPill(r) {   // a tinted box with a coloured left edge (W58 1): orange when waiting on you, grey when closed
-    var g = groupOf(r);
-    return h('span', { class: 'status' + (g === 'you' ? ' waiting' : g === 'closed' ? ' closed' : ''), text: (r.isOpen ? '' : 'Closed: ') + (r.status || '') });
+    var g = groupOf(r), words = r.status || '';
+    // A closed referral's words are the database's; some already begin "Closed: ", so it is added only where they do not
+    return h('span', { class: 'status' + (g === 'you' ? ' waiting' : g === 'closed' ? ' closed' : ''), text: (r.isOpen || /^closed\b/i.test(words) ? '' : 'Closed: ') + words });
   }
   function marked(text, term) {   // the text, with each match of the search term marked (as text, never as HTML)
     var frag = document.createDocumentFragment();
