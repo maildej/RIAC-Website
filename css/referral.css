@@ -361,7 +361,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .bot-check.done { min-height: 0; }
 
 /* ============================================================
-   The attorney portal (portal/): sign-in (W4 1), the list (W5 1, "W5 yes"), Send RIAC An Update (W6 1, W59 A)
+   The attorney portal (portal/): sign-in (W4 1), the list (W5 1, "W5 yes"), Send RIAC A Message (W6 1, W59 A, W97 1)
    ============================================================ */
 
 .sign-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; max-width: 26rem; margin: 0 auto; padding: 1.4rem 1.5rem 1.5rem; }
@@ -429,13 +429,20 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list. W88 1:
    outlined in its own colour (on the case info's grey panel it had melted), and green when all is well (the site's
    green, as "✓ Uploaded"); orange when waiting on the attorney, grey when closed */
-.ref-table .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; } /* as tall as Send RIAC An Update (W65) */
+.ref-table .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; } /* as tall as the button beside it (W65) */
 /* W96 1: the words centred, and a status that wraps never leaves one word alone on its last line */
 .status { display: inline-block; background: color-mix(in srgb, var(--r2) 11%, white); color: #1d5a2a; border: 1px solid color-mix(in srgb, var(--r2) 40%, white); border-left: 4px solid var(--r2); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: center; text-wrap: balance; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 16%, white); border-color: color-mix(in srgb, var(--r5) 45%, white); border-left-color: var(--r5); color: #8a4210; }
 .status.closed { background: #f1efea; border-color: #d9d6cd; border-left-color: #a7a49b; color: var(--muted); }
 .ref-table .act { text-align: right; white-space: nowrap; }
-.ref-table .act .btn { height: 2.1rem; display: inline-flex; align-items: center; padding: 0 .8rem; font-size: var(--fs-small); }
+.ref-table .act .btn { height: 2.1rem; display: inline-flex; align-items: center; padding: 0 .75rem; font-size: var(--fs-label); }
+/* W97 1: "Send a message", a grey button (a cool grey, apart from a closed status's warm one) with an envelope, its words
+   at the status box's size */
+.btn-msg { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; background: #eef0f3; color: var(--navy); border: 1px solid #c3c9d2; }
+.btn-msg:hover { background: #e1e5ea; border-color: #a9b1bc; }
+.btn-msg .tile-sym { --icon-fill: #eef0f3; }
+.btn-msg:hover .tile-sym { --icon-fill: #e1e5ea; }
+.btn-msg .tile-sym svg { width: 18px; height: 18px; }
 mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 /* A group is a heading over its cards, no box round them; Waiting on you's heading brown with an orange arrow */
 .ref-group { margin-top: 1.1rem; }
@@ -451,7 +458,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .ref-table tr > :nth-child(1) { width: 17.5rem; }
   .ref-table tr > :nth-child(2) { width: 9.8rem; }
   .ref-table tr > :nth-child(4) { width: 13.2rem; } /* W96 1: every open status on one line, the rest to the court */
-  .ref-table tr > :nth-child(5) { width: 13rem; }
+  .ref-table tr > :nth-child(5) { width: 11.4rem; } /* W97 1: as wide as "Send a message" */
   .ref-table .rcv .kv { display: none; }
   .list-head select { display: none; } /* the headings sort here (W99 1) */
   .ref-table td { vertical-align: middle; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -478,7 +485,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
 .add-card > h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .8rem 1.4rem; display: flex; align-items: center; gap: .7rem; }
 .add-card .inner { padding: 1.2rem 1.4rem 1.4rem; }
-/* The referral at the top of Send RIAC An Update: its status in a column as wide as the list's (W58 1), full width on a phone */
+/* The referral at the top of Send RIAC A Message: its status in a column as wide as the list's (W58 1), full width on a phone */
 .which { display: grid; grid-template-columns: 1fr 13.2rem; gap: .5rem 1rem; align-items: center; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem 1rem; font-size: var(--fs-small); margin-bottom: 1.4rem; }
 .which .cl { font-weight: 600; color: var(--ink); }
 .which .sub { color: var(--muted); }
@@ -526,7 +533,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .doc-state .also { font-weight: 400; }
 .doc-state.need { background: color-mix(in srgb, var(--r5) 16%, white); border-left-color: var(--r5); color: #8a4210; }
 .doc-state.grey { background: #f1efea; border-left-color: #a7a49b; color: var(--muted); }
-/* W82 1 (the owner: "a little big/doughy"): the portal's tag line smaller at every width; on Send RIAC An Update the
+/* W82 1 (the owner: "a little big/doughy"): the portal's tag line smaller at every width; on Send RIAC A Message the
    questions at the case info's size, the tiles' words and the kinds' names regular, the note box three lines to start, and
    each kind's name, state and button on one line (Something else in line with its box) */
 .portal-head p { font-size: var(--fs-small); }

@@ -253,7 +253,7 @@
     court: function (a, b) { return byName(a.court || '', b.court || '') || SORT_BY.newest(a, b); },
     'court-za': function (a, b) { return byName(b.court || '', a.court || '') || SORT_BY.newest(a, b); }
   };
-  // The view chosen is kept in this tab, so Back from Send RIAC An Update finds the list as it was left.
+  // The view chosen is kept in this tab, so Back from Send RIAC A Message finds the list as it was left.
   function keptView() {
     var v = {};
     try { v = JSON.parse(sessionStorage.getItem(VIEW_KEY) || '{}') || {}; } catch (e) { /* none kept */ }
@@ -297,7 +297,9 @@
         r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]), dates]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
       tb.appendChild(h('tr', null, [client, received, court, h('td', null, [statusPill(r)]),
-        h('td', { class: 'act' }, [h('a', { class: 'btn btn-plain', href: 'add.html#' + encodeURIComponent(r.reference), text: 'Send RIAC An Update' })])]));
+        // W97 1 (the owner: "a grey button with a symbol just saying send a message"); a screen reader hears whose
+        h('td', { class: 'act' }, [h('a', { class: 'btn btn-msg', href: 'add.html#' + encodeURIComponent(r.reference),
+          'aria-label': 'Send a message about ' + (r.clientName || r.reference) }, [symbol('i-message'), 'Send a message'])])]));
     });
     return h('table', { class: 'ref-table' }, [head ? h('thead', null, [headRow(head)]) : null, tb]);
   }
@@ -401,7 +403,7 @@
     api('POST', '/v1/portal/sign-out').then(function () { endSession(); signInCard('', 'You are signed out.'); });
   }
 
-  // ---------- Send RIAC An Update (W6 1, once Add To This Referral; W59 A) -------------------------------------------------
+  // ---------- Send RIAC A Message (W6 1, W59 A, W97 1; once Add To This Referral, then Send RIAC An Update) -----------------
 
   var KINDS = ['rap-sheet', 'charging-documents', 'immigration-documents'];
   var A = { batch: null, files: {}, list: [], pumping: false, key: null, sending: false, about: 'message', kinds: [] };
@@ -477,7 +479,7 @@
     var inputs = [];
     // W87 2b: each tile's symbol and words centred on it, the tick as far from its left as from its top and bottom
     var about = !ticks.length ? null : h('div', { class: 'field' }, [h('fieldset', { class: 'plain-fieldset' }, [
-      h('legend', { class: 'visually-hidden', text: 'Does this update report an offer or a disposition? Tick one, or neither for a note.' }),
+      h('legend', { class: 'visually-hidden', text: 'Does this message report an offer or a disposition? Tick one, or neither for a note.' }),
       h('div', { class: 'about-ticks' }, ticks.map(function (a) {
         var input = h('input', { type: 'checkbox', name: 'add-about', value: a.code });
         inputs.push(input);
@@ -494,7 +496,7 @@
     A.kinds.forEach(function (kind) { docs.appendChild(docRow(kind, r)); });
     var err = h('div', { id: 'add-err', role: 'alert' });
     var sendBtn = h('button', { type: 'button', class: 'btn btn-navy', id: 'add-send', on: { click: function () { sendAddition(r); } } }, ['Send To RIAC']);
-    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC an update' }), h('div', { class: 'inner ref-q' }, [which(r), about, msgField,
+    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC a message' }), h('div', { class: 'inner ref-q' }, [which(r), about, msgField,
       h('div', { class: 'docs-head' }, [h('span', { class: 'lab', text: 'Documents' }), ' ', h('span', { class: 'opt', text: '(optional)' })]),
       Array.isArray(r.documents) ? h('p', { class: 'doc-key', text: D.DOC_STATES_NOTE }) : null,
       h('p', { class: 'limits', id: 'add-limits', text: 'Checking the file limits…' }), docs, err,

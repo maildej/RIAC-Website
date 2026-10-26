@@ -13,7 +13,7 @@
     turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft',
-    // Send RIAC An Update (W59 A): the kinds of update offered, a note always; each other kind is a tick tile (W83 1).
+    // Send RIAC A Message (W59 A): the kinds of update offered, a note always; each other kind is a tick tile (W83 1).
     // Offers and dispositions on nyriac.com too since RIAC's database files them as such (W72, 23 October 2026).
     updateKinds: ['message', 'offer', 'disposition']
   };
@@ -316,7 +316,7 @@
   // receipts went to Junk). "Not junk" only when the worker names the sending address.
   var RECEIPT_JUNK = 'Not in your inbox within a few minutes? Look in your Junk or Spam folder';
 
-  // W59 A, W83 1: on Send RIAC An Update, with the worker's codes (contract draft 21): a note to RIAC unless the attorney
+  // W59 A, W83 1: on Send RIAC A Message, with the worker's codes (contract draft 21): a note to RIAC unless the attorney
   // ticks "Report an offer" or "Report a disposition" (one at most), each tick tile with its symbol (W87 2b); the
   // question over the box, and the name shown after Send. An offer or a disposition needs words (W68 a: a disposition
   // marks the case disposed at RIAC). No descriptions and no guidance in the box (the owner).
@@ -326,7 +326,7 @@
     { code: 'disposition', tile: 'Report a disposition', sym: 'i-disposition', box: 'The disposition', sent: 'Disposition' }
   ];
 
-  // W61 a, W80 1: on Send RIAC An Update, beside each kind of document, what RIAC has of it (contract draft 22's `state`):
+  // W61 a, W80 1: on Send RIAC A Message, beside each kind of document, what RIAC has of it (contract draft 22's `state`):
   // the words and the box's tone (orange when RIAC still needs one, grey for what the attorney said). With a day,
   // "Received Oct 20", and under "Still needed" a second line, "One received Oct 5".
   var DOC_STATES = {

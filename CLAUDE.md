@@ -49,12 +49,12 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `contact.html` | Six region cards (`#region-1` … `#region-6`) with counties served and each center's contacts — the map links here |
 | `intake.html` | **Send A Case** (W2 1; the address is kept): two cards, **Send Us A New Case** (the form, orange) and **Your Referrals** (the portal's sign-in), with the paper intake forms beneath |
 | `referral.html` | **The referral form**, nine steps drawn by `js/referral.js` from `js/referral-data.js`, sent to the worker. See "The referral form and the attorney portal" |
-| `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Send RIAC An Update, once Add To This Referral), both run by `js/portal.js`. Links inside use `../` |
+| `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Send RIAC A Message, W97 1; once Add To This Referral, then Send RIAC An Update), both run by `js/portal.js`. Links inside use `../` |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
 | `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
 | `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the "Before You Receive RIAC Advice" warnings with their advisories' titles and PDF addresses (W32 1; a copy of what `advisories.html` lists); the worker's address and the Turnstile key. Change wording here | 
 | `js/referral.js`, `js/portal.js` | The form and the portal: drawing, checking, uploading files one at a time, sending | 
-| `images/symbols.svg` | The symbols on the advisory, intake and home-page cards, one `<symbol id="i-…">` each — see "Design rules" below |
+| `images/symbols.svg` | The symbols on the advisory, intake and home-page cards and in the portal (its tick tiles, "Send a message"), one `<symbol id="i-…">` each — see "Design rules" below |
 | `images/riac-mark.svg` | Colored map mark used as the header logo on every page |
 | `images/favicon.svg` | Browser tab icon (navy square + map) |
 | `advisories/` | Drop advisory PDFs here; link them from `advisories.html`. `advisories/source/` holds internal Word (.docx) copies for editing — not linked publicly, kept out of search engines via `robots.txt` |
@@ -1050,6 +1050,18 @@ every key and code the pages send.
   the database chat's, passed on through the dispatcher on 26 October 2026; the page will show whatever words it sends.
   Chosen over centring the words and keeping the width ("2"). Pictures `riac-handover\W\design\w96\` (mockup) and
   `w96c\` (as built); checks `tests\w96-check.mjs`.
+- **W97 1** (26 October 2026; the owner: "send riac an update text is too big and doesn't read as an action button. maybe
+  have it as a grey button with a symbol just saying send a message?"): each referral's button on the list is **a grey
+  "Send a message"**: a cool grey (`#eef0f3`, outlined `#c3c9d2`, darker under the mouse), apart from the warm grey of a
+  closed status, its words navy at the status box's size, as tall as the status box, with **a new symbol before them,
+  `i-message`** (a navy envelope, its flap in the button's grey, an orange seal; 18 px). Its column is 11.4rem on a
+  computer (13rem before; the court takes the rest), full width on a phone. A screen reader hears "Send a message about
+  <client>" (or the reference when no name is held). **The page it opens is "Send RIAC a message"** (its bar and the
+  tab; W59 A named it Send RIAC An Update), and the hidden question over the tick tiles says "this message". The worker's
+  email receipt for one still says "Update Received" and "to send another update": the worker chat's, only if the owner
+  wants them to match. Chosen over the page keeping its old name ("2"). Pictures `riac-handover\W\design\w97\`
+  (mockup) and `w97c\` (as built); checks `tests\w97-check.mjs`; `tests\w59-e2e.mjs` (with the worker chat's local
+  worker) updated for W95 2c and W97 1 and passing.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1135,9 +1147,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   comes first and the county is the attorney's office's, with the immigration court or USCIS office in place of the
   court (live since 23 October 2026). Then the owner's five points on the portal list (26 October 2026), one decision at a
   time: **W95 2c** (the numbers as pills under the name, Received a column), **W99 1** (sorting by the column headings
-  on a computer) and **W96 1** (the status box's words centred, the box narrower), built, not yet published; the
-  attorney-friendly status words (W96 1's note 4) with the database chat; still to put, **W97** ("Send RIAC An Update" smaller, grey, with a symbol, "Send a message"), **W98** (the
-  signed-in card folded into the cream "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
+  on a computer), **W96 1** (the status box's words centred, the box narrower) and **W97 1** (a grey "Send a message"
+  button with an envelope; the page it opens "Send RIAC a message"), built, not yet published; the attorney-friendly
+  status words (W96 1's note 4) with the database chat; still to put, **W98** (the signed-in card folded into the cream
+  "Your Referrals" card). Still to put to the owner, a mockup first: **W91**
   (the charge picker, the owner's yes in the dispatcher's chat: on a criminal case the attorney may pick the charges from
   a fixed public list of offences, by statute number or name; optional, the free text kept, staff confirm; the list file
   holds public law only). Passed to the database chat: a note subject naming the kinds of document when an update carries

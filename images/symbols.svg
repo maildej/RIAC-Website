@@ -233,4 +233,13 @@
       <rect style="fill: var(--icon-accent, #ef7c28); stroke: var(--icon-fill, #fff)" x="20" y="21" width="8" height="9" rx="1.6" stroke-width="2"/>
     </g>
   </symbol>
+
+  <!-- Send a message (the portal's button, W97 1): an envelope, its flap, and an orange seal -->
+  <symbol id="i-message" viewBox="0 0 48 48">
+    <g>
+      <rect style="fill: currentColor" x="4" y="10" width="40" height="28" rx="3.5"/>
+      <path style="fill: none; stroke: var(--icon-fill, #fff); stroke-linecap: round; stroke-linejoin: round" stroke-width="3" d="M7.5 13.5L24 27l16.5-13.5"/>
+      <circle style="fill: var(--icon-accent, #ef7c28)" cx="24" cy="27" r="5"/>
+    </g>
+  </symbol>
 </svg>
