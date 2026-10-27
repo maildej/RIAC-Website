@@ -242,4 +242,26 @@
       <circle style="fill: var(--icon-accent, #ef7c28)" cx="24" cy="27" r="5"/>
     </g>
   </symbol>
+
+  <!-- The form's case types (W105 1): a probation violation, a sheet of conditions on a clipboard with an orange warning -->
+  <symbol id="i-probation" viewBox="0 0 48 48">
+    <g>
+      <rect style="fill: currentColor" x="5" y="6" width="28" height="38" rx="3.5"/>
+      <rect style="fill: currentColor; stroke: var(--icon-fill, #fff)" x="12" y="2" width="14" height="8.5" rx="2.5" stroke-width="2.2"/>
+      <path style="fill: none; stroke: var(--icon-fill, #fff); stroke-linecap: round" stroke-width="2.8" d="M11 18.5h16M11 25.5h16M11 32.5h9"/>
+      <circle style="fill: var(--icon-accent, #ef7c28); stroke: var(--icon-fill, #fff)" cx="35" cy="35" r="10.5" stroke-width="3"/>
+      <path style="fill: none; stroke: var(--icon-fill, #fff); stroke-linecap: round" stroke-width="3.4" d="M35 29.2v6.6"/>
+      <circle style="fill: var(--icon-fill, #fff)" cx="35" cy="40.8" r="1.9"/>
+    </g>
+  </symbol>
+
+  <!-- The form's case types (W105 1): an appeal, a courthouse with an orange arrow rising beside it -->
+  <symbol id="i-appeal" viewBox="0 0 48 48">
+    <g>
+      <path style="fill: currentColor" d="M1.5 22.5L17 13l15.5 9.5V26h-31z"/>
+      <g style="fill: currentColor"><rect x="4.5" y="28" width="4" height="10.5"/><rect x="11.5" y="28" width="4" height="10.5"/><rect x="18.5" y="28" width="4" height="10.5"/><rect x="25.5" y="28" width="4" height="10.5"/></g>
+      <rect style="fill: currentColor" x="0.5" y="40" width="33" height="5.5" rx="1.5"/>
+      <path style="fill: var(--icon-accent, #ef7c28)" d="M38 45.5V17h-5l7.5-11.5L48 17h-5v28.5z"/>
+    </g>
+  </symbol>
 </svg>

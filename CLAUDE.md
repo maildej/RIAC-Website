@@ -1192,6 +1192,21 @@ every key and code the pages send.
   (3.4 to 1 on white; #b4bcc7 was 1.9, #9aa4b0 2.5). Chosen over a darker orange carrying the white words ("2") and a navy
   band and button ("3"). Pictures `riac-handover\W\design\w108\` (mockup) and `w108c\` (as built); checks
   `tests\w108-check.mjs` (every pair measured from the page) and `tests\w108c-shots.mjs`.
+- **W105 1** (27 October 2026; the owner on step 1, comment 1 of his W102 test: "looks a little messy - we should consider
+  individual cards / more structure / better wrapping / smaller text / possibly the use of symbols?"): **the case types
+  are six cards of one size**, each a round box at its top left, its symbol in a cream circle, its short name and a line
+  under it, centred; **3 across on a computer, 2 below 900 px**; the names end level across a row (each card a three-row
+  subgrid); chosen, a card is edged navy and tinted, as a tile. **The criminal side first**, as the paper forms divide
+  them: **Criminal Case** (*Charges pending, before a plea or trial*; the fingerprint), **Probation Violation** (*A
+  violation of probation is alleged*; a new symbol, `i-probation`, a clipboard of conditions with an orange warning),
+  **Appeal** (*A conviction on appeal*; new, `i-appeal`, a courthouse with an orange arrow rising), **Post-Conviction**
+  (*Vacating or changing a past conviction or sentence*; the portal's gavel, `i-disposition`), **Family Court / Divorce**
+  (*Abuse & neglect, family offense, custody or divorce*; the family) and **Removal / USCIS** (*Removal defense, or an
+  application to USCIS*; the passport). The shorter names (they were "Violation of Probation", "Post-Conviction Relief /
+  Post-Disposition" and "Assistance With Removal Defense / USCIS") are also what Review and send and the copy say. The
+  codes sent are unchanged; the words, descriptions and symbols are `CASE_TYPES` in `js/referral-data.js`. Chosen over
+  two groups, Criminal and Non-criminal, without symbols ("2"), and today's tiles tidied ("3"). Pictures
+  `riac-handover\W\design\w105\` (mockup) and `w105c\` (as built); checks `tests\w105-check.mjs` (1360 to 320 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

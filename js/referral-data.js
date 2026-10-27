@@ -60,14 +60,16 @@
     ]
   };
 
-  // The nine steps (W11 1). Step 6 is named for the case type.
+  // The nine steps (W11 1). Step 6 is named for the case type. W105 1: at step 1 each case type is a card with its
+  // symbol (images/symbols.svg), its short name and a line under it, the criminal side first, as the paper forms divide
+  // them.
   var CASE_TYPES = [
-    { code: 'criminal', label: 'Criminal Case', step: 'Criminal Case', heading: 'Criminal case' },
-    { code: 'vop', label: 'Violation of Probation', step: 'Probation Violation', heading: 'Violation of probation' },
-    { code: 'family', label: 'Family Court / Divorce', step: 'Family Court', heading: 'Family court or divorce' },
-    { code: 'appeal', label: 'Appeal', step: 'Appeal', heading: 'Appeal' },
-    { code: 'post-conviction', label: 'Post-Conviction Relief / Post-Disposition', step: 'Post-Conviction', heading: 'Post-conviction relief' },
-    { code: 'removal', label: 'Assistance With Removal Defense / USCIS', step: 'Removal', heading: 'Removal defense or USCIS applications' }
+    { code: 'criminal', label: 'Criminal Case', desc: 'Charges pending, before a plea or trial', symbol: 'criminal', step: 'Criminal Case', heading: 'Criminal case' },
+    { code: 'vop', label: 'Probation Violation', desc: 'A violation of probation is alleged', symbol: 'probation', step: 'Probation Violation', heading: 'Violation of probation' },
+    { code: 'appeal', label: 'Appeal', desc: 'A conviction on appeal', symbol: 'appeal', step: 'Appeal', heading: 'Appeal' },
+    { code: 'post-conviction', label: 'Post-Conviction', desc: 'Vacating or changing a past conviction or sentence', symbol: 'disposition', step: 'Post-Conviction', heading: 'Post-conviction relief' },
+    { code: 'family', label: 'Family Court / Divorce', desc: 'Abuse & neglect, family offense, custody or divorce', symbol: 'family', step: 'Family Court', heading: 'Family court or divorce' },
+    { code: 'removal', label: 'Removal / USCIS', desc: 'Removal defense, or an application to USCIS', symbol: 'citizenship', step: 'Removal', heading: 'Removal defense or USCIS applications' }
   ];
 
   // Choice lists ---------------------------------------------------------------------------------------------------
@@ -273,7 +275,7 @@
   // W90 2: the case type is asked first, at step 1, so the county question can follow it (for removal / USCIS there is
   // no county court: the county is the attorney's office's)
   var COUNTY = [
-    Q('case.caseType', 'Case Type', 'radio', { choices: CASE_TYPES.map(function (t) { return C(t.code, t.label); }), cols: 2, required: true })
+    Q('case.caseType', 'Case Type', 'radio', { choices: CASE_TYPES.map(function (t) { return { code: t.code, label: t.label, desc: t.desc, symbol: t.symbol }; }), cards: true, required: true })
   ];
   // W90 2: removal defense and USCIS applications have no county court, so no court, docket or court date; the
   // immigration court or USCIS office, and the next hearing or interview date, in their place

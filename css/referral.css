@@ -245,6 +245,23 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ruled .tiles-apart { gap: .4rem; margin-top: .45rem; padding-top: .45rem; }
 .tile .box.round { border-radius: 50%; }
 .tile:has(input:checked) .box.round::after { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: #fff; }
+/* W105 1: step 1's case types as cards of one size, each its symbol, its short name and a line under it (the names line
+   up across a row: each card is a three-row subgrid); 3 x 2 on a computer, 2 x 3 below 900 px */
+.ctc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.tile.card-ct { position: relative; display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: .35rem; justify-items: center; align-items: start; align-content: start;
+  text-align: center; min-height: 0; padding: .75rem .7rem .8rem; border-color: #838d9b; border-radius: 10px; }
+.card-ct .box.round { position: absolute; top: .6rem; left: .6rem; }
+.card-ct .sym { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; color: var(--navy); background: var(--cream);
+  --icon-fill: var(--cream); --icon-accent: var(--r5); }
+.card-ct .sym svg { width: 36px; height: 36px; }
+.card-ct .t { align-self: end; font-weight: 600; color: var(--navy); line-height: 1.25; text-wrap: balance; }
+.card-ct .d { font-size: var(--fs-label); color: var(--muted); line-height: 1.4; text-wrap: balance; }
+@media (max-width: 900px) { .ctc { grid-template-columns: 1fr 1fr; gap: .45rem; } }
+@media (max-width: 600px) {
+  .tile.card-ct { padding: .65rem .55rem .7rem; }
+  .card-ct .sym { width: 48px; height: 48px; }
+  .card-ct .sym svg { width: 31px; height: 31px; }
+}
 /* the custody status in two groups */
 .cust { display: grid; gap: .5rem; }
 .cg { border: 1px solid #d5dae1; border-radius: 8px; padding: .45rem .55rem .55rem; background: #f7f8fa; }

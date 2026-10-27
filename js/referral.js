@@ -240,10 +240,17 @@
       var rid = id + '-' + i;
       var inp = h('input', { type: 'radio', id: rid, name: id, value: c.code, 'data-key': q.key, checked: A[q.key] === c.code });
       if (pill) return h('label', { class: 'pill', for: rid }, [inp, c.label]);
+      if (q.cards) {   // W105 1: a card with its symbol, its name and a line under it
+        var sym = h('span', { class: 'sym', 'aria-hidden': 'true' });
+        sym.innerHTML = '<svg><use href="images/symbols.svg#i-' + c.symbol + '"/></svg>';
+        return h('label', { class: 'tile card-ct', for: rid }, [inp, h('span', { class: 'box round', 'aria-hidden': 'true' }), sym,
+          h('span', { class: 't', text: c.label }), h('span', { class: 'd', text: c.desc })]);
+      }
       return h('label', { class: 'tile', for: rid }, [inp, h('span', { class: 'box round', 'aria-hidden': 'true' }), c.ice ? iceSym(true) : null, h('span', { text: c.label })]);
     }
     var grp;
-    if (q.inline) {
+    if (q.cards) grp = h('div', { class: 'ctc' }, q.choices.map(function (c, i) { return opt(c, i); }));
+    else if (q.inline) {
       grp = h('div', { class: 'seg' + (q.choices.some(function (c) { return c.label.length > 14; }) ? ' long' : '') }, q.choices.map(function (c, i) { return opt(c, i, true); }));
       grp.style.setProperty('--n', q.choices.length);
     } else if (q.groups) {
