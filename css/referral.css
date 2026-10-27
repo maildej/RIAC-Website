@@ -1,6 +1,7 @@
 /* ============================================================
    The referral form (referral.html) and the attorney portal
    (portal/). Loaded after style.css by those pages only.
+   The form's steps are ruled sheets of questions (W103 3).
    Every font size is one of the --fs-* variables in style.css.
    The owner's decisions behind each part are coded W1 to W30 in
    CLAUDE.md, "The referral form and the attorney portal".
@@ -166,6 +167,128 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .field.has-err:has(> .plain-fieldset) { box-shadow: inset 3px 0 0 var(--bad); padding-left: .9rem; }
 .choose.has-err { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
 .choose.has-err > h3 { color: var(--bad); }
+
+/* ---------- W103 3: the question beside its answer, in one ruled sheet ---------- */
+/* The owner's comments on his test send (26 October 2026): "no visual delineation between title/box/helper text/actual
+   text/next title", "big and doughy", "field names to the left and fields to the right, all full width". Each step's
+   questions sit in sections, each with a navy band, in one square-cornered sheet (square inside the rounded card, the
+   owner's rule); the question, with its guidance under it, is in a grey column on the left, the answer on the right,
+   centred against the question where the question is the taller (the owner's change). On a phone the question sits
+   over its answer. Guidance is never inside a box (reverses W16 and W17 1), one answer to a row (reverses W14 2), and a
+   box for words opens two lines tall, a long answer's three (the owner: one line "looks like it won't expand"). */
+.ref-q.ruled { max-width: 60rem; }
+.ref-q.ruled > h2 { font-size: var(--fs-card); margin-bottom: .15rem; }
+.ref-q.ruled > .hint { margin-bottom: .9rem; }
+.ruled .upload-switch, .ruled .upload-on { margin-bottom: 1rem; padding: .45rem .9rem; }
+.sheet { border: 1px solid #c3c9d2; background: #fff; margin-bottom: 1rem; }
+.sec-h {
+  margin: 0; padding: .42rem 1rem; background: var(--navy); color: var(--cream);
+  font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; line-height: 1.4;
+}
+.qrow { display: grid; grid-template-columns: 15rem minmax(0, 1fr); }
+.qrow + .qrow, .sec-foot { border-top: 1px solid #e1e4e9; }
+.qrow > .q { background: #f3f4f7; padding: .75rem 1rem; border-right: 1px solid #e1e4e9; }
+.qrow > .a { padding: .6rem 1rem; align-self: center; min-width: 0; }
+.qrow.para { display: block; padding: .6rem 1rem; }
+.qrow .lab { display: block; font-size: var(--fs-small); font-weight: 600; color: var(--navy); line-height: 1.35; }
+.ref-q .qrow .g, .ref-q .qrow .desc, .qrow .desc-list { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); line-height: 1.45; margin: .2rem 0 0; }
+.ref-q .qrow.para .desc { margin: 0; font-size: var(--fs-small); }
+.qrow .g .eg { display: block; }
+.qrow .g .eg + span { display: block; margin-top: .3rem; }
+.qrow .desc-list ol { margin: .1rem 0 .3rem 1.2rem; }
+.ref-q.ruled input[type="text"], .ref-q.ruled input[type="email"], .ref-q.ruled input[type="tel"], .ref-q.ruled input[type="search"],
+.ref-q.ruled input[type="date"], .ref-q.ruled select, .ref-q.ruled textarea {
+  font-size: var(--fs-small); line-height: 1.5; padding: .42rem .65rem; border: 1px solid #b4bcc7; border-radius: 6px;
+}
+.ref-q.ruled input[type="date"] { max-width: 12rem; }
+.ref-q.ruled textarea { min-height: 0; }
+.ref-q.ruled textarea.l2 { min-height: calc(2lh + .84rem + 2px); }
+.ref-q.ruled textarea.l3 { min-height: calc(3lh + .84rem + 2px); }
+.srch { position: relative; }
+.srch .lens { position: absolute; left: .65rem; top: 50%; transform: translateY(-50%); display: grid; color: var(--muted); pointer-events: none; }
+.srch .lens svg { width: 15px; height: 15px; }
+.ref-q.ruled .srch input { padding-left: 2rem; }
+.tick-under { display: flex; align-items: center; gap: .45rem; font-size: var(--fs-small); color: var(--ink); margin-top: .45rem; cursor: pointer; }
+.tick-under input { margin: 0; width: auto; accent-color: var(--navy); }
+.ruled .sub-field { margin: .7rem 0 0; }
+.ruled .sub-field > .lab { margin-bottom: .3rem; }
+.ref-q.ruled .sub-field > .g { margin: -.15rem 0 .35rem; }
+.ruled .near-limit { font-size: var(--fs-label); }
+.cp-more { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .3rem; }
+.ruled .cp-lines { margin-bottom: .55rem; }
+
+/* Choices: Yes / No / Unknown as pills of one size; longer lists as tiles with a round box */
+.seg { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: .4rem; }
+.ruled .pill { min-height: 2.3rem; }
+.ruled .tiles { gap: .4rem; }
+.ruled .tiles.across { grid-auto-flow: row; }
+.ruled .tiles.one { grid-template-columns: 1fr; }
+.ruled .tile { min-height: 2.5rem; padding: .3rem .7rem; }
+.ruled .tiles-apart { gap: .4rem; margin-top: .45rem; padding-top: .45rem; }
+.tile .box.round { border-radius: 50%; }
+.tile:has(input:checked) .box.round::after { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: #fff; }
+/* the custody status in two groups */
+.cust { display: grid; gap: .5rem; }
+.cg { border: 1px solid #d5dae1; border-radius: 8px; padding: .45rem .55rem .55rem; background: #f7f8fa; }
+.cg-h { display: block; font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 .15rem .35rem; }
+.cg.held { background: color-mix(in srgb, var(--r5) 7%, white); border-color: color-mix(in srgb, var(--r5) 40%, white); }
+.cg.held .cg-h { color: var(--warn); }
+/* ICE involvement: a red "ICE" triangle; the tick centred on the tile */
+.ice-sym { flex: none; display: grid; }
+.ice-sym svg { width: 34px; height: 30px; }
+.ice-sym.sm svg { width: 22px; height: 19px; }
+.ruled .ice-tile { min-height: 3rem; gap: .7rem; }
+.ice-tile b { color: var(--ink); }
+.ruled .ice-tile:has(input:checked) { border-color: var(--r3); box-shadow: 0 0 0 1px var(--r3); background: color-mix(in srgb, var(--r3) 6%, white); }
+.ice-tile:has(input:checked) .box { background: var(--r3); border-color: var(--r3); }
+.ref-q .auto { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-top: .3rem; }
+/* the client's family: a row each for parent, spouse and child, coloured */
+.fam { display: grid; gap: .4rem; }
+.fr { display: grid; grid-template-columns: 8.5rem 1fr 1fr; gap: .4rem; align-items: stretch; }
+.fr-h { display: flex; align-items: center; font-size: var(--fs-small); font-weight: 600; color: var(--fc); border-left: 4px solid var(--fc); padding-left: .55rem; }
+.ruled .fr .tile { border-left: 4px solid var(--fc); }
+.ruled .fr .tile:has(input:checked) { border-color: var(--fc); box-shadow: 0 0 0 1px var(--fc); background: color-mix(in srgb, var(--fc) 9%, white); }
+.fr .tile:has(input:checked) .box { background: var(--fc); border-color: var(--fc); }
+.fr.parent { --fc: #2a64a8; }
+.fr.spouse { --fc: #7b3fa6; }
+.fr.child { --fc: #2b7a3b; }
+.fam + .tiles-apart { margin-top: .45rem; }
+
+/* Step 1's center, under the county */
+.qrow .centre-line, .qrow .elsewhere { margin-top: .55rem; }
+.qrow .instead { margin-top: .55rem; }
+.qrow .centres { margin-top: .1rem; }
+/* Step 7: the people added, and the "Add a person" box's button */
+.sec .people-list { border: 0; border-radius: 0; margin: 0; }
+.sec-foot { display: flex; justify-content: flex-end; padding: .6rem 1rem; }
+.sec-foot .btn { min-width: 11rem; }
+/* Step 8: Attach Now dashed, the other three grey (the owner's comment 9) */
+.ruled .pills4 .pill { background: #eef0f3; border-color: #c3c9d2; }
+.ruled .pills4 .pill.attach { background: #fff; border: 1px dashed var(--navy); }
+.ruled .pills4 .pill:has(input:checked) { background: var(--navy); border: 1px solid var(--navy); color: var(--cream); }
+.ruled .fnote .g { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .25rem; }
+
+/* W31 in the sheet: an answer still to give turns its question red, with a red bar, and outlines its box */
+.qrow.has-err > .q { background: #fbeeee; box-shadow: inset 3px 0 0 var(--bad); }
+.qrow.has-err > .q .lab, .sub-field.has-err > .lab { color: var(--bad); }
+.qrow.has-err > .a > input, .qrow.has-err > .a > textarea, .qrow.has-err > .a > select, .qrow.has-err > .a > .srch input,
+.sub-field.has-err > input, .sub-field.has-err > textarea { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.qrow.has-err > .a .tile, .qrow.has-err > .a .pill { border-color: #e0a3a3; }
+.sec.has-err > .sec-h { background: var(--bad); }
+
+@media (max-width: 600px) {
+  .ref-body:has(.ruled) { padding: 1.1rem .7rem 1.2rem; }
+  .qrow { display: block; }
+  .qrow > .q { border-right: 0; border-bottom: 1px solid #e1e4e9; padding: .55rem .9rem; }
+  .qrow > .a { padding: .6rem .9rem .75rem; }
+  .sec-h { padding-left: .9rem; }
+  .ruled .tiles, .ruled .tiles-apart { grid-template-columns: 1fr; }
+  .seg.long { grid-template-columns: 1fr; }
+  .fr { grid-template-columns: 1fr 1fr; }
+  .fr-h { grid-column: 1 / -1; padding: .1rem 0 .1rem .55rem; }
+  .ruled .fr .tile { padding: .3rem .55rem; gap: .5rem; }
+  .sec-foot .btn { width: 100%; }
+}
 
 /* ---------- Step 1: the county and its center (W1, W7, W8, W10) ---------- */
 

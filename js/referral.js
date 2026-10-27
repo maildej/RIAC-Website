@@ -37,7 +37,7 @@
   function fresh() {
     return { v: 1, step: 0, visited: 0, A: {}, sendAs: 'questions',
       route: { county: null, outside: false, conflict: false, centre: null, note: '' },
-      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null };
+      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null, iceAuto: false };
   }
   function load() {
     try {
@@ -140,7 +140,7 @@
   }
   function flat(list) {
     var out = [];
-    list.forEach(function (q) { if (q.type === 'pair') q.items.forEach(function (x) { out.push(x); }); else out.push(q); });
+    list.forEach(function (q) { if (q.type === 'group') q.items.forEach(function (x) { out.push(x); }); else out.push(q); });
     return out;
   }
 
@@ -156,13 +156,6 @@
     if (g.text) kids.push(h('span', { text: g.text }));
     if (g.html) kids.push(h('span', { html: g.html }));
     return h('span', null, kids);
-  }
-
-  function labelNode(q, forId) {
-    var lab = h('label', { for: forId });
-    if (q.labelHtml) lab.innerHTML = q.label; else lab.textContent = q.label;
-    if (q.required) { lab.appendChild(document.createTextNode(' ')); lab.appendChild(h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })); }
-    return lab;
   }
 
   function descNode(q) {
@@ -186,100 +179,137 @@
       : '';
   }
 
-  // A box that may hold its guidance inside (W16, W17).
-  function textBox(q, id, value, short) {
-    var max = limitOf(q);
-    var g = guidanceNode(q.guidance);
-    var ta = h('textarea', { id: id, class: 'inbox', placeholder: ' ', maxlength: String(max), 'data-key': q.key, rows: '1',
-      'aria-describedby': g ? id + '-g' : null });
-    ta.value = value || '';
-    if (short) ta.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
-    var wrap = h('div', { class: 'inbox-wrap' + (short ? ' short' : '') }, [ta]);
-    if (g) { g.className = 'inbox-hint'; g.id = id + '-g'; g.setAttribute('aria-hidden', 'true'); wrap.appendChild(g); }
-    else wrap.appendChild(h('span', { class: 'inbox-hint', 'aria-hidden': 'true' }));
-    return wrap;
+  // W103 3: each question is a row of the step's ruled sheet: the question, with its guidance under it, in a grey column
+  // on the left, and its answer on the right, centred against the question where the question is the taller (the
+  // owner's change); on a phone the question sits over its answer. Guidance is never inside a box (W103 reverses W16 and
+  // W17 1), and there is one answer to a row (W14 2). A box for words opens two lines tall, a long answer's three.
+  var LENS = '<svg viewBox="0 0 16 16"><circle cx="6.8" cy="6.8" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10.6 10.6 L14.5 14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  var ICE = '<svg viewBox="0 0 48 42"><path d="M24 4 L45 39 H3 Z" fill="#c22b30" stroke="#c22b30" stroke-width="5" stroke-linejoin="round"/><text x="24" y="35" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#fff">ICE</text></svg>';
+  function lens() { return h('span', { class: 'lens', 'aria-hidden': 'true', html: LENS }); }
+  function iceSym(small) { return h('span', { class: 'ice-sym' + (small ? ' sm' : ''), 'aria-hidden': 'true', html: ICE }); }
+
+  function hintOf(q) { return q.list === 'courts' ? 'The courts of ' + S.route.county + ' County: type part of the name.' : q.guidance || q.help || null; }
+  function describedBy(q, id) {
+    var ids = [];
+    if (q.desc || q.descList) ids.push(fid(q.key) + '-d');
+    if (hintOf(q)) ids.push(id + '-g');
+    return ids.join(' ') || null;
+  }
+  // The question cell: the question, then its description and guidance. A label for a box; for choices, the words the
+  // group is named by.
+  function qHead(q, id, forId) {
+    var lab = forId ? h('label', { class: 'lab', for: forId, id: id + '-l' }) : h('span', { class: 'lab', id: id + '-l' });
+    if (q.labelHtml) lab.innerHTML = q.label; else lab.textContent = q.label;
+    if (q.required) { lab.appendChild(document.createTextNode('\u00a0')); lab.appendChild(h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })); }   // the star never alone on a line
+    var kids = [lab, descNode(q)];
+    var g = guidanceNode(hintOf(q));
+    if (g) { g.className = 'g'; g.id = id + '-g'; kids.push(g); }
+    return kids;
+  }
+  function qrow(id, head, answer, cls) {
+    return h('div', { class: 'qrow' + (cls ? ' ' + cls : ''), id: id ? id + '-w' : null }, [h('div', { class: 'q' }, head), h('div', { class: 'a' }, answer)]);
+  }
+
+  function control(q, id) {
+    var v = S.A[q.key], by = describedBy(q, id), max = limitOf(q);
+    if (q.type === 'date') return [h('input', { type: 'date', id: id, value: v || '', 'data-key': q.key, 'aria-describedby': by })];
+    if (q.type === 'search') {
+      var opts = q.list === 'offices' ? (LISTS ? LISTS.offices : []) : (LISTS && LISTS.courts[S.route.county]) || [];
+      return [h('div', { class: 'srch' }, [lens(), h('input', { type: 'search', id: id, list: id + '-list', value: v || '', autocomplete: 'off', 'data-key': q.key, maxlength: '200', 'aria-describedby': by })]),
+        h('datalist', { id: id + '-list' }, opts.map(function (o) { return h('option', { value: o }); }))];
+    }
+    if (q.type === 'long' || q.type === 'note' || q.area) {
+      var ta = h('textarea', { id: id, class: q.type === 'long' ? 'l3' : 'l2', maxlength: String(max), 'data-key': q.key, rows: q.type === 'long' ? '3' : '2', 'aria-describedby': by });
+      ta.value = v || '';
+      if (q.area) { ta.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); }); return [ta]; }   // one line of words, wrapped
+      return [ta, h('p', { class: 'near-limit', id: id + '-n', 'aria-live': 'polite', text: nearLimit((v || '').length, max) })];
+    }
+    return [h('input', { type: q.type === 'email' ? 'email' : q.type === 'tel' ? 'tel' : 'text', id: id, value: v || '', maxlength: String(max), 'data-key': q.key,
+      autocomplete: q.type === 'email' ? 'email' : q.type === 'tel' ? 'tel' : 'off', 'aria-describedby': by })];
+  }
+
+  // Yes / No / Unknown and other short choices: pills of one size; longer lists: tiles with a round box, in groups if
+  // the question has them (the custody status, W103 3).
+  function radioAnswer(q, id) {
+    var A = S.A;
+    function opt(c, i, pill) {
+      var rid = id + '-' + i;
+      var inp = h('input', { type: 'radio', id: rid, name: id, value: c.code, 'data-key': q.key, checked: A[q.key] === c.code });
+      if (pill) return h('label', { class: 'pill', for: rid }, [inp, c.label]);
+      return h('label', { class: 'tile', for: rid }, [inp, h('span', { class: 'box round', 'aria-hidden': 'true' }), c.ice ? iceSym(true) : null, h('span', { text: c.label })]);
+    }
+    var grp;
+    if (q.inline) {
+      grp = h('div', { class: 'seg' + (q.choices.some(function (c) { return c.label.length > 14; }) ? ' long' : '') }, q.choices.map(function (c, i) { return opt(c, i, true); }));
+      grp.style.setProperty('--n', q.choices.length);
+    } else if (q.groups) {
+      grp = h('div', { class: 'cust' }, q.groups.map(function (g, gi) {
+        return h('div', { class: 'cg' + (gi ? ' held' : '') }, [h('span', { class: 'cg-h', text: g[0] }),
+          h('div', { class: 'tiles across' }, q.choices.map(function (c, i) { return g[1].indexOf(c.code) !== -1 ? opt(c, i) : null; }))]);
+      }));
+    } else grp = h('div', { class: 'tiles across' + (q.cols === 2 ? '' : ' one') }, q.choices.map(function (c, i) { return opt(c, i); }));
+    grp.setAttribute('role', 'radiogroup');
+    grp.setAttribute('aria-labelledby', id + '-l');
+    var by = describedBy(q, id); if (by) grp.setAttribute('aria-describedby', by);
+    var out = [grp];
+    if (q.unknownNote && A[q.key] === 'unknown') out.push(subField({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
+    return out;
+  }
+
+  function checkAnswer(q, id) {
+    var cb = h('input', { type: 'checkbox', id: id, 'data-key': q.key, checked: S.A[q.key] === true, 'aria-describedby': describedBy(q, id) });
+    if (!q.ice) return [h('label', { class: 'tick-under', for: id }, [cb, h('span', { text: q.label })])];
+    var out = [h('label', { class: 'tile ice-tile', for: id }, [cb, h('span', { class: 'box', 'aria-hidden': 'true' }), iceSym(), h('span', { html: q.tile })])];
+    if (S.A[q.key] === true && S.iceAuto) out.push(h('span', { class: 'auto', text: 'Ticked for you: your client is detained in immigration custody.' }));
+    return out;
+  }
+
+  // Tick lists: tiles read down the first column, then the second (W15 2); the family's in rows coloured by who the
+  // family member is (W103 3).
+  function ticksAnswer(q, id) {
+    var val = S.A[q.key] || [];
+    function tile(code, text, who) {
+      var tid = id + '-' + code;
+      return h('label', { class: 'tile', for: tid }, [h('input', { type: 'checkbox', id: tid, value: code, 'data-key': q.key, 'data-ticks': '1', checked: val.indexOf(code) !== -1 }),
+        h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', null, [who ? h('span', { class: 'visually-hidden', text: who + ': ' }) : null, text])]);
+    }
+    var kids = [];
+    if (q.grid) {
+      kids.push(h('div', { class: 'fam' }, q.grid.rows.map(function (r) {
+        return h('div', { class: 'fr ' + r[1] }, [h('span', { class: 'fr-h', 'aria-hidden': 'true', text: r[0] })].concat(r[2].map(function (code, i) { return tile(code, q.grid.cols[i], r[0]); })));
+      })));
+    } else {
+      var grid = h('div', { class: 'tiles' }, q.choices.map(function (c) { return tile(c.code, c.label); }));
+      grid.style.gridTemplateRows = 'repeat(' + Math.ceil(q.choices.length / 2) + ', auto)';
+      kids.push(grid);
+    }
+    if (!q.noApart) kids.push(h('div', { class: 'tiles-apart' }, [tile('none', 'None of these apply'), tile('unknown', 'Unknown')]));
+    var out = [h('div', { class: 'ticks', role: 'group', 'aria-labelledby': id + '-l', 'aria-describedby': describedBy(q, id) }, kids)];
+    if (!q.noApart && val.indexOf('unknown') !== -1) out.push(subField({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
+    return out;
   }
 
   function field(q) {
+    if (q.type === 'para') return h('div', { class: 'qrow para' }, [h('p', { class: 'desc', text: q.desc })]);   // no key: before fid()
     var id = fid(q.key, q.alias);
-    var A = S.A;
-    var f = h('div', { class: 'field', id: id + '-w' });
-    if (q.type === 'para') { f.appendChild(h('p', { class: 'desc', text: q.desc })); return f; }
-
-    if (q.type === 'ticks') return tickList(q);
-    if (q.type === 'charges') return chargesField(q);
-    if (q.type === 'check') {
-      var cb = h('input', { type: 'checkbox', id: id, 'data-key': q.key, checked: A[q.key] === true });
-      var lab = h('label', { class: q.long ? 'tick-long' : 'tick-line', for: id }, [cb]);
-      var span = h('span'); if (q.labelHtml) span.innerHTML = q.label; else span.textContent = q.label;
-      lab.appendChild(span);
-      f.appendChild(lab);
-      return f;
-    }
-
-    if (q.type === 'radio') {
-      var fs = h('fieldset', { class: 'plain-fieldset', 'aria-describedby': q.desc ? id + '-d' : null });
-      var lg = h('legend', { class: 'label' });
-      lg.textContent = q.label;
-      if (q.required) { lg.appendChild(document.createTextNode(' ')); lg.appendChild(h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })); }
-      fs.appendChild(lg);
-      var d = descNode(q); if (d) fs.appendChild(d);
-      var grp = h('div', { class: 'radio-group' + (q.cols === 2 ? ' two' : '') + (q.inline ? ' inline' : '') });
-      q.choices.forEach(function (c, i) {
-        var rid = id + '-' + i;
-        grp.appendChild(h('label', { for: rid }, [h('input', { type: 'radio', id: rid, name: id, value: c.code, 'data-key': q.key, checked: A[q.key] === c.code }), ' ' + c.label]));
-      });
-      fs.appendChild(grp);
-      f.appendChild(fs);
-      if (q.unknownNote && A[q.key] === 'unknown') f.appendChild(field({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
-      return f;
-    }
-
-    f.appendChild(labelNode(q, id));
-    var dn = descNode(q); if (dn) f.appendChild(dn);
-    var v = A[q.key];
-    if (q.type === 'date') {
-      f.appendChild(h('input', { type: 'date', id: id, value: v || '', 'data-key': q.key, 'aria-describedby': q.desc ? id + '-d' : null }));
-    } else if (q.type === 'search') {
-      var opts = q.list === 'offices' ? (LISTS ? LISTS.offices : []) : (LISTS && LISTS.courts[S.route.county]) || [];
-      var listId = id + '-list';
-      var ph = q.list === 'courts' ? 'The courts of ' + S.route.county + ' County: type part of the name' : q.guidance;
-      f.appendChild(h('input', { type: 'search', id: id, list: listId, value: v || '', placeholder: ph, autocomplete: 'off', 'data-key': q.key, maxlength: '200' }));
-      f.appendChild(h('datalist', { id: listId }, opts.map(function (o) { return h('option', { value: o }); })));
-    } else if ((q.type === 'email' || q.type === 'tel' || q.type === 'name' || q.type === 'short') && !q.guidance) {
-      f.appendChild(h('input', { type: q.type === 'email' ? 'email' : q.type === 'tel' ? 'tel' : 'text', id: id, value: v || '',
-        maxlength: String(limitOf(q)), 'data-key': q.key, autocomplete: q.type === 'email' ? 'email' : q.type === 'tel' ? 'tel' : 'off' }));
-    } else {
-      f.appendChild(textBox(q, id, v, q.type !== 'long' && q.type !== 'note'));
-      if (q.type === 'long' || q.type === 'note') {
-        f.appendChild(h('p', { class: 'near-limit', id: id + '-n', 'aria-live': 'polite', text: nearLimit((v || '').length, limitOf(q)) }));
-      }
-    }
-    return f;
+    var t = q.type;
+    var ans = t === 'radio' ? radioAnswer(q, id) : t === 'ticks' ? ticksAnswer(q, id) : t === 'check' ? checkAnswer(q, id) : t === 'charges' ? chargesAnswer(q, id) : control(q, id);
+    return qrow(id, qHead(q, id, ['radio', 'ticks', 'check'].indexOf(t) === -1 ? id : null), ans);
   }
-
-  function tickList(q) {
-    var id = fid(q.key);
-    var A = S.A;
-    var val = A[q.key] || [];
-    var box = h('div', { class: 'tl', id: id + '-w', role: 'group', 'aria-labelledby': id + '-l' });
-    var lab = h('span', { class: 'lab', id: id + '-l', text: q.label });
-    if (q.required) { lab.appendChild(document.createTextNode(' ')); lab.appendChild(h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })); }
-    box.appendChild(lab);
-    box.appendChild(h('span', { class: 'help', text: q.help }));
-    function tile(code, text) {
-      var tid = id + '-' + code;
-      return h('label', { class: 'tile', for: tid }, [h('input', { type: 'checkbox', id: tid, value: code, 'data-key': q.key, 'data-ticks': '1', checked: val.indexOf(code) !== -1 }),
-        h('span', { class: 'box', 'aria-hidden': 'true' }), h('span', { text: text })]);
-    }
-    var grid = h('div', { class: 'tiles' }, q.choices.map(function (c) { return tile(c.code, c.label); }));
-    grid.style.gridTemplateRows = 'repeat(' + Math.ceil(q.choices.length / 2) + ', auto)';
-    box.appendChild(grid);
-    if (!q.noApart) {
-      box.appendChild(h('div', { class: 'tiles-apart' }, [tile('none', 'None of these apply'), tile('unknown', 'Unknown')]));
-      if (val.indexOf('unknown') !== -1) box.appendChild(field({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
-    }
-    return box;
+  // A question inside another's answer (a note under Unknown, the court's "not listed"): its own label over its box.
+  function subField(q) {
+    var id = fid(q.key, q.alias);
+    return h('div', { class: 'sub-field', id: id + '-w' }, q.type === 'check' ? checkAnswer(q, id) : qHead(q, id, id).concat(control(q, id)));
+  }
+  // Several questions in one row: the court (or the office) from the list, "not listed", and its details.
+  function groupRow(g) {
+    var items = g.items.filter(visible);
+    if (!items.length) return null;
+    var main = items[0] === g.items[0] ? items[0] : null;
+    var id = main ? fid(main.key) : fid(g.items[0].key) + '-grp';
+    var ans = main ? control(main, id) : [];
+    items.forEach(function (x) { if (x !== main) ans.push(subField(x)); });
+    return qrow(id, main ? qHead(main, id, id) : [h('span', { class: 'lab', id: id + '-l', text: g.label })], ans);
   }
 
   // ---------- Charges (W101 1a) -------------------------------------------------------------------------------------
@@ -365,17 +395,13 @@
     return li;
   }
 
-  function chargesField(q) {
-    var id = fid(q.key);
-    var f = h('div', { class: 'field charges', id: id + '-w' });
-    f.appendChild(labelNode(q, id));
-    var dn = descNode(q); if (dn) f.appendChild(dn);
-    if (S.charges.length) f.appendChild(h('ul', { class: 'cp-lines', 'aria-label': q.label }, S.charges.map(chargeLine)));
-    if (S.charges.length >= CH.max) { f.appendChild(h('p', { class: 'desc', text: CH.full })); return f; }
-    var g = S.charges.length ? h('span', null, [h('span', { text: CH.another })]) : guidanceNode(q.guidance);
-    g.className = 'inbox-hint'; g.id = id + '-g'; g.setAttribute('aria-hidden', 'true');
-    var input = h('input', { type: 'search', id: id, class: 'inbox', placeholder: ' ', autocomplete: 'off', maxlength: '200', value: chargeQuery,
-      role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': id + '-m', 'aria-describedby': id + '-d ' + id + '-g' });
+  function chargesAnswer(q, id) {
+    var out = [];
+    if (S.charges.length) out.push(h('ul', { class: 'cp-lines', 'aria-label': q.label }, S.charges.map(chargeLine)));
+    if (S.charges.length >= CH.max) { out.push(h('p', { class: 'desc', text: CH.full })); return out; }
+    if (S.charges.length) out.push(h('span', { class: 'cp-more', id: id + '-a', text: CH.another }));
+    var input = h('input', { type: 'search', id: id, autocomplete: 'off', maxlength: '200', value: chargeQuery,
+      role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': id + '-m', 'aria-describedby': [describedBy(q, id), S.charges.length ? id + '-a' : ''].join(' ').trim() });
     var list = h('ul', { class: 'cp-matches', id: id + '-m', role: 'listbox', 'aria-label': 'Offenses that match', hidden: true });
     var status = h('span', { class: 'visually-hidden', role: 'status' });
     function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
@@ -424,8 +450,8 @@
         if (!list.hidden && chargeShown[chargeActive]) pickCharge(chargeShown[chargeActive]);
       } else if (e.key === 'Escape' && !list.hidden) { e.preventDefault(); close(); }
     });
-    f.appendChild(h('div', { class: 'cp-search' }, [h('div', { class: 'inbox-wrap short' }, [input, g]), list, status]));
-    return f;
+    out.push(h('div', { class: 'cp-search' }, [h('div', { class: 'srch' }, [lens(), input]), list, status]));
+    return out;
   }
   function pickCharge(o) {
     var c = o.typed ? { typed: o.typed } : { law: o.law, statute: o.statute, tier: o.tier, name: o.name, cls: o.cls, att: o.att, attempted: false };
@@ -436,21 +462,21 @@
     render(fid('criminal.charges'));
   }
 
+  // The step's questions as one ruled sheet: a section for each SEC, a navy band with its name (none for a section with
+  // no name); a section with nothing to show is left out. Returns the sheet, so a step can add rows of its own.
+  function section(title) { return h('section', { class: 'sec' }, title ? [h('h3', { class: 'sec-h', text: title })] : []); }
   function drawList(list, parent) {
+    var sheet = h('div', { class: 'sheet' }), sec = null;
     list.forEach(function (q) {
-      if (q.type === 'subhead') { parent.appendChild(h('h3', { class: 'subhead', text: q.text })); return; }
-      if (q.type === 'pair') {
-        if (q.way && q.way !== S.sendAs) return;
-        var items = q.items.filter(visible);
-        if (!items.length) return;
-        var pair = h('div', { class: items.length === 2 ? 'pair' : '' });
-        items.forEach(function (x) { pair.appendChild(field(x)); });
-        parent.appendChild(pair);
-        return;
-      }
-      if (q.type === 'para') { if (visible(q)) parent.appendChild(field(q)); return; }
-      if (visible(q)) parent.appendChild(field(q));
+      if (q.type === 'section') { sec = sheet.appendChild(section(typeof q.title === 'function' ? q.title(S.A) : q.title)); return; }
+      var row = q.type === 'group' ? groupRow(q) : visible(q) ? field(q) : null;
+      if (!row) return;
+      if (!sec) sec = sheet.appendChild(section(null));
+      sec.appendChild(row);
     });
+    Array.prototype.slice.call(sheet.children).forEach(function (x) { if (!x.querySelector('.qrow')) sheet.removeChild(x); });
+    if (parent && sheet.firstChild) parent.appendChild(sheet);
+    return sheet;
   }
 
   // ---------- The frame: step bar, heading, buttons --------------------------------------------------------------
@@ -505,8 +531,8 @@
     var card = h('div', { class: 'ref-card' });
     card.appendChild(stepBar());
     var body = h('div', { class: 'ref-body' });
-    var q = h('div', { class: 'ref-q' });
     var sid = STEP_IDS[S.step];
+    var q = h('div', { class: 'ref-q' + (sid === 'check' ? '' : ' ruled') });
     ({ county: drawCounty, about: drawAbout, court: drawCourt, client: drawClient, immigration: drawImmigration,
       casetype: drawCaseType, people: drawPeople, documents: drawDocuments, check: drawCheck })[sid](q);
     if (ERRORS && !ERRORS_NEW) pruneErrors();
@@ -574,14 +600,14 @@
     ERRORS.forEach(function (e) {
       if (e.grp) { if (grps[e.grp]) empty--; grps[e.grp] = true; }   // either of a group will do: counted once
       var w = document.getElementById((e.wid || e.id) + '-w') || q.querySelector('#' + (e.wid || e.id) + '-w');
-      if (!w) { var el = q.querySelector('#' + e.id); w = el && (el.classList.contains('sq-box') ? el : el.closest('.field, .tl, .sq-box')); }
+      if (!w) { var el = q.querySelector('#' + e.id); w = el && (el.classList.contains('sq-box') ? el : el.closest('.sub-field, .qrow, .field, .sq-box')); }
       if (!w) return;
       w.classList.add('has-err');
       w.setAttribute('data-err', e.id);
       if (e.grp) w.setAttribute('data-grp', e.grp);
       Array.prototype.forEach.call(w.querySelectorAll('input, textarea, select'), function (i) { i.setAttribute('aria-invalid', 'true'); });
       if (e.empty) { w.classList.add('err-empty'); empty++; }
-      else (w.querySelector(':scope > .sq-body') || w).appendChild(h('span', { class: 'field-err', text: e.text }));
+      else (w.querySelector(':scope > .sq-body') || w.querySelector(':scope > .a') || w).appendChild(h('span', { class: 'field-err', text: e.text }));
     });
     // Said to a screen reader only: the red outline is what the page shows.
     q.appendChild(h('p', { class: 'visually-hidden', role: 'status', text: empty ? (empty === 1 ? 'One answer is still needed; it is outlined in red.' : empty + ' answers are still needed; they are outlined in red.') : 'Please check the answers marked in red.' }));
@@ -658,7 +684,7 @@
   }
   function drawCounty(q) {
     heading(q, 'Case type and county', 'The kind of case, and the county that decides which regional center receives your referral.');
-    drawList(D.STEPS.county, q);
+    var sheet = drawList(D.STEPS.county, q);
     var words = countyWords();
     var sel = h('select', { id: 'f-county', class: 'big', 'data-route': 'county' });
     sel.appendChild(h('option', { value: '', text: 'Choose a county' }));
@@ -666,32 +692,30 @@
       sel.appendChild(h('option', { value: c.name, text: c.name, selected: !S.route.outside && S.route.county === c.name }));
     });
     sel.appendChild(h('option', { value: OUTSIDE, text: words.outside, selected: S.route.outside }));
-    q.appendChild(h('div', { class: 'field', id: 'f-county-w' }, [h('label', { for: 'f-county', text: words.label }),
-      caseType() === 'removal' ? h('span', { class: 'desc', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }) : null, sel]));
-    if (caseType() === 'removal') sel.setAttribute('aria-describedby', 'f-county-d');
-
+    var head = [h('label', { class: 'lab', for: 'f-county', id: 'f-county-l' }, [words.label, ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })])];
+    if (caseType() === 'removal') {
+      head.push(h('span', { class: 'g', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }));
+      sel.setAttribute('aria-describedby', 'f-county-d');
+    }
+    var ans = [sel];
+    var sec = sheet.lastChild;
     var cc = countyCentre();
-    if (S.route.outside) {
-      var box = h('div', { class: 'choose', id: 'f-centre-w' }, [h('h3', { text: 'Which center should receive this referral?' }),
-        h('p', { class: 'hint', text: 'Choose the center nearest to you, or the one you usually work with.' }), centreChoice(null)]);
-      if (S.route.centre) box.appendChild(modeOf(S.route.centre) === 'none' ? notOnlineCard(S.route.centre) : centreLine(S.route.centre));
-      q.appendChild(box);
-    } else if (cc) {
-      if (S.route.conflict) {
-        var cbox = h('div', { class: 'choose', id: 'f-centre-w' }, [h('h3', { text: 'Choose another center' }),
-          h('p', { class: 'hint', text: 'Because ' + centreOf(cc).short + ' has a conflict with your client.' }), centreChoice(cc)]);
-        cbox.appendChild(field({ key: 'outOfRegionNote', label: 'Anything RIAC should know about the conflict? (optional)', type: 'note' }));
-        if (S.route.centre) cbox.appendChild(modeOf(S.route.centre) === 'none' ? notOnlineCard(S.route.centre) : centreLine(S.route.centre));
-        q.appendChild(cbox);
-        q.appendChild(h('p', { class: 'instead' }, ['No conflict after all? ', h('button', { type: 'button', class: 'link-btn', on: { click: function () {
-          S.route.conflict = false; S.route.centre = null; save(); render();
-        } } }, ['Use ' + centreOf(cc).short + ' ›'])]));
-      } else {
-        q.appendChild(modeOf(cc) === 'none' ? notOnlineCard(cc) : centreLine(cc));
-        q.appendChild(h('p', { class: 'instead' }, ['Does this center have a conflict with your client? ', h('button', { type: 'button', class: 'link-btn', on: { click: function () {
-          S.route.conflict = true; S.route.centre = null; save(); render();
-        } } }, ['Choose another center ›'])]));
-      }
+    if (!S.route.outside && cc && !S.route.conflict) {
+      ans.push(modeOf(cc) === 'none' ? notOnlineCard(cc) : centreLine(cc));
+      ans.push(h('p', { class: 'instead' }, ['Does this center have a conflict with your client? ', h('button', { type: 'button', class: 'link-btn', on: { click: function () {
+        S.route.conflict = true; S.route.centre = null; save(); render();
+      } } }, ['Choose another center ›'])]));
+    }
+    sec.appendChild(qrow('f-county', head, ans));
+    if (S.route.outside || (cc && S.route.conflict)) {   // W8 2: which center instead
+      var other = [centreChoice(S.route.outside ? null : cc)];
+      if (!S.route.outside) other.push(subField({ key: 'outOfRegionNote', label: 'Anything RIAC should know about the conflict? (optional)', type: 'note' }));
+      if (S.route.centre) other.push(modeOf(S.route.centre) === 'none' ? notOnlineCard(S.route.centre) : centreLine(S.route.centre));
+      if (!S.route.outside) other.push(h('p', { class: 'instead' }, ['No conflict after all? ', h('button', { type: 'button', class: 'link-btn', on: { click: function () {
+        S.route.conflict = false; S.route.centre = null; save(); render();
+      } } }, ['Use ' + centreOf(cc).short + ' ›'])]));
+      sec.appendChild(qrow('f-centre', [h('span', { class: 'lab', id: 'f-centre-l' }, [S.route.outside ? 'Which center should receive this referral?' : 'Choose another center', ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
+        h('span', { class: 'g', text: S.route.outside ? 'Choose the center nearest to you, or the one you usually work with.' : 'Because ' + centreOf(cc).short + ' has a conflict with your client.' })], other));
     }
     q.appendChild(actions());
   }
@@ -776,34 +800,27 @@
 
   function drawPeople(q) {
     heading(q, 'Other people', 'Anyone else named in this case.');
-    drawList([{ key: 'noOtherPeople', label: 'Is Anyone Else Involved In This Case?', type: 'radio', inline: true, required: true,
+    var sheet = drawList([{ key: 'noOtherPeople', label: 'Is Anyone Else Involved In This Case?', type: 'radio', inline: true, required: true,
       choices: D.CHOICES.others, desc: 'Co-defendants, complainants or victims, witnesses, family members, or anyone else named.' }], q);
     if (S.A.noOtherPeople === 'yes') {
-      if (S.people.length) q.appendChild(h('ul', { class: 'people-list' }, S.people.map(personLine)));
+      if (S.people.length) sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'People added' }), h('ul', { class: 'people-list' }, S.people.map(personLine))]));
       var p = S.adding;
-      var body = h('div', { class: 'sq-body' });
-      var pair1 = h('div', { class: 'pair' }, [
-        h('div', { class: 'field', id: 'p-first-w' }, [h('label', { for: 'p-first' }, ['First Name ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
-          textBox({ key: 'p.firstName', type: 'name', guidance: 'First name only. If in doubt, put a name in the next box.' }, 'p-first', p.firstName, true)]),
-        h('div', { class: 'field', id: 'p-last-w' }, [h('label', { for: 'p-last' }, ['Middle & Last Names ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
-          h('input', { type: 'text', id: 'p-last', maxlength: '100', value: p.lastName || '', 'data-person': 'lastName' })])]);
-      pair1.querySelector('textarea').setAttribute('data-person', 'firstName');
-      pair1.querySelector('textarea').removeAttribute('data-key');
-      body.appendChild(pair1);
-      var roleSel = h('select', { id: 'p-role', class: 'role', 'data-person': 'role' }, [h('option', { value: '', text: 'Choose one' })].concat(
-        D.CHOICES.roles.map(function (r) { return h('option', { value: r.code, text: r.label, selected: p.role === r.code }); })));
-      body.appendChild(h('div', { class: 'pair' }, [
-        h('div', { class: 'field', id: 'p-dob-w' }, [h('label', { for: 'p-dob', text: 'Date Of Birth' }), h('span', { class: 'desc', text: 'If known' }),
-          h('input', { type: 'date', id: 'p-dob', value: p.dob || '', 'data-person': 'dob' })]),
-        h('div', { class: 'field', id: 'p-role-w' }, [h('label', { for: 'p-role' }, ['Their Role ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]), h('span', { class: 'desc' }), roleSel])]));
-      var rel = textBox({ key: 'p.relationship', type: 'short', guidance: { eg: 'e.g. "former partner"; "brother"; "none"' } }, 'p-rel', p.relationship, true);
-      rel.querySelector('textarea').setAttribute('data-person', 'relationship');
-      rel.querySelector('textarea').removeAttribute('data-key');
-      body.appendChild(h('div', { class: 'field' }, [h('label', { for: 'p-rel', text: 'Relationship To The Client' }), rel]));
-      body.appendChild(h('button', { type: 'button', class: 'btn btn-navy add-person', on: { click: addPerson } }, ['+ Add This Person']));
-      q.appendChild(h('div', { class: 'sq-box', id: 'p-box' }, [h('div', { class: 'sq-head' }, [h('span', { class: 'nm', text: 'Add a person' })]), body]));
-      q.appendChild(field({ key: 'peopleNote', label: 'Anyone Involved Whose Name You Do Not Know', type: 'note',
-        guidance: { eg: 'e.g. "Two unidentified co-defendants"; "the complainant’s mother, name unknown"' } }));
+      function prow(id, label, req, guidance, ctrl) {   // a row of the "Add a person" box
+        var head = [h('label', { class: 'lab', for: id, id: id + '-l' }, req ? [label, ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })] : [label])];
+        if (guidance) { head.push(h('span', { class: 'g', id: id + '-g', text: guidance })); ctrl.setAttribute('aria-describedby', id + '-g'); }
+        return qrow(id, head, [ctrl]);
+      }
+      var box = h('section', { class: 'sec', id: 'p-box-w' }, [h('h3', { class: 'sec-h', text: 'Add a person' }),
+        prow('p-first', 'First Name', true, 'First name only. If in doubt, put a name in the next box.', h('input', { type: 'text', id: 'p-first', maxlength: '100', value: p.firstName || '', autocomplete: 'off', 'data-person': 'firstName' })),
+        prow('p-last', 'Middle & Last Names', true, null, h('input', { type: 'text', id: 'p-last', maxlength: '100', value: p.lastName || '', autocomplete: 'off', 'data-person': 'lastName' })),
+        prow('p-dob', 'Date Of Birth', false, 'If known', h('input', { type: 'date', id: 'p-dob', value: p.dob || '', 'data-person': 'dob' })),
+        prow('p-role', 'Their Role', true, null, h('select', { id: 'p-role', class: 'role', 'data-person': 'role' }, [h('option', { value: '', text: 'Choose one' })].concat(
+          D.CHOICES.roles.map(function (r) { return h('option', { value: r.code, text: r.label, selected: p.role === r.code }); })))),
+        prow('p-rel', 'Relationship To The Client', false, 'e.g. "former partner"; "brother"; "none"', h('input', { type: 'text', id: 'p-rel', maxlength: '200', value: p.relationship || '', autocomplete: 'off', 'data-person': 'relationship' })),
+        h('div', { class: 'sec-foot' }, [h('button', { type: 'button', class: 'btn btn-navy add-person', on: { click: addPerson } }, ['+ Add This Person'])])]);
+      sheet.appendChild(box);
+      sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'Names not known' }), field({ key: 'peopleNote', label: 'Anyone Involved Whose Name You Do Not Know', type: 'note',
+        guidance: { eg: 'e.g. "Two unidentified co-defendants"; "the complainant’s mother, name unknown"' } })]));
     }
     q.appendChild(actions());
   }
@@ -825,14 +842,14 @@
       q.appendChild(h('p', { class: 'desc', text: 'This center receives referrals by email, so the files travel inside the email. Larger files can be sent to the center directly after Send.' }));
     }
     D.docKinds(caseType(), S.sendAs).forEach(function (kind) { q.appendChild(docBox(kind)); });
-    var rap = docState('rap-sheet');
+    var rap = docState('rap-sheet'), more = [];
     if (rap.status === 'attached' || rap.status === 'sent-before') {
-      drawList([{ key: 'rapSheetComplete', label: 'Does The RAP Sheet Include ALL Of Your Client’s Criminal History?', type: 'radio', inline: true, choices: D.CHOICES.rapComplete }], q);
+      more.push({ type: 'section', title: 'The RAP sheet' }, { key: 'rapSheetComplete', label: 'Does The RAP Sheet Include ALL Of Your Client’s Criminal History?', type: 'radio', inline: true, choices: D.CHOICES.rapComplete });
       if (S.A.rapSheetComplete === 'no' || S.A.rapSheetComplete === 'unsure') {
-        drawList([{ key: 'rapSheetMore', label: 'Criminal History Not On The RAP Sheet / Further Details', type: 'note', guidance: { eg: 'e.g. "Arrested in New Jersey in 2019 for shoplifting; outcome unknown"' } }], q);
+        more.push({ key: 'rapSheetMore', label: 'Criminal History Not On The RAP Sheet / Further Details', type: 'note', guidance: { eg: 'e.g. "Arrested in New Jersey in 2019 for shoplifting; outcome unknown"' } });
       }
     }
-    drawList([{ key: 'anythingElse', label: 'Include Anything Else RIAC Needs To Know Here:', type: 'long' }], q);
+    drawList(more.concat({ type: 'section', title: 'Anything else' }, { key: 'anythingElse', label: 'Anything Else RIAC Needs To Know?', type: 'long' }), q);
     q.appendChild(actions());
     setTimeout(startBotCheck, 0);
   }
@@ -849,7 +866,7 @@
     var statuses = [['attached', 'Attach Now']].concat(info.sentBefore ? [['sent-before', 'Sent Before']] : [], [['to-follow', 'To Follow'], ['unavailable', 'Not Available']]);
     var pills = h('div', { class: 'pills4' + (statuses.length === 3 ? ' three' : ''), role: 'radiogroup', 'aria-label': info.name });
     statuses.forEach(function (s) {
-      pills.appendChild(h('label', { class: 'pill', for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }), s[1]]));
+      pills.appendChild(h('label', { class: 'pill' + (s[0] === 'attached' ? ' attach' : ''), for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }), s[1]]));
     });
     var body = h('div', { class: 'sq-body' }, info.named ? [] : [pills]);
     if (st.status === 'attached') {
@@ -863,9 +880,8 @@
       if (st.files.length) body.appendChild(h('ul', { class: 'files', 'aria-live': 'polite' }, st.files.map(function (f) { return fileRow(kind, f); })));
     }
     if (st.status === 'unavailable') {
-      var nf = field({ key: 'doc.' + kind + '.note', label: 'Please explain (we may be able to help)', type: 'note' });
+      var nf = subField({ key: 'doc.' + kind + '.note', label: 'Please explain (we may be able to help)', type: 'note' });
       var ta = nf.querySelector('textarea'); ta.removeAttribute('data-key'); ta.setAttribute('data-docnote', kind); ta.value = st.note || '';
-      nf.classList.add('sub');
       body.appendChild(nf);
     }
     return h('div', { class: 'sq-box', id: id + '-w' }, [h('div', { class: 'sq-head' }, [h('span', { class: 'nm' }, [info.name, h('span', { class: 'ds', text: info.desc })])]), body]);
@@ -884,8 +900,8 @@
     var li = h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) })].concat(state, [act]));
     if (D.DOCS[kind].named) li.appendChild(h('div', { class: 'field fnote', id: 'n-' + f.id + '-w' }, [   // W36: what each file is
       h('label', { for: 'n-' + f.id }, ['What is it? ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
-      h('input', { type: 'text', id: 'n-' + f.id, maxlength: '200', value: f.note || '', autocomplete: 'off', 'data-fnote': f.id, 'data-fkind': kind,
-        placeholder: 'e.g. Notice to Appear; I-213; denial of adjustment' })]));
+      h('span', { class: 'g', id: 'n-' + f.id + '-g', text: 'e.g. Notice to Appear; I-213; denial of adjustment' }),
+      h('input', { type: 'text', id: 'n-' + f.id, maxlength: '200', value: f.note || '', autocomplete: 'off', 'data-fnote': f.id, 'data-fkind': kind, 'aria-describedby': 'n-' + f.id + '-g' })]));
     return li;
   }
 
@@ -1072,7 +1088,7 @@
     ids.forEach(function (sid) {
       if (skipped(sid)) return;
       flat(stepQuestions(sid)).forEach(function (q) {
-        if (!q.key || q.type === 'para' || q.type === 'subhead' || q.type === 'charges' || !visible(q)) return;
+        if (!q.key || q.type === 'para' || q.type === 'charges' || !visible(q)) return;
         var v = S.A[q.key];
         if (q.type === 'ticks') {
           v = Array.isArray(v) ? v.slice() : [];
@@ -1165,7 +1181,7 @@
           else return personErrors(S.adding);
         }
         if (!S.people.length && !clean(S.A.peopleNote) && !(dry && personComplete(S.adding))) {   // a person, or the note: either will do
-          errs.push({ id: 'p-box', empty: true, grp: 'people', text: 'a person' });
+          errs.push({ id: 'p-first', wid: 'p-box', empty: true, grp: 'people', text: 'a person' });
           errs.push({ id: fid('peopleNote'), empty: true, grp: 'people', text: 'a person' });
         }
       }
@@ -1232,7 +1248,7 @@
   function rowsFor(list) {
     var rows = [];
     flat(list).forEach(function (q) {
-      if (!q.key || q.type === 'para' || q.type === 'subhead' || !visible(q)) return;
+      if (!q.key || q.type === 'para' || !visible(q)) return;
       rows.push([q.copy || (q.labelHtml ? plain(q.label) : q.label), answerText(q, S.A[q.key])]);
     });
     return rows;
@@ -1548,8 +1564,12 @@
         else { v = v.filter(function (c) { return c !== 'none' && c !== 'unknown'; }); v.push(t.value); }
       } else v = v.filter(function (c) { return c !== t.value; });
       S.A[k] = v;
-    } else if (t.type === 'checkbox') S.A[k] = t.checked;
-    else if (t.type === 'radio') S.A[k] = t.value;
+    } else if (t.type === 'checkbox') { S.A[k] = t.checked; if (k === 'court.iceInvolvement') S.iceAuto = false; }
+    else if (t.type === 'radio') {
+      S.A[k] = t.value;
+      if (k === 'court.custody' && t.value === 'ice-detained' && S.A['court.iceInvolvement'] !== true) { S.A['court.iceInvolvement'] = true; S.iceAuto = true; }
+      else if (k === 'court.custody' && t.value !== 'ice-detained' && S.iceAuto) { S.A['court.iceInvolvement'] = false; S.iceAuto = false; }
+    }
     else { S.A[k] = t.value; save(); return; }   // text boxes: nothing to redraw
     save();
     render(t.id);

@@ -51,7 +51,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 | `referral.html` | **The referral form**, nine steps drawn by `js/referral.js` from `js/referral-data.js`, sent to the worker. See "The referral form and the attorney portal" |
 | `portal/` | **Your Referrals**, the attorney portal: `index.html` (sign in by an emailed link, then the list) and `add.html` (Send RIAC A Message, W97 1; once Add To This Referral, then Send RIAC An Update), both run by `js/portal.js`. Links inside use `../` |
 | `css/style.css` | All styling, shared by every page. At the top in `:root`: the brand and region colors, and the type scale (`--fs-*`) — see "Design rules" below |
-| `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions, guidance inside boxes, tick tiles, document boxes, the copy and its print, the portal's list |
+| `css/referral.css` | The form's and the portal's own styles, loaded after `style.css` by those pages only: the step bar, the questions (each step a ruled sheet, W103 3), tick tiles, document boxes, the copy and its print, the portal's list |
 | `js/referral-data.js` | **Every question on the form**: its key and choice codes exactly as the worker's contract has them, its words on screen and its guidance; the centers' contact details (a copy of `contact.html`); the "Before You Receive RIAC Advice" warnings with their advisories' titles and PDF addresses (W32 1; a copy of what `advisories.html` lists); the worker's address and the Turnstile key. Change wording here | 
 | `js/referral.js`, `js/portal.js` | The form and the portal: drawing, checking, uploading files one at a time, sending | 
 | `js/offenses.js` | RIAC's list of New York offenses for the form's charge picker (W101 1a): public law only, made by a chat from RIAC's own list, never edited by hand |
@@ -480,7 +480,7 @@ every key and code the pages send.
   on the upload way an orange line says what comes next (the client's name, then the form at step
   8) with "Answer the questions here instead ›", and the step keeps only the case type and the
   urgency. Chosen over the old form's required "How Would You Like To Submit Your Referral?".
-- **W14 2** (17 October 2026): steps 4, **Client**, and 5, **Immigration**: the old form's
+- **W14 2** (17 October 2026; **two answers to a row reversed by W103 3**): steps 4, **Client**, and 5, **Immigration**: the old form's
   questions and help text exactly as they were, two short answers to a row on a computer, one on
   a phone; entry and status dates stay free text (they are often estimates). **Every date that is
   a date (date of birth, next court date, "advice needed by") uses the browser's own date box**,
@@ -503,7 +503,7 @@ every key and code the pages send.
   outline alone. **Every answer box on the form, the explanation under Unknown included, grows
   as the attorney types**, so the whole answer is always visible (the owner checked, 17 October
   2026; the mockup's two-line box was only a drawing).
-- **W16, redrawn with the owner's changes** (17 October 2026): step 6, **Criminal Case**: the old
+- **W16, redrawn with the owner's changes** (17 October 2026; **guidance inside the box reversed by W103 3**): step 6, **Criminal Case**: the old
   form's five questions in its order (the allegations, the offer, the offence date, "Screening - The
   Incident" as W15's tiles, the details box); the co-defendant and complainant boxes are gone,
   because those people are rows at step 7; the offence date stays free text, like the entry dates.
@@ -528,7 +528,7 @@ every key and code the pages send.
   script. The guidance is the box's description for screen readers (`aria-describedby`). Chosen
   over the help under the box (as steps 2 to 5 were first drawn) and between the question and the
   box.
-- **W17 1** (18 October 2026): **the short answer boxes hold their guidance inside the box too**,
+- **W17 1** (18 October 2026; **reversed by W103 3**): **the short answer boxes hold their guidance inside the box too**,
   as the long boxes (W16): one rule for every box that can hold words. A short box opens as tall as
   its guidance and shrinks to one line at the first letter typed (unlike a long box, which keeps
   its room), so the questions below move up once. The old help's own examples move into the
@@ -1117,6 +1117,41 @@ every key and code the pages send.
   convictions", "Class depends on the subdivision", "Class depends on the underlying offense" and "Penalty set by the
   statute" (`CHARGES` in `js/referral-data.js`). Pictures `riac-handover\W\design\w101\` (mockup) and `w101c\` (as
   built); checks `tests\w101-check.mjs` (1360 and 390 px, and Send to the worker chat's local worker).
+- **W103 3, with the owner's change** (26 October 2026; his nine comments on his W102 test send, in full in
+  `riac-handover\W\open-decisions.md`: "no visual delineation between title/box/helper text/actual text/next title",
+  "big and doughy", "field names to the left and fields to the right, all full width not two columns"): **every step
+  but Review and send is one ruled sheet** (square inside the rounded card), its questions in **sections under navy
+  bands** (`SEC` in `js/referral-data.js`; step 3: The court, Where things stand, Anything else; step 5: Status and
+  history, Screening, Family, Anything else), **each question a row: the question, with its guidance under it in small
+  grey italics, in a grey column 15rem wide on the left, the answer on the right**; on a phone the question sits over
+  its answer. The owner's change: **the answer is centred against its question where the question is the taller**
+  (Yes / No / Unknown beside a three-line question); where the answer is taller the question stays at the top. The
+  form is 60rem wide on a computer (40 before), a size smaller (questions and typed answers `--fs-small`, guidance
+  `--fs-label`; W26 2's order kept). **Reverses W16 and W17 1** (no guidance inside a box: the charges' search box is one
+  line again, so typing no longer lands half way down it, the owner's comment 7) **and W14 2** (one answer to a row).
+  **A box for words opens two lines tall, a long answer's three** (comment 5b) and still grows; names, numbers, dates
+  and email stay one line. Short choices (Yes / No / Unknown) are **pills of one size**, longer ones **tiles with a round
+  box**. Step 3 (comment 4): **ICE involvement** a tile with a red "ICE" triangle, its tick centred, **ticked for you by
+  "Detained - Immigration Custody"** ("Ticked for you: your client is detained in immigration custody."; unticked again
+  if the custody changes, unless the attorney ticked it); **the custody status in two groups**, Released (grey) and In
+  custody (orange tint), the triangle on immigration custody; **"Advice Needed By"**, *If this case is urgent, the date
+  you need advice by. Leave blank otherwise.*; the court, Court Not Listed and its details in one row. Step 5 (comment
+  6): **the family tiles in rows**, Parent (blue), Spouse (purple), Child under 21 and over 21 (green), each US citizen /
+  Green card holder (a screen reader hears "Parent: US citizen"); "Screening - " dropped inside a Screening section (the
+  copy says "Screening: …"). **"… Details & Explanations for Screening Questions …" became "Anything Else About The
+  Court Or Case?", "… About Your Client’s Immigration?" and "… About The Case?"** (comment 4d), with *Explain any answer
+  above, or add anything else RIAC should know.*; Documents' last box "Anything Else RIAC Needs To Know?". Documents
+  (comment 9): **Attach Now dashed, the other three grey** (navy once chosen); the document boxes unchanged. Search boxes
+  carry a magnifier. Keys, codes and what is sent are unchanged. Chosen over each section a box of its own ("1", the
+  recommendation) and the question above its box ("2"). Pictures `riac-handover\W\design\w103\`, `w103b\` (mockups,
+  regrouped by option with the badge top left at the owner's asking) and `w103c\` (as built); checks
+  `tests\w103-check.mjs`; `w90-check.mjs` and `w101-check.mjs` updated; `e2e.mjs` (1360 and 390 px),
+  `e2e-scenarios.mjs`, `w36-e2e.mjs`, `w40-check.mjs`, `w31b-check.mjs` and `w77-check.mjs` pass against the worker
+  chat's local worker. **Found with it:** since the form was built (18 October) step 6 for an **appeal or post-conviction
+  relief drew nothing** (the closing note has no key, and drawing it stopped the page; `tests\live-appeal-check.mjs`);
+  fixed here, so on nyriac.com once this is published. Still to come, one decision at a time, a mockup first: the case
+  types as cards with symbols and the county a search-and-choose list (comments 1, 2), the office and court lists
+  dropping down under the box as the charges do (comment 3), and W104 (comment 5a).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1229,7 +1264,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     better visual separation than elsewhere"); "Court And Case - Details & Explanations..." and the like reworded for
     attorneys; choosing "Detained - Immigration Custody" ticks ICE involvement. This reverses W16, W17 1 (guidance
     inside boxes) and W14 2 (two answers to a row). The charges box's cursor sits half way down its guidance until
-    something is typed (found by the owner): fix with W103.
+    something is typed (found by the owner): fix with W103. **W103 3 chosen and built** (26 to 27 October, see Settled),
+    with the appeal step's blank page fixed; **not yet published**: on the owner's yes. Comments 1 to 3 and 5a next.
   - **W104**: "a way for an attorney to submit a new case through the portal, where it pre-populates their contact
     information" (needs the worker chat).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on

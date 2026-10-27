@@ -83,7 +83,7 @@
       C('private', 'Privately Retained Attorney or Law Firm'), C('none', 'None of These')],
     custody: [C('at-liberty', 'At liberty with no restrictions'), C('ror', 'Released on Recognizance'), C('bail-released', 'Bail - Released'),
       C('supervised', 'Released under supervision'), C('bail-detained', 'Bail - Detained (Criminal)'), C('incarcerated', 'Incarcerated (Criminal)'),
-      C('ice-detained', 'Detained - Immigration Custody')],
+      { code: 'ice-detained', label: 'Detained - Immigration Custody', ice: true }],
     protectionOrders: [C('op-was-in-place', 'OP against client was already in place'), C('op-now-in-place', 'OP against client now in place'),
       C('op-violation', 'Violation of an OP alleged/possible'), C('op-for-client', 'Order of protection FOR client')],
     aliases: [C('none', 'No - none known'), C('yes', 'Yes - details below')],
@@ -120,9 +120,16 @@
 
   // Question builders ---------------------------------------------------------------------------------------------
   // type: name (100) | short (200) | email | tel | date | long (6,000) | note (1,000) | radio | ticks | check | search
-  // guidance: shown inside a box that can hold words (W16, W17): { eg, text } or a string; html only from this file.
-  // desc: shown between the question and its answer, for a date or a choice, or a list kept outside (W25).
+  // W103 3: each question is a row, the question on the left and the answer on the right, in sections (SEC, a navy
+  // band); guidance sits under the question, never inside a box (W103 reverses W16 and W17 1).
+  // guidance: { eg, text } or a string; html only from this file. desc: more words under the question (W25's list too).
+  // area: a short answer in a box two lines tall (a phrase, not a name or a number). GROUP: one row holding several
+  // questions (the court, the office: the list, "not listed", and its details).
   function Q(key, label, type, o) { o = o || {}; o.key = key; o.label = label; o.type = type; return o; }
+  function SEC(title) { return { type: 'section', title: title }; }
+  function GROUP(label, items) { return { type: 'group', label: label, items: items }; }
+  // W103 3: the "details and explanations" boxes, worded for attorneys (the owner: "not a good attorney-facing heading")
+  var ELSE_G = 'Explain any answer above, or add anything else RIAC should know.';
   function has(A, key, code) { var v = A[key]; return Array.isArray(v) ? v.indexOf(code) !== -1 : v === code; }
   function ticks(key, label, choices, o) {
     o = o || {}; o.choices = choices; o.help = o.help || 'Select any which may apply'; o.unknownNote = LIST_NOTE;
@@ -157,6 +164,7 @@
 
   var CRIMINAL = function (post) {
     return [
+      SEC('The case'),
       Q('criminal.charges', 'Charges (If Known)', 'charges', { desc: 'Optional. Choose each charge from RIAC’s list of New York offenses. Not sure of the statute? Leave this empty and describe the allegations below.',
         guidance: { eg: 'e.g. "120.00(1)"; "assault 3rd"; "DWI"', text: 'Type a statute number or the offense’s name' }, copy: 'Charges' }),
       Q('criminal.allegations', 'Attorney’s Summary of Misconduct Allegations', 'long', { guidance: ALLEGATIONS, limitNote: true }),
@@ -167,12 +175,14 @@
             text: 'Please record (1) any existing or likely offer to dispose of this case and (2) your client’s current objectives. (Even your best guess is very helpful information.)' } }),
       Q('criminal.offenceDate', 'Date Of The Alleged Offense Or Misconduct (i.e. not simply arrest date)', 'long', { guidance:
         { eg: 'e.g. "August 2, 2026"; "between January and March 2026"', text: 'Please provide as much detail as possible if this is unclear (many immigration consequences depend on commission date)' } }),
-      ticks('criminal.screeningIncident', 'Screening - The Incident', CHOICES.incident, { required: true, help: 'Select any which apply' }),
-      Q('criminal.details', 'Criminal Case Info - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { copy: 'Criminal case: details and explanations' })
+      SEC('Screening'),
+      ticks('criminal.screeningIncident', 'The Incident', CHOICES.incident, { required: true, help: 'Select any which apply', copy: 'Screening: the incident' })
     ];
   };
+  var CRIMINAL_ELSE = [SEC('Anything else'), Q('criminal.details', 'Anything Else About The Case?', 'long', { guidance: ELSE_G, copy: 'Criminal case: anything else' })];
 
   var APPEAL = [
+    SEC('The conviction and the advice'),
     Q('appeal.adviceBefore', 'Did The Client Receive Formal Immigration Advice Before Disposition?', 'radio', { choices: CHOICES.adviceBefore, cols: 2,
       desc: 'Choose "Unclear" if you asked and could not establish it — that is more useful to us than leaving this blank.' }),
     Q('appeal.adviceDetails', 'Details Of Immigration Advice Received By Client', 'long', {
@@ -187,10 +197,11 @@
   ];
 
   var SECTIONS = {
-    criminal: CRIMINAL(false),
-    'post-conviction': [{ type: 'subhead', text: 'The case' }].concat(CRIMINAL(true), [{ type: 'subhead', text: 'The conviction and the advice' }], APPEAL),
+    criminal: CRIMINAL(false).concat(CRIMINAL_ELSE),
+    'post-conviction': CRIMINAL(true).concat(APPEAL, CRIMINAL_ELSE),
     appeal: APPEAL,
     vop: [
+      SEC('The underlying case'),
       Q('vop.underlyingAdvised', 'Did RIAC Advise On The Underlying Criminal Case?', 'radio', { choices: YNU, inline: true }),
       Q('vop.underlyingCaseNumber', 'RIAC Case Number For The Underlying Case', 'short', { guidance: 'If you know it',
         show: function (A) { return has(A, 'vop.underlyingAdvised', 'yes'); } }),
@@ -199,6 +210,7 @@
         show: function (A) { return has(A, 'vop.underlyingAdvised', 'no') || has(A, 'vop.underlyingAdvised', 'unknown'); } }),
       Q('vop.underlyingConvictions', 'Statute And Subsection Of <u>ALL</u> Convictions', 'long', { labelHtml: true, guidance: { eg: 'e.g. "PL 120.00(1) Assault 3rd"; "VTL 1192(3) DWI"' } }),
       Q('vop.originalSentence', 'Original Sentence', 'long', { guidance: { eg: 'e.g. "3 years probation"; "6 months jail and 5 years probation"' } }),
+      SEC('The violation'),
       Q('vop.allegations', 'Current Allegations', 'long', { guidance: ALLEGATIONS }),
       Q('vop.parallelCharge', 'Is There A Parallel Criminal Charge?', 'radio', { choices: YNU, inline: true,
         unknownNote: 'Please provide any information relevant to whether there is a parallel criminal charge' }),
@@ -206,6 +218,7 @@
         show: function (A) { return has(A, 'vop.parallelCharge', 'yes'); } })
     ],
     family: [
+      SEC('The case'),
       ticks('family.matterTypes', 'Family Court / Divorce - Type Of Matter', CHOICES.matterTypes, { help: 'Select any which apply', noApart: true }),
       Q('family.description', 'Case Description - INCLUDING Any Misconduct Which Could Be Alleged Against Your Client', 'long', { guidance: {
         eg: 'e.g. "Accused of disciplining child 5-10 times with a paddle, resulting in red marks"; "wants to divorce spouse (who sponsored her green card). DV allegations from both sides likely."',
@@ -213,6 +226,7 @@
       Q('family.offer', 'Offers & Likely Outcome / Your Client’s Objectives', 'long', { guidance: {
         eg: 'e.g. "Petitioner would withdraw if client consents to a one-year order of protection"; "client wants joint custody and will not admit to neglect"',
         text: 'Please record (1) any existing or likely offer to resolve this case and (2) your client’s current objectives. (Even your best guess is very helpful information.)' } }),
+      SEC('Family'),
       Q('family.children', '(If Applicable) - Client’s Children - Immigration Details', 'long', {
         descList: [['For each child, please note:', ['the child’s date of birth AND country of birth', 'whether they are the biological or adopted children of your client and their spouse']],
           ['If a child was not born in the U.S., please also include:', ['their current immigration status', 'when they received it']]],
@@ -223,14 +237,17 @@
       Q('family.spouseSponsored', 'Did The Spouse Sponsor The Client’s Immigration Status?', 'radio', { choices: CHOICES.yesNoUnsure, inline: true }),
       Q('family.affidavitOfSupport', 'Did The Spouse File An Affidavit Of Support?', 'radio', { choices: CHOICES.yesNoUnsure, inline: true }),
       Q('family.spouseStatus', 'Spouse’s Immigration Status And When Received', 'note', { guidance: { eg: 'e.g. "U.S. citizen since 2012"; "green card since 2016"' } }),
-      ticks('family.screeningMarriage', 'Screening - Marriage Or Divorce', CHOICES.screeningMarriage, { required: true,
+      SEC('Screening'),
+      ticks('family.screeningMarriage', 'Marriage Or Divorce', CHOICES.screeningMarriage, { required: true, copy: 'Screening: marriage or divorce',
         show: function (A) { return has(A, 'family.matterTypes', 'divorce'); } }),
-      ticks('family.screeningChildren', 'Screening - Children And Custody', CHOICES.screeningChildren),
-      ticks('family.screeningMoney', 'Screening - Money And Support', CHOICES.screeningMoney, {
+      ticks('family.screeningChildren', 'Children And Custody', CHOICES.screeningChildren, { copy: 'Screening: children and custody' }),
+      ticks('family.screeningMoney', 'Money And Support', CHOICES.screeningMoney, { copy: 'Screening: money and support',
         show: function (A) { return has(A, 'family.matterTypes', 'divorce') || has(A, 'family.matterTypes', 'family-other') || has(A, 'family.matterTypes', 'custody'); } }),
-      Q('family.details', 'Family Court/Divorce - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { copy: 'Family court: details and explanations' })
+      SEC('Anything else'),
+      Q('family.details', 'Anything Else About The Case?', 'long', { guidance: ELSE_G, copy: 'Family court: anything else' })
     ],
     removal: [   // W36: one box (the owner's words)
+      SEC(null),
       Q('removal.issues', 'What Issues Would You Like Advice On?', 'long', { required: true, guidance: { eg: 'e.g. "Client is in removal proceedings based on a NY conviction - considering whether a vacatur is possible"; "Need help assessing whether client is inadmissible based on his record in association with an adjustment application"' } })
     ]
   };
@@ -240,14 +257,18 @@
   function isOffice(A) { return ['public-defender', 'assigned-counsel', 'federal-defender'].indexOf(A['attorney.officeType']) !== -1; }
 
   var ABOUT = [
-    { type: 'pair', items: [Q('attorney.firstName', 'Attorney’s first name', 'name', { required: true }),
-      Q('attorney.lastName', 'Attorney’s last name', 'name', { required: true })] },
-    { type: 'pair', items: [Q('attorney.email', 'Attorney Email', 'email', { required: true }), Q('attorney.phone', 'Attorney Phone', 'tel')] },
+    SEC('The attorney'),
+    Q('attorney.firstName', 'Attorney’s first name', 'name', { required: true }),
+    Q('attorney.lastName', 'Attorney’s last name', 'name', { required: true }),
+    Q('attorney.email', 'Attorney Email', 'email', { required: true }),
+    Q('attorney.phone', 'Attorney Phone', 'tel'),
+    SEC('Your office'),
     Q('attorney.officeType', 'Your Office Type', 'radio', { choices: CHOICES.officeType, cols: 2, required: true }),
-    Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Type part of the name to find it', show: isOffice }),
-    Q('attorney.officeNotListed', 'Office Not Listed?', 'check', { show: function (A) { return ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1; } }),
-    Q('attorney.officeDetails', 'If Your Office Was Not Listed, Enter Office Details Here', 'note', {
-      show: function (A) { return (A['attorney.officeNotListed'] === true && ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1) || ['none', 'non-profit'].indexOf(A['attorney.officeType']) !== -1; } })
+    GROUP('Attorney’s Office / Affiliation', [
+      Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Type part of the name to find it.', show: isOffice }),
+      Q('attorney.officeNotListed', 'Office Not Listed?', 'check', { show: function (A) { return ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1; } }),
+      Q('attorney.officeDetails', 'If Your Office Was Not Listed, Enter Office Details Here', 'note', {
+        show: function (A) { return (A['attorney.officeNotListed'] === true && ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1) || ['none', 'non-profit'].indexOf(A['attorney.officeType']) !== -1; } })])
   ];
 
   // W90 2: the case type is asked first, at step 1, so the county question can follow it (for removal / USCIS there is
@@ -260,52 +281,71 @@
   function notRemoval(A) { return A['case.caseType'] !== 'removal'; }
   function isRemoval(A) { return A['case.caseType'] === 'removal'; }
   var COURT = [
-    Q('case.urgentBy', 'If this case is urgent, please state when advice is needed by (leave blank otherwise):', 'date', { copy: 'Advice needed by' }),
-    Q('court.name', 'Court', 'search', { list: 'courts', way: 'questions', show: function (A, X) { return !!X.county && A['court.notListed'] !== true && notRemoval(A); } }),
-    Q('court.notListed', 'Court Not Listed / Non-NY Court?', 'check', { way: 'questions', show: function (A, X) { return !!X.county && notRemoval(A); } }),
-    Q('court.notListedDetails', 'Court Not Listed - Details', 'note', { required: true, way: 'questions',
-      show: function (A, X) { return (A['court.notListed'] === true || !X.county) && notRemoval(A); } }),
-    { type: 'pair', way: 'questions', items: [Q('court.docket', 'Docket No.', 'short', { show: notRemoval }), Q('court.nextDate', 'Next Court Date', 'date', { show: notRemoval })] },
-    { type: 'pair', way: 'questions', items: [Q('court.immigrationOffice', 'Immigration Court Or USCIS Office (If Any)', 'short', {
-        guidance: { eg: 'e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"' }, show: isRemoval }),
-      Q('court.nextDate', 'Next Hearing Or Interview Date (If Any)', 'date', { alias: true, show: isRemoval, copy: 'Next hearing or interview date' })] },
-    Q('court.iceInvolvement', '<strong>ICE INVOLVEMENT:</strong> Select if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client', 'check', { long: true, labelHtml: true, way: 'questions', copy: 'ICE involvement' }),
+    SEC(function (A) { return isRemoval(A) ? 'Immigration court or USCIS' : 'The court'; }),
+    Q('case.urgentBy', 'Advice Needed By', 'date', { guidance: 'If this case is urgent, the date you need advice by. Leave blank otherwise.', copy: 'Advice needed by' }),
+    GROUP('Court', [
+      Q('court.name', 'Court', 'search', { list: 'courts', way: 'questions', show: function (A, X) { return !!X.county && A['court.notListed'] !== true && notRemoval(A); } }),
+      Q('court.notListed', 'Court Not Listed / Non-NY Court?', 'check', { way: 'questions', show: function (A, X) { return !!X.county && notRemoval(A); } }),
+      Q('court.notListedDetails', 'Court Not Listed - Details', 'note', { required: true, way: 'questions',
+        show: function (A, X) { return (A['court.notListed'] === true || !X.county) && notRemoval(A); } })]),
+    Q('court.docket', 'Docket No.', 'short', { way: 'questions', show: notRemoval }),
+    Q('court.nextDate', 'Next Court Date', 'date', { way: 'questions', show: notRemoval }),
+    Q('court.immigrationOffice', 'Immigration Court Or USCIS Office (If Any)', 'short', { way: 'questions',
+      guidance: { eg: 'e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"' }, show: isRemoval }),
+    Q('court.nextDate', 'Next Hearing Or Interview Date (If Any)', 'date', { way: 'questions', alias: true, show: isRemoval, copy: 'Next hearing or interview date' }),
+    SEC('Where things stand'),
+    // W103 3: a tile with a red "ICE" triangle, ticked for you when the client is detained in immigration custody
+    Q('court.iceInvolvement', 'ICE Involvement', 'check', { way: 'questions', copy: 'ICE involvement', ice: true,
+      guidance: 'Select if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client',
+      tile: '<b>ICE is involved</b> in this case, or with your client' }),
     Q('court.protectionOrder', 'Does This Case Involve An Order Of Protection In Any Way?', 'radio', { choices: YNU, inline: true, required: true, way: 'questions',
       unknownNote: 'Please provide any information relevant to whether this case involves an order of protection' }),
-    ticks('court.protectionOrders', 'Screening - Orders Of Protection', CHOICES.protectionOrders, { help: 'Select any which apply', way: 'questions',
+    ticks('court.protectionOrders', 'Orders Of Protection', CHOICES.protectionOrders, { help: 'Select any which apply', way: 'questions', copy: 'Screening: orders of protection',
       show: function (A) { return has(A, 'court.protectionOrder', 'yes'); } }),
-    Q('court.custody', 'Client’s Current Custody Status', 'radio', { choices: CHOICES.custody, cols: 2, required: true, way: 'questions' }),
-    Q('court.details', 'Court And Case - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { way: 'questions', copy: 'Court and case: details and explanations' })
+    Q('court.custody', 'Client’s Current Custody Status', 'radio', { choices: CHOICES.custody, cols: 2, required: true, way: 'questions',
+      groups: [['Released', ['at-liberty', 'ror', 'bail-released', 'supervised']], ['In custody', ['bail-detained', 'incarcerated', 'ice-detained']]] }),
+    SEC('Anything else'),
+    Q('court.details', 'Anything Else About The Court Or Case?', 'long', { way: 'questions', guidance: ELSE_G, copy: 'Court and case: anything else' })
   ];
 
   var CLIENT = [
-    { type: 'pair', items: [Q('client.firstName', 'Client First Name', 'name', { required: true, guidance: 'First name only. If in doubt, put a name in the next box.' }),
-      Q('client.lastName', 'Client Middle & Last Names', 'name', { required: true })] },   // W19
+    SEC('Identity'),
+    Q('client.firstName', 'Client First Name', 'name', { required: true, guidance: 'First name only. If in doubt, put a name in the next box.' }),
+    Q('client.lastName', 'Client Middle & Last Names', 'name', { required: true }),   // W19
     Q('client.dob', 'Client DoB', 'date', { desc: 'If unknown, please leave blank.' }),
     Q('client.aliases', 'Any Known Aliases, Or Variations To The Name Or Date Of Birth?', 'radio', { choices: CHOICES.aliases, inline: true, required: true }),
     Q('client.aliasDetails', 'Details Of Known Aliases, Or Variations To The Name Or Date Of Birth', 'note', { show: function (A) { return has(A, 'client.aliases', 'yes'); } }),
+    SEC('Background'),
     Q('client.address', 'Client’s Address (If Known)', 'note', { max: 500, guidance: { eg: 'e.g. "123 Main Street, Apt 4, Syracuse, NY 13202"' } }),   // W40 1 (CS58 2): both ways
-    { type: 'pair', way: 'questions', items: [Q('client.countryOfBirth', 'Client’s Country of Birth', 'short'), Q('client.language', 'Client’s Primary Language', 'short')] },
+    Q('client.countryOfBirth', 'Client’s Country of Birth', 'short', { way: 'questions' }),
+    Q('client.language', 'Client’s Primary Language', 'short', { way: 'questions' }),
     Q('client.english', 'Client’s Level Of English', 'radio', { choices: CHOICES.english, inline: true, way: 'questions' })
   ];
 
   var STATUS = { eg: 'e.g. illegal entry, refugee, green card, F-1 student', text: '(work permits need a code - e.g. C08)' };
   var ESTIMATE = 'If client does not know exactly, please let us know it is an estimate';
   var IMMIGRATION = [
-    { type: 'pair', items: [Q('client.entryStatus', 'Client’s Immigration Status at INITIAL Entry To The U.S.', 'short', { guidance: STATUS }),
-      Q('client.entryDate', 'Date of Client’s INITIAL Entry To The U.S.', 'short', { guidance: ESTIMATE })] },
-    { type: 'pair', items: [Q('client.currentStatus', 'Client’s CURRENT Immigration Status', 'short', { guidance: STATUS }),
-      Q('client.currentStatusDate', 'Date of CURRENT Immigration Status', 'short', { guidance: ESTIMATE })] },
-    { type: 'pair', items: [Q('client.aNumber', 'Client’s A Number', 'short', { guidance: { html: 'A <b>9 digit</b> number which appears on most immigration paperwork <b>(not a 10 digit SSN)</b>' } }),
-      Q('client.pendingApplications', 'Any Pending Immigration Application(s)?', 'short', { guidance: { eg: 'e.g. "Green Card - filed in January 2026"; "N400 will be filed next month"' } })] },
-    ticks('client.screeningClient', 'Screening - Information About The Client', CHOICES.screeningClient, { required: true }),
-    ticks('client.screeningIce', 'Screening - Any Prior Involvement With ICE Enforcement?', CHOICES.screeningIce, { required: true }),
-    ticks('client.screeningImmigration', 'Screening - Immigration Questions', CHOICES.screeningImmigration, { required: true }),
+    SEC('Status and history'),
+    Q('client.entryStatus', 'Client’s Immigration Status at INITIAL Entry To The U.S.', 'short', { area: true, guidance: STATUS }),
+    Q('client.entryDate', 'Date of Client’s INITIAL Entry To The U.S.', 'short', { guidance: ESTIMATE }),
+    Q('client.currentStatus', 'Client’s CURRENT Immigration Status', 'short', { area: true, guidance: STATUS }),
+    Q('client.currentStatusDate', 'Date of CURRENT Immigration Status', 'short', { guidance: ESTIMATE }),
+    Q('client.aNumber', 'Client’s A Number', 'short', { guidance: { html: 'A <b>9 digit</b> number which appears on most immigration paperwork <b>(not a 10 digit SSN)</b>' } }),
+    Q('client.pendingApplications', 'Any Pending Immigration Application(s)?', 'short', { area: true, guidance: { eg: 'e.g. "Green Card - filed in January 2026"; "N400 will be filed next month"' } }),
+    SEC('Screening'),
+    ticks('client.screeningClient', 'Information About The Client', CHOICES.screeningClient, { required: true, copy: 'Screening: information about the client' }),
+    ticks('client.screeningIce', 'Any Prior Involvement With ICE Enforcement?', CHOICES.screeningIce, { required: true, copy: 'Screening: any prior involvement with ICE enforcement?' }),
+    ticks('client.screeningImmigration', 'Immigration Questions', CHOICES.screeningImmigration, { required: true, copy: 'Screening: immigration questions' }),
     Q('client.immigrationAttorney', 'Client’s Immigration Attorney - Details', 'note', { show: function (A) { return has(A, 'client.screeningImmigration', 'has-imm-attorney'); } }),
+    SEC('Family'),
     Q('client.familyAny', 'Does Client Have Any US Citizen / Green Card Family Members?', 'radio', { choices: YNU, inline: true, required: true,
       unknownNote: 'Please provide any information relevant to whether your client has US citizen or green card family members' }),
-    ticks('client.family', 'Client’s Family In The United States', CHOICES.family, { required: true, show: function (A) { return has(A, 'client.familyAny', 'yes'); } }),
-    Q('client.details', 'Client Info - Details & Explanations for Screening Questions (Include Any Other Important Info Here)', 'long', { copy: 'Client: details and explanations' })
+    // W103 3: the tiles in rows, coloured by who the family member is
+    ticks('client.family', 'Client’s Family In The United States', CHOICES.family, { required: true, show: function (A) { return has(A, 'client.familyAny', 'yes'); },
+      grid: { cols: ['US citizen', 'Green card holder'], rows: [['Parent', 'parent', ['parent-usc', 'parent-lpr']], ['Spouse', 'spouse', ['spouse-usc', 'spouse-lpr']],
+        ['Child under 21', 'child', ['child-under21-usc', 'child-under21-lpr']], ['Child over 21', 'child', ['child-over21-usc', 'child-over21-lpr']]] } }),
+    SEC('Anything else'),
+    Q('client.details', 'Anything Else About Your Client’s Immigration?', 'long', { guidance: ELSE_G, copy: 'Immigration: anything else' })
   ];
 
   // Documents (W28): names and descriptions from the paper criminal intake form.
