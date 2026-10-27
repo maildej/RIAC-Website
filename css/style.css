@@ -342,14 +342,17 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 /* Warm accent (complementary to the site's navy) sets this card apart
    from the plain navy-on-white styling used by every other advisory. */
 .advisory-list li.featured { background: color-mix(in srgb, var(--r5) 12%, white); border-color: var(--r5); padding: 1rem 1.6rem 1.1rem; }
+/* W108 1 (the overnight review's W-Q10): on the orange the words are navy, 5.5 to 1 (white or cream was 2.5 to 2.8,
+   under the line); under the mouse a featured button turns navy, as every other card's, since navy on the darker orange
+   would be 3.2 */
 .advisory-list li.featured h3 {
-  background: var(--r5); font-size: var(--fs-section);
+  background: var(--r5); color: var(--navy); font-size: var(--fs-section);
   margin: -1rem -1.6rem 2.9rem; padding: .8rem 1.6rem 2.4rem;
 }
 .advisory-list li.featured .summary { font-size: var(--fs-text); max-width: 42rem; align-self: center; margin-bottom: .9rem; }
-.advisory-list li.featured .btn-download { background: var(--r5); }
+.advisory-list li.featured .btn-download { background: var(--r5); color: var(--navy); }
 .advisory-list li.featured:hover { border-color: var(--r5); box-shadow: 0 4px 14px rgba(239,124,40,.3); }
-.advisory-list li.featured:hover .btn-download { background: color-mix(in srgb, var(--r5) 75%, black); }
+.advisory-list li.featured:hover .btn-download { background: var(--navy); color: var(--cream); }
 
 .btn-download {
   background: var(--navy); color: var(--cream);
@@ -420,10 +423,10 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 
 /* Send A Case (W2 1): the online form's card is the featured, orange one. */
 .intake-card.featured { background: color-mix(in srgb, var(--r5) 12%, white); border-color: var(--r5); }
-.intake-card.featured h3 { background: var(--r5); }
-.intake-card.featured .btn-download { background: var(--r5); }
+.intake-card.featured h3 { background: var(--r5); color: var(--navy); }   /* W108 1, as the featured advisory */
+.intake-card.featured .btn-download { background: var(--r5); color: var(--navy); }
 .intake-card.featured:hover { border-color: var(--r5); box-shadow: 0 4px 14px rgba(239,124,40,.3); }
-.intake-card.featured:hover .btn-download { background: color-mix(in srgb, var(--r5) 75%, black); }
+.intake-card.featured:hover .btn-download { background: var(--navy); color: var(--cream); }
 .paper-forms-title { margin-top: 2.6rem; margin-bottom: .2rem; }
 .paper-forms-sub { text-align: center; font-size: var(--fs-small); color: var(--muted); }
 
@@ -434,12 +437,12 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   padding: 1.4rem 1.6rem;
 }
 .intake-followup h3 {
-  font-family: var(--serif); font-size: var(--fs-card); color: #fff;
+  font-family: var(--serif); font-size: var(--fs-card); color: var(--navy);   /* W108 1 */
   background: var(--r5); border-radius: 10px 10px 0 0;
   margin: -1.4rem -1.6rem 1.2rem; padding: 1rem 1.6rem;
 }
-.intake-followup .btn-download { background: var(--r5); }
-.intake-followup .btn-download:hover { background: color-mix(in srgb, var(--r5) 75%, black); }
+.intake-followup .btn-download { background: var(--r5); color: var(--navy); }
+.intake-followup .btn-download:hover { background: var(--navy); color: var(--cream); }
 
 /* ---------- Notices (placeholder boxes) ---------- */
 

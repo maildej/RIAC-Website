@@ -1183,6 +1183,15 @@ every key and code the pages send.
   typed keeps its place while another file's progress is redrawn. Each document is sent with its own `note` (the contract
   unchanged). Chosen over one file only under Something else ("2"). Pictures `riac-handover\W\design\w109\` (mockup) and
   `w109c\` (as built); checks `tests\w109-check.mjs`.
+- **W108 1** (27 October 2026; the overnight review's W-Q10, white on the site's orange at 2.8 to 1): **on the orange the
+  words are navy** (5.5 to 1): the "Before You Receive RIAC Advice" heading on Review and send, the "only copy" box's
+  **Print Or Save As PDF**, and with them the same pairs elsewhere on the site, the featured advisory's title bar and
+  Download button on Practice Advisories, the follow-up box on today's Send A Case and the featured "Send Us A New Case"
+  card that comes back at the go-live. Under the mouse an orange button turns navy with cream words, as every other
+  card's (navy on the darker orange the site used would be 3.2). **The answer boxes' and tick boxes' edges are #838d9b**
+  (3.4 to 1 on white; #b4bcc7 was 1.9, #9aa4b0 2.5). Chosen over a darker orange carrying the white words ("2") and a navy
+  band and button ("3"). Pictures `riac-handover\W\design\w108\` (mockup) and `w108c\` (as built); checks
+  `tests\w108-check.mjs` (every pair measured from the page) and `tests\w108c-shots.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

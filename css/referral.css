@@ -136,7 +136,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 1.3; font-size: var(--fs-small);
 }
 .tile input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.tile .box { flex: none; width: 1.15rem; height: 1.15rem; border: 2px solid #9aa4b0; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
+.tile .box { flex: none; width: 1.15rem; height: 1.15rem; border: 2px solid #838d9b; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
 .tile:has(input:checked) { border-color: var(--navy); background: color-mix(in srgb, var(--navy) 7%, white); box-shadow: 0 0 0 1px var(--navy); }
 .tile:has(input:checked) .box { background: var(--navy); border-color: var(--navy); }
 .tile:has(input:checked) .box::after { content: "\2713"; }
@@ -214,8 +214,10 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .qrow .desc-list ol { margin: .1rem 0 .3rem 1.2rem; }
 .ref-q.ruled input[type="text"], .ref-q.ruled input[type="email"], .ref-q.ruled input[type="tel"], .ref-q.ruled input[type="search"],
 .ref-q.ruled input[type="date"], .ref-q.ruled select, .ref-q.ruled textarea {
-  font-size: var(--fs-small); line-height: 1.5; padding: .42rem .65rem; border: 1px solid #b4bcc7; border-radius: 6px;
+  font-size: var(--fs-small); line-height: 1.5; padding: .42rem .65rem; border: 1px solid #838d9b; border-radius: 6px;
 }
+/* W108 1 (the overnight review's W-Q10): the boxes' and tick boxes' edges #838d9b, 3.4 to 1 on white (#b4bcc7 was 1.9,
+   #9aa4b0 2.5; the line for an edge is 3) */
 .ref-q.ruled input[type="date"] { max-width: 12rem; }
 .ref-q.ruled textarea { min-height: 0; }
 .ref-q.ruled textarea.l2 { min-height: calc(2lh + .84rem + 2px); }
@@ -445,7 +447,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 /* W32 1: "Before You Receive RIAC Advice" above Send, in the featured advisory card's orange, a row for each warning
    with its advisory's symbol beside it; two across on a computer. */
 .advice-first { margin: .2rem 0 .4rem; border: 1px solid var(--r5); border-radius: 10px; background: color-mix(in srgb, var(--r5) 9%, white); overflow: hidden; }
-.advice-first h3 { background: var(--r5); color: #fff; font-family: var(--serif); font-size: var(--fs-card); line-height: 1.3; text-align: center; margin: 0; padding: .75rem 1rem; }
+.advice-first h3 { background: var(--r5); color: var(--navy);   /* W108 1: navy on the orange, 5.5 to 1 (white was 2.8) */
+  font-family: var(--serif); font-size: var(--fs-card); line-height: 1.3; text-align: center; margin: 0; padding: .75rem 1rem; }
 .advice-first ul { list-style: none; margin: 0; padding: .8rem; display: grid; gap: .6rem; }
 .advice-first li { display: flex; gap: .8rem; align-items: center; padding: .6rem .8rem; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: var(--fs-small); line-height: 1.4; color: var(--ink); }
 .advice-first li b { color: var(--navy); }
@@ -467,7 +470,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .receipt-note strong { white-space: nowrap; }
 .only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }
 .only-copy p { margin: 0; }
-.only-copy .btn { background: var(--r5); color: #fff; flex: none; }
+.only-copy .btn { background: var(--r5); color: var(--navy); flex: none; }   /* W108 1 */
+.only-copy .btn:hover { background: var(--navy); color: var(--cream); }
 .sent-note { margin: 0 1.6rem 1.2rem; font-size: var(--fs-small); background: color-mix(in srgb, var(--navy) 5%, white); border-radius: 8px; padding: .8rem 1rem; }
 
 .result-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 46rem; margin: 0 auto; }
