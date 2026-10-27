@@ -419,7 +419,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cty .outside.on { background: color-mix(in srgb, var(--navy) 7%, white); }
 .ref-card:has(.cp-matches:not([hidden])) { overflow: visible; }
 .qrow.has-err > .a .cb .srch input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
-@media (max-width: 600px) { .ctr .long { display: none; } .cty li { gap: .7rem; } }   /* on a phone the center's name without "RIAC" */
+.cb input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }   /* it covered the arrow */
+@media (max-width: 600px) { .ctr .long { display: none; } .cp-matches.cty li { display: flex; gap: .7rem; } }   /* on a phone the center's name without "RIAC" */
 .sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
 
 /* ---------- Step 8: Documents (W28) ---------- */
