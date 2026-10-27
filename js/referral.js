@@ -678,8 +678,9 @@
   // W111 1: "Start over" (the overnight review's W-S06: a half-filled referral can come back after the tab is closed)
   var asking = false;
   function begun() {
+    var given = S.signIn ? S.signIn.keys : [];   // W104: the sign-in's details are not answers given
     return S.visited > 0 || !!S.route.county || S.route.outside || S.people.length > 0 || S.charges.length > 0 || allFiles().length > 0 ||
-      Object.keys(S.A).some(function (k) { var v = S.A[k]; return v !== '' && v !== null && v !== undefined && v !== false && !(Array.isArray(v) && !v.length); });
+      Object.keys(S.A).some(function (k) { var v = S.A[k]; if (given.indexOf(k) !== -1) return false; return v !== '' && v !== null && v !== undefined && v !== false && !(Array.isArray(v) && !v.length); });
   }
   function startOverAsk() {
     var keep = function () { asking = false; render('start-over'); };
@@ -1004,9 +1005,47 @@
 
   // ---------- Steps 2 to 5 ---------------------------------------------------------------------------------------
 
+  // W104 (the owner: "a way for an attorney to submit a new case through the portal, where it pre-populates their contact
+  // information"): opened from the portal's Send Us A New Case (A1), step 2 takes the signed-in details the worker sends,
+  // handed over in the tab and used once. An answer already given stays; an office type or office is kept only if the
+  // form's lists have it. With every detail there, step 2 is a summary with "From your sign-in" and Change (B2).
+  var SIGN_IN_KEYS = ['attorney.firstName', 'attorney.lastName', 'attorney.email', 'attorney.phone', 'attorney.officeType', 'attorney.office'];
+  function takePrefill() {
+    var p = null;
+    try { p = JSON.parse(sessionStorage.getItem(CFG.prefillKey) || 'null'); sessionStorage.removeItem(CFG.prefillKey); } catch (e) { p = null; }
+    if (!p || typeof p !== 'object') return;
+    var keys = [];
+    SIGN_IN_KEYS.forEach(function (k) {
+      var v = typeof p[k] === 'string' ? p[k].trim().slice(0, 200) : '';
+      if (!v || clean(S.A[k])) return;
+      if (k === 'attorney.officeType' && !D.CHOICES.officeType.some(function (c) { return c.code === v; })) return;
+      if (k === 'attorney.office' && LISTS.offices.indexOf(v) === -1) return;
+      S.A[k] = v; keys.push(k);
+    });
+    if (keys.length) { S.signIn = { keys: keys, open: false }; save(); }
+  }
+  function signInComplete() {
+    var A = S.A, t = A['attorney.officeType'], e = (A['attorney.email'] || '').trim();
+    return !!(clean(A['attorney.firstName']) && clean(A['attorney.lastName']) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && /^[A-Za-z0-9._%+-]+@/.test(e) && t && t !== 'private' &&
+      (['public-defender', 'assigned-counsel', 'federal-defender'].indexOf(t) === -1 || LISTS.offices.indexOf(A['attorney.office']) !== -1));
+  }
+  function signInSummary(q) {
+    var A = S.A;
+    var type = (D.CHOICES.officeType.filter(function (c) { return c.code === A['attorney.officeType']; })[0] || {}).label;
+    var office = A['attorney.office'] ? pickParts({ list: 'offices' }, A['attorney.office']) : null;
+    var rows = [['Attorney', [h('span', { class: 'ro who', text: (A['attorney.firstName'] + ' ' + A['attorney.lastName']).trim() })]], ['Attorney Email', [h('span', { class: 'ro', text: A['attorney.email'] })]]];
+    if (clean(A['attorney.phone'])) rows.push(['Attorney Phone', [h('span', { class: 'ro', text: A['attorney.phone'] })]]);
+    rows.push(['Your Office Type', [h('span', { class: 'ro', text: type })]]);
+    if (office) rows.push(['Attorney’s Office / Affiliation', [h('span', { class: 'ro' }, [office.name, office.place ? h('span', { class: 'pl', text: office.place }) : null])]]);
+    var chg = h('button', { type: 'button', class: 'chg', 'aria-label': 'Change these details', on: { click: function () { S.signIn.open = true; save(); render('f-attorney-firstName'); } } }, ['Change']);
+    var sec = h('section', { class: 'sec' }, [h('h3', { class: 'sec-h ok' }, [h('span', { text: '✓ From your sign-in' }), chg])]);
+    rows.forEach(function (r) { sec.appendChild(qrow(null, [h('span', { class: 'lab', text: r[0] })], r[1], 'ro-row')); });
+    q.appendChild(h('div', { class: 'sheet' }, [sec]));
+  }
+
   function drawAbout(q) {
     heading(q, 'About you', 'So RIAC knows who is asking, and how to reach you.');
-    drawList(D.STEPS.about, q);
+    if (S.signIn && !S.signIn.open && signInComplete()) signInSummary(q); else drawList(D.STEPS.about, q);
     if (S.A['attorney.officeType'] === 'private') {   // W12 1: the form stops here
       var c = centreOf(receivingCentre());
       var card = h('div', { class: 'elsewhere private-stop' }, [h('h3', { text: 'Please contact your RIAC directly' }),
@@ -1890,6 +1929,7 @@
     LISTS.courts = LISTS.courts || {};
     LISTS.offices = LISTS.offices || [];
     if (S.batch && !batchValid()) S.batch = null;
+    takePrefill();
     render();
   });
 })();

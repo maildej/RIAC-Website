@@ -82,7 +82,7 @@
   // is sent nowhere and ends when the tab closes. A portal page opened in a new tab asks to sign in again.
   function session() { try { return sessionStorage.getItem(SESSION_KEY); } catch (e) { return null; } }
   function setSession(v) { try { sessionStorage.setItem(SESSION_KEY, v); } catch (e) { /* storage blocked: the page asks to sign in */ } }
-  function endSession() { try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* nothing kept */ } }
+  function endSession() { try { sessionStorage.removeItem(SESSION_KEY); sessionStorage.removeItem(CFG.prefillKey); } catch (e) { /* nothing kept */ } }
   // Until 20 October 2026 the session was a cookie: clear any left behind.
   document.cookie = SESSION_KEY + '=; Path=/portal/; SameSite=Strict; Max-Age=0' + (location.protocol === 'https:' ? '; Secure' : '');
 
@@ -339,9 +339,12 @@
     var fields = [['Signed in as', me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email, 'who'], ['Office', me.office],
       ['Email', me.name ? me.email || data.email : null], ['Phone', me.phone]].filter(function (f) { return f[1]; });
     var head = document.querySelector('.portal-head .wrap');
+    // W104 A1: Send Us A New Case beside Sign Out, the pair one size; the form opens in this tab with the signed-in
+    // details filled in at step 2 (what the worker sends of them, handed over in the tab under CFG.prefillKey)
+    var newCase = h('a', { class: 'btn btn-navy me-new', href: '../referral.html', on: { click: function () { handOver(data); } } }, [symbol('i-consult'), 'Send Us A New Case']);
     if (head) head.appendChild(h('div', { class: 'me-fold' }, [h('div', { class: 'me-row' }, [
       h('dl', { class: 'me-fields' }, fields.map(function (f) { return h('div', { class: f[2] }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]); })),
-      h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out'])]),
+      h('div', { class: 'me-acts' }, [newCase, h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out'])])]),
       h('p', { class: 'me-note', text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]));
 
     // W58 1: the search and Sort on one line (Sort over the list's last column; on a computer the column headings sort
@@ -414,6 +417,17 @@
 
   function signOut() {
     api('POST', '/v1/portal/sign-out').then(function () { endSession(); signInCard('', 'You are signed out.'); });
+  }
+  // W104: what the worker holds of the signed-in attorney, for step 2 of the form (only what it sends; the form keeps
+  // an office type or office only if its own lists have it)
+  function handOver(data) {
+    var me = data.me || {}, p = { 'attorney.email': me.email || data.email };
+    if (me.firstName) p['attorney.firstName'] = me.firstName;
+    if (me.lastName) p['attorney.lastName'] = me.lastName;
+    if (me.phone) p['attorney.phone'] = me.phone;
+    if (me.officeType) p['attorney.officeType'] = me.officeType;
+    if (me.office) p['attorney.office'] = me.office;
+    try { sessionStorage.setItem(CFG.prefillKey, JSON.stringify(p)); } catch (e) { /* the form opens blank */ }
   }
 
   // ---------- Send RIAC A Message (W6 1, W59 A, W97 1; once Add To This Referral, then Send RIAC An Update) -----------------

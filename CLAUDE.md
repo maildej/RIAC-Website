@@ -1153,9 +1153,8 @@ every key and code the pages send.
   on nyriac.com: the file, and an appeal's step 6 drawing its questions). **W103 3 itself live since 27 October 2026** (1:50
   PM, the owner's "Yes, publish W103 3 with the overnight fixes to nyriac.com.": `main` 9b59f2f, Pages run 130; checked on
   nyriac.com: every changed file served, and step 3 drawn as the ruled sheet with its three bands, the ICE tile and the
-  two custody groups). Still to come, one decision at a time, a mockup first: the case
-  types as cards with symbols and the county a search-and-choose list (comments 1, 2), the office and court lists
-  dropping down under the box as the charges do (comment 3), and W104 (comment 5a).
+  two custody groups). The rest of the owner's comments followed as their own decisions: comments 1 and 2 as W105 and
+  W106, comment 3 as W107, comment 5a as W104 (below).
 - **W104 to W111, the overnight mockups** (drawn 27 October 2026, 1 to 2 AM, on the owner's D63; each put to him with a
   recommendation): **the owner's yes to every recommendation** (27 October 2026, about 2 PM: "Yes: build W104 to W111 as
   you recommended, one at a time, and show me each before publishing."). Each is built on its own and published only on
@@ -1240,6 +1239,23 @@ every key and code the pages send.
   with the tick kept ("1"), and the same with "not listed" as the last row but no list before typing ("2"). Pictures
   `riac-handover\W\design\w107\` (mockup) and `w107c\` (as built); checks `tests\w107-check.mjs` (1360, 390, 320 px);
   `e2e.mjs` and `w103-check.mjs` now choose from the list.
+- **W104 A1 + B2** (27 October 2026; the owner, comment 5a: "a way for an attorney to submit a new case through the
+  portal, where it pre-populates their contact information? (to save them the first few intake pages)"): **(A1) in the
+  portal's cream title card, "Send Us A New Case" beside Sign Out**, the pair one size (side by side under the details on
+  a computer, one over the other on a phone, a size smaller at 360 px or less so it stays inside the card), navy with
+  Send A Case's symbol (`i-consult`) in a small cream circle; it opens the form in the same tab. **(B2) Step 2 is then a summary**: the same ruled sheet, its band green, **"✓ From your sign-in"** with
+  **Change** at its end, and the details as words (Attorney, Attorney Email, Attorney Phone, Your Office Type, Attorney's
+  Office / Affiliation with its county under it); Change opens the ordinary boxes, filled in. **How it works:** the
+  portal hands what the worker sends of the signed-in attorney to the form in the tab (`sessionStorage`,
+  `CFG.prefillKey`), used once, removed at Sign Out; the form keeps an answer already given, and an office type or office
+  only if its own lists have it; the summary shows only when every required answer is there (both names, an email the
+  system can take, an office type other than privately retained, and for an office type with a list an office from it),
+  otherwise the boxes come partly filled. The sign-in's details do not count as answers for Start over (W111 1). What is
+  sent is unchanged. **The worker's side** (asked of the worker chat, 27 October 2026, 2:05 PM): `me.firstName` and
+  `me.lastName` apart, `me.officeType` (one of the form's six codes) and the office named exactly as `/v1/lists` names it;
+  until then only the email and phone (and an office the lists happen to have) are filled in, so the page is safe before
+  the worker's change. Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
+  sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1354,9 +1370,14 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     inside boxes) and W14 2 (two answers to a row). The charges box's cursor sits half way down its guidance until
     something is typed (found by the owner): fix with W103. **W103 3 chosen and built** (26 to 27 October, see Settled),
     the appeal step's blank page fixed and live on its own since 27 October; W103 3 itself **live since 27
-    October** (1:50 PM), with the overnight review's fixes. Comments 1 to 3 and 5a next.
-  - **W104**: "a way for an attorney to submit a new case through the portal, where it pre-populates their contact
-    information" (needs the worker chat).
+    October** (1:50 PM), with the overnight review's fixes. Comments 1 to 3 and 5a, and the overnight review's look
+    items, were drawn as W104 to W111 (27 October, 1 to 2 AM) and **built on the owner's yes to every recommendation**
+    (27 October, about 2 PM; see Settled): W105 1 (case types as cards), W106 1 (the county box), W107 3 (the office and
+    court lists), W104 A1 + B2 (a new case from the portal), W108 1 (navy on the orange), W109 1 (a name per Something
+    else file), W110 1 (the forwarded-email sentence), W111 1 (Start over). On `claude/w-continued-10`, **not yet
+    published**: each on the owner's yes.
+  - **W104's worker side**: `me.firstName`, `me.lastName`, `me.officeType` and the office as the lists name it, asked of
+    the worker chat on 27 October 2026; the page fills in what arrives.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
@@ -1376,10 +1397,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   W-Q11's stale comment, W-Q12 (the retry key follows the referral's words, not a 32-bit hash), W-Q13 (a file waiting
   for the bot check says so; New York City tagged "Its own intake"; the screen-reader count first in the step), W-Q15,
   and W-Q19's `tests\every-step-check.mjs` (every step of every case type, both ways: 108). Checks
-  `tests\overnight-check.mjs`. **For W103's mockups** (anything that looks different): W-Q10's colours (white on orange
-  in the advice panel's heading and the Print button, 2.8 to 1; box and tick-box edges under 3 to 1), W-Q08 (one "What
-  is it?" for every Something else file on the portal page; its placeholder cut short), W-Q13's portal sentence ("It
-  will not work anywhere else…"), W-S06's "Start over". **The owner's to decide:** W-S01 (the base's ID and two share
+  `tests\overnight-check.mjs`. **The look items, built after mockups** (not yet published): W-Q10's colours (W108 1),
+  W-Q08's one "What is it?" for every Something else file (W109 1), W-Q13's portal sentence (W110 1), W-S06's "Start
+  over" (W111 1). **The owner's to decide:** W-S01 (the base's ID and two share
   addresses are in the public history: they open nothing; rewriting the history is not advised) and W-S04 (HSTS and
   framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
   the portal worker's rows. **W-Q02 and W-Q03 turned out to need no worker change (the worker chat) and are fixed here

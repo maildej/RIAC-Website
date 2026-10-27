@@ -325,6 +325,17 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   .sec-foot .btn { width: 100%; }
 }
 
+/* W104 B2: opened from the portal, step 2 as a summary of the signed-in details, its band green with Change at its end */
+.ruled .sheet .sec-h.ok { background: color-mix(in srgb, var(--r2) 14%, white); color: #1d5a2a; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.ruled .sheet .sec-h.ok .chg { font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--navy); background: #fff;
+  border: 1px solid #838d9b; border-radius: 6px; padding: .2rem .6rem; white-space: nowrap; cursor: pointer; }
+.ruled .sheet .sec-h.ok .chg:hover { background: color-mix(in srgb, var(--navy) 6%, white); }
+.ruled .sheet .sec-h.ok .chg:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.ro { font-size: var(--fs-small); color: var(--ink); line-height: 1.5; overflow-wrap: anywhere; }
+.ro.who { font-weight: 600; color: var(--navy); }
+.ro .pl { display: block; font-size: var(--fs-label); color: var(--muted); }
+.ruled .qrow.ro-row > .a { display: flex; align-items: center; }
+
 /* ---------- Step 1: the county and its center (W1, W7, W8, W10) ---------- */
 
 .centre-line { display: flex; align-items: center; gap: .7rem; background: color-mix(in srgb, var(--navy) 6%, white); border-radius: 8px; padding: .75rem 1rem; font-size: var(--fs-small); color: var(--navy); }
@@ -627,11 +638,20 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .me-fields .who dd { font-weight: 600; color: var(--navy); }
 .me-out { height: 2.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 .85rem; font-size: var(--fs-label); margin: 0; }
 .portal-head .me-note { font-size: var(--fs-label); color: var(--muted); font-style: italic; margin-top: .55rem; }
+/* W104 A1: Send Us A New Case beside Sign Out, the two one size, the form's symbol in a small cream circle */
+.me-acts { display: grid; grid-template-columns: 12.5rem 12.5rem; gap: .6rem; }
+.me-acts .btn { height: 2.3rem; padding: 0 .8rem; font-size: var(--fs-label); margin: 0; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
+.me-new .tile-sym { width: 1.55rem; height: 1.55rem; border-radius: 50%; background: var(--cream); color: var(--navy); --icon-fill: var(--cream); --icon-accent: var(--r5); }
+.me-new .tile-sym svg { width: 17px; height: 17px; }
+@media (min-width: 601px) { .me-row { align-items: center; } }
 @media (max-width: 600px) {
   .me-row { flex-direction: column; align-items: stretch; gap: .7rem; }
   .me-fields { display: grid; grid-template-columns: 1fr; gap: .5rem; }
   .me-out { width: 100%; }
+  .me-acts { grid-template-columns: 1fr; }
+  .me-acts .btn { height: 2.6rem; font-size: var(--fs-small); }
 }
+@media (max-width: 360px) { .me-acts .btn { font-size: var(--fs-label); padding: 0 .6rem; } }   /* "Send Us A New Case" kept inside the card, the pair one size */
 
 .list-head { display: flex; align-items: center; gap: 1rem; margin-bottom: .4rem; }
 .list-head h2 { font-size: var(--fs-section); color: var(--navy); white-space: nowrap; }
