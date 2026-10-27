@@ -1256,8 +1256,10 @@ every key and code the pages send.
   `officeType` one of the form's six codes, `office` exactly one of `/v1/lists`' offices (checked by the worker), each
   null when unknown. ⚠️ **Today `me` holds the address alone**: the attorney's name, office and phone were to come from a
   table in the portal's database that was planned (15 October) and never built, so the worker chat has asked the
-  database chat (RR) to supply them; the worker's few lines follow, pushed outside the batches. Until then the new keys
-  come as null and only the email is filled in, so the page is safe to go live first. Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
+  database chat (RR) to supply them. The worker's side is on its main (da0d8d63, deployed with it): every key always
+  present, null until the database holds them. Until then only the email is filled in, so the page is safe to go live
+  first. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
+  eight keys arrive, step 2 opens as the boxes with the email filled in, no page errors). Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
   sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
@@ -1402,9 +1404,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   and W-Q19's `tests\every-step-check.mjs` (every step of every case type, both ways: 108). Checks
   `tests\overnight-check.mjs`. **The look items, built after mockups** (not yet published): W-Q10's colours (W108 1),
   W-Q08's one "What is it?" for every Something else file (W109 1), W-Q13's portal sentence (W110 1), W-S06's "Start
-  over" (W111 1). **The owner's to decide:** W-S01 (the base's ID and two share
-  addresses are in the public history: they open nothing; rewriting the history is not advised) and W-S04 (HSTS and
-  framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
+  over" (W111 1). **The owner's to decide:** W-S01 (the base's ID and two share addresses are in the public history:
+  they open nothing, and none is in the current files, checked 27 October; rewriting the history is not advised) and
+  W-S04 (HSTS and framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
   the portal worker's rows. **W-Q02 and W-Q03 turned out to need no worker change (the worker chat) and are fixed here
   too:** a message on Send RIAC a message after the hour's upload batch has lapsed gets a new batch with the same
   sign-in, any files sent again, and goes (the worker chat has put to the owner letting a batch last the sign-in's 12
