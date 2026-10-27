@@ -173,7 +173,7 @@
     clear();
     app.appendChild(h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Check your email' }),
       h('p', null, ['If ', h('strong', { text: email }), ' can see referrals, an email from ', h('strong', { text: 'portal@nyriac.com' }), ' is on its way with your sign-in link.']),
-      h('p', { class: 'tinted' }, [h('strong', { text: 'Open the link on this device, in this browser.' }), ' It will not work anywhere else, so that a forwarded email lets nobody in.']),
+      h('p', { class: 'tinted' }, [h('strong', { text: 'Open the link on this device, in this browser.' }), ' It works only here, so a forwarded email lets nobody in.']),
       h('p', { class: 'small', text: 'It works once, within 15 minutes. Nothing after a few minutes? Look in your junk folder, or send another.' }),
       h('button', { type: 'button', class: 'btn btn-navy', on: { click: function () { signInCard(email); } } }, ['Send Another Link']),
       h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { signInCard(''); } } }, ['Use A Different Email Address'])]));

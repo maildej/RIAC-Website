@@ -1156,6 +1156,15 @@ every key and code the pages send.
   two custody groups). Still to come, one decision at a time, a mockup first: the case
   types as cards with symbols and the county a search-and-choose list (comments 1, 2), the office and court lists
   dropping down under the box as the charges do (comment 3), and W104 (comment 5a).
+- **W104 to W111, the overnight mockups** (drawn 27 October 2026, 1 to 2 AM, on the owner's D63; each put to him with a
+  recommendation): **the owner's yes to every recommendation** (27 October 2026, about 2 PM: "Yes: build W104 to W111 as
+  you recommended, one at a time, and show me each before publishing."). Each is built on its own and published only on
+  his yes. The shared brief is `riac-handover\W\mockup-brief-overnight.md`; the mockups are in `design\w104\` to `w111\`.
+- **W110 1** (27 October 2026; the overnight review's W-Q13): after "Email Me A Sign-In Link", the "Check your email"
+  card's tinted box reads **"Open the link on this device, in this browser. It works only here, so a forwarded email lets
+  nobody in."** (it said "It will not work anywhere else, so that a forwarded email lets nobody in."). Chosen over "It
+  will not work on another phone or computer, or in another browser, …" ("2"). Pictures `riac-handover\W\design\w110\`
+  (mockup) and `w110c\` (as built); check `tests\w110c-shots.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
