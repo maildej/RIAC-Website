@@ -1251,10 +1251,13 @@ every key and code the pages send.
   only if its own lists have it; the summary shows only when every required answer is there (both names, an email the
   system can take, an office type other than privately retained, and for an office type with a list an office from it),
   otherwise the boxes come partly filled. The sign-in's details do not count as answers for Start over (W111 1). What is
-  sent is unchanged. **The worker's side** (asked of the worker chat, 27 October 2026, 2:05 PM): `me.firstName` and
-  `me.lastName` apart, `me.officeType` (one of the form's six codes) and the office named exactly as `/v1/lists` names it;
-  until then only the email and phone (and an office the lists happen to have) are filled in, so the page is safe before
-  the worker's change. Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
+  sent is unchanged. **The worker's side, contract draft 26** (the worker chat, 27 October 2026): `me` is `{ name,
+  firstName, lastName, isAttorney, officeType, office, email, phone }`, the names kept apart as RIAC holds them,
+  `officeType` one of the form's six codes, `office` exactly one of `/v1/lists`' offices (checked by the worker), each
+  null when unknown. ⚠️ **Today `me` holds the address alone**: the attorney's name, office and phone were to come from a
+  table in the portal's database that was planned (15 October) and never built, so the worker chat has asked the
+  database chat (RR) to supply them; the worker's few lines follow, pushed outside the batches. Until then the new keys
+  come as null and only the email is filled in, so the page is safe to go live first. Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
   sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
