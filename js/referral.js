@@ -1424,6 +1424,12 @@
       if (r.status === 0) { sendMessage(['Your referral may not have been sent: the connection failed. Check your connection and press Send again; it will not arrive twice.'], true); return; }
       if (r.status === 400 && expired(r.body)) { pendingSend = true; pendingNote = 'The upload had expired. One more check that you are not a robot, then the files and the referral are sent again.'; renewBatch(); return; }
       if (r.status === 400 && r.body.error === 'invalid') { workerErrors(r.body.fields || []); return; }
+      // Two refusals share 413: the files too large for a centre reached by email, and the answers too long (W-Q03)
+      if (r.status === 413 && ((r.body.fields || [])[0] || {}).problem === 'too-large-for-email') {
+        sendMessage([PROBLEMS['too-large-for-email'] + ' ', h('a', { href: '#', class: 'err-link', on: { click: function (ev) { ev.preventDefault(); go(STEP_IDS.indexOf('documents')); } } },
+          ['Remove some at step 8, Documents ›']), ' Larger files can be sent to the center directly after Send.'], true);
+        return;
+      }
       if (r.status === 413) { tooLong(r.body.fields && r.body.fields[0] && r.body.fields[0].key); return; }
       if (r.status === 503 && r.body.error === 'daily-limit') { showDailyLimit(); return; }
       sendMessage(['The referral could not be sent just now. Please try again in a few minutes; it will not arrive twice.'], true);

@@ -1293,7 +1293,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   will not work anywhere else…"), W-S06's "Start over". **The owner's to decide:** W-S01 (the base's ID and two share
   addresses are in the public history: they open nothing; rewriting the history is not advised) and W-S04 (HSTS and
   framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
-  the portal worker's rows, W-Q02, W-Q03.
+  the portal worker's rows. **W-Q02 and W-Q03 turned out to need no worker change (the worker chat) and are fixed here
+  too:** a message on Send RIAC a message after the hour's upload batch has lapsed gets a new batch with the same
+  sign-in, any files sent again, and goes (the worker chat has put to the owner letting a batch last the sign-in's 12
+  hours instead); a referral refused because its files are too large for a centre reached by email now says so, with a
+  link to Documents, not "too long" (`tests\q02-q03-check.mjs`).
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14

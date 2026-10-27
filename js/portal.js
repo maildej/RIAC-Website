@@ -620,6 +620,23 @@
         btn.disabled = false; btn.textContent = 'Send To RIAC';
         if (res.status === 401) { location.replace('./'); return; }
         if (res.status === 400 && (res.body.fields || []).some(function (f) { return f.key === 'addition.message' && f.problem === 'required'; })) { wordsNeeded(); return; }
+        // The upload batch lasts an hour (W-Q02): past it, a new one with the same sign-in, any files sent into it again,
+        // and the message sent again under a new key (the old key went with the old batch); once a minute at most
+        if (res.status === 400 && (res.body.fields || []).some(function (f) { return f.key === 'uploadId' && (f.problem === 'expired' || f.problem === 'used'); })
+          && !(A.renewedAt && Date.now() - A.renewedAt < 60000)) {
+          A.renewedAt = Date.now();
+          btn.disabled = true; btn.textContent = 'Sending…';
+          api('POST', '/v1/uploads', {}).then(function (b) {
+            btn.disabled = false; btn.textContent = 'Send To RIAC';
+            if (b.status !== 201) { err.appendChild(h('div', { class: 'err-summary', text: 'Messages and files cannot be sent just now. Please try again in a few minutes.' })); return; }
+            A.batch = b.body; A.key = null;
+            A.list.forEach(function (f) { if (f.state === 'done') { f.state = 'queued'; f.pct = 0; f.fileId = null; } });
+            showLimits(); pump();
+            if (!A.list.length) sendAddition(r);
+            else err.appendChild(h('div', { class: 'err-summary', text: 'The page had been open a while, so your files are being sent again. Press Send To RIAC once they have finished.' }));
+          });
+          return;
+        }
         var t = res.status === 404 ? 'This referral is not one you can add to.' : res.status === 0
           ? 'It may not have been sent: the connection failed. Press Send To RIAC again; it will not arrive twice.'
           : 'It could not be sent just now. Please try again in a few minutes; it will not arrive twice.';
