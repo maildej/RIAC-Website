@@ -1149,7 +1149,8 @@ every key and code the pages send.
   `e2e-scenarios.mjs`, `w36-e2e.mjs`, `w40-check.mjs`, `w31b-check.mjs` and `w77-check.mjs` pass against the worker
   chat's local worker. **Found with it:** since the form was built (18 October) step 6 for an **appeal or post-conviction
   relief drew nothing** (the closing note has no key, and drawing it stopped the page; `tests\live-appeal-check.mjs`);
-  fixed here, so on nyriac.com once this is published. Still to come, one decision at a time, a mockup first: the case
+  fixed, and **live on its own since 27 October 2026** (1:35 PM, the owner's yes: `main` 50fb66d, Pages run 129; checked
+  on nyriac.com: the file, and an appeal's step 6 drawing its questions). Still to come, one decision at a time, a mockup first: the case
   types as cards with symbols and the county a search-and-choose list (comments 1, 2), the office and court lists
   dropping down under the box as the charges do (comment 3), and W104 (comment 5a).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
@@ -1265,7 +1266,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     attorneys; choosing "Detained - Immigration Custody" ticks ICE involvement. This reverses W16, W17 1 (guidance
     inside boxes) and W14 2 (two answers to a row). The charges box's cursor sits half way down its guidance until
     something is typed (found by the owner): fix with W103. **W103 3 chosen and built** (26 to 27 October, see Settled),
-    with the appeal step's blank page fixed; **not yet published**: on the owner's yes. Comments 1 to 3 and 5a next.
+    the appeal step's blank page fixed and live on its own since 27 October; W103 itself **not yet published**: on the
+    owner's yes. Comments 1 to 3 and 5a next.
   - **W104**: "a way for an attorney to submit a new case through the portal, where it pre-populates their contact
     information" (needs the worker chat).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
@@ -1276,7 +1278,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 - **The overnight review (SW, 27 October 2026)**: `RIAC Parked Tweaks\Overnight review 27 Oct 2026\SW - Website
   security and quality.md` on the desktop, routed to the website chat by the dispatcher on the owner's word. **Fixed on
   this branch** (faults, no mockup; live only on the owner's yes): W-Q01 (step 6 blank for an appeal or post-conviction
-  relief; also alone on `claude/w-appeal-fix`), W-S03 (`robots.txt` keeps search engines off `CLAUDE.md`, `NOTES.md`,
+  relief; **live on its own since 27 October**, from `claude/w-appeal-fix`), W-S03 (`robots.txt` keeps search engines off `CLAUDE.md`, `NOTES.md`,
   `SETUP.md` and `tools/`, which Pages serves), W-S06 (a draft untouched for 12 hours is dropped on load: some browsers
   bring a closed tab's storage back), W-S14 (a sign-in link that met no answer, too many tries or the worker down keeps
   the browser's secret and says to open it again), W-Q04 (the portal no longer promises a message can go when the
