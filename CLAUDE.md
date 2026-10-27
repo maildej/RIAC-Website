@@ -1175,6 +1175,14 @@ every key and code the pages send.
   draft in the tab, stops any file still uploading and goes to step 1. Chosen over the link beside Back at the foot of
   each step ("2"). Pictures `riac-handover\W\design\w111\` (mockup) and `w111c\` (as built); checks
   `tests\w111-check.mjs`.
+- **W109 1** (27 October 2026; the overnight review's W-Q08): on **Send RIAC a message**, **each "Something else" file has
+  its own "What is it?"** under its name (required, one line, up to 200; *e.g. letter of support; bail decision* under
+  the label, no placeholder in the box), as the form's Your Documents (W36), since each becomes that document's
+  description at RIAC; there is none until a file is chosen. On a computer Something else's files sit beside its name, as
+  the other kinds'. A name left empty at Send is outlined in red with no words (W31) and the focus goes to it; a name being
+  typed keeps its place while another file's progress is redrawn. Each document is sent with its own `note` (the contract
+  unchanged). Chosen over one file only under Something else ("2"). Pictures `riac-handover\W\design\w109\` (mockup) and
+  `w109c\` (as built); checks `tests\w109-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

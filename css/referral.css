@@ -700,7 +700,6 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-doc .nm { font-weight: 600; color: var(--navy); }
 .add-doc .btn { height: 2.2rem; display: inline-flex; align-items: center; padding: 0 .9rem; }
 .add-doc .files { margin: 0; }
-.add-doc .other-what { margin-top: .4rem; }
 /* W78 1: the files sit in a narrow column, so at every width a file's name has its own line, with its state (or the
    reason it was refused) and Remove under it, and no size: as on a phone (beside them, the name was squeezed to a letter
    a line) */
@@ -726,12 +725,13 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card .about-ticks .tile, .add-card .add-doc .nm { font-weight: 400; }
 /* W83 1: what the attorney types at the case info's size too, a little closer to the edges (the owner: "a little big
    and padded"); the note box still opens three lines tall */
-.add-card #add-message, .add-card #a-other-note { font-size: var(--fs-small); padding: .5rem .7rem; }
+.add-card #add-message, .add-card .fnote input { font-size: var(--fs-small); padding: .5rem .7rem; }
 #add-message { min-height: 5.2rem; }
-.add-card .add-doc .other-what { margin-bottom: 0; }
+/* W109 1: each Something else file has its own "What is it?", its example under the label (as the form's Your Documents) */
+.add-card .fnote .g { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); line-height: 1.45; margin: 0 0 .3rem; }
 @media (min-width: 761px) {
   /* the state box and the files become the row's own cells: the name, state and button centred on the first line, the
-     files under the state; Something else's name and button centred on its box, "What is it?" over it */
+     files under the state (W109 1: Something else's files beside its name, each with its own "What is it?") */
   .add-doc { align-items: center; row-gap: .45rem; }
   .add-doc > div { display: contents; }
   .add-doc .nm { grid-column: 1; grid-row: 1; }
@@ -739,12 +739,8 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
   .add-doc .doc-state, .add-doc .drop-note { grid-column: 2; grid-row: 1; margin: 0; }
   .add-doc .files { grid-column: 2; min-width: 0; }
   .add-doc .doc-state ~ .files { grid-row: 2; }
-  .add-doc:not(#a-other):not(:has(.doc-state)):has(.files) { align-items: start; }
-  #a-other .other-what { display: contents; }
-  #a-other .other-what > label { grid-column: 2; grid-row: 1; margin: 0; }
-  #a-other .other-what > input { grid-column: 2; grid-row: 2; }
-  #a-other .nm, #a-other > .btn { grid-row: 2; }
-  #a-other .files { grid-row: 3; }
+  .add-doc:not(:has(.doc-state)):has(.files) { align-items: start; }
+  #a-other .nm, #a-other > .btn, #a-other .files { grid-row: 1; }
 }
 .added-list { font-size: var(--fs-small); margin: .4rem 0 1rem 1.2rem; }
 .add-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.2rem; }

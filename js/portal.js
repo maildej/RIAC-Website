@@ -524,12 +524,20 @@
     var input = h('input', { type: 'file', multiple: true, class: 'visually-hidden', id: id + '-file', accept: '.pdf,.docx,.jpg,.jpeg,.png,.heic,application/pdf,image/jpeg,image/png,image/heic' });
     input.addEventListener('change', function () { addFiles(kind, input.files); input.value = ''; });
     var right = h('div', { id: id + '-files' }, [kind === 'other' ? null : docState(r, kind)]);
-    var row = h('div', { class: 'add-doc', id: id }, [h('span', { class: 'nm', text: info.name }), right, h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input]);
-    if (kind === 'other') {
-      right.appendChild(h('div', { class: 'field other-what' }, [h('label', { for: 'a-other-note', text: 'What is it?' }),
-        h('input', { type: 'text', id: 'a-other-note', maxlength: '200', placeholder: 'One line: it becomes RIAC’s description of the document' })]));
-    }
-    return row;
+    return h('div', { class: 'add-doc', id: id }, [h('span', { class: 'nm', text: info.name }), right, h('label', { class: 'btn btn-plain', for: id + '-file', text: 'Choose Files' }), input]);
+  }
+  // W109 1 (the overnight review's W-Q08): each Something else file has its own "What is it?", as the form's Your
+  // Documents (W36), since each becomes that document's description at RIAC
+  function fileNote(f) {
+    var id = 'n-' + f.id;
+    return h('div', { class: 'field fnote', id: id + '-w' }, [
+      h('label', { for: id }, ['What is it? ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
+      h('span', { class: 'g', id: id + '-g', text: 'e.g. letter of support; bail decision' }),
+      h('input', { type: 'text', id: id, maxlength: '200', value: f.note || '', autocomplete: 'off', 'data-fnote': f.id, 'aria-describedby': id + '-g',
+        on: { input: function (e) {
+          f.note = e.target.value;
+          if (f.note.trim()) { var w = document.getElementById(id + '-w'); if (w) w.classList.remove('has-err'); e.target.removeAttribute('aria-invalid'); }
+        } } })]);
   }
   function addFiles(kind, files) {
     Array.prototype.forEach.call(files, function (file) {
@@ -540,6 +548,9 @@
     drawFiles(); pump();
   }
   function drawFiles() {
+    // a name being typed keeps its place while the progress bars are redrawn
+    var ae = document.activeElement, aid = ae && ae.dataset && ae.dataset.fnote ? ae.id : null, s0 = aid ? ae.selectionStart : 0, s1 = aid ? ae.selectionEnd : 0;
+    var red = Array.prototype.map.call(document.querySelectorAll('.fnote.has-err'), function (w) { return w.id; });
     A.kinds.forEach(function (kind) {
       var holder = document.getElementById('a-' + kind + '-files');
       if (!holder) return;
@@ -554,9 +565,12 @@
         else if (f.state === 'failed') st = h('span', { class: 'fstate bad', text: f.error || 'Did not upload' });
         else { var bar = h('span'); bar.style.width = (f.pct || 0) + '%'; st = h('span', { class: 'fstate' }, [h('span', { class: 'bar', 'aria-hidden': 'true' }, [bar]), ' ' + (f.pct || 0) + '%']); }
         return h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) }), st,
-          h('button', { type: 'button', class: 'link-btn', on: { click: function () { A.list = A.list.filter(function (x) { return x.id !== f.id; }); delete A.files[f.id]; drawFiles(); } } }, ['Remove'])]);
+          h('button', { type: 'button', class: 'link-btn', on: { click: function () { A.list = A.list.filter(function (x) { return x.id !== f.id; }); delete A.files[f.id]; drawFiles(); } } }, ['Remove']),
+          kind === 'other' ? fileNote(f) : null]);
       })));
     });
+    red.forEach(function (wid) { var w = document.getElementById(wid); if (w) { w.classList.add('has-err'); w.querySelector('input').setAttribute('aria-invalid', 'true'); } });
+    if (aid) { var el = document.getElementById(aid); if (el) { el.focus({ preventScroll: true }); try { el.setSelectionRange(s0, s1); } catch (e) { /* not a text box */ } } }
   }
   function pump() {
     if (A.pumping || !A.batch) return;
@@ -601,14 +615,20 @@
       document.getElementById('add-message').setAttribute('aria-invalid', 'true');
       document.getElementById('add-message').focus();
     };
-    var note = (document.getElementById('a-other-note') || {}).value || '';
-    note = note.replace(/[\r\n]+/g, ' ').trim();
+    var noteOf = function (f) { return (f.note || '').replace(/[\r\n]+/g, ' ').trim(); };
     if (A.list.some(function (f) { return f.state === 'queued' || f.state === 'uploading'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Please wait for every file to finish uploading.' })); return; }
     if (A.list.some(function (f) { return f.state === 'failed'; })) { err.appendChild(h('div', { class: 'err-summary', text: 'Remove the files that did not upload, or choose them again.' })); return; }
-    var docs = A.list.filter(function (f) { return f.state === 'done'; }).map(function (f) { return { kind: f.kind, fileField: f.fileId, note: f.kind === 'other' ? note : null }; });
+    var docs = A.list.filter(function (f) { return f.state === 'done'; }).map(function (f) { return { kind: f.kind, fileField: f.fileId, note: f.kind === 'other' ? noteOf(f) : null }; });
     if (about !== 'message' && !message) { wordsNeeded(); return; }
     if (!message && !docs.length) { err.appendChild(h('div', { class: 'err-summary', text: 'Please write a note to RIAC, or choose at least one file.' })); return; }
-    if (docs.some(function (d) { return d.kind === 'other'; }) && !note) { err.appendChild(h('div', { class: 'err-summary', text: 'Please say what the "Something else" file is.' })); return; }
+    // a Something else file with no name is outlined in red, with no words (W31, as the form's Your Documents)
+    var unnamed = A.list.filter(function (f) { return f.state === 'done' && f.kind === 'other' && !noteOf(f); });
+    if (unnamed.length) {
+      unnamed.forEach(function (f) { var w = document.getElementById('n-' + f.id + '-w'); if (w) { w.classList.add('has-err'); w.querySelector('input').setAttribute('aria-invalid', 'true'); } });
+      err.appendChild(h('p', { class: 'visually-hidden', text: unnamed.length === 1 ? 'Say what the Something else file is.' : 'Say what each of the ' + unnamed.length + ' Something else files is.' }));
+      document.getElementById('n-' + unnamed[0].id).focus();
+      return;
+    }
     if (!A.batch) { err.appendChild(h('div', { class: 'err-summary', text: 'Messages and files cannot be sent just now. Please try again in a few minutes.' })); return; }
     A.key = A.key || uuid();
     A.sending = true;
