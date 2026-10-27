@@ -507,8 +507,40 @@
     wrap.appendChild(h('p', { class: 'now', text: 'Step ' + (S.step + 1) + ' of 9 · ' + stepName(S.step) }));
     var bar = h('span'); bar.style.width = (countable ? Math.round(done / countable * 100) : 0) + '%';
     wrap.appendChild(h('div', { class: 'progress', 'aria-hidden': 'true' }, [bar]));
-    wrap.appendChild(h('p', { class: 'progress-note', text: done + ' of ' + countable + ' sections done' }));
+    var note = h('p', { class: 'progress-note' }, [h('span', { text: done + ' of ' + countable + ' sections done' })]);
+    if (begun() && !sending) {
+      note.appendChild(h('span', { class: 'sep', 'aria-hidden': 'true' }));
+      note.appendChild(h('button', { type: 'button', class: 'so-link', id: 'start-over', 'aria-expanded': asking ? 'true' : 'false',
+        on: { click: function () { asking = true; render('so-keep'); } } }, ['Start over']));
+    }
+    wrap.appendChild(note);
+    if (asking && begun() && !sending) wrap.appendChild(startOverAsk());
     return wrap;
+  }
+
+  // W111 1: "Start over" (the overnight review's W-S06: a half-filled referral can come back after the tab is closed)
+  var asking = false;
+  function begun() {
+    return S.visited > 0 || !!S.route.county || S.route.outside || S.people.length > 0 || S.charges.length > 0 || allFiles().length > 0 ||
+      Object.keys(S.A).some(function (k) { var v = S.A[k]; return v !== '' && v !== null && v !== undefined && v !== false && !(Array.isArray(v) && !v.length); });
+  }
+  function startOverAsk() {
+    var keep = function () { asking = false; render('start-over'); };
+    return h('div', { class: 'so-ask', role: 'alertdialog', 'aria-labelledby': 'so-q', 'aria-describedby': 'so-d',
+      on: { keydown: function (ev) { if (ev.key === 'Escape') keep(); } } }, [
+      h('p', { class: 'so-words' }, [h('strong', { id: 'so-q', text: 'Clear every answer and start again?' }),
+        h('span', { id: 'so-d', text: 'Every step is emptied, and any files attached are removed. This cannot be undone.' })]),
+      h('div', { class: 'so-btns' }, [
+        h('button', { type: 'button', class: 'btn so-clear', on: { click: startOver } }, ['Clear Every Answer']),
+        h('button', { type: 'button', class: 'btn btn-navy', id: 'so-keep', on: { click: keep } }, ['Keep My Answers'])])]);
+  }
+  function startOver() {
+    Object.keys(XHRS).forEach(function (id) { var x = XHRS[id]; x.onload = x.onerror = x.onabort = null; x.abort(); });
+    XHRS = {}; FILES = {}; pumping = false;
+    pendingSend = false; pendingNote = null; chargeQuery = ''; asking = false;
+    clearTimeout(saveTimer); clearDraft();
+    S = fresh();
+    go(0);
   }
 
   function actions(opts) {
@@ -557,7 +589,7 @@
   }
 
   function go(i) {
-    ERRORS = null;
+    ERRORS = null; asking = false;
     S.step = i;
     S.visited = Math.max(S.visited, i);
     save();

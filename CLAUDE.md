@@ -1165,6 +1165,16 @@ every key and code the pages send.
   nobody in."** (it said "It will not work anywhere else, so that a forwarded email lets nobody in."). Chosen over "It
   will not work on another phone or computer, or in another browser, …" ("2"). Pictures `riac-handover\W\design\w110\`
   (mockup) and `w110c\` (as built); check `tests\w110c-shots.mjs`.
+- **W111 1** (27 October 2026; the overnight review's W-S06: a half-filled referral can come back in some browsers after
+  the tab is closed, and the form had no way to clear it): **"Start over"**, a quiet underlined link in grey at the right
+  under the step bar, after "N of 8 sections done" and a thin divider, shown once anything has been answered (not on a
+  blank form, nor while sending). Pressed, a question opens under the step bar, edged in red: **"Clear every answer and
+  start again?"** *Every step is emptied, and any files attached are removed. This cannot be undone.*, with **Clear Every
+  Answer** (red words, outlined) and **Keep My Answers** (navy), one size: side by side on a computer, Keep My Answers on
+  top on a phone. The focus goes to Keep My Answers; Escape or Keep closes it with every answer kept. Clear empties the
+  draft in the tab, stops any file still uploading and goes to step 1. Chosen over the link beside Back at the foot of
+  each step ("2"). Pictures `riac-handover\W\design\w111\` (mockup) and `w111c\` (as built); checks
+  `tests\w111-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
