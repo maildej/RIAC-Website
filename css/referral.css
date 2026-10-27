@@ -421,6 +421,29 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .qrow.has-err > .a .cb .srch input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
 .cb input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }   /* it covered the arrow */
 @media (max-width: 600px) { .ctr .long { display: none; } .cp-matches.cty li { display: flex; gap: .7rem; } }   /* on a phone the center's name without "RIAC" */
+/* W107 3: the office and court lists, open on a press: headings for the groups, the "not listed" row kept at the foot,
+   the letters typed in bold; chosen, a green line with Change (not listed, a grey one) */
+.cp-matches li b { font-weight: 600; color: var(--navy); }
+.cp-matches.pk-list { padding: 0; overflow: hidden; }
+.pk-list .scroll { list-style: none; margin: 0; padding: 0 0 .25rem; max-height: 21rem; overflow-y: auto; }
+.pk-list .scroll::-webkit-scrollbar { width: 8px; }
+.pk-list .scroll::-webkit-scrollbar-thumb { background: #b4bcc7; border-radius: 4px; }
+.pk-list li.grp { display: block; position: sticky; top: 0; z-index: 1; cursor: default; background: #f3f4f7; border-bottom: 1px solid #e1e4e9;
+  font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: .4rem .85rem; }
+.pk-list .foot { list-style: none; margin: 0; padding: 0 0 .25rem; border-top: 1px solid #c3c9d2; }
+.pk-list .foot:empty { display: none; }
+.pk-list li.nl { padding-top: .55rem; color: var(--navy); font-weight: 600; }
+.pk-list li.nl .cls { font-weight: 400; }
+.pick-line, .nl-line { display: grid; align-items: center; gap: .2rem .6rem; font-size: var(--fs-small); line-height: 1.45; border-radius: 6px; padding: .42rem .65rem; }
+.pick-line { grid-template-columns: auto minmax(0, 1fr) auto; border: 1px solid color-mix(in srgb, var(--r2) 80%, white); background: color-mix(in srgb, var(--r2) 6%, white); }
+.pick-line .tk { display: grid; color: var(--r2); }
+.pick-line .tk svg { width: 17px; height: 17px; }
+.pick-line .nm { display: block; font-weight: 600; color: var(--navy); overflow-wrap: anywhere; }
+.pick-line .pl { display: block; font-size: var(--fs-label); color: var(--muted); }
+.nl-line { grid-template-columns: minmax(0, 1fr) auto; border: 1px solid #838d9b; background: color-mix(in srgb, var(--navy) 5%, white); color: var(--navy); font-weight: 600; }
+.pick-line .link-btn, .nl-line .link-btn { font-weight: 400; font-size: var(--fs-small); }
+.nl-line + .sub-field { margin-top: .6rem; }
+@media (max-width: 600px) { .pk-list .scroll { max-height: 24rem; } }
 .sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
 
 /* ---------- Step 8: Documents (W28) ---------- */

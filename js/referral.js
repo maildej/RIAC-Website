@@ -192,7 +192,7 @@
   function lens() { return h('span', { class: 'lens', 'aria-hidden': 'true', html: LENS }); }
   function iceSym(small) { return h('span', { class: 'ice-sym' + (small ? ' sm' : ''), 'aria-hidden': 'true', html: ICE }); }
 
-  function hintOf(q) { return q.list === 'courts' ? 'The courts of ' + S.route.county + ' County: type part of the name.' : q.guidance || q.help || null; }
+  function hintOf(q) { return q.list === 'courts' ? 'The courts of ' + S.route.county + ' County: choose from the list, or type part of the name.' : q.guidance || q.help || null; }
   function describedBy(q, id) {
     var ids = [];
     if (q.desc || q.descList) ids.push(fid(q.key) + '-d');
@@ -312,10 +312,160 @@
     var id = fid(q.key, q.alias);
     return h('div', { class: 'sub-field', id: id + '-w' }, q.type === 'check' ? checkAnswer(q, id) : qHead(q, id, id).concat(control(q, id)));
   }
+  // W107 3: the office (step 2) and the court (step 3) from a list that opens on a press, before typing: the county's
+  // offices first, the county and city courts before the town and village ones, under headings. Typing shortens it to
+  // the matches (up to 8, the letters typed in bold). "Not listed" is the list's last row, in place of a tick, and opens
+  // the details box. Chosen, the box becomes a line with a green tick and Change, as a chosen charge.
+  var pickQuery = {};   // what is typed in an office or court box, by key (not kept after a reload)
+  var pickOpen = null;  // the key whose list opens once the step is drawn again (after Change)
+  var PICK_NL = { offices: 'My office is not listed', courts: 'The court is not listed, or is outside New York' };
+  var TICK_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.6 L6.4 11.8 L13 4.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function pickOptions(q) { return q.list === 'offices' ? (LISTS ? LISTS.offices : []) : (LISTS && LISTS.courts[S.route.county]) || []; }
+  function pickParts(q, o) {
+    if (q.list === 'offices') { var m = o.match(/^(.+? County) - (.+)$/); return m ? { name: m[2], place: m[1] } : { name: o, place: '' }; }
+    return { name: o.replace(/ \([^)]+ County\)$/, ''), place: '' };
+  }
+  function pickWords(s) { return s.toLowerCase().split(/[^0-9a-z]+/).filter(Boolean); }
+  function boldTyped(s, typed) {   // the start of each word that begins with a word typed, in bold
+    return s.split(/([0-9A-Za-z]+)/).map(function (t) {
+      var w = typed.filter(function (x) { return t.toLowerCase().indexOf(x) === 0; }).sort(function (a, b) { return b.length - a.length; })[0];
+      return w ? h('span', null, [h('b', { text: t.slice(0, w.length) }), t.slice(w.length)]) : t;
+    });
+  }
+  function pickNotChosen(q) {
+    if (q.list === 'offices') return 'Please choose your office from the list' + (['public-defender', 'assigned-counsel'].indexOf(S.A['attorney.officeType']) !== -1 ? ', or “' + PICK_NL.offices + '” at its foot.' : '.');
+    return 'Please choose the court from the list, or “' + PICK_NL.courts + '” at its foot.';
+  }
+  function picker(srch, chk, det, offerNl, id) {
+    var key = srch.key, opts = pickOptions(srch), what = srch.list === 'offices' ? 'office' : 'court';
+    var v = S.A[key];
+    var chosen = !(offerNl && S.A[chk.key] === true) && v && opts.indexOf(v) !== -1 ? v : null;
+    if (offerNl && S.A[chk.key] === true) {   // not listed: a grey line with Change
+      return [h('div', { class: 'nl-line' }, [h('span', { text: PICK_NL[srch.list] }),
+        h('button', { type: 'button', class: 'link-btn', id: id + '-chg', 'aria-label': 'Change: choose the ' + what + ' from the list', on: { click: function () {
+          S.A[chk.key] = false; pickOpen = key; save(); render(id); } } }, ['Change'])])];
+    }
+    if (chosen) {   // chosen from the list: a green line with Change
+      var p = pickParts(srch, chosen), tk = h('span', { class: 'tk', 'aria-hidden': 'true' });
+      tk.innerHTML = TICK_SVG;
+      return [h('div', { class: 'pick-line' }, [tk, h('span', null, [h('span', { class: 'nm', text: p.name }), p.place ? h('span', { class: 'pl', text: p.place }) : null]),
+        h('button', { type: 'button', class: 'link-btn', id: id + '-chg', 'aria-label': 'Change the ' + what, on: { click: function () {
+          S.A[key] = ''; pickOpen = key; save(); render(id); } } }, ['Change'])])];
+    }
+    if (v && !pickQuery[key]) pickQuery[key] = v;   // a value not in the list (a draft from another county): typed, not chosen
+    var input = h('input', { type: 'search', id: id, autocomplete: 'off', maxlength: '200', value: pickQuery[key] || '', role: 'combobox', 'aria-autocomplete': 'list',
+      'aria-expanded': 'false', 'aria-controls': id + '-m', 'aria-describedby': describedBy(srch, id) });
+    var chev = h('button', { type: 'button', class: 'chev', tabindex: '-1', 'aria-label': 'Show every ' + what });
+    chev.innerHTML = CHEVRON;
+    var sc = h('ul', { class: 'scroll', role: 'presentation' }), foot = h('ul', { class: 'foot', role: 'presentation' });
+    var list = h('div', { class: 'cp-matches pk-list', id: id + '-m', role: 'listbox', 'aria-labelledby': id + '-l', hidden: true }, [sc, foot]);
+    var status = h('span', { class: 'visually-hidden', role: 'status' });
+    var shown = [], active = 0, done = false;
+    function pick(o) {
+      done = true; delete pickQuery[key];
+      if (o.nl) { S.A[chk.key] = true; S.A[key] = ''; save(); render(det ? fid(det.key) : id); return; }
+      S.A[key] = o.value; if (chk) S.A[chk.key] = false;
+      save(); render(id + '-chg');
+    }
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+    function mark() {
+      shown.forEach(function (o, i) { var el = document.getElementById(id + '-o' + i); if (el) { el.classList.toggle('on', i === active); el.setAttribute('aria-selected', i === active ? 'true' : 'false'); } });
+      if (shown.length) input.setAttribute('aria-activedescendant', id + '-o' + active);
+      var on = document.getElementById(id + '-o' + active); if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest' });
+    }
+    function option(o, typed) {
+      var i = shown.length; shown.push(o);
+      var kids;
+      if (o.nl) kids = [h('span', { class: 'what', text: PICK_NL[srch.list] }), h('span', { class: 'cls', text: 'Enter its details instead' })];
+      else { var p = pickParts(srch, o.value); kids = [h('span', { class: 'what' }, boldTyped(p.name, typed)), p.place ? h('span', { class: 'cls' }, boldTyped(p.place, typed)) : null]; }
+      var li = h('li', { class: o.nl ? 'nl' : null, id: id + '-o' + i, role: 'option', 'aria-selected': 'false' }, kids);
+      li.addEventListener('mousedown', function (e) { e.preventDefault(); });   // keeps the box focused
+      li.addEventListener('click', function () { pick(o); });
+      return li;
+    }
+    function draw(text) {
+      sc.textContent = ''; foot.textContent = ''; shown = [];
+      var typed = pickWords(text || ''), count;
+      if (!typed.length) {   // everything, in groups
+        var groups;
+        if (srch.list === 'offices') {
+          var mine = S.route.county ? opts.filter(function (o) { return o.indexOf(S.route.county + ' County') === 0; }) : [];
+          groups = mine.length ? [['In ' + S.route.county + ' County', mine], ['All other offices', opts.filter(function (o) { return mine.indexOf(o) === -1; })]] : [['All offices', opts]];
+        } else {
+          var tv = function (o) { return / (Town|Village) Court/.test(o); };
+          groups = [['County and city courts', opts.filter(function (o) { return !tv(o); })], ['Town and village courts', opts.filter(tv)]];
+        }
+        groups.forEach(function (g) {
+          if (!g[1].length) return;
+          sc.appendChild(h('li', { class: 'grp', role: 'presentation', text: g[0] + ' (' + g[1].length + ')' }));
+          g[1].forEach(function (o) { sc.appendChild(option({ value: o }, [])); });
+        });
+        count = opts.length;
+      } else {
+        var all = opts.filter(function (o) { var ow = pickWords(o); return typed.every(function (w) { return ow.some(function (x) { return x.indexOf(w) === 0; }); }); });
+        if (srch.list === 'offices' && S.route.county) {   // the county's offices first
+          var c0 = S.route.county + ' County';
+          all = all.filter(function (o) { return o.indexOf(c0) === 0; }).concat(all.filter(function (o) { return o.indexOf(c0) !== 0; }));
+        } else if (srch.list === 'courts') {   // names that start with what is typed first
+          all = all.filter(function (o) { return pickWords(o)[0].indexOf(typed[0]) === 0; }).concat(all.filter(function (o) { return pickWords(o)[0].indexOf(typed[0]) !== 0; }));
+        }
+        all.slice(0, 8).forEach(function (o) { sc.appendChild(option({ value: o }, typed)); });
+        if (all.length > 8) sc.appendChild(h('li', { class: 'more', role: 'presentation', text: 'More match: type more of the name' }));
+        if (!all.length) sc.appendChild(h('li', { class: 'more', role: 'presentation', text: 'Nothing in the list matches.' }));
+        count = all.length;
+      }
+      if (offerNl) foot.appendChild(option({ nl: true }, []));
+      if (!shown.length) { close(); return; }
+      var at = typed.length ? 0 : shown.map(function (o) { return o.value; }).indexOf(v);
+      active = at < 0 ? 0 : at;
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      mark();
+      status.textContent = (typed.length ? (count === 1 ? 'One ' + what + ' matches.' : count ? count + ' ' + what + 's match.' : 'Nothing in the list matches.') : 'All ' + count + ' ' + what + 's.') + ' Use the arrow keys, then Enter.';
+    }
+    input.addEventListener('mousedown', function () { if (list.hidden) setTimeout(function () { draw(input.value); }, 0); });
+    input.addEventListener('input', function () { pickQuery[key] = input.value; draw(input.value); });
+    input.addEventListener('blur', function () {
+      if (done) return;
+      close();
+      var t = input.value.trim().toLowerCase();   // typed in full but not chosen: taken as chosen
+      var exact = t && opts.filter(function (o) { return o.toLowerCase() === t; })[0];
+      if (exact) pick({ value: exact });
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (list.hidden) { draw(input.value); return; }
+        active = (active + (e.key === 'ArrowDown' ? 1 : -1) + shown.length) % shown.length;
+        mark();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!list.hidden && shown[active]) pick(shown[active]);
+      } else if (e.key === 'Escape' && !list.hidden) { e.preventDefault(); close(); }
+    });
+    chev.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    chev.addEventListener('click', function () {
+      if (!list.hidden) { close(); return; }
+      if (document.activeElement !== input) input.focus();
+      draw('');
+    });
+    if (pickOpen === key) { pickOpen = null; setTimeout(function () { if (document.body.contains(input)) draw(input.value); }, 0); }
+    return [h('div', { class: 'cp-search cb pk' }, [h('div', { class: 'srch' }, [lens(), input]), chev, list, status])];
+  }
+
   // Several questions in one row: the court (or the office) from the list, "not listed", and its details.
   function groupRow(g) {
     var items = g.items.filter(visible);
     if (!items.length) return null;
+    var srch = g.items[0].type === 'search' ? g.items[0] : null;
+    var chk = g.items.filter(function (x) { return x.type === 'check'; })[0] || null;
+    var det = g.items.filter(function (x) { return x.type === 'note'; })[0] || null;
+    if (srch && (visible(srch) || (chk && visible(chk)))) {   // W107 3
+      var pid = fid(srch.key), offerNl = !!chk && visible(chk);
+      var pans = picker(srch, chk, det, offerNl, pid);
+      items.forEach(function (x) { if (x !== srch && x !== chk) pans.push(subField(x)); });   // the details, when not listed
+      return qrow(pid, qHead(srch, pid, document.getElementById(pid) || pans[0].querySelector('#' + pid) ? pid : null), pans);
+    }
     var main = items[0] === g.items[0] ? items[0] : null;
     var id = main ? fid(main.key) : fid(g.items[0].key) + '-grp';
     var ans = main ? control(main, id) : [];
@@ -544,7 +694,7 @@
   function startOver() {
     Object.keys(XHRS).forEach(function (id) { var x = XHRS[id]; x.onload = x.onerror = x.onabort = null; x.abort(); });
     XHRS = {}; FILES = {}; pumping = false;
-    pendingSend = false; pendingNote = null; chargeQuery = ''; asking = false;
+    pendingSend = false; pendingNote = null; chargeQuery = ''; pickQuery = {}; asking = false;
     clearTimeout(saveTimer); clearDraft();
     S = fresh();
     go(0);
@@ -1350,12 +1500,8 @@
       if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
       else if (q.type === 'email' && clean(v) && !/^[A-Za-z0-9._%+-]+@/.test(v.trim())) errs.push({ id: id, text: D.EMAIL_CHARS + '. Please use another address, or send your RIAC the intake form instead.' });
       if (q.type === 'charges' && chargeQuery.trim() && S.charges.length < CH.max) errs.push({ id: id, text: CH.notChosen });
-      if (q.type === 'search' && clean(v) && q.list === 'offices' && LISTS && LISTS.offices.indexOf(v.trim()) === -1) {
-        errs.push({ id: id, text: 'Please choose your office from the list, or tick Office Not Listed?' });
-      }
-      if (q.type === 'search' && clean(v) && q.list === 'courts' && LISTS && (LISTS.courts[S.route.county] || []).indexOf(v.trim()) === -1) {
-        errs.push({ id: id, text: 'Please choose the court from the list, or tick Court Not Listed / Non-NY Court?' });
-      }
+      // W107 3: an office or court typed but not chosen from the list, or one the list no longer holds (a county changed)
+      if (q.type === 'search' && LISTS && ((clean(v) && pickOptions(q).indexOf(v.trim()) === -1) || (!clean(v) && (pickQuery[q.key] || '').trim()))) errs.push({ id: id, text: pickNotChosen(q) });
     });
     return errs;
   }

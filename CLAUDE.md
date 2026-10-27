@@ -1219,7 +1219,27 @@ every key and code the pages send.
   (the step bar's band keeps the card's top corners). What is sent is unchanged. Chosen over a filter box over a list
   always open ("2"). Pictures `riac-handover\W\design\w106\` (mockup) and `w106c\` (as built); checks
   `tests\w106-check.mjs` (1360, 390, 320 px); `e2e.mjs`, `overnight-check.mjs`, `w103-check.mjs` and `w90-check.mjs`
-  now choose the county by typing or from the list.
+  now choose the county by typing or from the list. **Fixed after (27 October):** on a phone the browser's own clear
+  button covered the arrow once something was typed, and the center's dot touched the county's name.
+- **W107 3** (27 October 2026; the owner, comment 3: "Office search not obvious - I would have expected the results to
+  display in a dropdown... it made it seem like nothing was happening"): **the office (step 2) and the court (step 3) are
+  boxes whose list opens as soon as the box is pressed**, before typing, with an arrow at the box's right: **the county's
+  offices first** under "In Onondaga County (3)", then "All other offices (131)"; **the county and city courts before the
+  town and village ones**, each under its heading; each office with its county beside it (under it on a phone). Typing
+  shortens the list to the matches (up to 8, the county's offices or the names starting with what is typed first, **the
+  letters typed in bold**; "More match: type more of the name" past 8). **"Not listed" is the list's last row**, kept in
+  view at its foot: *My office is not listed* / *The court is not listed, or is outside New York*, with *Enter its
+  details instead*; it replaces the "Office Not Listed?" and "Court Not Listed / Non-NY Court?" ticks, and gives a grey
+  line with Change and the details box, focused. **Chosen, the box becomes a green line with a tick, the name (its county
+  under it) and Change**, as a chosen charge; Change opens the list again. The arrow keys, Enter and Escape as the
+  county's; a name typed in full and left is taken; typed but not chosen stops Next with *Please choose your office from
+  the list, or “My office is not listed” at its foot.* (the court's likewise). A federal defender's list has no "not
+  listed" row (as before, no tick). Guidance: *Choose from the list, or type part of the name.* and *The courts of Onondaga
+  County: choose from the list, or type part of the name.* The keys and what is sent are unchanged (`attorney.office`,
+  `attorney.officeNotListed`, `court.name`, `court.notListed` and their details). Chosen over the matches as the charges'
+  with the tick kept ("1"), and the same with "not listed" as the last row but no list before typing ("2"). Pictures
+  `riac-handover\W\design\w107\` (mockup) and `w107c\` (as built); checks `tests\w107-check.mjs` (1360, 390, 320 px);
+  `e2e.mjs` and `w103-check.mjs` now choose from the list.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

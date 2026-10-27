@@ -266,7 +266,7 @@
     SEC('Your office'),
     Q('attorney.officeType', 'Your Office Type', 'radio', { choices: CHOICES.officeType, cols: 2, required: true }),
     GROUP('Attorney’s Office / Affiliation', [
-      Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Type part of the name to find it.', show: isOffice }),
+      Q('attorney.office', 'Attorney’s Office / Affiliation', 'search', { list: 'offices', guidance: 'Choose from the list, or type part of the name.', show: isOffice }),
       Q('attorney.officeNotListed', 'Office Not Listed?', 'check', { show: function (A) { return ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1; } }),
       Q('attorney.officeDetails', 'If Your Office Was Not Listed, Enter Office Details Here', 'note', {
         show: function (A) { return (A['attorney.officeNotListed'] === true && ['public-defender', 'assigned-counsel'].indexOf(A['attorney.officeType']) !== -1) || ['none', 'non-profit'].indexOf(A['attorney.officeType']) !== -1; } })])
