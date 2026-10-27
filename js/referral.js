@@ -201,10 +201,12 @@
   }
 
   function field(q) {
+    // A paragraph (the appeal step's closing note) has no key: drawn before fid(), which needs one. Calling fid() first
+    // stopped the page at step 6 of every appeal and post-conviction referral.
+    if (q.type === 'para') return h('div', { class: 'field' }, [h('p', { class: 'desc', text: q.desc })]);
     var id = fid(q.key, q.alias);
     var A = S.A;
     var f = h('div', { class: 'field', id: id + '-w' });
-    if (q.type === 'para') { f.appendChild(h('p', { class: 'desc', text: q.desc })); return f; }
 
     if (q.type === 'ticks') return tickList(q);
     if (q.type === 'charges') return chargesField(q);
