@@ -3,3 +3,7 @@ Disallow: /advisories/*.pdf
 Disallow: /advisories/source/
 Disallow: /admin/
 Disallow: /cms/
+Disallow: /CLAUDE.md
+Disallow: /NOTES.md
+Disallow: /SETUP.md
+Disallow: /tools/

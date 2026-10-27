@@ -568,7 +568,7 @@ every key and code the pages send.
   ⚠️ The worker's contract changes with it: the notes about RIAC's advice
   (`vop.underlyingAdvisedUnknownWhy`) now come with **No** as well as Unknown, and are still refused
   under Yes; an empty box under No passes nothing on (contract draft 12, built and tested by the
-  worker chat, 18 October 2026; not yet deployed). Narrow windows (below about 1,050 px) get the phone-style step bar, since
+  worker chat, 18 October 2026; not yet deployed). Narrow windows (below about 1,120 px since 27 October; 1,050 before, which let "Probation Violation" meet "Other People": the overnight review's W-Q15) get the phone-style step bar, since
   the longer step names collide there.
 - **W21 yes** (18 October 2026): **every "Unknown - PLEASE DESCRIBE WHY" on the form becomes a
   plain "Unknown"**, as on the probation step (W20): on every screening tick list (about the
@@ -1273,6 +1273,27 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
+- **The overnight review (SW, 27 October 2026)**: `RIAC Parked Tweaks\Overnight review 27 Oct 2026\SW - Website
+  security and quality.md` on the desktop, routed to the website chat by the dispatcher on the owner's word. **Fixed on
+  this branch** (faults, no mockup; live only on the owner's yes): W-Q01 (step 6 blank for an appeal or post-conviction
+  relief; also alone on `claude/w-appeal-fix`), W-S03 (`robots.txt` keeps search engines off `CLAUDE.md`, `NOTES.md`,
+  `SETUP.md` and `tools/`, which Pages serves), W-S06 (a draft untouched for 12 hours is dropped on load: some browsers
+  bring a closed tab's storage back), W-S14 (a sign-in link that met no answer, too many tries or the worker down keeps
+  the browser's secret and says to open it again), W-Q04 (the portal no longer promises a message can go when the
+  upload batch cannot be made), W-Q05 (a refused answer outside the question lists named in words and found on its own
+  step, `OTHER_KEYS`), W-Q06 (an address with an apostrophe or other sign before the @: both pages say the system
+  cannot take it yet, `EMAIL_CHARS`; the worker could allow the apostrophe, the worker chat's call), W-Q07 (a new case
+  type, or the other way of sending, un-ticks the later steps), W-Q09 (a mangled `add.html#…` shows "not in your list"),
+  W-Q11's stale comment, W-Q12 (the retry key follows the referral's words, not a 32-bit hash), W-Q13 (a file waiting
+  for the bot check says so; New York City tagged "Its own intake"; the screen-reader count first in the step), W-Q15,
+  and W-Q19's `tests\every-step-check.mjs` (every step of every case type, both ways: 108). Checks
+  `tests\overnight-check.mjs`. **For W103's mockups** (anything that looks different): W-Q10's colours (white on orange
+  in the advice panel's heading and the Print button, 2.8 to 1; box and tick-box edges under 3 to 1), W-Q08 (one "What
+  is it?" for every Something else file on the portal page; its placeholder cut short), W-Q13's portal sentence ("It
+  will not work anywhere else…"), W-S06's "Start over". **The owner's to decide:** W-S01 (the base's ID and two share
+  addresses are in the public history: they open nothing; rewriting the history is not advised) and W-S04 (HSTS and
+  framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
+  the portal worker's rows, W-Q02, W-Q03.
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14

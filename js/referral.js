@@ -43,6 +43,9 @@
     try {
       var s = JSON.parse(sessionStorage.getItem(CFG.draftKey) || 'null');
       if (!s || s.v !== 1) return null;
+      // Some browsers bring a closed tab's storage back (reopening it, or restarting where they left off), so on a shared
+      // computer a half-filled referral could reach the next person: a draft untouched for 12 hours is dropped (W-S06)
+      if (s.at && Date.now() - s.at > 12 * 3600000) { clearDraft(); return null; }
       s.charges = s.charges || [];
       Object.keys(s.docs || {}).forEach(function (k) {   // files cannot survive a reload unless they had finished
         s.docs[k].files = (s.docs[k].files || []).filter(function (f) { return f.state === 'done'; });
@@ -54,6 +57,7 @@
   function save() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
+      S.at = Date.now();
       try { sessionStorage.setItem(CFG.draftKey, JSON.stringify(S)); } catch (e) { /* storage full or blocked: carry on */ }
     }, 250);
   }
@@ -610,7 +614,8 @@
       else (w.querySelector(':scope > .sq-body') || w.querySelector(':scope > .a') || w).appendChild(h('span', { class: 'field-err', text: e.text }));
     });
     // Said to a screen reader only: the red outline is what the page shows.
-    q.appendChild(h('p', { class: 'visually-hidden', role: 'status', text: empty ? (empty === 1 ? 'One answer is still needed; it is outlined in red.' : empty + ' answers are still needed; they are outlined in red.') : 'Please check the answers marked in red.' }));
+    var hd = q.querySelector('#step-heading');
+    q.insertBefore(h('p', { class: 'visually-hidden', role: 'status', text: empty ? (empty === 1 ? 'One answer is still needed; it is outlined in red.' : empty + ' answers are still needed; they are outlined in red.') : 'Please check the answers marked in red.' }), hd ? hd.nextSibling : q.firstChild);
   }
 
   // ---------- Step 1: County (W1, W7, W8, W10) --------------------------------------------------------------------
@@ -668,7 +673,7 @@
       var online = lc.mode === 'system' || lc.mode === 'email';
       var lab = h('label', { class: 'centre', for: rid }, [h('input', { type: 'radio', name: 'centre', id: rid, value: lc.code, 'data-route': 'centre', checked: S.route.centre === lc.code }),
         h('span', { class: 'dot', 'aria-hidden': 'true' }), h('span', { class: 'nm', text: c.name }),
-        h('span', { class: 'tag ' + (online ? 'online' : 'post'), text: online ? 'Takes referrals here' : 'By email or post' })]);
+        h('span', { class: 'tag ' + (online ? 'online' : 'post'), text: online ? 'Takes referrals here' : c.idp ? 'Its own intake' : 'By email or post' })]);
       lab.style.setProperty('--rc', c.colour);
       list.appendChild(lab);
     });
@@ -742,10 +747,10 @@
     heading(q, 'Court and case', 'The court, and where things stand.');
     if (S.sendAs === 'completed-form') {   // W13 2
       q.appendChild(h('div', { class: 'upload-on' }, ['You are sending a completed RIAC intake form. Next you give the client’s name, then upload the form at step 8, with any other documents. ',
-        h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'questions'; save(); render(); } } }, ['Answer the questions here instead ›'])]));
+        h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'questions'; S.visited = Math.min(S.visited, S.step); save(); render(); } } }, ['Answer the questions here instead ›'])]));
     } else {
       q.appendChild(h('div', { class: 'upload-switch' }, [h('span', { text: 'Already filled in a RIAC intake form (the PDF)?' }),
-        h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'completed-form'; save(); render(); } } }, ['Upload it instead ›'])]));
+        h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'completed-form'; S.visited = Math.min(S.visited, S.step); save(); render(); } } }, ['Upload it instead ›'])]));
     }
     drawList(D.STEPS.court, q);
     q.appendChild(actions());
@@ -890,6 +895,7 @@
   function fileRow(kind, f) {
     var state;
     if (f.state === 'done') state = [h('span', { class: 'fstate ok', text: '✓ Uploaded' })];
+    else if (f.state === 'queued' && !batchValid()) state = [h('span', { class: 'fstate', text: 'Waiting for the check above that you are not a robot' })];   // W-Q13
     else if (f.state === 'uploading' || f.state === 'queued') {
       var bar = h('span'); bar.style.width = (f.pct || 0) + '%';
       state = [h('span', { class: 'fstate' }, [h('span', { class: 'bar', 'aria-hidden': 'true' }, [bar]), ' ' + (f.pct || 0) + '%'])];
@@ -1215,6 +1221,7 @@
         else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, wid: q.type === 'radio' ? fid(q.key) : null, empty: true, text: 'answer' });
       }
       if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
+      else if (q.type === 'email' && clean(v) && !/^[A-Za-z0-9._%+-]+@/.test(v.trim())) errs.push({ id: id, text: D.EMAIL_CHARS + '. Please use another address, or send your RIAC the intake form instead.' });
       if (q.type === 'charges' && chargeQuery.trim() && S.charges.length < CH.max) errs.push({ id: id, text: CH.notChosen });
       if (q.type === 'search' && clean(v) && q.list === 'offices' && LISTS && LISTS.offices.indexOf(v.trim()) === -1) {
         errs.push({ id: id, text: 'Please choose your office from the list, or tick Office Not Listed?' });
@@ -1384,7 +1391,6 @@
     if (kids) m.appendChild(h('div', { class: bad ? 'err-summary' : 'limits', role: bad ? 'alert' : null }, kids));
   }
 
-  function referralHash(r) { var s = JSON.stringify(r), x = 0; for (var i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) | 0; return String(x); }
 
   function send() {
     if (sending) return;
@@ -1404,8 +1410,8 @@
     var referral = buildReferral();
     var bytes = new TextEncoder().encode(JSON.stringify({ uploadId: S.batch.uploadId, referral: referral })).length;
     if (bytes > CFG.maxReferralBytes) { tooLong(); return; }
-    var hash = referralHash(referral);
-    if (!S.send || S.send.hash !== hash) S.send = { key: uuid(), hash: hash };
+    var body = JSON.stringify(referral);   // the same answers keep their key, so a retry never sends twice (W-Q12)
+    if (!S.send || S.send.body !== body) S.send = { key: uuid(), body: body };
     save();
     sending = true; render();
     post(referral, 0);
@@ -1431,7 +1437,16 @@
     sendMessage(['This referral is too long to send in one piece. Please shorten ', h('strong', { text: q ? (q.labelHtml ? plain(q.label) : q.label) : longest }),
       ', and attach the full account as a file at step 8.'], true);
   }
+  // Answers outside the questions' lists: their words, and their step (the overnight review's W-Q05)
+  var OTHER_KEYS = {
+    anythingElse: ['Anything Else RIAC Needs To Know?', 'documents'], rapSheetComplete: ['Does The RAP Sheet Include ALL Of Your Client’s Criminal History?', 'documents'],
+    rapSheetMore: ['Criminal History Not On The RAP Sheet / Further Details', 'documents'], documents: ['Documents', 'documents'], uploadId: ['The files', 'documents'],
+    people: ['Other people', 'people'], peopleNote: ['Anyone Involved Whose Name You Do Not Know', 'people'], noOtherPeople: ['Is Anyone Else Involved In This Case?', 'people'],
+    county: ['County', 'county'], centre: ['Center', 'county'], outOfRegionReason: ['Center', 'county'], outOfRegionNote: ['About the conflict', 'county'],
+    'Idempotency-Key': ['Sending', 'check'], formVersion: ['The form', 'check']
+  };
   function findQuestion(key) {
+    if (OTHER_KEYS[key]) return { label: OTHER_KEYS[key][0] };
     var found = null;
     ['county', 'about', 'court', 'client', 'immigration'].forEach(function (sid) { flat(D.STEPS[sid]).forEach(function (q) { if (q.key === key) found = found || q; }); });
     Object.keys(D.SECTIONS).forEach(function (s) { flat(D.SECTIONS[s]).forEach(function (q) { if (q.key === key) found = found || q; }); });
@@ -1440,12 +1455,13 @@
 
   // Draft wording for the worker's refusals; the owner has the last word on it (the error states, still to settle).
   var PROBLEMS = {
-    required: 'This needs an answer.', missing: 'This section needs answers.', 'too-long': 'This answer is too long.', email: 'This is not an email address that can be used.',
+    required: 'This needs an answer.', missing: 'This section needs answers.', 'too-long': 'This answer is too long.', email: D.EMAIL_CHARS + '.',
     date: 'This is not a date.', 'not-listed': 'Choose this from the list, or tick Not Listed.', 'not-online': 'This center does not take referrals on this website yet.',
     'test-addresses-only': 'While the form is being tested, only a test email address can be used.', 'no-such-file': 'A file did not arrive. Please attach it again.',
     'too-large-for-email': 'The files are too large for this center, which receives referrals by email.', 'none-or-unknown-alone': 'None or Unknown cannot be ticked with other answers.'
   };
   function stepOfKey(key) {   // which step asks this answer, so a refusal can take the attorney to it
+    if (OTHER_KEYS[key]) return STEP_IDS.indexOf(OTHER_KEYS[key][1]);
     var at = -1;
     ['county', 'about', 'court', 'client', 'immigration'].forEach(function (sid) { if (at < 0 && flat(D.STEPS[sid]).some(function (q) { return q.key === key; })) at = STEP_IDS.indexOf(sid); });
     if (at >= 0) return at;
@@ -1566,6 +1582,7 @@
       S.A[k] = v;
     } else if (t.type === 'checkbox') { S.A[k] = t.checked; if (k === 'court.iceInvolvement') S.iceAuto = false; }
     else if (t.type === 'radio') {
+      if (k === 'case.caseType' && S.A[k] && S.A[k] !== t.value) S.visited = Math.min(S.visited, S.step);   // W-Q07
       S.A[k] = t.value;
       if (k === 'court.custody' && t.value === 'ice-detained' && S.A['court.iceInvolvement'] !== true) { S.A['court.iceInvolvement'] = true; S.iceAuto = true; }
       else if (k === 'court.custody' && t.value !== 'ice-detained' && S.iceAuto) { S.A['court.iceInvolvement'] = false; S.iceAuto = false; }

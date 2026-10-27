@@ -150,6 +150,7 @@
     function ask() {
       var e = input.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { msg.textContent = 'Please enter your email address, like name@example.org.'; input.focus(); return; }
+      if (!/^[A-Za-z0-9._%+-]+@/.test(e)) { msg.textContent = D.EMAIL_CHARS + '. Please contact your RIAC.'; input.focus(); return; }   // W-Q06
       if (!token) { msg.textContent = botFailed ? D.BOT_CHECK_FAILED : 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
       btn.disabled = true; btn.textContent = 'Sending…';
       var secret = randomSecret();
@@ -161,6 +162,7 @@
         btn.disabled = false; btn.textContent = 'Email Me A Sign-In Link';
         if (r.status === 429) msg.textContent = 'Too many sign-in requests from here. Please wait a few minutes and try again.';
         else if (r.status === 403) msg.textContent = 'The check that you are not a robot did not pass. Please reload the page and try again.';
+        else if (r.status === 400) msg.textContent = D.EMAIL_CHARS + '. Please contact your RIAC.';
         else msg.textContent = 'The link could not be sent just now. Please try again in a few minutes.';
         if (window.turnstile && turnstileId !== null) { window.turnstile.reset(turnstileId); token = null; }
       });
@@ -196,6 +198,13 @@
     app.appendChild(h('p', { class: 'under-card', text: 'Signing you in…' }));
     if (!secret) { linkInvalid(); return true; }
     api('POST', '/v1/portal/session', { token: m[1], browserSecret: secret }).then(function (r) {
+      // No answer, too many tries, or the worker down for a moment: the link may still be good, so the secret is kept
+      // and the attorney told to open it again (W-S14); otherwise it is used up either way
+      if (r.status === 0 || r.status === 429 || r.status >= 500) {
+        app.textContent = '';
+        app.appendChild(h('p', { class: 'under-card', text: 'RIAC could not be reached just now. Please open the link in your email again in a minute or two: it still works.' }));
+        return;
+      }
       try { localStorage.removeItem(SECRET_KEY); } catch (e) { /* none */ }
       if (r.status === 200 && r.body.session) { setSession(r.body.session); list(); }
       else linkInvalid();
@@ -435,7 +444,8 @@
 
   function addPage() {
     if (!session()) { location.replace('./'); return; }
-    var ref = decodeURIComponent(location.hash.slice(1));
+    var ref = '';
+    try { ref = decodeURIComponent(location.hash.slice(1)); } catch (e) { /* a mangled link: "not in your list" (W-Q09) */ }
     clear();
     app.appendChild(h('p', { class: 'under-card', text: 'Loading…' }));
     api('GET', '/v1/portal/referrals').then(function (r) {
@@ -447,7 +457,7 @@
       drawAdd(found);
       api('POST', '/v1/uploads', {}).then(function (b) {
         if (b.status === 201) { A.batch = b.body; showLimits(); pump(); }
-        else setLimits('Files cannot be added just now. You can still send a message.');
+        else setLimits('Messages and files cannot be sent just now. Please try again in a few minutes.');   // W-Q04
       });
     });
   }
@@ -599,7 +609,7 @@
     if (about !== 'message' && !message) { wordsNeeded(); return; }
     if (!message && !docs.length) { err.appendChild(h('div', { class: 'err-summary', text: 'Please write a note to RIAC, or choose at least one file.' })); return; }
     if (docs.some(function (d) { return d.kind === 'other'; }) && !note) { err.appendChild(h('div', { class: 'err-summary', text: 'Please say what the "Something else" file is.' })); return; }
-    if (!A.batch) { err.appendChild(h('div', { class: 'err-summary', text: 'Files cannot be added just now. Please try again in a few minutes.' })); return; }
+    if (!A.batch) { err.appendChild(h('div', { class: 'err-summary', text: 'Messages and files cannot be sent just now. Please try again in a few minutes.' })); return; }
     A.key = A.key || uuid();
     A.sending = true;
     var btn = document.getElementById('add-send'); btn.disabled = true; btn.textContent = 'Sending…';

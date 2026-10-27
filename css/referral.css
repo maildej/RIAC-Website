@@ -465,7 +465,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 /* ---------- Narrow windows and phones ---------- */
 
 /* Below about 1,050px the longer step names collide, so the bar shows numbers and the current step's name (W20). */
-@media (max-width: 1050px) {
+@media (max-width: 1120px) {   /* 1,050 until 27 October: "Probation Violation" met "Other People" below about 1,110 (W-Q15) */
   .steps .lbl { display: none; }
   .steps .n { margin-bottom: 0; }
   .steps-wrap .now { display: block; text-align: center; font-size: var(--fs-small); font-weight: 600; color: var(--navy); margin-top: .6rem; }

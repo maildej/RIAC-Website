@@ -9,7 +9,6 @@
 
   var CONFIG = {
     worker: local ? 'http://localhost:8789' : 'https://riac-referrals.djackson-314.workers.dev',
-    // Cloudflare's published test key (always passes) until the owner makes the real widget.
     turnstileKey: local ? '1x00000000000000000000AA' : '0x4AAAAAAFbnCVMLz6_diRwD',   // live: the widget "nyriac.com referrals and portal"; local: Cloudflare's test key
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft',
@@ -374,6 +373,10 @@
     return k;
   }
 
+  // The worker takes only letters, digits and . _ % + - before the @ (an apostrophe is legal in an address, but not
+  // there yet): said by the form and the portal's sign-in, which otherwise read as a wrong address (overnight review W-Q06)
+  var EMAIL_CHARS = 'RIAC’s system cannot take this address yet: before the @ it takes only letters, digits and . _ % + -';
+
   // W46 1: shown on the form and the portal's sign-in when Cloudflare's check fails to load or does not pass
   var BOT_CHECK_FAILED = 'The check that you are not a robot could not be completed. Please reload the page and try again.';
 
@@ -406,7 +409,7 @@
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { county: COUNTY, about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
-    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
+    SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, EMAIL_CHARS: EMAIL_CHARS, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
     DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE, CHARGES: CHARGES
   };
 })();
