@@ -1207,6 +1207,19 @@ every key and code the pages send.
   codes sent are unchanged; the words, descriptions and symbols are `CASE_TYPES` in `js/referral-data.js`. Chosen over
   two groups, Criminal and Non-criminal, without symbols ("2"), and today's tiles tidied ("3"). Pictures
   `riac-handover\W\design\w105\` (mockup) and `w105c\` (as built); checks `tests\w105-check.mjs` (1360 to 320 px).
+- **W106 1** (27 October 2026; the owner, comment 2: "Can this be a search AND select drop down?"): **the county is one
+  box, as the charges'** (W101 1a), with a magnifier and, at its right, an arrow, *Type part of its name, or open the
+  whole list with the arrow.* under the question. Typing drops down the counties that match (each word typed the start of
+  a word of the name, so "st law" finds St. Lawrence; a name that starts with what is typed first), **each with a dot in
+  its center's colour and the center that receives its referrals** (without "RIAC" on a phone); the arrow opens every
+  county, the one chosen marked and in view. **"The court is outside New York State" (for removal "My office is outside
+  New York State") is always last, in view at the list's foot** under a dashed line. The arrow keys move, Enter or a
+  click chooses, Escape closes and puts back the county chosen; a name typed in full and left is taken, a part is not.
+  Chosen, the box reads the county, the center line under it as before. While a list is open the card stops clipping it
+  (the step bar's band keeps the card's top corners). What is sent is unchanged. Chosen over a filter box over a list
+  always open ("2"). Pictures `riac-handover\W\design\w106\` (mockup) and `w106c\` (as built); checks
+  `tests\w106-check.mjs` (1360, 390, 320 px); `e2e.mjs`, `overnight-check.mjs`, `w103-check.mjs` and `w90-check.mjs`
+  now choose the county by typing or from the list.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

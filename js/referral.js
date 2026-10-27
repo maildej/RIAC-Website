@@ -726,22 +726,110 @@
       ? { label: 'County where your office is', outside: 'My office is outside New York State' }
       : { label: 'County where the case is pending', outside: 'The court is outside New York State' };
   }
+  // W106 1: the county as one box, as the charges' (W101 1a): typing drops down the counties that match, each with the
+  // center that receives its referrals; the arrow opens the whole list. The "outside New York" choice is always last, in
+  // view at the list's foot. Chosen, the box reads the county and the center line is under it.
+  var CHEVRON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 L8 10.5 L12.5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function countyMatches(text) {
+    var all = LISTS.counties.slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+    var typed = text.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+    if (!typed.length) return all;
+    var hits = all.filter(function (c) {
+      var ws = c.name.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+      return typed.every(function (t) { return ws.some(function (w) { return w.indexOf(t) === 0; }); });
+    });
+    var first = typed[0];   // a name that starts with what was typed comes first
+    return hits.filter(function (c) { return c.name.toLowerCase().indexOf(first) === 0; }).concat(hits.filter(function (c) { return c.name.toLowerCase().indexOf(first) !== 0; }));
+  }
+  function pickCounty(name) {
+    if (name === OUTSIDE) { S.route.outside = true; S.route.county = null; }
+    else { S.route.outside = false; S.route.county = name; }
+    S.route.conflict = false; S.route.centre = null;
+    save(); render('f-county');
+  }
+  function countyBox(words) {
+    var chosen = S.route.outside ? words.outside : S.route.county || '';
+    var input = h('input', { type: 'search', id: 'f-county', autocomplete: 'off', value: chosen, role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false',
+      'aria-controls': 'f-county-m', 'aria-describedby': (caseType() === 'removal' ? 'f-county-d ' : '') + 'f-county-g' });
+    var chev = h('button', { type: 'button', class: 'chev', tabindex: '-1', 'aria-label': 'Show every county' });
+    chev.innerHTML = CHEVRON;
+    var sc = h('ul', { class: 'sc', role: 'presentation' });
+    var list = h('div', { class: 'cp-matches cty', id: 'f-county-m', role: 'listbox', 'aria-label': 'Counties', hidden: true }, [sc]);
+    var status = h('span', { class: 'visually-hidden', role: 'status' });
+    var shown = [], active = 0, done = false;
+    function pick(name) { done = true; pickCounty(name); }   // the box is drawn again: its blur must not act a second time
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+    function mark() {
+      shown.forEach(function (o, i) { var li = document.getElementById('f-county-o' + i); if (li) { li.classList.toggle('on', i === active); li.setAttribute('aria-selected', i === active ? 'true' : 'false'); } });
+      input.setAttribute('aria-activedescendant', 'f-county-o' + active);
+      var on = document.getElementById('f-county-o' + active); if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest' });
+    }
+    function draw(text, whole) {
+      var counties = whole ? countyMatches('') : countyMatches(text);
+      shown = counties.map(function (c) { return c.name; }).concat(OUTSIDE);
+      sc.textContent = '';
+      var old = list.querySelector('.outside'); if (old) old.remove();
+      shown.forEach(function (name, i) {
+        var el;
+        if (name === OUTSIDE) el = h('div', { class: 'outside', text: words.outside });
+        else {
+          var c = centreOf(counties[i].centre), short = c.short.replace(/^the /, '');
+          var ctr = h('span', { class: 'ctr' }, [h('i', { 'aria-hidden': 'true' }), h('span', null, [short.replace(/ RIAC$/, ''), / RIAC$/.test(short) ? h('span', { class: 'long', text: ' RIAC' }) : null])]);
+          ctr.style.setProperty('--rc', c.colour);
+          el = h('li', null, [h('span', { class: 'what', text: name }), ctr]);
+        }
+        el.id = 'f-county-o' + i;
+        el.setAttribute('role', 'option');
+        el.addEventListener('mousedown', function (e) { e.preventDefault(); });   // keeps the box focused
+        el.addEventListener('click', function () { pick(name); });
+        if (name === OUTSIDE) list.appendChild(el); else sc.appendChild(el);
+      });
+      var at = whole ? shown.indexOf(S.route.outside ? OUTSIDE : S.route.county) : 0;
+      active = at < 0 ? 0 : at;
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      mark();
+      status.textContent = (whole ? 'All ' + counties.length + ' counties.' : counties.length ? (counties.length === 1 ? 'One county matches.' : counties.length + ' counties match.') : 'No county matches.') + ' Use the arrow keys, then Enter.';
+    }
+    input.addEventListener('focus', function () { input.select(); });
+    input.addEventListener('input', function () { if (input.value.trim()) draw(input.value); else close(); });
+    input.addEventListener('blur', function () {
+      // typed in full but not chosen from the list: taken as chosen; anything else goes back to the county chosen
+      var t = input.value.trim().toLowerCase();
+      var exact = LISTS.counties.filter(function (c) { return c.name.toLowerCase() === t; })[0];
+      if (done) return;
+      close();
+      if (exact && exact.name !== S.route.county) { pick(exact.name); return; }
+      input.value = chosen;
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (list.hidden) { draw(input.value.trim() && input.value !== chosen ? input.value : '', !(input.value.trim() && input.value !== chosen)); return; }
+        active = (active + (e.key === 'ArrowDown' ? 1 : -1) + shown.length) % shown.length;
+        mark();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!list.hidden && shown[active]) pick(shown[active]);
+      } else if (e.key === 'Escape' && !list.hidden) { e.preventDefault(); close(); input.value = chosen; input.select(); }
+    });
+    chev.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    chev.addEventListener('click', function () {
+      if (!list.hidden) { close(); return; }
+      if (document.activeElement !== input) input.focus();
+      draw('', true);
+    });
+    return h('div', { class: 'cp-search cb' }, [h('div', { class: 'srch' }, [lens(), input]), chev, list, status]);
+  }
+
   function drawCounty(q) {
     heading(q, 'Case type and county', 'The kind of case, and the county that decides which regional center receives your referral.');
     var sheet = drawList(D.STEPS.county, q);
     var words = countyWords();
-    var sel = h('select', { id: 'f-county', class: 'big', 'data-route': 'county' });
-    sel.appendChild(h('option', { value: '', text: 'Choose a county' }));
-    LISTS.counties.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (c) {
-      sel.appendChild(h('option', { value: c.name, text: c.name, selected: !S.route.outside && S.route.county === c.name }));
-    });
-    sel.appendChild(h('option', { value: OUTSIDE, text: words.outside, selected: S.route.outside }));
     var head = [h('label', { class: 'lab', for: 'f-county', id: 'f-county-l' }, [words.label, ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })])];
-    if (caseType() === 'removal') {
-      head.push(h('span', { class: 'g', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }));
-      sel.setAttribute('aria-describedby', 'f-county-d');
-    }
-    var ans = [sel];
+    if (caseType() === 'removal') head.push(h('span', { class: 'g', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }));
+    head.push(h('span', { class: 'g', id: 'f-county-g', text: 'Type part of its name, or open the whole list with the arrow.' }));
+    var ans = [countyBox(words)];
     var sec = sheet.lastChild;
     var cc = countyCentre();
     if (!S.route.outside && cc && !S.route.conflict) {

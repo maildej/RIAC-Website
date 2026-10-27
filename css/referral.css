@@ -18,7 +18,7 @@
 
 .ref-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 
-.steps-wrap { padding: 1.6rem 2.2rem 1.2rem; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--navy) 3%, white); }
+.steps-wrap { border-radius: 9px 9px 0 0; padding: 1.6rem 2.2rem 1.2rem; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--navy) 3%, white); }
 .steps { list-style: none; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
 .steps li { position: relative; text-align: center; font-size: var(--fs-label); font-weight: 600; color: var(--muted); line-height: 1.3; white-space: nowrap; }
 .steps li + li::before { content: ""; position: absolute; top: 1rem; right: 50%; width: 100%; border-top: 2px solid var(--line); z-index: 0; }
@@ -399,6 +399,27 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cp-matches li.more { cursor: default; color: var(--help); font-style: italic; }
 .cp-matches li.typed-row { border-top: 1px dashed var(--line); margin-top: .25rem; padding-top: .6rem; color: var(--navy); }
 .cp-matches li.typed-row .q { font-weight: 600; }
+/* W106 1: the county as one box with an arrow for the whole list; its matches as the charges', each with the center
+   that receives its referrals, the outside choice last and always in view. A list may drop past the card's foot, so the
+   card stops clipping while one is open (the step bar's band keeps the card's top corners) */
+.cb .srch input { padding-right: 2.6rem; }
+.cb .chev { position: absolute; right: 1px; top: 1px; bottom: 1px; width: 2.4rem; display: grid; place-items: center; color: var(--navy);
+  background: none; border: 0; border-left: 1px solid #d5dae1; border-radius: 0 6px 6px 0; cursor: pointer; }
+.cb .chev svg { width: 15px; height: 15px; }
+.cp-matches.cty { padding: 0; overflow: hidden; }
+.cty .sc { list-style: none; margin: 0; padding: .25rem 0 0; max-height: 12.6rem; overflow-y: auto; }
+.cty .sc::-webkit-scrollbar { width: 8px; }
+.cty .sc::-webkit-scrollbar-thumb { background: #b4bcc7; border-radius: 4px; }
+.cty .sc::-webkit-scrollbar-track { background: transparent; }
+.cty .what { color: var(--ink); }
+.cty li.on .what { font-weight: 600; color: var(--navy); }
+.ctr { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: var(--fs-label); white-space: nowrap; }
+.ctr i { width: .6rem; height: .6rem; border-radius: 50%; background: var(--rc); flex: none; }
+.cty .outside { border-top: 1px dashed #b4bcc7; padding: .6rem .85rem .65rem; font-size: var(--fs-small); color: var(--navy); font-weight: 600; cursor: pointer; text-wrap: balance; }
+.cty .outside.on { background: color-mix(in srgb, var(--navy) 7%, white); }
+.ref-card:has(.cp-matches:not([hidden])) { overflow: visible; }
+.qrow.has-err > .a .cb .srch input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+@media (max-width: 600px) { .ctr .long { display: none; } .cty li { gap: .7rem; } }   /* on a phone the center's name without "RIAC" */
 .sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
 
 /* ---------- Step 8: Documents (W28) ---------- */
