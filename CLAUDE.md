@@ -1384,8 +1384,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     else file), W110 1 (the forwarded-email sentence), W111 1 (Start over). **All eight live since 27 October
     2026** (8:25 PM, the owner's yes; `main` 657faab).
   - **W104's worker side**: done (contract draft 26, the worker chat, deployed 27 October 2026). The attorney's names,
-    office type and office wait for the database chat (RR) to hold them; the page fills in what arrives, and
-    `tests\w104-local.mjs` is to be run again once they do.
+    office type and office wait for the database chat (RR) to hold them; the page fills in what arrives. With the local
+    worker's invented details (27 October, evening) step 2 shows the summary with all five, at 1360 and 390 px
+    (`tests\w104-local.mjs`); run it again once the live worker sends them.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
