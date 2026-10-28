@@ -1256,11 +1256,13 @@ every key and code the pages send.
   sent is unchanged. **The worker's side, contract draft 26** (the worker chat, 27 October 2026): `me` is `{ name,
   firstName, lastName, isAttorney, officeType, office, email, phone }`, the names kept apart as RIAC holds them,
   `officeType` one of the form's six codes, `office` exactly one of `/v1/lists`' offices (checked by the worker), each
-  null when unknown. ⚠️ **Today `me` holds the address alone**: the attorney's name, office and phone were to come from a
-  table in the portal's database that was planned (15 October) and never built, so the worker chat has asked the
-  database chat (RR) to supply them. The worker's side is on its main (da0d8d63, deployed with it): every key always
-  present, null until the database holds them. Until then only the email is filled in, so the page is safe to go live
-  first. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
+  null when unknown. At first `me` held the address alone: the attorney's name, office and phone were to come from a
+  table in the portal's database that was planned (15 October) and never built, so the worker chat asked the database
+  chat (RR) to supply them, and the page went live first with only the email filled in. **Since 27 October 2026 (8:54
+  PM) the live worker sends them**, once the database chat had added them that evening: the attorney's own details on
+  the newest referral that names the signed-in address as the attorney's; an address that is never the attorney's
+  still gets the address alone; the phone as the attorney wrote it; `isAttorney` false only when the office type is
+  "none" (None of These), so ", Esq." follows the form's own answer. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
   eight keys arrive, step 2 opens as the boxes with the email filled in, no page errors). Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
   sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
@@ -1383,10 +1385,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     court lists), W104 A1 + B2 (a new case from the portal), W108 1 (navy on the orange), W109 1 (a name per Something
     else file), W110 1 (the forwarded-email sentence), W111 1 (Start over). **All eight live since 27 October
     2026** (8:25 PM, the owner's yes; `main` 657faab).
-  - **W104's worker side**: done (contract draft 26, the worker chat, deployed 27 October 2026). The attorney's names,
-    office type and office wait for the database chat (RR) to hold them; the page fills in what arrives. With the local
-    worker's invented details (27 October, evening) step 2 shows the summary with all five, at 1360 and 390 px
-    (`tests\w104-local.mjs`); run it again once the live worker sends them.
+  - **W104's worker side**: done (contract draft 26, the worker chat). The live worker sends the attorney's names,
+    office type and office since 27 October 2026 (8:54 PM). With the local worker's invented details (27 October,
+    evening) step 2 shows the summary with all five, at 1360 and 390 px (`tests\w104-local.mjs`). **The one check on
+    nyriac.com is the owner's**, from his own Chrome (Cloudflare's check refuses the app's browser, and the sign-in link
+    goes to his inbox): pending.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
