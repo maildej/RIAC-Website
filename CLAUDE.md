@@ -1157,8 +1157,10 @@ every key and code the pages send.
   W106, comment 3 as W107, comment 5a as W104 (below).
 - **W104 to W111, the overnight mockups** (drawn 27 October 2026, 1 to 2 AM, on the owner's D63; each put to him with a
   recommendation): **the owner's yes to every recommendation** (27 October 2026, about 2 PM: "Yes: build W104 to W111 as
-  you recommended, one at a time, and show me each before publishing."). Each is built on its own and published only on
-  his yes. The shared brief is `riac-handover\W\mockup-brief-overnight.md`; the mockups are in `design\w104\` to `w111\`.
+  you recommended, one at a time, and show me each before publishing."). Each was built on its own and shown to him as
+  built. **All eight live since 27 October 2026** (8:25 PM, the owner's "Yes, publish W104 to W111 to nyriac.com from
+  this chat.": `main` 657faab, Pages run 131; checked on nyriac.com: every changed file served as published, step 1's six
+  case-type cards and the county box drawn, the featured advisory's words navy). The shared brief is `riac-handover\W\mockup-brief-overnight.md`; the mockups are in `design\w104\` to `w111\`.
 - **W110 1** (27 October 2026; the overnight review's W-Q13): after "Email Me A Sign-In Link", the "Check your email"
   card's tinted box reads **"Open the link on this device, in this browser. It works only here, so a forwarded email lets
   nobody in."** (it said "It will not work anywhere else, so that a forwarded email lets nobody in."). Chosen over "It
@@ -1379,10 +1381,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     items, were drawn as W104 to W111 (27 October, 1 to 2 AM) and **built on the owner's yes to every recommendation**
     (27 October, about 2 PM; see Settled): W105 1 (case types as cards), W106 1 (the county box), W107 3 (the office and
     court lists), W104 A1 + B2 (a new case from the portal), W108 1 (navy on the orange), W109 1 (a name per Something
-    else file), W110 1 (the forwarded-email sentence), W111 1 (Start over). On `claude/w-continued-10`, **not yet
-    published**: each on the owner's yes.
-  - **W104's worker side**: `me.firstName`, `me.lastName`, `me.officeType` and the office as the lists name it, asked of
-    the worker chat on 27 October 2026; the page fills in what arrives.
+    else file), W110 1 (the forwarded-email sentence), W111 1 (Start over). **All eight live since 27 October
+    2026** (8:25 PM, the owner's yes; `main` 657faab).
+  - **W104's worker side**: done (contract draft 26, the worker chat, deployed 27 October 2026). The attorney's names,
+    office type and office wait for the database chat (RR) to hold them; the page fills in what arrives, and
+    `tests\w104-local.mjs` is to be run again once they do.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
@@ -1402,7 +1405,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   W-Q11's stale comment, W-Q12 (the retry key follows the referral's words, not a 32-bit hash), W-Q13 (a file waiting
   for the bot check says so; New York City tagged "Its own intake"; the screen-reader count first in the step), W-Q15,
   and W-Q19's `tests\every-step-check.mjs` (every step of every case type, both ways: 108). Checks
-  `tests\overnight-check.mjs`. **The look items, built after mockups** (not yet published): W-Q10's colours (W108 1),
+  `tests\overnight-check.mjs`. **The look items, built after mockups** (live since 27 October 2026): W-Q10's colours (W108 1),
   W-Q08's one "What is it?" for every Something else file (W109 1), W-Q13's portal sentence (W110 1), W-S06's "Start
   over" (W111 1). **The owner's to decide:** W-S01 (the base's ID and two share addresses are in the public history:
   they open nothing, and none is in the current files, checked 27 October; rewriting the history is not advised) and
