@@ -1280,6 +1280,8 @@ every key and code the pages send.
   (the address, with no name) is one column, still centred. Chosen over a small ruled sheet like step 2's summary ("2")
   and today's one row spread with more room ("3"). Pictures `riac-handover\W\design\w112\` (mockup) and `w112c\` (as
   built); checks `tests\w98-check.mjs` (updated for W112 1: 1360 to 320 px, the office forms) and `tests\w104-check.mjs`.
+  **Live since 29 October 2026** (1:52 PM, the owner's "Yes, publish": `main` ec50fb8, Pages run 132; checked on
+  nyriac.com: the three changed files served as published, the portal's sign-in page drawing with no errors).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1405,8 +1407,13 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     evening) step 2 shows the summary with all five, at 1360 and 390 px (`tests\w104-local.mjs`). **The one check on
     nyriac.com is the owner's**, from his own Chrome (Cloudflare's check refuses the app's browser, and the sign-in link
     goes to his inbox): **done, 29 October 2026**, the card and step 2's summary as expected.
-  - **W112 1** (the cream card two by two, every value one style, the office as "Name (County)"): built 29 October 2026
-    on `claude/w-continued-11`, **not yet published**: on the owner's yes.
+  - **W112 1** (the cream card two by two, every value one style, the office as "Name (County)"): **live since 29
+    October 2026** (1:52 PM, the owner's yes; `main` ec50fb8).
+  - **W113, a six-digit sign-in code beside the link** (the owner in the worker chat, 29 October 2026: "offer a
+    six-digit code as well as the link, so the email can be read on another device"): the worker's side is done and
+    deployed (contract draft 27: `withCode: true` on the sign-in, `{ code, browserSecret }` to the session, refusals
+    `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. The page's code box
+    is this chat's: a mockup first.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
