@@ -1075,7 +1075,7 @@ every key and code the pages send.
   their own (W65 A's). Under the tag line, a thin rule, then **labelled fields**: Signed in as (the name, ", Esq." for an
   attorney; the address while the worker supplies no name), Office, Email (only beside a name) and Phone, each only when
   the worker sends it, each **a small capitalised grey label over its value** (as the list's column headings), the name
-  semibold navy; **Sign Out** last; "You stay signed in until you close this tab, or for 12 hours at most." beneath, small
+  semibold navy (**since W112 1 in the same style as the other values, and the fields two by two**); **Sign Out** last; "You stay signed in until you close this tab, or for 12 hours at most." beneath, small
   grey italics. On a computer the fields side by side in one centred row, Sign Out at its end; on a phone one under
   another, centred, Sign Out full width (a long office may wrap at a space on the smallest phones; the email never breaks).
   The title card is the page's own HTML, so `js/portal.js` adds the details when the list is drawn and `clear()` removes
@@ -1267,6 +1267,19 @@ every key and code the pages send.
   the "✓ From your sign-in" summary with all five. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
   eight keys arrive, step 2 opens as the boxes with the email filled in, no page errors). Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
   sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
+- **W112 1** (29 October 2026; the owner on the live portal: "for the cream card, the layout is a bit squished, the font
+  weight is odd (there are three different font weights/colors)"): the signed-in details in the cream "Your Referrals"
+  card (W98 1, W104 A1) are **two by two**, Signed in as and Office over Email and Phone, each a small capitalised grey
+  label over its value, **every value in one style** (regular, the ink colour; the name is no longer semibold navy), with
+  a little more room under the rule. **Above 900 px the two buttons are stacked at the right**, Send Us A New Case over
+  Sign Out, behind a thin upright rule, the whole row centred; from 601 to 900 px the pair sits side by side under the
+  fields; on a phone one column, the buttons full width, as before. **The office reads as the list writes a court**:
+  "Onondaga County - Hiscock Legal Aid Society" (as the lists name it, and as it is handed to the form) shows as
+  "Hiscock Legal Aid Society (Onondaga County)"; a name already ending in brackets takes a comma ("Misdemeanor Defense
+  Program (Hiscock Legal Aid Society), Onondaga County"); an office without "… County - " shows as sent. One field alone
+  (the address, with no name) is one column, still centred. Chosen over a small ruled sheet like step 2's summary ("2")
+  and today's one row spread with more room ("3"). Pictures `riac-handover\W\design\w112\` (mockup) and `w112c\` (as
+  built); checks `tests\w98-check.mjs` (updated for W112 1: 1360 to 320 px, the office forms) and `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1392,6 +1405,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     evening) step 2 shows the summary with all five, at 1360 and 390 px (`tests\w104-local.mjs`). **The one check on
     nyriac.com is the owner's**, from his own Chrome (Cloudflare's check refuses the app's browser, and the sign-in link
     goes to his inbox): **done, 29 October 2026**, the card and step 2's summary as expected.
+  - **W112 1** (the cream card two by two, every value one style, the office as "Name (County)"): built 29 October 2026
+    on `claude/w-continued-11`, **not yet published**: on the owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by

@@ -335,15 +335,16 @@
     var staff = false;
     // W98 1 (the owner: "the signed in card ... incorporated into the your referrals card in a structured format"): in
     // the cream title card, under its line, the details as labelled fields (each only when the worker sends it; the
-    // address is "Signed in as" until it can supply a name), Sign Out, and how long the sign-in lasts.
-    var fields = [['Signed in as', me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email, 'who'], ['Office', me.office],
+    // address is "Signed in as" until it can supply a name), Sign Out, and how long the sign-in lasts. W112 1: two by
+    // two, every value in one style, the office as the list writes a court, "Hiscock Legal Aid Society (Onondaga County)".
+    var fields = [['Signed in as', me.name ? me.name + (me.isAttorney ? ', Esq.' : '') : data.email, 'who'], ['Office', me.office && officeShown(me.office)],
       ['Email', me.name ? me.email || data.email : null], ['Phone', me.phone]].filter(function (f) { return f[1]; });
     var head = document.querySelector('.portal-head .wrap');
     // W104 A1: Send Us A New Case beside Sign Out, the pair one size; the form opens in this tab with the signed-in
     // details filled in at step 2 (what the worker sends of them, handed over in the tab under CFG.prefillKey)
     var newCase = h('a', { class: 'btn btn-navy me-new', href: '../referral.html', on: { click: function () { handOver(data); } } }, [symbol('i-consult'), 'Send Us A New Case']);
     if (head) head.appendChild(h('div', { class: 'me-fold' }, [h('div', { class: 'me-row' }, [
-      h('dl', { class: 'me-fields' }, fields.map(function (f) { return h('div', { class: f[2] }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]); })),
+      h('dl', { class: 'me-fields' + (fields.length < 2 ? ' one' : '') }, fields.map(function (f) { return h('div', { class: f[2] }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]); })),
       h('div', { class: 'me-acts' }, [newCase, h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out'])])]),
       h('p', { class: 'me-note', text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]));
 
@@ -417,6 +418,12 @@
 
   function signOut() {
     api('POST', '/v1/portal/sign-out').then(function () { endSession(); signInCard('', 'You are signed out.'); });
+  }
+  // W112 1: an office as the lists name it ("Onondaga County - Hiscock Legal Aid Society") shown as the list writes a
+  // court, "Hiscock Legal Aid Society (Onondaga County)"; after a name that already ends in brackets, a comma instead
+  function officeShown(o) {
+    var m = o.match(/^(.+? County) - (.+)$/);
+    return m ? m[2] + (/\)$/.test(m[2]) ? ', ' + m[1] : ' (' + m[1] + ')') : o;
   }
   // W104: what the worker holds of the signed-in attorney, for step 2 of the form (only what it sends; the form keeps
   // an office type or office only if its own lists have it)

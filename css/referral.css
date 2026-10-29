@@ -627,26 +627,32 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .under-card { text-align: center; font-size: var(--fs-small); color: var(--muted); margin-top: 1.2rem; }
 .under-card a { font-weight: 600; }
 
-/* The signed-in person, in the cream "Your Referrals" card (W98 1; W65 A's card of its own before): under a thin rule,
-   the fields side by side, each a small capitalised label over its value (as the list's column headings), Sign Out last
-   on the line, how long the sign-in lasts beneath; on a phone one under another, Sign Out full width */
-.me-fold { border-top: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); margin-top: .75rem; padding-top: .7rem; }
-.me-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: .5rem 2.2rem; }
-.me-fields { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 2.2rem; margin: 0; }
-.me-fields dt { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .1rem; }
-.me-fields dd { margin: 0; font-size: var(--fs-small); color: var(--ink); overflow-wrap: anywhere; }
-.me-fields .who dd { font-weight: 600; color: var(--navy); }
+/* The signed-in person, in the cream "Your Referrals" card (W98 1; W65 A's card of its own before; W112 1 the layout):
+   under a thin rule, the fields two by two, each a small capitalised label over its value (as the list's column
+   headings), every value in one style; on a computer the two buttons stacked at the right behind a thin upright rule,
+   from 601 to 900 px side by side under the fields; on a phone one column, the buttons full width; how long the sign-in
+   lasts beneath */
+.me-fold { border-top: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); margin-top: .9rem; padding-top: 1.05rem; }
+.me-row { display: flex; justify-content: center; align-items: center; }
+.me-fields { display: grid; grid-template-columns: minmax(0, auto) minmax(0, auto); gap: 1.1rem 3.2rem; margin: 0; text-align: left; min-width: 0; }
+.me-fields.one { grid-template-columns: minmax(0, auto); }
+.me-fields dt { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .25rem; }
+.me-fields dd { margin: 0; font-size: var(--fs-small); color: var(--ink); overflow-wrap: break-word; }
 .me-out { height: 2.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 .85rem; font-size: var(--fs-label); margin: 0; }
-.portal-head .me-note { font-size: var(--fs-label); color: var(--muted); font-style: italic; margin-top: .55rem; }
+.portal-head .me-note { font-size: var(--fs-label); color: var(--muted); font-style: italic; margin-top: 1rem; }
 /* W104 A1: Send Us A New Case beside Sign Out, the two one size, the form's symbol in a small cream circle */
 .me-acts { display: grid; grid-template-columns: 12.5rem 12.5rem; gap: .6rem; }
 .me-acts .btn { height: 2.3rem; padding: 0 .8rem; font-size: var(--fs-label); margin: 0; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
 .me-new .tile-sym { width: 1.55rem; height: 1.55rem; border-radius: 50%; background: var(--cream); color: var(--navy); --icon-fill: var(--cream); --icon-accent: var(--r5); }
 .me-new .tile-sym svg { width: 17px; height: 17px; }
-@media (min-width: 601px) { .me-row { align-items: center; } }
+@media (min-width: 901px) {
+  .me-fields { padding-right: 3.2rem; }
+  .me-acts { flex: none; grid-template-columns: 12.5rem; gap: .65rem; padding-left: 3.2rem; border-left: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); }
+}
+@media (max-width: 900px) { .me-row { flex-direction: column; gap: 1.1rem; } .me-fields { max-width: 100%; } }
 @media (max-width: 600px) {
-  .me-row { flex-direction: column; align-items: stretch; gap: .7rem; }
-  .me-fields { display: grid; grid-template-columns: 1fr; gap: .5rem; }
+  .me-row { align-items: stretch; }
+  .me-fields, .me-fields.one { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
   .me-out { width: 100%; }
   .me-acts { grid-template-columns: 1fr; }
   .me-acts .btn { height: 2.6rem; font-size: var(--fs-small); }
