@@ -1262,7 +1262,9 @@ every key and code the pages send.
   PM) the live worker sends them**, once the database chat had added them that evening: the attorney's own details on
   the newest referral that names the signed-in address as the attorney's; an address that is never the attorney's
   still gets the address alone; the phone as the attorney wrote it; `isAttorney` false only when the office type is
-  "none" (None of These), so ", Esq." follows the form's own answer. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
+  "none" (None of These), so ", Esq." follows the form's own answer. **Checked on nyriac.com by the owner** (29 October
+  2026, his own Chrome, his screenshots): the title card "Pat Example, Esq." with the office, email and phone, and step 2
+  the "✓ From your sign-in" summary with all five. Checked against the worker chat's local worker (`tests\w104-local.mjs`: signed in by the emailed link, the
   eight keys arrive, step 2 opens as the boxes with the email filled in, no page errors). Chosen over a band of its own above the list ("A2") and the boxes filled in with a line over the
   sheet ("B1"). Pictures `riac-handover\W\design\w104\` (mockup) and `w104c\` (as built); checks `tests\w104-check.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
@@ -1389,7 +1391,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     office type and office since 27 October 2026 (8:54 PM). With the local worker's invented details (27 October,
     evening) step 2 shows the summary with all five, at 1360 and 390 px (`tests\w104-local.mjs`). **The one check on
     nyriac.com is the owner's**, from his own Chrome (Cloudflare's check refuses the app's browser, and the sign-in link
-    goes to his inbox): pending.
+    goes to his inbox): **done, 29 October 2026**, the card and step 2's summary as expected.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
