@@ -1308,7 +1308,10 @@ every key and code the pages send.
   card as today with a small code box under the link ("2") and six boxes of one digit each ("3"). Pictures
   `riac-handover\W\design\w113\` (mockup) and `w113c\` (as built); checks `tests\w113-check.mjs` (stubbed, 1360 to 320
   px) and `tests\w113-local.mjs` (the worker chat's local worker: a wrong code refused, the first email's code still
-  signing in after a second request).
+  signing in after a second request). **Live since 29 October 2026** (about 3:35 PM, the owner's "Yes, publish": `main`
+  c0a24a7, Pages run 133; checked on nyriac.com: the three changed files served as published, the sign-in card's new
+  line and the "link cannot be used" card drawn, no errors). The one check left is the owner's, from his own Chrome: ask
+  for a sign-in, then type the code from the email read on his phone.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1440,7 +1443,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     six-digit code as well as the link, so the email can be read on another device"): the worker's side is done and
     deployed (contract draft 27: `withCode: true` on the sign-in, `{ code, browserSecret }` to the session, refusals
     `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. **W113 1 with W113 a
-    built** (29 October 2026, see Settled), **not yet published**: on the owner's yes.
+    live since 29 October 2026** (about 3:35 PM, the owner's yes; `main` c0a24a7; see Settled). **The owner's live
+    check** (his own Chrome: a sign-in asked on the computer, the code typed from the email on his phone): pending.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
