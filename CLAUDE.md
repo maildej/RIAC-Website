@@ -1282,6 +1282,33 @@ every key and code the pages send.
   built); checks `tests\w98-check.mjs` (updated for W112 1: 1360 to 320 px, the office forms) and `tests\w104-check.mjs`.
   **Live since 29 October 2026** (1:52 PM, the owner's "Yes, publish": `main` ec50fb8, Pages run 132; checked on
   nyriac.com: the three changed files served as published, the portal's sign-in page drawing with no errors).
+- **W113 1, with W113 a** (29 October 2026; the owner in the worker chat: "offer a six-digit code as well as the link, so
+  the email can be read on another device"; contract draft 27): **the portal's sign-in email carries a link and a
+  six-digit code** (the page asks with `withCode: true`), and **"Check your email" puts the code box first**: "Type the
+  code from the email", *Reading your email on your phone or another computer? Type its code here.*, one full-width box
+  of large spaced digits (a numeric keypad on a phone, the code the phone offers from the email, a paste; spaces or a
+  hyphen allowed), **Sign In** (navy), then "or" and the tinted *Open the link in the email on this device, in this
+  browser.* The link and the code work only here, so a forwarded email lets nobody in. (W110 1's sentence, for both);
+  **Send Another Email** (it was Send Another Link) and Use A Different Email Address, plain. The sign-in card's line
+  (W53 1) reads "No password needed. We'll email you a link and a six-digit code. Open the link on this device, or type
+  the code here if you read your email on another one. Either works once, within 15 minutes."; its button is unchanged.
+  Not six digits: "Please type the six digits from the email." (nothing sent). **A wrong code** ("That code is not right.
+  Check it and try again.") turns the label and box red, may be tried again, and the red goes at the next keystroke.
+  **An expired code** ("This code has expired or has been tried too often. Use the link in the email, or ask for a new
+  one.") greys the box, takes Sign In away and makes Send Another Email navy. The "link cannot be used" card adds
+  *Reading the email on another device?* Go back to the browser where you asked to sign in, and type the code from the
+  email there., then "Or ask for a new email in the browser you will use." **W113 a** (the owner's yes to the
+  suggestion): within 15 minutes of asking, the sign-in card (after a reload, say) opens with "Asked for a sign-in email
+  in the last 15 minutes? **Type the code from it ›**", which opens the code card ("The email from portal@nyriac.com
+  holds a sign-in link and a six-digit code."). **How it works:** the time of asking is kept beside the browser's secret
+  (`localStorage`, `riac-portal-asked`), so **a second request within 15 minutes keeps the same secret and both emails
+  work in this browser** (the worker finds a code by the secret; before, a second request stopped the first email
+  working); both are forgotten once signed in, and on Use A Different Email Address. A wrong code keeps them; an expired
+  code forgets the time but keeps the secret, since after ten wrong codes in a day the link still works. Chosen over the
+  card as today with a small code box under the link ("2") and six boxes of one digit each ("3"). Pictures
+  `riac-handover\W\design\w113\` (mockup) and `w113c\` (as built); checks `tests\w113-check.mjs` (stubbed, 1360 to 320
+  px) and `tests\w113-local.mjs` (the worker chat's local worker: a wrong code refused, the first email's code still
+  signing in after a second request).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1412,8 +1439,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   - **W113, a six-digit sign-in code beside the link** (the owner in the worker chat, 29 October 2026: "offer a
     six-digit code as well as the link, so the email can be read on another device"): the worker's side is done and
     deployed (contract draft 27: `withCode: true` on the sign-in, `{ code, browserSecret }` to the session, refusals
-    `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. The page's code box
-    is this chat's: a mockup first.
+    `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. **W113 1 with W113 a
+    built** (29 October 2026, see Settled), **not yet published**: on the owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by

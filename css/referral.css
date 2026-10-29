@@ -626,6 +626,19 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sign-card .small { color: var(--help); font-size: var(--fs-small); }
 .under-card { text-align: center; font-size: var(--fs-small); color: var(--muted); margin-top: 1.2rem; }
 .under-card a { font-weight: 600; }
+/* W113 1: the six-digit code from the sign-in email, one box of large spaced digits, then "or" and the link; W113 a: the
+   line on the sign-in card that offers the code again within 15 minutes of asking */
+.sign-card .code-field { margin-bottom: .9rem; }
+.sign-card .code-field .desc { margin-bottom: .55rem; }
+.sign-card input.code-one { font-size: 1.5rem; letter-spacing: .38em; text-align: center; font-variant-numeric: tabular-nums;
+  padding: .45rem .8rem .45rem calc(.8rem + .38em); border-color: #838d9b; }
+.sign-card .code-field.has-err > input.code-one { border-color: var(--bad); }
+.sign-card input.code-one:disabled { background: #f1f2f4; color: var(--help); }
+.code-field .field-err:empty { display: none; }
+.sign-or { display: flex; align-items: center; gap: .7rem; color: var(--muted); font-size: var(--fs-small); margin: .3rem 0 .8rem; }
+.sign-or::before, .sign-or::after { content: ''; flex: 1; border-top: 1px solid var(--line); }
+.sign-card .code-back { margin-bottom: 1rem; }
+.code-back .link-btn { font-weight: 400; }
 
 /* The signed-in person, in the cream "Your Referrals" card (W98 1; W65 A's card of its own before; W112 1 the layout):
    under a thin rule, the fields two by two, each a small capitalised label over its value (as the list's column

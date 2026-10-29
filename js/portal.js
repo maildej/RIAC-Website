@@ -1,6 +1,6 @@
-// The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link, see your referrals, and add
-// documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1, W59 A and W61 a with
-// W80 1 in CLAUDE.md.
+// The attorney portal (portal/index.html and portal/add.html): sign in by an emailed link or its six-digit code, see your
+// referrals, and add documents or information to one. The owner's decisions are W4 1, W5 1 ("W5 yes"), W6 1, W58 1,
+// W59 A, W61 a with W80 1, and W113 1 in CLAUDE.md.
 // The session is kept in this tab only (sessionStorage); the worker ends it after 12 hours at most.
 (function () {
   'use strict';
@@ -25,6 +25,7 @@
   }
   var PAGE = app.getAttribute('data-page');
   var SECRET_KEY = 'riac-portal-secret';
+  var ASKED_KEY = 'riac-portal-asked';   // when this browser last asked for a sign-in email (W113)
   var SESSION_KEY = 'riac_portal';
   var turnstileId = null;
 
@@ -123,7 +124,21 @@
     s.addEventListener('load', function () { cb(); });
   }
 
-  // ---------- Sign in (W4 1) -----------------------------------------------------------------------------------------
+  // ---------- Sign in (W4 1; the six-digit code W113 1) ------------------------------------------------------------------
+
+  // W113 1 (contract draft 27): the email carries a link and a six-digit code, either working once, within 15 minutes,
+  // in the browser that asked (the worker finds a code by this browser's secret). The time of asking is kept beside the
+  // secret, so a second request within 15 minutes keeps the same secret (both emails then work here), and the sign-in
+  // card offers the code again after a reload (W113 a).
+  function heldAsk() {   // the secret of a request this browser made in the last 15 minutes, or null
+    try {
+      var s = localStorage.getItem(SECRET_KEY), t = parseInt(localStorage.getItem(ASKED_KEY) || '0', 10);
+      return s && t && Date.now() - t < 15 * 60000 ? s : null;
+    } catch (e) { return null; }
+  }
+  function forget(keepSecret) {   // the request is done with; the secret alone may be kept for the link
+    try { localStorage.removeItem(ASKED_KEY); if (!keepSecret) localStorage.removeItem(SECRET_KEY); } catch (e) { /* none */ }
+  }
 
   function signInCard(email, message) {
     clear();
@@ -133,11 +148,13 @@
     var bot = h('div', { class: 'bot-check', id: 'bot-check' });
     var btn = h('button', { type: 'button', class: 'btn btn-navy', on: { click: ask } }, ['Email Me A Sign-In Link']);
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') ask(); });
-    var card = h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Sign in' }),
+    var back = heldAsk() ? h('p', { class: 'tinted code-back' }, ['Asked for a sign-in email in the last 15 minutes? ',   // W113 a
+      h('button', { type: 'button', class: 'link-btn', on: { click: function () { checkEmail(''); } } }, ['Type the code from it ›'])]) : null;
+    var card = h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Sign in' }), back,
       h('div', { class: 'field' }, [h('label', { for: 'si-email', text: 'Your email address' }),
         h('span', { class: 'desc', text: 'Use the email address you put on your referrals.' }), input]),   // W53 1
       bot, msg, btn,
-      h('p', { class: 'small', text: 'No password needed. We’ll email you a sign-in link: open it on this device, in this same browser, within 15 minutes. Each link works once.' })]);
+      h('p', { class: 'small', text: 'No password needed. We’ll email you a link and a six-digit code. Open the link on this device, or type the code here if you read your email on another one. Either works once, within 15 minutes.' })]);
     app.appendChild(card);
     app.appendChild(h('p', { class: 'under-card' }, ['Not sent us a case yet? ', h('a', { href: '../referral.html', text: 'Send Us A New Case ›' })]));
     var botFailed = false;   // W46 1: the check failed (not merely unfinished), so say so rather than "please wait"
@@ -153,12 +170,15 @@
       if (!/^[A-Za-z0-9._%+-]+@/.test(e)) { msg.textContent = D.EMAIL_CHARS + '. Please contact your RIAC.'; input.focus(); return; }   // W-Q06
       if (!token) { msg.textContent = botFailed ? D.BOT_CHECK_FAILED : 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
       btn.disabled = true; btn.textContent = 'Sending…';
-      var secret = randomSecret();
+      var secret = heldAsk() || randomSecret();
       try { localStorage.setItem(SECRET_KEY, secret); } catch (x) { /* a browser that blocks storage cannot sign in */ }
       sha256hex(secret).then(function (proof) {
-        return api('POST', '/v1/portal/sign-in', { email: e, turnstile: token, browserProof: proof });
+        return api('POST', '/v1/portal/sign-in', { email: e, turnstile: token, browserProof: proof, withCode: true });
       }).then(function (r) {
-        if (r.status === 202) { checkEmail(e); return; }
+        if (r.status === 202) {
+          try { localStorage.setItem(ASKED_KEY, String(Date.now())); } catch (x) { /* none */ }
+          checkEmail(e); return;
+        }
         btn.disabled = false; btn.textContent = 'Email Me A Sign-In Link';
         if (r.status === 429) msg.textContent = 'Too many sign-in requests from here. Please wait a few minutes and try again.';
         else if (r.status === 403) msg.textContent = 'The check that you are not a robot did not pass. Please reload the page and try again.';
@@ -169,21 +189,67 @@
     }
   }
 
+  // "Check your email" with the code box first (W113 1). Without the address (W113 a, after a reload) it says only where
+  // the email comes from.
   function checkEmail(email) {
     clear();
+    var busy = false;
+    var input = h('input', { type: 'text', id: 'si-code', class: 'code-one', inputmode: 'numeric', autocomplete: 'one-time-code', maxlength: '11',
+      spellcheck: 'false', autocapitalize: 'off', 'aria-describedby': 'si-code-desc si-code-msg' });
+    var msg = h('p', { class: 'field-err', id: 'si-code-msg', role: 'alert' });
+    var field = h('div', { class: 'field code-field' }, [h('label', { for: 'si-code', text: 'Type the code from the email' }),
+      h('span', { class: 'desc', id: 'si-code-desc', text: 'Reading your email on your phone or another computer? Type its code here.' }), input, msg]);
+    var btn = h('button', { type: 'button', class: 'btn btn-navy', on: { click: send } }, ['Sign In']);
+    var again = h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { signInCard(email); } } }, ['Send Another Email']);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+    input.addEventListener('input', function () { if (!input.disabled) { field.classList.remove('has-err'); input.removeAttribute('aria-invalid'); msg.textContent = ''; } });
     app.appendChild(h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'Check your email' }),
-      h('p', null, ['If ', h('strong', { text: email }), ' can see referrals, an email from ', h('strong', { text: 'portal@nyriac.com' }), ' is on its way with your sign-in link.']),
-      h('p', { class: 'tinted' }, [h('strong', { text: 'Open the link on this device, in this browser.' }), ' It works only here, so a forwarded email lets nobody in.']),
-      h('p', { class: 'small', text: 'It works once, within 15 minutes. Nothing after a few minutes? Look in your junk folder, or send another.' }),
-      h('button', { type: 'button', class: 'btn btn-navy', on: { click: function () { signInCard(email); } } }, ['Send Another Link']),
-      h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { signInCard(''); } } }, ['Use A Different Email Address'])]));
+      email ? h('p', null, ['If ', h('strong', { text: email }), ' can see referrals, an email from ', h('strong', { text: 'portal@nyriac.com' }), ' is on its way with a sign-in link and a six-digit code.'])
+        : h('p', null, ['The email from ', h('strong', { text: 'portal@nyriac.com' }), ' holds a sign-in link and a six-digit code.']),
+      field, btn,
+      h('div', { class: 'sign-or' }, [h('span', { text: 'or' })]),
+      h('p', { class: 'tinted' }, [h('strong', { text: 'Open the link in the email on this device, in this browser.' }), ' The link and the code work only here, so a forwarded email lets nobody in.']),   // W110 1
+      h('p', { class: 'small', text: 'Each works once, within 15 minutes. Nothing after a few minutes? Look in your junk folder, or send another.' }),
+      again,
+      h('button', { type: 'button', class: 'btn btn-plain', on: { click: function () { forget(); signInCard(''); } } }, ['Use A Different Email Address'])]));
+
+    function wrong(words) { field.classList.add('has-err'); input.setAttribute('aria-invalid', 'true'); msg.textContent = words; }
+    // No code this browser holds can work now (used, past 15 minutes, tried too often, or ten wrong in a day). The secret
+    // is kept: after ten wrong codes in a day the link still works, and the box says to use it.
+    function gone() {
+      forget(true);
+      wrong('This code has expired or has been tried too often. Use the link in the email, or ask for a new one.');
+      input.disabled = true;
+      if (btn.parentNode) btn.parentNode.removeChild(btn);
+      again.className = 'btn btn-navy';
+      again.focus();
+    }
+    function send() {
+      if (busy) return;
+      var code = input.value.replace(/[\s-]/g, '');   // spaces and a hyphen as the attorney may type them
+      if (!/^\d{6}$/.test(code)) { wrong('Please type the six digits from the email.'); input.focus(); return; }
+      var secret = null;
+      try { secret = localStorage.getItem(SECRET_KEY); } catch (e) { /* none */ }
+      if (!secret) { gone(); return; }
+      busy = true; btn.disabled = true; btn.textContent = 'Signing In…';
+      api('POST', '/v1/portal/session', { code: code, browserSecret: secret }).then(function (r) {
+        busy = false; btn.disabled = false; btn.textContent = 'Sign In';
+        if (r.status === 200 && r.body.session) { forget(); setSession(r.body.session); list(); return; }
+        if (r.status === 401 && r.body.error === 'code-invalid') { wrong('That code is not right. Check it and try again.'); input.focus(); input.select(); return; }
+        if (r.status === 400) { wrong('Please type the six digits from the email.'); input.focus(); return; }
+        if (r.status === 429) { wrong('Too many tries from here. Please wait a few minutes and try again.'); return; }
+        if (r.status === 0 || r.status >= 500) { wrong('RIAC could not be reached just now. Please try again in a minute or two.'); return; }
+        gone();
+      });
+    }
   }
 
   function linkInvalid() {
     clear();
     app.appendChild(h('div', { class: 'sign-card ref-q' }, [h('h2', { text: 'This sign-in link cannot be used' }),
       h('p', { text: 'It has been used already, it is more than 15 minutes old, or it was opened in a different browser from the one that asked for it.' }),
-      h('p', { class: 'small', text: 'Ask for a new link in the browser you will use, then open the email on the same device.' }),
+      h('p', { class: 'tinted' }, [h('strong', { text: 'Reading the email on another device?' }), ' Go back to the browser where you asked to sign in, and type the code from the email there.']),   // W113 1
+      h('p', { class: 'small', text: 'Or ask for a new email in the browser you will use.' }),
       h('button', { type: 'button', class: 'btn btn-navy', on: { click: function () { signInCard(''); } } }, ['Email Me A New Link'])]));
   }
 
@@ -205,7 +271,7 @@
         app.appendChild(h('p', { class: 'under-card', text: 'RIAC could not be reached just now. Please open the link in your email again in a minute or two: it still works.' }));
         return;
       }
-      try { localStorage.removeItem(SECRET_KEY); } catch (e) { /* none */ }
+      forget();
       if (r.status === 200 && r.body.session) { setSession(r.body.session); list(); }
       else linkInvalid();
     });
