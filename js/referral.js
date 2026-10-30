@@ -812,6 +812,7 @@
 
   var OUTSIDE = '__outside__';
 
+  function mailsOf(b) { return [].concat(b.email || []); }   // a centre may give one address or several
   function contactBlock(b) {
     var kids = [];
     if (b.who) kids.push(h('p', { class: 'who', text: b.who }));
@@ -819,7 +820,7 @@
     if (b.address) kids.push(h('p', { text: b.address }));
     if (b.phone) kids.push(h('p', null, [h('a', { href: 'tel:' + b.tel, text: b.phone }), b.ext ? ' ' + b.ext : '']));
     if (b.website) kids.push(h('p', null, ['Website: ', h('a', { href: b.website, target: '_blank', rel: 'noopener', text: b.websiteText })]));
-    if (b.email) kids.push(h('p', null, [b.website ? 'Email: ' : '', h('a', { href: 'mailto:' + b.email, text: b.email })]));
+    mailsOf(b).forEach(function (m) { kids.push(h('p', null, [b.website ? 'Email: ' : '', h('a', { href: 'mailto:' + m, text: m })])); });
     return h('div', { class: 'contact-block' }, kids);
   }
   function pdfButtons() {
@@ -1838,9 +1839,10 @@
       h('div', { class: 'only-copy' }, [h('p', null, [h('strong', { text: 'This page is your only copy.' }), ' Nothing is kept on this website, so once you leave or close this page it cannot be shown again.']),
         h('button', { type: 'button', class: 'btn', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF'])])]);
     if (email) {
-      var b = c.blocks[0] || {};
+      var b = c.blocks[0] || {}, mails = [];
+      mailsOf(b).forEach(function (m, i) { if (i) mails.push(' or '); mails.push(h('a', { href: 'mailto:' + m, text: m })); });
       card.appendChild(h('p', { class: 'sent-note' }, ['This center receives referrals by email, so this one will not appear in Your Referrals. To add to it, or to ask where it stands, contact the center: ',
-        b.phone ? h('a', { href: 'tel:' + b.tel, text: b.phone }) : '', b.ext ? ' ' + b.ext : '', b.phone ? ', ' : '', h('a', { href: 'mailto:' + b.email, text: b.email }), '.']));
+        b.phone ? h('a', { href: 'tel:' + b.tel, text: b.phone }) : '', b.ext ? ' ' + b.ext : '', b.phone ? ', ' : ''].concat(mails, ['.'])));
     }
     app.appendChild(card);
     app.appendChild(sheet);

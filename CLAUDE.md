@@ -1487,7 +1487,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   received mail from the sender before.
 - **[Owner] Update the OneDrive signature file's Region 2 number** to **(315) 898-2593** in every
   signature block it holds, **and its Region 2 email to cny@nyriac.com** (W54 1, 22 October 2026). An online
-  session cannot reach OneDrive, and the individual staff blocks exist only in that file.
+  session cannot reach OneDrive, and the individual staff blocks exist only in that file. **Also add Region 1's second
+  email, wabdallah@labbuffalo.org**, to its table of the centres (the owner's request, on `contact.html` and the form's
+  copy since 30 October 2026, published at once at his word; a centre's `email` in `js/referral-data.js` may now be a
+  list, each address its own line on the form's cards).
 - **[Owner, optional] Delete the Chief Defender survey's form in Formspree** (`mdaqzrpq`,
   "Chief Defender Referral Survey"). The survey page is gone from the site, so nothing posts to
   it; deleting it frees the slot. The responses already emailed to RIAC2@ocbaacp.org are not
