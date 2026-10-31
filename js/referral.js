@@ -1834,10 +1834,17 @@
       facts.push(h('dt', { text: 'Receipt' }), h('dd', null, ['emailed to ' + r.receiptTo,
         h('span', { class: 'receipt-note' }, r.receiptFrom ? ['It comes from ', h('strong', { text: r.receiptFrom }), '. ' + junk] : [junk])]));
     }
+    var print = h('button', { type: 'button', class: 'btn', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF']);
+    var acts = print;
+    if (!email) {   // W114 2: Your Referrals under Print, one size; a new tab, so this page (the only copy) stays open
+      var sym = symbol('advisory'); sym.className = 'tile-sym';
+      acts = h('div', { class: 'copy-acts' }, [print, h('a', { class: 'btn go-portal', href: 'portal/', target: '_blank', rel: 'noopener',
+        'aria-label': 'Go To Your Referrals (opens in a new tab)' }, [sym, 'Go To Your Referrals'])]);
+    }
     var card = h('div', { class: 'sent-card' }, [h('h2', null, [h('span', { class: 'tick', 'aria-hidden': 'true', text: '✓' }), (email ? 'Emailed to ' : 'Sent to ') + c.short]),
       h('dl', { class: 'sent-facts' }, facts),
       h('div', { class: 'only-copy' }, [h('p', null, [h('strong', { text: 'This page is your only copy.' }), ' Nothing is kept on this website, so once you leave or close this page it cannot be shown again.']),
-        h('button', { type: 'button', class: 'btn', on: { click: function () { window.print(); } } }, ['Print Or Save As PDF'])])]);
+        acts])]);
     if (email) {
       var b = c.blocks[0] || {}, mails = [];
       mailsOf(b).forEach(function (m, i) { if (i) mails.push(' or '); mails.push(h('a', { href: 'mailto:' + m, text: m })); });

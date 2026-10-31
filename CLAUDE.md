@@ -1312,6 +1312,23 @@ every key and code the pages send.
   c0a24a7, Pages run 133; checked on nyriac.com: the three changed files served as published, the sign-in card's new
   line and the "link cannot be used" card drawn, no errors). The one check left is the owner's, from his own Chrome: ask
   for a sign-in, then type the code from the email read on his phone.
+- **W114 2** (31 October 2026; the owner, after a test referral, through the database chat: "Upon submission, there
+  should be a button to go to the portal", then here: "W114-2 (all of the description text in option 1 was superfluous -
+  the button is enough)"): after Send, **Go To Your Referrals sits under Print Or Save As PDF in the orange "This page
+  is your only copy" box**, the two one size (15.5rem stacked at the box's right on a computer, full width on a phone),
+  navy with cream words and the Your Referrals card's symbol (`i-advisory`) in a small cream circle, as Send Us A New
+  Case in the portal (W104 A1). **No words are added**: the box's sentence is unchanged. **It opens the portal in a new
+  tab** (`target="_blank"`, a screen reader hears "(opens in a new tab)"), so the page after Send, the attorney's only
+  copy, stays open; the new tab asks to sign in, as any portal page opened in a new tab. **Only for a centre on the
+  system** (`delivery` "system"): a referral emailed to a centre never appears in Your Referrals, so that card keeps
+  Print alone and its note. On the smallest phones (360 px or less) the two buttons' words may wrap, balanced, the pair
+  still one size, rather than run past the box. A new referral usually shows in the portal within a few minutes (the
+  database chat watched the owner's test referral arrive in 61 seconds; about 20 minutes is the most it can take).
+  Chosen over a band of its own under the orange box, with a line on what the portal is for ("1", recommended), and the
+  button at the foot of the page after the copy ("3"). Not taken, still open: the new tab signed in already when this
+  tab was (a), and Send Another Referral beside it (b). Pictures `riac-handover\W\design\w114\` (mockup) and `w114c\`
+  (as built); checks `tests\w114-check.mjs` (1360 to 320 px, emailed and not, the new tab opening), with `w108-check`,
+  `w48-check`, `w77-check`, `w31b-check` and `e2e.mjs` (1360 and 390, the worker chat's local worker) passing.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1445,6 +1462,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. **W113 1 with W113 a
     live since 29 October 2026** (2:30 PM, the owner's yes; `main` c0a24a7; see Settled). **The owner's live
     check** (his own Chrome: a sign-in asked on the computer, the code typed from the email on his phone): pending.
+  - **W114, a button to Your Referrals after Send** (the owner, 31 October 2026, wanted before Monday's pilot): **W114
+    2 built** (see Settled), not yet published; publishing waits for the owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by

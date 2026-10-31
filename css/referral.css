@@ -545,6 +545,17 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .only-copy p { margin: 0; }
 .only-copy .btn { background: var(--r5); color: var(--navy); flex: none; }   /* W108 1 */
 .only-copy .btn:hover { background: var(--navy); color: var(--cream); }
+/* W114 2: Go To Your Referrals under Print, the two one size; the Your Referrals card's symbol in a small cream circle */
+.copy-acts { display: grid; grid-auto-rows: 1fr; gap: .55rem; flex: none; width: 15.5rem; }
+.copy-acts .btn { width: 100%; height: 2.75rem; margin: 0; padding-top: 0; padding-bottom: 0; display: inline-flex; align-items: center; justify-content: center; gap: .55rem; }
+.only-copy .go-portal { background: var(--navy); color: var(--cream); }
+.only-copy .go-portal:hover { background: var(--navy-deep); }
+.go-portal .tile-sym { width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--cream); color: var(--navy); --icon-fill: var(--cream); --icon-accent: var(--r5); }
+.go-portal .tile-sym svg { width: 18px; height: 18px; }
+@media (max-width: 360px) {   /* the smallest phones: the words may wrap, balanced, rather than run past the box */
+  .only-copy .btn { white-space: normal; padding-left: .8rem; padding-right: .8rem; }
+  .copy-acts .btn { height: auto; min-height: 2.75rem; padding-top: .45rem; padding-bottom: .45rem; }
+}
 .sent-note { margin: 0 1.6rem 1.2rem; font-size: var(--fs-small); background: color-mix(in srgb, var(--navy) 5%, white); border-radius: 8px; padding: .8rem 1rem; }
 
 .result-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 46rem; margin: 0 auto; }
@@ -591,6 +602,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   .copy-head .ref { display: none; }
   .copy-rows .row { grid-template-columns: 1fr; gap: .1rem; }
   .only-copy { flex-direction: column; align-items: stretch; margin: 1rem 1rem 1.2rem; }
+  .copy-acts { width: 100%; }
   .sent-facts { padding: 1rem 1rem 0; }
   .sent-note { margin: 0 1rem 1rem; }
 }
