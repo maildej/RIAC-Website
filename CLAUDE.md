@@ -1363,6 +1363,20 @@ every key and code the pages send.
   drafts of the other checks now answer it, and `e2e-scenarios.mjs` (two new: Unknown, and Yes with immigration
   custody), `e2e.mjs`, `w36-e2e`, `w40-check`, `w101-check`, `w48-check` and `q02-q03-check` pass against the worker
   chat's local worker, which takes the key.
+- **W118 1, with the band's words centred** (1 November 2026; the owner, in the dispatcher's chat, with a screenshot of
+  the live list: "Can we make the your referrals card tighter to reduce its vertical size. The 12 hours signout
+  description should be under the sign out button in the right column. Also center [trial run]"): the cream "Your
+  Referrals" card (W98 1, W112 1) **has less room throughout**, its layout unchanged: 267 to 213 px tall on a computer,
+  345 to 289 at 768 px, 607 to 530 on a phone. **"You stay signed in until you close this tab, or for 12 hours at
+  most." sits under Sign Out in the right column**, centred under the buttons (13.5rem from 1000 px wide, so the line
+  takes two lines; 12.5rem from 901 to 999, where the office must still fit on one line); below 901 px it is under the
+  buttons, as before. **The trial band's "Trial run" label is centred, and its words with it** (the owner's yes to the
+  suggestion: a centred label over left-aligned lines would look off), on the form and both portal pages. Send RIAC a
+  message's title card is unchanged. Chosen over each label beside its value ("2", shorter only from 601 to 900 px).
+  Pictures `riac-handover\W\design\w118\` (mockup) and `w118c\` (as built); checks `tests\w98-check.mjs` (W118's lines
+  added, 1360 to 320 px), `w104-check.mjs`, `trial-check.mjs`. **Live since 1 November 2026** (9:51 AM, the owner's
+  "Publish once checked": `main` 0666850, Pages run 137, published on its own over W116 1 with W117 1 still held;
+  checked on nyriac.com: the two changed files served as published, the band's label centred).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1504,7 +1518,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     built** (1 November; see Settled: ICE Involvement as Yes / No / Unknown; the screening list on ICE already had
     Unknown, W21). It needs one new answer from the worker, `court.iceInvolvementUnknown` (true/false): contract draft
     28, built and held by the worker chat on 1 November, and tested here against its local worker; **it cannot go on
-    nyriac.com until the worker chat says the live worker takes it**, then the owner's yes. Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
+    nyriac.com until the worker chat says the live worker takes it**, then the owner's yes.
+  - **W118 1** (the Your Referrals card tighter, the 12-hours line under Sign Out, the trial band centred): **live since
+    1 November 2026** (9:51 AM, `main` 0666850; see Settled). `main` was moved on to it alone, so this branch carries
+    the same change as its own commit: bring `main` in before the next publish. Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
