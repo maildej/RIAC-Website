@@ -409,10 +409,11 @@
     // W104 A1: Send Us A New Case beside Sign Out, the pair one size; the form opens in this tab with the signed-in
     // details filled in at step 2 (what the worker sends of them, handed over in the tab under CFG.prefillKey)
     var newCase = h('a', { class: 'btn btn-navy me-new', href: '../referral.html', on: { click: function () { handOver(data); } } }, [symbol('i-consult'), 'Send Us A New Case']);
+    // W118 1 (the owner: "The 12 hours signout description should be under the sign out button in the right column")
     if (head) head.appendChild(h('div', { class: 'me-fold' }, [h('div', { class: 'me-row' }, [
       h('dl', { class: 'me-fields' + (fields.length < 2 ? ' one' : '') }, fields.map(function (f) { return h('div', { class: f[2] }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]); })),
-      h('div', { class: 'me-acts' }, [newCase, h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out'])])]),
-      h('p', { class: 'me-note', text: 'You stay signed in until you close this tab, or for 12 hours at most.' })]));
+      h('div', { class: 'me-acts' }, [newCase, h('button', { type: 'button', class: 'btn btn-plain me-out', on: { click: signOut } }, ['Sign Out']),
+        h('p', { class: 'me-note', text: 'You stay signed in until you close this tab, or for 12 hours at most.' })])])]));
 
     // W58 1: the search and Sort on one line (Sort over the list's last column; on a computer the column headings sort
     // instead, W99 1), then five buttons of one size, All and the four groups, each with its count (of the matches while
