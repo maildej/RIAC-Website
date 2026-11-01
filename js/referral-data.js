@@ -297,10 +297,12 @@
       guidance: { eg: 'e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"' }, show: isRemoval }),
     Q('court.nextDate', 'Next Hearing Or Interview Date (If Any)', 'date', { way: 'questions', alias: true, show: isRemoval, copy: 'Next hearing or interview date' }),
     SEC('Immediate issues'),   // W115 (the owner's words, parked 28 October): was "Where things stand"
-    // W103 3: a tile with a red "ICE" triangle, ticked for you when the client is detained in immigration custody
-    Q('court.iceInvolvement', 'ICE Involvement', 'check', { way: 'questions', copy: 'ICE involvement', ice: true,
-      guidance: 'Select if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client',
-      tile: '<b>ICE is involved</b> in this case, or with your client' }),
+    // W117 1 (the owner, item 36: "ice involvement should have an unknown option"): Yes / No / Unknown, as the order-of-
+    // protection question under it, the red "ICE" triangle beside the question; Yes chosen for you when the client is
+    // detained in immigration custody (W103 3). Sent as two true/false answers, court.iceInvolvement and
+    // court.iceInvolvementUnknown
+    Q('court.iceInvolvement', 'ICE Involvement', 'radio', { choices: YNU, inline: true, required: true, way: 'questions', copy: 'ICE involvement', ice: true,
+      guidance: 'Choose Yes if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client' }),
     Q('court.protectionOrder', 'Does This Case Involve An Order Of Protection In Any Way?', 'radio', { choices: YNU, inline: true, required: true, way: 'questions',
       unknownNote: 'Please provide any information relevant to whether this case involves an order of protection' }),
     ticks('court.protectionOrders', 'Orders Of Protection', CHOICES.protectionOrders, { help: 'Select any which apply', way: 'questions', copy: 'Screening: orders of protection',

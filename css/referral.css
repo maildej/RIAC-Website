@@ -268,14 +268,12 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cg-h { display: block; font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 .15rem .35rem; }
 .cg.held { background: color-mix(in srgb, var(--r5) 7%, white); border-color: color-mix(in srgb, var(--r5) 40%, white); }
 .cg.held .cg-h { color: var(--warn); }
-/* ICE involvement: a red "ICE" triangle; the tick centred on the tile */
+/* ICE involvement: a red "ICE" triangle before the question (W117 1: Yes / No / Unknown in place of W103 3's tile), and
+   on immigration custody's tile */
 .ice-sym { flex: none; display: grid; }
 .ice-sym svg { width: 34px; height: 30px; }
 .ice-sym.sm svg { width: 22px; height: 19px; }
-.ruled .ice-tile { min-height: 3rem; gap: .7rem; }
-.ice-tile b { color: var(--ink); }
-.ruled .ice-tile:has(input:checked) { border-color: var(--r3); box-shadow: 0 0 0 1px var(--r3); background: color-mix(in srgb, var(--r3) 6%, white); }
-.ice-tile:has(input:checked) .box { background: var(--r3); border-color: var(--r3); }
+.qrow .lab.ice-lab { display: flex; align-items: center; gap: .45rem; }
 .ref-q .auto { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-top: .3rem; }
 /* the client's family: a row each for parent, spouse and child, coloured */
 .fam { display: grid; gap: .4rem; }

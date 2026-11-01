@@ -37,7 +37,7 @@
   function fresh() {
     return { v: 1, step: 0, visited: 0, A: {}, sendAs: 'questions',
       route: { county: null, outside: false, conflict: false, centre: null, note: '' },
-      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null, iceAuto: false };
+      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null, iceAuto: false, icePrev: null };
   }
   function load() {
     try {
@@ -47,6 +47,8 @@
       // computer a half-filled referral could reach the next person: a draft untouched for 12 hours is dropped (W-S06)
       if (s.at && Date.now() - s.at > 12 * 3600000) { clearDraft(); return null; }
       s.charges = s.charges || [];
+      // A draft from before W117 1 holds ICE involvement as a tick: ticked is Yes; unticked was never an answer
+      if (s.A && typeof s.A['court.iceInvolvement'] === 'boolean') s.A['court.iceInvolvement'] = s.A['court.iceInvolvement'] ? 'yes' : null;
       Object.keys(s.docs || {}).forEach(function (k) {   // files cannot survive a reload unless they had finished
         s.docs[k].files = (s.docs[k].files || []).filter(function (f) { return f.state === 'done'; });
       });
@@ -205,6 +207,10 @@
     var lab = forId ? h('label', { class: 'lab', for: forId, id: id + '-l' }) : h('span', { class: 'lab', id: id + '-l' });
     if (q.labelHtml) lab.innerHTML = q.label; else lab.textContent = q.label;
     if (q.required) { lab.appendChild(document.createTextNode('\u00a0')); lab.appendChild(h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })); }   // the star never alone on a line
+    if (q.ice) {   // W117 1: the red "ICE" triangle before the question, its words and star kept together
+      var tx = h('span'); while (lab.firstChild) tx.appendChild(lab.firstChild);
+      lab.appendChild(iceSym(true)); lab.appendChild(tx); lab.className += ' ice-lab';
+    }
     var kids = [lab, descNode(q)];
     var g = guidanceNode(hintOf(q));
     if (g) { g.className = 'g'; g.id = id + '-g'; kids.push(g); }
@@ -263,16 +269,14 @@
     grp.setAttribute('aria-labelledby', id + '-l');
     var by = describedBy(q, id); if (by) grp.setAttribute('aria-describedby', by);
     var out = [grp];
+    if (q.ice && A[q.key] === 'yes' && S.iceAuto) out.push(h('span', { class: 'auto', text: 'Chosen for you: your client is detained in immigration custody.' }));
     if (q.unknownNote && A[q.key] === 'unknown') out.push(subField({ key: q.key + 'UnknownWhy', label: q.unknownNote, type: 'note' }));
     return out;
   }
 
   function checkAnswer(q, id) {
     var cb = h('input', { type: 'checkbox', id: id, 'data-key': q.key, checked: S.A[q.key] === true, 'aria-describedby': describedBy(q, id) });
-    if (!q.ice) return [h('label', { class: 'tick-under', for: id }, [cb, h('span', { text: q.label })])];
-    var out = [h('label', { class: 'tile ice-tile', for: id }, [cb, h('span', { class: 'box', 'aria-hidden': 'true' }), iceSym(), h('span', { html: q.tile })])];
-    if (S.A[q.key] === true && S.iceAuto) out.push(h('span', { class: 'auto', text: 'Ticked for you: your client is detained in immigration custody.' }));
-    return out;
+    return [h('label', { class: 'tick-under', for: id }, [cb, h('span', { text: q.label })])];
   }
 
   // Tick lists: tiles read down the first column, then the second (W15 2); the family's in rows coloured by who the
@@ -1391,7 +1395,7 @@
     client: ['firstName', 'lastName', 'dob', 'aliases', 'aliasDetails', 'address', 'countryOfBirth', 'english', 'language', 'entryStatus', 'entryDate', 'currentStatus',
       'currentStatusDate', 'aNumber', 'pendingApplications', 'screeningClient', 'screeningClientUnknownWhy', 'screeningIce', 'screeningIceUnknownWhy',
       'screeningImmigration', 'screeningImmigrationUnknownWhy', 'immigrationAttorney', 'familyAny', 'familyAnyUnknownWhy', 'family', 'familyUnknownWhy', 'details'],
-    court: ['name', 'notListed', 'notListedDetails', 'docket', 'nextDate', 'iceInvolvement', 'protectionOrder', 'protectionOrderUnknownWhy', 'protectionOrders',
+    court: ['name', 'notListed', 'notListedDetails', 'docket', 'nextDate', 'iceInvolvement', 'iceInvolvementUnknown', 'protectionOrder', 'protectionOrderUnknownWhy', 'protectionOrders',
       'protectionOrdersUnknownWhy', 'custody', 'details', 'immigrationOffice'],
     vop: ['underlyingAdvised', 'underlyingAdvisedUnknownWhy', 'underlyingCaseNumber', 'underlyingConvictions', 'originalSentence', 'allegations', 'parallelCharge',
       'parallelChargeUnknownWhy', 'parallelChargeDetails'],
@@ -1423,6 +1427,10 @@
         out[q.key] = v;
       });
     });
+    if (out.hasOwnProperty('court.iceInvolvement')) {   // W117 1: Yes / No / Unknown goes as the contract's two true/false answers
+      var ice = out['court.iceInvolvement'];
+      out['court.iceInvolvement'] = ice === 'yes'; out['court.iceInvolvementUnknown'] = ice === 'unknown';
+    }
     return out;
   }
   function clean(v) { if (v === undefined || v === null) return null; v = String(v).trim(); return v === '' ? null : v; }
@@ -1762,7 +1770,7 @@
     rapSheetMore: ['Criminal History Not On The RAP Sheet / Further Details', 'documents'], documents: ['Documents', 'documents'], uploadId: ['The files', 'documents'],
     people: ['Other people', 'people'], peopleNote: ['Anyone Involved Whose Name You Do Not Know', 'people'], noOtherPeople: ['Is Anyone Else Involved In This Case?', 'people'],
     county: ['County', 'county'], centre: ['Center', 'county'], outOfRegionReason: ['Center', 'county'], outOfRegionNote: ['About the conflict', 'county'],
-    'Idempotency-Key': ['Sending', 'check'], formVersion: ['The form', 'check']
+    'Idempotency-Key': ['Sending', 'check'], formVersion: ['The form', 'check'], 'court.iceInvolvementUnknown': ['ICE Involvement', 'court']
   };
   function findQuestion(key) {
     if (OTHER_KEYS[key]) return { label: OTHER_KEYS[key][0] };
@@ -1907,12 +1915,16 @@
         else { v = v.filter(function (c) { return c !== 'none' && c !== 'unknown'; }); v.push(t.value); }
       } else v = v.filter(function (c) { return c !== t.value; });
       S.A[k] = v;
-    } else if (t.type === 'checkbox') { S.A[k] = t.checked; if (k === 'court.iceInvolvement') S.iceAuto = false; }
+    } else if (t.type === 'checkbox') S.A[k] = t.checked;
     else if (t.type === 'radio') {
       if (k === 'case.caseType' && S.A[k] && S.A[k] !== t.value) S.visited = Math.min(S.visited, S.step);   // W-Q07
       S.A[k] = t.value;
-      if (k === 'court.custody' && t.value === 'ice-detained' && S.A['court.iceInvolvement'] !== true) { S.A['court.iceInvolvement'] = true; S.iceAuto = true; }
-      else if (k === 'court.custody' && t.value !== 'ice-detained' && S.iceAuto) { S.A['court.iceInvolvement'] = false; S.iceAuto = false; }
+      // Immigration custody chooses ICE involvement's Yes for you; another custody puts back what was there, unless the
+      // attorney has answered it since (W103 3, W117 1)
+      if (k === 'court.iceInvolvement') { S.iceAuto = false; S.icePrev = null; }
+      else if (k === 'court.custody' && t.value === 'ice-detained' && S.A['court.iceInvolvement'] !== 'yes') {
+        S.icePrev = S.A['court.iceInvolvement'] || null; S.A['court.iceInvolvement'] = 'yes'; S.iceAuto = true;
+      } else if (k === 'court.custody' && t.value !== 'ice-detained' && S.iceAuto) { S.A['court.iceInvolvement'] = S.icePrev || null; S.iceAuto = false; S.icePrev = null; }
     }
     else { S.A[k] = t.value; save(); return; }   // text boxes: nothing to redraw
     save();

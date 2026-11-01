@@ -1342,6 +1342,25 @@ every key and code the pages send.
   each question with its answer reads as one block. Chosen over the column's edge at 2 px too ("2") and 3 px lines
   ("3"). Pictures `riac-handover\W\design\w116\` (mockup, `W116-*`) and `w116c\` (as built); checks
   `tests\w116-check.mjs` (steps 2 to 7, 1360 and 390 px).
+- **W117 1** (1 November 2026; the owner, item 36: "ice involvement should have an unknown option"): on step 3, **ICE
+  Involvement is Yes / No / Unknown**, three pills as the order-of-protection question under it, **required**, with the
+  red "ICE" triangle before the question (W103 3's tile is gone) and *Choose Yes if (1) you are aware of an ICE detainer,
+  or (2) you know of ANY ICE involvement with this case / your client* under it; no notes box under Unknown (Anything
+  Else About The Court Or Case? is two rows down). **Immigration custody still chooses Yes for you** ("Chosen for you:
+  your client is detained in immigration custody.", it said "Ticked for you"); another custody puts back what was there,
+  unless the attorney has answered it since. A draft held in the tab from before reads a tick as Yes and no tick as no
+  answer. Review and send, and the copy, read "ICE involvement: Yes / No / Unknown". **Sent as two true/false answers**:
+  `court.iceInvolvement` true for Yes (as before) and the new `court.iceInvolvementUnknown` true for Unknown (both false
+  for No; questions way only); a refusal of the new key links to step 3. **The worker's side is contract draft 28** (the
+  worker chat, 1 November 2026, built and held): null or left out counts as false; both true is refused
+  (`not-with-ice-involvement`); at RIAC, and in an emailed referral, an Unknown shows as a line with the court and case's
+  details. ⚠️ **Not on nyriac.com until the worker chat says the live worker takes `court.iceInvolvementUnknown`**: the
+  live worker refuses a key it does not know, so every Send would fail. Chosen over today's tick with an Unknown tick
+  beside it, optional ("2"). Pictures `riac-handover\W\design\w116\` (mockup, `W117-*`) and `w117c\` (as built); checks
+  `tests\w117-check.mjs` (1360 and 390 px, what is sent stood in for); `w103-check.mjs` and `e2e.mjs` updated, the seeded
+  drafts of the other checks now answer it, and `e2e-scenarios.mjs` (two new: Unknown, and Yes with immigration
+  custody), `e2e.mjs`, `w36-e2e`, `w40-check`, `w101-check`, `w48-check` and `q02-q03-check` pass against the worker
+  chat's local worker, which takes the key.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1479,12 +1498,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     2 live since 1 November 2026** (9:02 AM, `main` dc7b8a2; see Settled).
   - **Item 36, parked 28 October 2026** (the owner on the form: "where things stand" should be immediate issues,
     "thicker lines between questions", "ice involvement should have an unknown option"): **W115 live since 1 November
-    2026** (see Settled). **W116 1 chosen and built** (1 November; see Settled), not yet published. **W117 1 chosen**
-    (1 November: ICE Involvement, step 3's tick `court.iceInvolvement`, becomes Yes / No / Unknown as the
-    order-of-protection question under it, required; the screening list on ICE already has Unknown, W21). It needs one
-    new answer from the worker (proposed `court.iceInvolvementUnknown`, true/false, true only when `court.iceInvolvement`
-    is false), asked of the worker chat through the dispatcher on 1 November; **it cannot go on nyriac.com before the
-    live worker takes it.** Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
+    2026** (see Settled). **W116 1 chosen and built** (1 November; see Settled), not yet published. **W117 1 chosen and
+    built** (1 November; see Settled: ICE Involvement as Yes / No / Unknown; the screening list on ICE already had
+    Unknown, W21). It needs one new answer from the worker, `court.iceInvolvementUnknown` (true/false): contract draft
+    28, built and held by the worker chat on 1 November, and tested here against its local worker; **it cannot go on
+    nyriac.com until the worker chat says the live worker takes it**, then the owner's yes. Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
