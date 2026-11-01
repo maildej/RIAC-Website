@@ -202,7 +202,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; line-height: 1.4;
 }
 .qrow { display: grid; grid-template-columns: 15rem minmax(0, 1fr); }
-.qrow + .qrow, .sec-foot { border-top: 1px solid #e1e4e9; }
+.qrow + .qrow, .sec-foot { border-top: 2px solid #c3c9d2; }   /* W116 1: 2 px in the sheet's edge grey between questions (was 1 px #e1e4e9) */
 .qrow > .q { background: #f3f4f7; padding: .75rem 1rem; border-right: 1px solid #e1e4e9; }
 .qrow > .a { padding: .6rem 1rem; align-self: center; min-width: 0; }
 .qrow.para { display: block; padding: .6rem 1rem; }

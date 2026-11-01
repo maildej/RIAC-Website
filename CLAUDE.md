@@ -1329,10 +1329,19 @@ every key and code the pages send.
   tab was (a), and Send Another Referral beside it (b). Pictures `riac-handover\W\design\w114\` (mockup) and `w114c\`
   (as built); checks `tests\w114-check.mjs` (1360 to 320 px, emailed and not, the new tab opening), with `w108-check`,
   `w48-check`, `w77-check`, `w31b-check` and `e2e.mjs` (1360 and 390, the worker chat's local worker) passing.
+  **Live since 1 November 2026** (9:02 AM, the owner's "Yes, publish both", with W115: `main` dc7b8a2, Pages run 135;
+  checked on nyriac.com: the three changed files served as published, the form's step 1 drawing with no errors).
 - **W115, the owner's words** (parked 28 October 2026, item 36: "\"where things stand\" should be immediate issues"):
   step 3's second section band is **"Immediate issues"** (it was "Where things stand", W103 3), and the line under the
   step's heading reads *The court, and any immediate issues.* (it was *The court, and where things stand.*, W90 2).
   Words only: no key or code changes. Checks `tests\w90-check.mjs` (updated), `w103-check.mjs`, `every-step-check.mjs`.
+  **Live since 1 November 2026**, with W114 2.
+- **W116 1** (1 November 2026; the owner, item 36: "thicker lines between questions"): on every step's ruled sheet
+  **the line between two questions is 2 px in the sheet's own edge grey** (`#c3c9d2`; it was 1 px `#e1e4e9`, W103 3);
+  the grey question column's edge, and on a phone the line between a question and its answer, stay 1 px and pale, so
+  each question with its answer reads as one block. Chosen over the column's edge at 2 px too ("2") and 3 px lines
+  ("3"). Pictures `riac-handover\W\design\w116\` (mockup, `W116-*`) and `w116c\` (as built); checks
+  `tests\w116-check.mjs` (steps 2 to 7, 1360 and 390 px).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1467,16 +1476,15 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     live since 29 October 2026** (2:30 PM, the owner's yes; `main` c0a24a7; see Settled). **The owner's live
     check** (his own Chrome: a sign-in asked on the computer, the code typed from the email on his phone): pending.
   - **W114, a button to Your Referrals after Send** (the owner, 31 October 2026, wanted before Monday's pilot): **W114
-    2 built** (see Settled), not yet published; publishing waits for the owner's yes.
+    2 live since 1 November 2026** (9:02 AM, `main` dc7b8a2; see Settled).
   - **Item 36, parked 28 October 2026** (the owner on the form: "where things stand" should be immediate issues,
-    "thicker lines between questions", "ice involvement should have an unknown option"): **W115 built** (see Settled),
-    not yet published. **W116, thicker lines between questions**: drawn (1 November): 2 px in the sheet's edge grey
-    (recommended), the same with the question column's edge, or 3 px. **W117, ICE Involvement with Unknown** (step 3's
-    tick, `court.iceInvolvement`; the screening list on ICE already has Unknown, W21): drawn: Yes / No / Unknown as the
-    order-of-protection question, required (recommended), or today's tick with an Unknown tick beside it. Either needs
-    one new answer from the worker (proposed `court.iceInvolvementUnknown`, true/false), asked of the worker chat through
-    the dispatcher on 1 November; it cannot go on nyriac.com before the live worker takes it. Pictures
-    `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
+    "thicker lines between questions", "ice involvement should have an unknown option"): **W115 live since 1 November
+    2026** (see Settled). **W116 1 chosen and built** (1 November; see Settled), not yet published. **W117 1 chosen**
+    (1 November: ICE Involvement, step 3's tick `court.iceInvolvement`, becomes Yes / No / Unknown as the
+    order-of-protection question under it, required; the screening list on ICE already has Unknown, W21). It needs one
+    new answer from the worker (proposed `court.iceInvolvementUnknown`, true/false, true only when `court.iceInvolvement`
+    is false), asked of the worker chat through the dispatcher on 1 November; **it cannot go on nyriac.com before the
+    live worker takes it.** Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
