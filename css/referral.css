@@ -656,31 +656,35 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
    under a thin rule, the fields two by two, each a small capitalised label over its value (as the list's column
    headings), every value in one style; on a computer the two buttons stacked at the right behind a thin upright rule,
    from 601 to 900 px side by side under the fields; on a phone one column, the buttons full width; how long the sign-in
-   lasts beneath */
-.me-fold { border-top: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); margin-top: .9rem; padding-top: 1.05rem; }
+   lasts under Sign Out. W118 1 (the owner: "tighter to reduce its vertical size"): less room throughout, the 12-hours line
+   under Sign Out in the right column (under the buttons below 901 px) */
+.portal-head .wrap:has(.me-fold) { padding-top: .55rem; padding-bottom: .65rem; }
+.portal-head .wrap:has(.me-fold) h1 { margin-bottom: .05rem; }
+.me-fold { border-top: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); margin-top: .55rem; padding-top: .7rem; }
 .me-row { display: flex; justify-content: center; align-items: center; }
-.me-fields { display: grid; grid-template-columns: minmax(0, auto) minmax(0, auto); gap: 1.1rem 3.2rem; margin: 0; text-align: left; min-width: 0; }
+.me-fields { display: grid; grid-template-columns: minmax(0, auto) minmax(0, auto); gap: .6rem 3.2rem; margin: 0; text-align: left; min-width: 0; }
 .me-fields.one { grid-template-columns: minmax(0, auto); }
-.me-fields dt { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .25rem; }
+.me-fields dt { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .05rem; }
 .me-fields dd { margin: 0; font-size: var(--fs-small); color: var(--ink); overflow-wrap: break-word; }
 .me-out { height: 2.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 .85rem; font-size: var(--fs-label); margin: 0; }
-.portal-head .me-note { font-size: var(--fs-label); color: var(--muted); font-style: italic; margin-top: 1rem; }
+.portal-head .me-note { grid-column: 1 / -1; font-size: var(--fs-label); color: var(--muted); font-style: italic; margin: .15rem 0 0; text-align: center; line-height: 1.35; }
 /* W104 A1: Send Us A New Case beside Sign Out, the two one size, the form's symbol in a small cream circle */
-.me-acts { display: grid; grid-template-columns: 12.5rem 12.5rem; gap: .6rem; }
-.me-acts .btn { height: 2.3rem; padding: 0 .8rem; font-size: var(--fs-label); margin: 0; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
+.me-acts { display: grid; grid-template-columns: 12.5rem 12.5rem; gap: .4rem; }
+.me-acts .btn { height: 2.05rem; padding: 0 .8rem; font-size: var(--fs-label); margin: 0; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
 .me-new .tile-sym { width: 1.55rem; height: 1.55rem; border-radius: 50%; background: var(--cream); color: var(--navy); --icon-fill: var(--cream); --icon-accent: var(--r5); }
 .me-new .tile-sym svg { width: 17px; height: 17px; }
 @media (min-width: 901px) {
   .me-fields { padding-right: 3.2rem; }
-  .me-acts { flex: none; grid-template-columns: 12.5rem; gap: .65rem; padding-left: 3.2rem; border-left: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); }
+  .me-acts { flex: none; grid-template-columns: 12.5rem; padding-left: 3.2rem; border-left: 1px solid color-mix(in srgb, var(--navy) 22%, transparent); }
 }
-@media (max-width: 900px) { .me-row { flex-direction: column; gap: 1.1rem; } .me-fields { max-width: 100%; } }
+@media (min-width: 1000px) { .me-acts { grid-template-columns: 13.5rem; } }   /* the 12-hours line on two lines, where the office still fits on one */
+@media (max-width: 900px) { .me-row { flex-direction: column; gap: .75rem; } .me-fields { max-width: 100%; } }
 @media (max-width: 600px) {
   .me-row { align-items: stretch; }
-  .me-fields, .me-fields.one { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+  .me-fields, .me-fields.one { grid-template-columns: minmax(0, 1fr); gap: .55rem; }
   .me-out { width: 100%; }
   .me-acts { grid-template-columns: 1fr; }
-  .me-acts .btn { height: 2.6rem; font-size: var(--fs-small); }
+  .me-acts .btn { height: 2.4rem; font-size: var(--fs-small); }
 }
 @media (max-width: 360px) { .me-acts .btn { font-size: var(--fs-label); padding: 0 .6rem; } }   /* "Send Us A New Case" kept inside the card, the pair one size */
 
@@ -903,14 +907,14 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 /* The trial run (W39 1b): a band on the form and the portal while they are tested on nyriac.com with invented details.
    Magenta is used nowhere else on the site. Its "Trial run" label fades three times as the page opens (4.8 seconds, inside
    the five the accessibility standard allows), then stays; still for a device set to reduce motion. It goes at the
-   go-live, with the commit that added it. */
+   go-live, with the commit that added it. W118 1 (the owner: "center [trial run]"): the label and the words centred. */
 .trial-band { --trial: #b0006e; background: var(--trial); color: #fff; border-radius: 8px; padding: .9rem 1.1rem;
-  margin: 0 0 1.4rem; font-size: var(--fs-small); line-height: 1.5; box-shadow: 0 3px 14px rgba(176,0,110,.25); }
+  margin: 0 0 1.4rem; font-size: var(--fs-small); line-height: 1.5; box-shadow: 0 3px 14px rgba(176,0,110,.25); text-align: center; }
 .trial-band p { margin: 0; }
 .trial-band p + p { margin-top: .35rem; }
 .trial-band a { color: #fff; text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
-.trial-tag { display: inline-block; background: #fff; color: var(--trial); font-family: var(--sans); font-size: var(--fs-label);
+.trial-tag { display: table; background: #fff; color: var(--trial); font-family: var(--sans); font-size: var(--fs-label);
   font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: .18rem .55rem; border-radius: 3px;
-  margin-bottom: .45rem; animation: trial-fade 1.6s ease-in-out 3; }
+  margin: 0 auto .45rem; animation: trial-fade 1.6s ease-in-out 3; }
 @keyframes trial-fade { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .trial-tag { animation: none; } }
