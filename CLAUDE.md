@@ -1341,7 +1341,9 @@ every key and code the pages send.
   the grey question column's edge, and on a phone the line between a question and its answer, stay 1 px and pale, so
   each question with its answer reads as one block. Chosen over the column's edge at 2 px too ("2") and 3 px lines
   ("3"). Pictures `riac-handover\W\design\w116\` (mockup, `W116-*`) and `w116c\` (as built); checks
-  `tests\w116-check.mjs` (steps 2 to 7, 1360 and 390 px).
+  `tests\w116-check.mjs` (steps 2 to 7, 1360 and 390 px). **Live since 1 November 2026** (9:16 AM, the owner's "Yes,
+  publish W116 1": `main` 5c2cbdd, Pages run 136, W117 1 held back; checked on nyriac.com: the stylesheet served as
+  published, step 1's line 2 px).
 - **W117 1** (1 November 2026; the owner, item 36: "ice involvement should have an unknown option"): on step 3, **ICE
   Involvement is Yes / No / Unknown**, three pills as the order-of-protection question under it, **required**, with the
   red "ICE" triangle before the question (W103 3's tile is gone) and *Choose Yes if (1) you are aware of an ICE detainer,
@@ -1498,7 +1500,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     2 live since 1 November 2026** (9:02 AM, `main` dc7b8a2; see Settled).
   - **Item 36, parked 28 October 2026** (the owner on the form: "where things stand" should be immediate issues,
     "thicker lines between questions", "ice involvement should have an unknown option"): **W115 live since 1 November
-    2026** (see Settled). **W116 1 chosen and built** (1 November; see Settled), not yet published. **W117 1 chosen and
+    2026** (see Settled). **W116 1 live since 1 November 2026** (9:16 AM, `main` 5c2cbdd). **W117 1 chosen and
     built** (1 November; see Settled: ICE Involvement as Yes / No / Unknown; the screening list on ICE already had
     Unknown, W21). It needs one new answer from the worker, `court.iceInvolvementUnknown` (true/false): contract draft
     28, built and held by the worker chat on 1 November, and tested here against its local worker; **it cannot go on
