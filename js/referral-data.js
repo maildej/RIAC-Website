@@ -296,7 +296,7 @@
     Q('court.immigrationOffice', 'Immigration Court Or USCIS Office (If Any)', 'short', { way: 'questions',
       guidance: { eg: 'e.g. "Batavia Immigration Court"; "Buffalo USCIS Field Office"' }, show: isRemoval }),
     Q('court.nextDate', 'Next Hearing Or Interview Date (If Any)', 'date', { way: 'questions', alias: true, show: isRemoval, copy: 'Next hearing or interview date' }),
-    SEC('Where things stand'),
+    SEC('Immediate issues'),   // W115 (the owner's words, parked 28 October): was "Where things stand"
     // W103 3: a tile with a red "ICE" triangle, ticked for you when the client is detained in immigration custody
     Q('court.iceInvolvement', 'ICE Involvement', 'check', { way: 'questions', copy: 'ICE involvement', ice: true,
       guidance: 'Select if (1) you are aware of an ICE detainer, or (2) you know of ANY ICE involvement with this case / your client',

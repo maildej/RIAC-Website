@@ -1061,7 +1061,7 @@
   }
 
   function drawCourt(q) {
-    heading(q, 'Court and case', 'The court, and where things stand.');
+    heading(q, 'Court and case', 'The court, and any immediate issues.');
     if (S.sendAs === 'completed-form') {   // W13 2
       q.appendChild(h('div', { class: 'upload-on' }, ['You are sending a completed RIAC intake form. Next you give the client’s name, then upload the form at step 8, with any other documents. ',
         h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.sendAs = 'questions'; S.visited = Math.min(S.visited, S.step); save(); render(); } } }, ['Answer the questions here instead ›'])]));
