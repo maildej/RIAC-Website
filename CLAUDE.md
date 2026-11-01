@@ -1310,8 +1310,8 @@ every key and code the pages send.
   px) and `tests\w113-local.mjs` (the worker chat's local worker: a wrong code refused, the first email's code still
   signing in after a second request). **Live since 29 October 2026** (2:30 PM, the owner's "Yes, publish": `main`
   c0a24a7, Pages run 133; checked on nyriac.com: the three changed files served as published, the sign-in card's new
-  line and the "link cannot be used" card drawn, no errors). The one check left is the owner's, from his own Chrome: ask
-  for a sign-in, then type the code from the email read on his phone.
+  line and the "link cannot be used" card drawn, no errors). **Checked by the owner** (1 November 2026, his own Chrome:
+  a sign-in asked on the computer, the code typed from the email read on his phone, and signed in).
 - **W114 2** (31 October 2026; the owner, after a test referral, through the database chat: "Upon submission, there
   should be a button to go to the portal", then here: "W114-2 (all of the description text in option 1 was superfluous -
   the button is enough)"): after Send, **Go To Your Referrals sits under Print Or Save As PDF in the orange "This page
@@ -1509,7 +1509,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     deployed (contract draft 27: `withCode: true` on the sign-in, `{ code, browserSecret }` to the session, refusals
     `code-invalid` and `code-expired`); the email is unchanged until the page asks for the code. **W113 1 with W113 a
     live since 29 October 2026** (2:30 PM, the owner's yes; `main` c0a24a7; see Settled). **The owner's live
-    check** (his own Chrome: a sign-in asked on the computer, the code typed from the email on his phone): pending.
+    check** (his own Chrome: a sign-in asked on the computer, the code typed from the email on his phone): **done, 1
+    November 2026**, signed in.
   - **W114, a button to Your Referrals after Send** (the owner, 31 October 2026, wanted before Monday's pilot): **W114
     2 live since 1 November 2026** (9:02 AM, `main` dc7b8a2; see Settled).
   - **Item 36, parked 28 October 2026** (the owner on the form: "where things stand" should be immediate issues,
