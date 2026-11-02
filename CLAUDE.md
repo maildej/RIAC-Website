@@ -1356,13 +1356,16 @@ every key and code the pages send.
   for No; questions way only); a refusal of the new key links to step 3. **The worker's side is contract draft 28** (the
   worker chat, 1 November 2026, built and held): null or left out counts as false; both true is refused
   (`not-with-ice-involvement`); at RIAC, and in an emailed referral, an Unknown shows as a line with the court and case's
-  details. ⚠️ **Not on nyriac.com until the worker chat says the live worker takes `court.iceInvolvementUnknown`**: the
-  live worker refuses a key it does not know, so every Send would fail. Chosen over today's tick with an Unknown tick
+  details. It waited for the live worker, which refuses a key it does not know: **the live worker takes
+  `court.iceInvolvementUnknown` since 2 November 2026** (deployed 1:05 PM, the worker chat). Chosen over today's tick with an Unknown tick
   beside it, optional ("2"). Pictures `riac-handover\W\design\w116\` (mockup, `W117-*`) and `w117c\` (as built); checks
   `tests\w117-check.mjs` (1360 and 390 px, what is sent stood in for); `w103-check.mjs` and `e2e.mjs` updated, the seeded
   drafts of the other checks now answer it, and `e2e-scenarios.mjs` (two new: Unknown, and Yes with immigration
   custody), `e2e.mjs`, `w36-e2e`, `w40-check`, `w101-check`, `w48-check` and `q02-q03-check` pass against the worker
-  chat's local worker, which takes the key.
+  chat's local worker, which takes the key. **Live since 2 November 2026** (3:17 PM, the owner's "Yes, publish": `main`
+  af1c02f, Pages run 138; checked on nyriac.com: the three changed files served as published, and step 3 drawing Yes /
+  No / Unknown, immigration custody choosing Yes with "Chosen for you: …"). The first live Send with Unknown is the
+  owner's, from his own Chrome.
 - **W118 1, with the band's words centred** (1 November 2026; the owner, in the dispatcher's chat, with a screenshot of
   the live list: "Can we make the your referrals card tighter to reduce its vertical size. The 12 hours signout
   description should be under the sign out button in the right column. Also center [trial run]"): the cream "Your
@@ -1519,8 +1522,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     2026** (see Settled). **W116 1 live since 1 November 2026** (9:16 AM, `main` 5c2cbdd). **W117 1 chosen and
     built** (1 November; see Settled: ICE Involvement as Yes / No / Unknown; the screening list on ICE already had
     Unknown, W21). It needs one new answer from the worker, `court.iceInvolvementUnknown` (true/false): contract draft
-    28, built and held by the worker chat on 1 November, and tested here against its local worker; **it cannot go on
-    nyriac.com until the worker chat says the live worker takes it**, then the owner's yes.
+    28, on the live worker since 2 November (1:05 PM), and tested here against its local worker. **W117 1 live since 2
+    November 2026** (3:17 PM, the owner's yes; `main` af1c02f). **Left, the owner's:** one test referral with ICE
+    Involvement "Unknown" from his own Chrome, to see it arrive at RIAC.
   - **W118 1** (the Your Referrals card tighter, the 12-hours line under Sign Out, the trial band centred): **live since
     1 November 2026** (9:51 AM, `main` 0666850; see Settled), and **checked by the owner signed in** (2 November 2026:
     "looks good"). `main` was moved on to it alone; this branch has since brought `main` in (merge ee5b40f). Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
