@@ -1376,7 +1376,8 @@ every key and code the pages send.
   Pictures `riac-handover\W\design\w118\` (mockup) and `w118c\` (as built); checks `tests\w98-check.mjs` (W118's lines
   added, 1360 to 320 px), `w104-check.mjs`, `trial-check.mjs`. **Live since 1 November 2026** (9:51 AM, the owner's
   "Publish once checked": `main` 0666850, Pages run 137, published on its own over W116 1 with W117 1 still held;
-  checked on nyriac.com: the two changed files served as published, the band's label centred).
+  checked on nyriac.com: the two changed files served as published, the band's label centred). **Checked by the owner**
+  (2 November 2026, the card after his own sign-in: "looks good").
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1521,8 +1522,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     28, built and held by the worker chat on 1 November, and tested here against its local worker; **it cannot go on
     nyriac.com until the worker chat says the live worker takes it**, then the owner's yes.
   - **W118 1** (the Your Referrals card tighter, the 12-hours line under Sign Out, the trial band centred): **live since
-    1 November 2026** (9:51 AM, `main` 0666850; see Settled). `main` was moved on to it alone, so this branch carries
-    the same change as its own commit: bring `main` in before the next publish. Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
+    1 November 2026** (9:51 AM, `main` 0666850; see Settled), and **checked by the owner signed in** (2 November 2026:
+    "looks good"). `main` was moved on to it alone; this branch has since brought `main` in (merge ee5b40f). Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
