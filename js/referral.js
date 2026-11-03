@@ -124,8 +124,8 @@
     return -1;
   }
   function stepName(i) {
-    if (STEP_IDS[i] === 'casetype') { var t = caseTypeInfo(); return t ? t.step : 'Case Type'; }
-    return ['County', 'About You', 'Court & Case', 'Client', 'Immigration', '', 'Other People', 'Documents', 'Review And Send'][i];
+    if (STEP_IDS[i] === 'casetype') { var t = caseTypeInfo(); return t ? t.step : 'Case type'; }
+    return ['County', 'About you', 'Court & case', 'Client', 'Immigration', '', 'Other people', 'Documents', 'Review and send'][i];
   }
   function nextIndex(i, dir) {
     var j = i + dir;
@@ -982,7 +982,7 @@
     heading(q, 'Case type and county', 'The kind of case, and the county that decides which regional center receives your referral.');
     var sheet = drawList(D.STEPS.county, q);
     var words = countyWords();
-    var head = [h('label', { class: 'lab', for: 'f-county', id: 'f-county-l' }, [words.label, ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })])];
+    var head = [h('label', { class: 'lab', for: 'f-county', id: 'f-county-l' }, [words.label, '\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })])];
     if (caseType() === 'removal') head.push(h('span', { class: 'g', id: 'f-county-d', text: 'For removal defense or a USCIS application, your office location decides which regional center receives your referral.' }));
     head.push(h('span', { class: 'g', id: 'f-county-g', text: 'Type part of its name, or open the whole list with the arrow.' }));
     var ans = [countyBox(words)];
@@ -1002,7 +1002,7 @@
       if (!S.route.outside) other.push(h('p', { class: 'instead' }, ['No conflict after all? ', h('button', { type: 'button', class: 'link-btn', on: { click: function () {
         S.route.conflict = false; S.route.centre = null; save(); render();
       } } }, ['Use ' + centreOf(cc).short + ' ›'])]));
-      sec.appendChild(qrow('f-centre', [h('span', { class: 'lab', id: 'f-centre-l' }, [S.route.outside ? 'Which center should receive this referral?' : 'Choose another center', ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
+      sec.appendChild(qrow('f-centre', [h('span', { class: 'lab', id: 'f-centre-l' }, [S.route.outside ? 'Which center should receive this referral?' : 'Choose another center', '\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
         h('span', { class: 'g', text: S.route.outside ? 'Choose the center nearest to you, or the one you usually work with.' : 'Because ' + centreOf(cc).short + ' has a conflict with your client.' })], other));
     }
     q.appendChild(actions());
@@ -1038,10 +1038,10 @@
     var A = S.A;
     var type = (D.CHOICES.officeType.filter(function (c) { return c.code === A['attorney.officeType']; })[0] || {}).label;
     var office = A['attorney.office'] ? pickParts({ list: 'offices' }, A['attorney.office']) : null;
-    var rows = [['Attorney', [h('span', { class: 'ro who', text: (A['attorney.firstName'] + ' ' + A['attorney.lastName']).trim() })]], ['Attorney Email', [h('span', { class: 'ro', text: A['attorney.email'] })]]];
-    if (clean(A['attorney.phone'])) rows.push(['Attorney Phone', [h('span', { class: 'ro', text: A['attorney.phone'] })]]);
-    rows.push(['Your Office Type', [h('span', { class: 'ro', text: type })]]);
-    if (office) rows.push(['Attorney’s Office / Affiliation', [h('span', { class: 'ro' }, [office.name, office.place ? h('span', { class: 'pl', text: office.place }) : null])]]);
+    var rows = [['Attorney', [h('span', { class: 'ro who', text: (A['attorney.firstName'] + ' ' + A['attorney.lastName']).trim() })]], ['Attorney email', [h('span', { class: 'ro', text: A['attorney.email'] })]]];
+    if (clean(A['attorney.phone'])) rows.push(['Attorney phone', [h('span', { class: 'ro', text: A['attorney.phone'] })]]);
+    rows.push(['Your office type', [h('span', { class: 'ro', text: type })]]);
+    if (office) rows.push(['Attorney’s office / affiliation', [h('span', { class: 'ro' }, [office.name, office.place ? h('span', { class: 'pl', text: office.place }) : null])]]);
     var chg = h('button', { type: 'button', class: 'chg', 'aria-label': 'Change these details', on: { click: function () { S.signIn.open = true; save(); render('f-attorney-firstName'); } } }, ['Change']);
     var sec = h('section', { class: 'sec' }, [h('h3', { class: 'sec-h ok' }, [h('span', { text: '✓ From your sign-in' }), chg])]);
     rows.forEach(function (r) { sec.appendChild(qrow(null, [h('span', { class: 'lab', text: r[0] })], r[1], 'ro-row')); });
@@ -1126,26 +1126,26 @@
 
   function drawPeople(q) {
     heading(q, 'Other people', 'Anyone else named in this case.');
-    var sheet = drawList([{ key: 'noOtherPeople', label: 'Is Anyone Else Involved In This Case?', type: 'radio', inline: true, required: true,
+    var sheet = drawList([{ key: 'noOtherPeople', label: 'Is anyone else involved in this case?', type: 'radio', inline: true, required: true,
       choices: D.CHOICES.others, desc: 'Co-defendants, complainants or victims, witnesses, family members, or anyone else named.' }], q);
     if (S.A.noOtherPeople === 'yes') {
       if (S.people.length) sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'People added' }), h('ul', { class: 'people-list' }, S.people.map(personLine))]));
       var p = S.adding;
       function prow(id, label, req, guidance, ctrl) {   // a row of the "Add a person" box
-        var head = [h('label', { class: 'lab', for: id, id: id + '-l' }, req ? [label, ' ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })] : [label])];
+        var head = [h('label', { class: 'lab', for: id, id: id + '-l' }, req ? [label, '\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })] : [label])];
         if (guidance) { head.push(h('span', { class: 'g', id: id + '-g', text: guidance })); ctrl.setAttribute('aria-describedby', id + '-g'); }
         return qrow(id, head, [ctrl]);
       }
       var box = h('section', { class: 'sec', id: 'p-box-w' }, [h('h3', { class: 'sec-h', text: 'Add a person' }),
-        prow('p-first', 'First Name', true, 'First name only. If in doubt, put a name in the next box.', h('input', { type: 'text', id: 'p-first', maxlength: '100', value: p.firstName || '', autocomplete: 'off', 'data-person': 'firstName' })),
-        prow('p-last', 'Middle & Last Names', true, null, h('input', { type: 'text', id: 'p-last', maxlength: '100', value: p.lastName || '', autocomplete: 'off', 'data-person': 'lastName' })),
-        prow('p-dob', 'Date Of Birth', false, 'If known', h('input', { type: 'date', id: 'p-dob', value: p.dob || '', 'data-person': 'dob' })),
-        prow('p-role', 'Their Role', true, null, h('select', { id: 'p-role', class: 'role', 'data-person': 'role' }, [h('option', { value: '', text: 'Choose one' })].concat(
+        prow('p-first', 'First name', true, 'First name only. If in doubt, put a name in the next box.', h('input', { type: 'text', id: 'p-first', maxlength: '100', value: p.firstName || '', autocomplete: 'off', 'data-person': 'firstName' })),
+        prow('p-last', 'Middle & last names', true, null, h('input', { type: 'text', id: 'p-last', maxlength: '100', value: p.lastName || '', autocomplete: 'off', 'data-person': 'lastName' })),
+        prow('p-dob', 'Date of birth', false, 'If known', h('input', { type: 'date', id: 'p-dob', value: p.dob || '', 'data-person': 'dob' })),
+        prow('p-role', 'Their role', true, null, h('select', { id: 'p-role', class: 'role', 'data-person': 'role' }, [h('option', { value: '', text: 'Choose one' })].concat(
           D.CHOICES.roles.map(function (r) { return h('option', { value: r.code, text: r.label, selected: p.role === r.code }); })))),
-        prow('p-rel', 'Relationship To The Client', false, 'e.g. "former partner"; "brother"; "none"', h('input', { type: 'text', id: 'p-rel', maxlength: '200', value: p.relationship || '', autocomplete: 'off', 'data-person': 'relationship' })),
+        prow('p-rel', 'Relationship to the client', false, 'e.g. "former partner"; "brother"; "none"', h('input', { type: 'text', id: 'p-rel', maxlength: '200', value: p.relationship || '', autocomplete: 'off', 'data-person': 'relationship' })),
         h('div', { class: 'sec-foot' }, [h('button', { type: 'button', class: 'btn btn-navy add-person', on: { click: addPerson } }, ['+ Add This Person'])])]);
       sheet.appendChild(box);
-      sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'Names not known' }), field({ key: 'peopleNote', label: 'Anyone Involved Whose Name You Do Not Know', type: 'note',
+      sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'Names not known' }), field({ key: 'peopleNote', label: 'Anyone involved whose name you do not know', type: 'note',
         guidance: { eg: 'e.g. "Two unidentified co-defendants"; "the complainant’s mother, name unknown"' } })]));
     }
     q.appendChild(actions());
@@ -1170,12 +1170,12 @@
     D.docKinds(caseType(), S.sendAs).forEach(function (kind) { q.appendChild(docBox(kind)); });
     var rap = docState('rap-sheet'), more = [];
     if (rap.status === 'attached' || rap.status === 'sent-before') {
-      more.push({ type: 'section', title: 'The RAP sheet' }, { key: 'rapSheetComplete', label: 'Does The RAP Sheet Include ALL Of Your Client’s Criminal History?', type: 'radio', inline: true, choices: D.CHOICES.rapComplete });
+      more.push({ type: 'section', title: 'The RAP sheet' }, { key: 'rapSheetComplete', label: 'Does the RAP sheet include ALL of your client’s criminal history?', type: 'radio', inline: true, choices: D.CHOICES.rapComplete });
       if (S.A.rapSheetComplete === 'no' || S.A.rapSheetComplete === 'unsure') {
-        more.push({ key: 'rapSheetMore', label: 'Criminal History Not On The RAP Sheet / Further Details', type: 'note', guidance: { eg: 'e.g. "Arrested in New Jersey in 2019 for shoplifting; outcome unknown"' } });
+        more.push({ key: 'rapSheetMore', label: 'Criminal history not on the RAP sheet / further details', type: 'note', guidance: { eg: 'e.g. "Arrested in New Jersey in 2019 for shoplifting; outcome unknown"' } });
       }
     }
-    drawList(more.concat({ type: 'section', title: 'Anything else' }, { key: 'anythingElse', label: 'Anything Else RIAC Needs To Know?', type: 'long' }), q);
+    drawList(more.concat({ type: 'section', title: 'Anything else' }, { key: 'anythingElse', label: 'Anything else RIAC needs to know?', type: 'long' }), q);
     q.appendChild(actions());
     setTimeout(startBotCheck, 0);
   }
@@ -1189,7 +1189,7 @@
     var st = docState(kind);
     var id = 'd-' + kind;
     if (info.named) st.status = 'attached';   // W36: no choice to make, only files to add and name
-    var statuses = [['attached', 'Attach Now']].concat(info.sentBefore ? [['sent-before', 'Sent Before']] : [], [['to-follow', 'To Follow'], ['unavailable', 'Not Available']]);
+    var statuses = [['attached', 'Attach now']].concat(info.sentBefore ? [['sent-before', 'Sent before']] : [], [['to-follow', 'To follow'], ['unavailable', 'Not available']]);
     var pills = h('div', { class: 'pills4' + (statuses.length === 3 ? ' three' : ''), role: 'radiogroup', 'aria-label': info.name });
     statuses.forEach(function (s) {
       pills.appendChild(h('label', { class: 'pill' + (s[0] === 'attached' ? ' attach' : ''), for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }), s[1]]));
@@ -1226,7 +1226,7 @@
       : h('button', { type: 'button', class: 'link-btn', on: { click: function () { removeFile(kind, f.id); } } }, [f.state === 'uploading' ? 'Cancel' : 'Remove']);
     var li = h('li', null, [h('span', { class: 'fname', text: f.name }), h('span', { class: 'fsize', text: fmtBytes(f.size) })].concat(state, [act]));
     if (D.DOCS[kind].named) li.appendChild(h('div', { class: 'field fnote', id: 'n-' + f.id + '-w' }, [   // W36: what each file is
-      h('label', { for: 'n-' + f.id }, ['What is it? ', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
+      h('label', { for: 'n-' + f.id }, ['What is it?\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })]),
       h('span', { class: 'g', id: 'n-' + f.id + '-g', text: 'e.g. Notice to Appear; I-213; denial of adjustment' }),
       h('input', { type: 'text', id: 'n-' + f.id, maxlength: '200', value: f.note || '', autocomplete: 'off', 'data-fnote': f.id, 'data-fkind': kind, 'aria-describedby': 'n-' + f.id + '-g' })]));
     return li;
@@ -1587,11 +1587,11 @@
     var words = countyWords();
     var county = rowsFor(D.STEPS.county).concat([[words.label, S.route.outside ? words.outside : S.route.county || '—'], ['Center', centreOf(rc).name]]);
     if (S.route.conflict) { county.push(['Reason for this center', 'The county’s own center has a conflict']); if (clean(S.A.outOfRegionNote)) county.push(['About the conflict', S.A.outOfRegionNote.trim()]); }
-    secs.push(['Case Type & County', county, 0]);
-    secs.push(['About You', rowsFor(D.STEPS.about), 1]);
+    secs.push(['Case type & county', county, 0]);
+    secs.push(['About you', rowsFor(D.STEPS.about), 1]);
     var court = rowsFor(D.STEPS.court);
     court.unshift(['How it is sent', S.sendAs === 'completed-form' ? 'A completed RIAC intake form, attached' : 'Answered on this form']);
-    secs.push(['Court & Case', court, 2]);
+    secs.push(['Court & case', court, 2]);
     secs.push(['Client', rowsFor(D.STEPS.client), 3]);
     if (!skipped('immigration')) secs.push(['Immigration', rowsFor(D.STEPS.immigration), 4]);
     if (!skipped('casetype') && caseTypeInfo()) secs.push([caseTypeInfo().step, rowsFor(D.SECTIONS[caseType()] || []), 5]);
@@ -1604,7 +1604,7 @@
         pr.push([(p.firstName + ' ' + p.lastName).trim(), [role, p.relationship, p.dob ? 'born ' + fmtDate(p.dob) : ''].filter(Boolean).join(' · ')]);
       });
       if (S.A.noOtherPeople === 'yes' && clean(S.A.peopleNote)) pr.push(['People whose names are not known', S.A.peopleNote.trim()]);
-      secs.push(['Other People', pr, 6]);
+      secs.push(['Other people', pr, 6]);
     }
     var dr = [];
     D.docKinds(caseType(), S.sendAs).forEach(function (kind) {
@@ -1766,9 +1766,9 @@
   }
   // Answers outside the questions' lists: their words, and their step (the overnight review's W-Q05)
   var OTHER_KEYS = {
-    anythingElse: ['Anything Else RIAC Needs To Know?', 'documents'], rapSheetComplete: ['Does The RAP Sheet Include ALL Of Your Client’s Criminal History?', 'documents'],
-    rapSheetMore: ['Criminal History Not On The RAP Sheet / Further Details', 'documents'], documents: ['Documents', 'documents'], uploadId: ['The files', 'documents'],
-    people: ['Other people', 'people'], peopleNote: ['Anyone Involved Whose Name You Do Not Know', 'people'], noOtherPeople: ['Is Anyone Else Involved In This Case?', 'people'],
+    anythingElse: ['Anything else RIAC needs to know?', 'documents'], rapSheetComplete: ['Does the RAP sheet include ALL of your client’s criminal history?', 'documents'],
+    rapSheetMore: ['Criminal history not on the RAP sheet / further details', 'documents'], documents: ['Documents', 'documents'], uploadId: ['The files', 'documents'],
+    people: ['Other people', 'people'], peopleNote: ['Anyone involved whose name you do not know', 'people'], noOtherPeople: ['Is anyone else involved in this case?', 'people'],
     county: ['County', 'county'], centre: ['Center', 'county'], outOfRegionReason: ['Center', 'county'], outOfRegionNote: ['About the conflict', 'county'],
     'Idempotency-Key': ['Sending', 'check'], formVersion: ['The form', 'check'], 'court.iceInvolvementUnknown': ['ICE Involvement', 'court']
   };

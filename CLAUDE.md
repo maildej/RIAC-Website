@@ -36,7 +36,7 @@ Audience: attorneys (public defenders, assigned counsel, mandated providers) —
 
 ## Technical setup
 
-- **Plain static HTML/CSS.** No build step, no frameworks, no Jekyll (`.nojekyll` disables it). JavaScript is limited to small plain scripts in `js/` (the advisory search, the map tooltips, the download-request form), plus the referral form's and the portal's, which are larger but still plain JavaScript with no library and no build step. External dependencies: Google Fonts (Source Serif 4 + Inter) loaded via a `<link>` in each page's `<head>`, and, on the form and the portal only, Cloudflare's Turnstile bot check, loaded from `challenges.cloudflare.com` when it is needed.
+- **Plain static HTML/CSS.** No build step, no frameworks, no Jekyll (`.nojekyll` disables it). JavaScript is limited to small plain scripts in `js/` (the advisory search, the map tooltips, the download-request form), plus the referral form's and the portal's, which are larger but still plain JavaScript with no library and no build step. External dependencies: Google Fonts (Source Serif 4 + Source Sans 3; Inter until W119 2b) loaded via a `<link>` in each page's `<head>`, and, on the form and the portal only, Cloudflare's Turnstile bot check, loaded from `challenges.cloudflare.com` when it is needed.
 - **Hosting:** GitHub Pages, deployed from the `main` branch of a GitHub repo.
 - **Domain:** `nyriac.com`, registered at **Wix**. Wix does not allow domain transfers or nameserver changes, so DNS is managed inside Wix: A records point the apex domain to GitHub Pages' IPs, and a CNAME points `www` to the GitHub Pages address. The `CNAME` file in this folder tells GitHub Pages the custom domain. See `SETUP.md` for the exact records.
 
@@ -212,11 +212,14 @@ The point of the command is that a chat can be closed at any moment without losi
 The look of the site takes its cues from the RIAC database's own pages (in the private
 repository), without sharing any of their code.
 
-- **Type.** Source Serif 4 for headings, Inter for everything else. **Every font size is one of
+- **Type.** Source Serif 4 for headings, **Source Sans 3** (its sister face) for everything else, across the whole
+  site (W119 2b, 3 November 2026; it was Inter, which the owner found "doughy/oversized"). **Every font size is one of
   the `--fs-*` variables** at the top of `css/style.css` (display, title, section, card, lede,
   text, small, label); do not add a size of its own to a rule. Capitals are for short labels
-  only (the menu, "Region 1", "Counties served"), never for a sentence or a title. The logo
-  lettering and the funder ribbon keep their own sizes.
+  only (the menu, "Region 1", "Counties served"), never for a sentence or a title. **Questions and choices are in
+  sentence capitals** ("Does this case involve an order of protection in any way?", "Released on recognizance"; W119
+  2b), keeping capitals of emphasis (ALL, INITIAL, CURRENT) and short forms (ICE, RIAC, U.S.); buttons keep a capital on
+  each word ("Send Us A New Case"). The logo lettering and the funder ribbon keep their own sizes.
 - **Paragraphs.** Reading paragraphs (`.section-intro`) are **justified** on a computer, held to
   about 75 letters a line, with no first-line indent; on a phone they are left-aligned, because
   a short line cannot be justified without wide gaps between words. Card text is centred.
@@ -1381,6 +1384,38 @@ every key and code the pages send.
   "Publish once checked": `main` 0666850, Pages run 137, published on its own over W116 1 with W117 1 still held;
   checked on nyriac.com: the two changed files served as published, the band's label centred). **Checked by the owner**
   (2 November 2026, the card after his own sign-in: "looks good").
+- **W119 2b** (3 November 2026; the owner, with a screenshot of the live step 3: "a different font, and reducing button
+  and checkmark sizes. Things are seeming doughy/oversized and the basic sans serif font is not helping ... Cross
+  reference the washington post's approach", then "if we improve the referral page to remove doughyness, it should go
+  for the whole site"): **the site's sans is Source Sans 3**, the sister of the headings' Source Serif 4 (every page's
+  Google Fonts link and `--sans` in `style.css`; the admin page's own rules too). The Post's own Franklin is licensed and
+  cannot be used; its free cousin Libre Franklin ("1") read as wide and heavy as Inter at this size. **Smaller
+  controls**: on the form the Yes / No pills 1.95rem (2.3), the tiles 2.05rem (2.5), the round and square tick boxes
+  .875rem, 14 px (the Post's small size), with a 1.5 px edge (1.15rem, 2 px), the boxes' padding .3rem .6rem and corners 4 px, the question column's
+  padding .6rem .9rem, the step circles 1.7rem (1.55 on a phone), the ICE triangle 26 px; across the site the shared
+  button's padding .55rem 1.3rem (.7rem 1.5rem), Download .45rem 1.15rem, the request page's box .45rem .7rem, and the
+  taller buttons about 12 % lower (Back and Next 2.5rem, Send 2.6, the orange box's two 2.4, the portal's sign-in and
+  Send To RIAC 2.4, its tick tiles 2.625rem, 42 px, so the tick stays as far from the left as from the top and bottom, W87). **With it, "2b", the owner's choice of the suggestion: questions and choices in
+  sentence capitals** (see Design rules), on the form and in its copy, the document boxes' names (the portal's too) and
+  the step bar ("About you", "Court & case", "Review and send"). Only the capitals changed, not the words; the codes
+  sent are unchanged. Chosen over Libre Franklin ("1"), Inter kept with the smaller sizes ("3"), and 2 with each word
+  capitalised. Found with it, an old fault: **a step already done is a button, and it had shrunk to its words, so its
+  circle sat off to the left of its column** (the step bar looked unevenly spaced); now as wide as its column. And the
+  red star after "County where the case is pending", Other People's names and "What is it?" stays on its last word's
+  line, as every other question's. Pictures `riac-handover\W\design\w119\` (mockups) and `w119c\` (as built); script
+  `tests\w119-shots.mjs`, `tests\w119c-shots.mjs`; checks updated for the new words: `w90-check`, `w105-check`,
+  `w116-check`, `w117-check`.
+- **W120 1** (3 November 2026; the owner: "the field names are not vertically centered in their row and e.g. in the does
+  this case involve an OP row, the buttons move up when you select unknown and the text box beneath it appears"): **on a
+  computer each question is centred against its answer, whichever is the taller** (the docket and court-date labels
+  level with their boxes, the custody question in the middle of its tiles), **and anything that opens under an answer**
+  (Unknown's notes, "Chosen for you", the center under the county) **takes a line of its own beneath, so nothing above
+  it moves** (the order of protection's pills moved 13 px up before). Built in CSS alone: the answer's parts are the
+  row's own grid cells (`.a` is `display: contents`), the first beside the question, the rest under it, .5rem apart, and
+  the grey question column is the row's background (step 2's summary rows keep their own layout). On a phone the
+  question sits over its answer, as before. Chosen over every question at its row's top with the first lines level
+  ("2", which undid W103 3's centring). Pictures `riac-handover\W\design\w120\` (before and after Unknown, a dashed line
+  where the buttons started).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1528,6 +1563,14 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   - **W118 1** (the Your Referrals card tighter, the 12-hours line under Sign Out, the trial band centred): **live since
     1 November 2026** (9:51 AM, `main` 0666850; see Settled), and **checked by the owner signed in** (2 November 2026:
     "looks good"). `main` was moved on to it alone; this branch has since brought `main` in (merge ee5b40f). Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
+  - **W119 2b and W120 1** (the owner, 3 November 2026: the form "doughy/oversized", a new font and smaller controls for
+    the whole site, questions and choices in sentence capitals, each question centred in its row and nothing moving
+    when a box opens): **built on this branch, not yet published**; see Settled. Publishing waits for the owner's yes.
+  - **W121, Documents** (the owner, 3 November 2026: "there should be a line or some additional differentiation
+    between upload and already sent / will follow controls"): mockups drawn (`riac-handover\W\design\w121\`, script
+    `tests\w121-shots.mjs`): 1 a line with "or" between Attach now and the other three; 2 Attach now a full-width row
+    of its own with an upload symbol, "or" across the box, the three under it; **3 (recommended) Attach now a
+    button-like pill with an upload symbol, the other three joined in one bar**. Waiting for the owner's choice.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by

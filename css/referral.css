@@ -21,9 +21,9 @@
 .steps-wrap { border-radius: 9px 9px 0 0; padding: 1.6rem 2.2rem 1.2rem; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--navy) 3%, white); }
 .steps { list-style: none; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
 .steps li { position: relative; text-align: center; font-size: var(--fs-label); font-weight: 600; color: var(--muted); line-height: 1.3; white-space: nowrap; }
-.steps li + li::before { content: ""; position: absolute; top: 1rem; right: 50%; width: 100%; border-top: 2px solid var(--line); z-index: 0; }
+.steps li + li::before { content: ""; position: absolute; top: .85rem; right: 50%; width: 100%; border-top: 2px solid var(--line); z-index: 0; }
 .steps .n {
-  position: relative; z-index: 1; display: grid; place-items: center; width: 2rem; height: 2rem; margin: 0 auto .45rem;
+  position: relative; z-index: 1; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; margin: 0 auto .45rem;
   border-radius: 50%; border: 2px solid #cfd5dc; background: #fff; color: var(--muted); font-size: var(--fs-small);
 }
 .steps li.current, .steps li.done { color: var(--navy); }
@@ -31,7 +31,7 @@
 .steps li.skip { opacity: .35; }
 .steps li.skip .lbl { text-decoration: line-through; }
 .steps li.off { opacity: .45; }
-.steps button { all: unset; cursor: pointer; display: block; }
+.steps button { all: unset; cursor: pointer; display: block; width: 100%; }   /* a step done is a button: as wide as its column, so its circle stays centred on the line (3 November 2026: a button shrank to its words, its circle off to the left) */
 .steps button:focus-visible .n { outline: 2px solid var(--navy); outline-offset: 2px; }
 .steps-wrap .now { display: none; }
 .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 1.1rem; }
@@ -48,7 +48,7 @@
 .so-ask .so-words { font-size: var(--fs-small); color: var(--ink); line-height: 1.45; text-wrap: pretty; }
 .so-ask .so-words strong { display: block; text-wrap: balance; font-size: var(--fs-text); color: var(--navy); margin-bottom: .15rem; }
 .so-btns { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
-.so-btns .btn { margin: 0; height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 1.1rem; }
+.so-btns .btn { margin: 0; height: 2.3rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 1.1rem; }
 .btn.so-clear { background: #fff; color: var(--bad); border: 1px solid var(--bad); }
 .btn.so-clear:hover { background: #fbeeee; }
 @media (max-width: 760px) { .so-ask { display: block; } .so-btns { margin-top: .8rem; } }
@@ -77,7 +77,7 @@
 
 .ref-q input[type="text"], .ref-q input[type="email"], .ref-q input[type="tel"], .ref-q input[type="search"],
 .ref-q input[type="date"], .ref-q select, .ref-q textarea {
-  width: 100%; font: inherit; font-size: var(--fs-text); padding: .6rem .8rem; border: 1px solid var(--line); border-radius: 8px;
+  width: 100%; font: inherit; font-size: var(--fs-text); padding: .45rem .7rem; border: 1px solid var(--line); border-radius: 6px;
   background: #fff; color: var(--ink);
 }
 .ref-q input[type="date"] { max-width: 14rem; }
@@ -132,11 +132,11 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .tiles { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; gap: .45rem .6rem; }
 .tiles-apart { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .55rem; padding-top: .55rem; border-top: 1px dashed var(--line); }
 .tile {
-  display: flex; align-items: center; gap: .6rem; min-height: 3.4rem; padding: .3rem .8rem; cursor: pointer;
+  display: flex; align-items: center; gap: .5rem; min-height: 2.9rem; padding: .25rem .7rem; cursor: pointer;
   border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 1.3; font-size: var(--fs-small);
 }
 .tile input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.tile .box { flex: none; width: 1.15rem; height: 1.15rem; border: 2px solid #838d9b; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
+.tile .box { flex: none; width: .875rem; height: .875rem; border: 1.5px solid #838d9b; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
 .tile:has(input:checked) { border-color: var(--navy); background: color-mix(in srgb, var(--navy) 7%, white); box-shadow: 0 0 0 1px var(--navy); }
 .tile:has(input:checked) .box { background: var(--navy); border-color: var(--navy); }
 .tile:has(input:checked) .box::after { content: "\2713"; }
@@ -166,7 +166,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .link-btn { all: unset; cursor: pointer; color: var(--navy); font-weight: 600; text-decoration: underline; font-size: var(--fs-small); }
 .link-btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 .ref-actions { display: flex; justify-content: space-between; gap: .7rem; border-top: 1px solid var(--line); margin-top: 1.8rem; padding-top: 1.2rem; }
-.ref-actions .btn { min-width: 11rem; height: 2.9rem; display: inline-flex; align-items: center; justify-content: center; }
+.ref-actions .btn { min-width: 10rem; height: 2.5rem; display: inline-flex; align-items: center; justify-content: center; }
 .ref-actions .spacer { flex: 1; }
 
 /* Errors */
@@ -195,7 +195,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-q.ruled { max-width: 60rem; }
 .ref-q.ruled > h2 { font-size: var(--fs-card); margin-bottom: .15rem; }
 .ref-q.ruled > .hint { margin-bottom: .9rem; }
-.ruled .upload-switch, .ruled .upload-on { margin-bottom: 1rem; padding: .45rem .9rem; }
+.ruled .upload-switch, .ruled .upload-on { margin-bottom: 1rem; padding: .35rem .8rem; }
 .sheet { border: 1px solid #c3c9d2; background: #fff; margin-bottom: 1rem; }
 .sec-h {
   margin: 0; padding: .42rem 1rem; background: var(--navy); color: var(--cream);
@@ -203,8 +203,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 }
 .qrow { display: grid; grid-template-columns: 15rem minmax(0, 1fr); }
 .qrow + .qrow, .sec-foot { border-top: 2px solid #c3c9d2; }   /* W116 1: 2 px in the sheet's edge grey between questions (was 1 px #e1e4e9) */
-.qrow > .q { background: #f3f4f7; padding: .75rem 1rem; border-right: 1px solid #e1e4e9; }
-.qrow > .a { padding: .6rem 1rem; align-self: center; min-width: 0; }
+.qrow > .q { background: #f3f4f7; padding: .6rem .9rem; border-right: 1px solid #e1e4e9; }
+.qrow > .a { padding: .5rem .9rem; align-self: center; min-width: 0; }
 .qrow.para { display: block; padding: .6rem 1rem; }
 .qrow .lab { display: block; font-size: var(--fs-small); font-weight: 600; color: var(--navy); line-height: 1.35; }
 .ref-q .qrow .g, .ref-q .qrow .desc, .qrow .desc-list { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); line-height: 1.45; margin: .2rem 0 0; }
@@ -214,14 +214,14 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .qrow .desc-list ol { margin: .1rem 0 .3rem 1.2rem; }
 .ref-q.ruled input[type="text"], .ref-q.ruled input[type="email"], .ref-q.ruled input[type="tel"], .ref-q.ruled input[type="search"],
 .ref-q.ruled input[type="date"], .ref-q.ruled select, .ref-q.ruled textarea {
-  font-size: var(--fs-small); line-height: 1.5; padding: .42rem .65rem; border: 1px solid #838d9b; border-radius: 6px;
+  font-size: var(--fs-small); line-height: 1.5; padding: .3rem .6rem; border: 1px solid #838d9b; border-radius: 4px;
 }
 /* W108 1 (the overnight review's W-Q10): the boxes' and tick boxes' edges #838d9b, 3.4 to 1 on white (#b4bcc7 was 1.9,
    #9aa4b0 2.5; the line for an edge is 3) */
 .ref-q.ruled input[type="date"] { max-width: 12rem; }
 .ref-q.ruled textarea { min-height: 0; }
-.ref-q.ruled textarea.l2 { min-height: calc(2lh + .84rem + 2px); }
-.ref-q.ruled textarea.l3 { min-height: calc(3lh + .84rem + 2px); }
+.ref-q.ruled textarea.l2 { min-height: calc(2lh + .6rem + 2px); }
+.ref-q.ruled textarea.l3 { min-height: calc(3lh + .6rem + 2px); }
 .srch { position: relative; }
 .srch .lens { position: absolute; left: .65rem; top: 50%; transform: translateY(-50%); display: grid; color: var(--muted); pointer-events: none; }
 .srch .lens svg { width: 15px; height: 15px; }
@@ -235,16 +235,17 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cp-more { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .3rem; }
 .ruled .cp-lines { margin-bottom: .55rem; }
 
-/* Choices: Yes / No / Unknown as pills of one size; longer lists as tiles with a round box */
+/* Choices: Yes / No / Unknown as pills of one size; longer lists as tiles with a round box. W119 2b (the owner: "reducing
+   button and checkmark sizes"): pills 1.95rem, tiles 2.05rem, tick boxes .875rem, 14 px (2.3, 2.5 and 1.15 before) */
 .seg { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: .4rem; }
-.ruled .pill { min-height: 2.3rem; }
+.ruled .pill { min-height: 1.95rem; padding: .15rem .5rem; }
 .ruled .tiles { gap: .4rem; }
 .ruled .tiles.across { grid-auto-flow: row; }
 .ruled .tiles.one { grid-template-columns: 1fr; }
-.ruled .tile { min-height: 2.5rem; padding: .3rem .7rem; }
+.ruled .tile { min-height: 2.05rem; padding: .2rem .6rem; }
 .ruled .tiles-apart { gap: .4rem; margin-top: .45rem; padding-top: .45rem; }
 .tile .box.round { border-radius: 50%; }
-.tile:has(input:checked) .box.round::after { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: #fff; }
+.tile:has(input:checked) .box.round::after { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: #fff; }
 /* W105 1: step 1's case types as cards of one size, each its symbol, its short name and a line under it (the names line
    up across a row: each card is a three-row subgrid); 3 x 2 on a computer, 2 x 3 below 900 px */
 .ctc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
@@ -264,14 +265,14 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 }
 /* the custody status in two groups */
 .cust { display: grid; gap: .5rem; }
-.cg { border: 1px solid #d5dae1; border-radius: 8px; padding: .45rem .55rem .55rem; background: #f7f8fa; }
-.cg-h { display: block; font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 .15rem .35rem; }
+.cg { border: 1px solid #d5dae1; border-radius: 6px; padding: .35rem .45rem .45rem; background: #f7f8fa; }
+.cg-h { display: block; font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 .15rem .25rem; }
 .cg.held { background: color-mix(in srgb, var(--r5) 7%, white); border-color: color-mix(in srgb, var(--r5) 40%, white); }
 .cg.held .cg-h { color: var(--warn); }
 /* ICE involvement: a red "ICE" triangle before the question (W117 1: Yes / No / Unknown in place of W103 3's tile), and
    on immigration custody's tile */
 .ice-sym { flex: none; display: grid; }
-.ice-sym svg { width: 34px; height: 30px; }
+.ice-sym svg { width: 26px; height: 23px; }
 .ice-sym.sm svg { width: 22px; height: 19px; }
 .qrow .lab.ice-lab { display: flex; align-items: center; gap: .45rem; }
 .ref-q .auto { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-top: .3rem; }
@@ -308,6 +309,25 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sub-field.has-err > input, .sub-field.has-err > textarea { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
 .qrow.has-err > .a .tile, .qrow.has-err > .a .pill { border-color: #e0a3a3; }
 .sec.has-err > .sec-h { background: var(--bad); }
+
+/* W120 1 (3 November 2026; the owner: "the field names are not vertically centered in their row", and on the order of
+   protection the buttons moved up when Unknown opened its box): on a computer each question is centred against its
+   answer, whichever is the taller, and anything that opens under an answer (Unknown's notes, "Chosen for you", the
+   center under the county) takes a line of its own beneath, so nothing above it moves. The answer's parts are the
+   row's own cells (.a is display: contents): the first beside the question, the rest under it, .5rem apart; the grey
+   question column is the row's background. */
+@media (min-width: 601px) {
+  .ruled .qrow:not(.para):not(.ro-row) { background: linear-gradient(90deg, #f3f4f7 calc(15rem - 1px), #e1e4e9 calc(15rem - 1px), #e1e4e9 15rem, #fff 15rem); }
+  .ruled .qrow:not(.para):not(.ro-row) > .q { grid-row: 1; align-self: center; background: none; border-right: 0; }
+  .ruled .qrow:not(.para):not(.ro-row) > .a { display: contents; }
+  .ruled .qrow:not(.para):not(.ro-row) > .a > * { grid-column: 2; min-width: 0; margin: 0 .9rem .5rem; }
+  .ruled .qrow:not(.para):not(.ro-row) > .a > :not([type="date"]) { max-width: calc(100% - 1.8rem); }
+  .ruled .qrow:not(.para):not(.ro-row) > .a > :first-child { grid-row: 1; align-self: center; margin-top: .5rem; }
+  .ruled .qrow:not(.para):not(.ro-row) > .a > :empty:not(input, textarea, select) { margin: 0; }
+  .ruled .qrow.has-err:not(.para):not(.ro-row) { box-shadow: inset 3px 0 0 var(--bad);
+    background: linear-gradient(90deg, #fbeeee calc(15rem - 1px), #e1e4e9 calc(15rem - 1px), #e1e4e9 15rem, #fff 15rem); }
+  .ruled .qrow.has-err:not(.para):not(.ro-row) > .q { background: none; box-shadow: none; }
+}
 
 @media (max-width: 600px) {
   .ref-body:has(.ruled) { padding: 1.1rem .7rem 1.2rem; }
@@ -453,7 +473,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .pick-line .link-btn, .nl-line .link-btn { font-weight: 400; font-size: var(--fs-small); }
 .nl-line + .sub-field { margin-top: .6rem; }
 @media (max-width: 600px) { .pk-list .scroll { max-height: 24rem; } }
-.sq-body .add-person { margin: 0 0 1rem; height: 2.6rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
+.sq-body .add-person { margin: 0 0 1rem; height: 2.3rem; display: inline-flex; align-items: center; padding: 0 1.2rem; }
 
 /* ---------- Step 8: Documents (W28) ---------- */
 
@@ -461,13 +481,13 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .bot-check { margin-bottom: .9rem; min-height: 65px; }
 .pills4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; }
 .pills4.three { grid-template-columns: repeat(3, 1fr); }
-.pill { position: relative; display: grid; place-items: center; text-align: center; min-height: 2.5rem; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; color: var(--navy); background: #fff; cursor: pointer; line-height: 1.2; }
+.pill { position: relative; display: grid; place-items: center; text-align: center; min-height: 2.2rem; padding: .2rem .5rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; color: var(--navy); background: #fff; cursor: pointer; line-height: 1.2; }
 .pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .pill:has(input:checked) { background: var(--navy); border-color: var(--navy); color: var(--cream); }
 .pill:has(input:focus-visible) { outline: 2px solid var(--navy); outline-offset: 2px; }
 .drop { margin-top: .8rem; border: 2px dashed var(--line); border-radius: 8px; padding: .8rem 1rem; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
 .drop.over { border-color: var(--navy); background: color-mix(in srgb, var(--navy) 4%, white); }
-.drop .btn { height: 2.4rem; display: inline-flex; align-items: center; padding: 0 1rem; }
+.drop .btn { height: 2.1rem; display: inline-flex; align-items: center; padding: 0 1rem; }
 .drop-note { font-style: italic; color: var(--help); font-size: var(--fs-small); }
 .files { list-style: none; margin: .7rem 0 0; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
 .files li { display: grid; grid-template-columns: 1fr auto auto auto; gap: .8rem; align-items: center; padding: .55rem .9rem; border-bottom: 1px solid var(--line); font-size: var(--fs-small); }
@@ -512,7 +532,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 
 .sendarea { max-width: 52rem; margin: 1.4rem auto 0; display: grid; gap: .7rem; }
 .sendarea p { font-size: var(--fs-small); margin: 0; }
-.sendarea .btn { height: 3rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
+.sendarea .btn { height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
 .sendarea .bot-check, .sendarea .limits { margin: 0; }   /* W77 1: the renewed check and its note beside Send */
 
 /* W32 1: "Before You Receive RIAC Advice" above Send, in the featured advisory card's orange, a row for each warning
@@ -545,14 +565,14 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .only-copy .btn:hover { background: var(--navy); color: var(--cream); }
 /* W114 2: Go To Your Referrals under Print, the two one size; the Your Referrals card's symbol in a small cream circle */
 .copy-acts { display: grid; grid-auto-rows: 1fr; gap: .55rem; flex: none; width: 15.5rem; }
-.copy-acts .btn { width: 100%; height: 2.75rem; margin: 0; padding-top: 0; padding-bottom: 0; display: inline-flex; align-items: center; justify-content: center; gap: .55rem; }
+.copy-acts .btn { width: 100%; height: 2.4rem; margin: 0; padding-top: 0; padding-bottom: 0; display: inline-flex; align-items: center; justify-content: center; gap: .55rem; }
 .only-copy .go-portal { background: var(--navy); color: var(--cream); }
 .only-copy .go-portal:hover { background: var(--navy-deep); }
 .go-portal .tile-sym { width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--cream); color: var(--navy); --icon-fill: var(--cream); --icon-accent: var(--r5); }
 .go-portal .tile-sym svg { width: 18px; height: 18px; }
 @media (max-width: 360px) {   /* the smallest phones: the words may wrap, balanced, rather than run past the box */
   .only-copy .btn { white-space: normal; padding-left: .8rem; padding-right: .8rem; }
-  .copy-acts .btn { height: auto; min-height: 2.75rem; padding-top: .45rem; padding-bottom: .45rem; }
+  .copy-acts .btn { height: auto; min-height: 2.4rem; padding-top: .45rem; padding-bottom: .45rem; }
 }
 .sent-note { margin: 0 1.6rem 1.2rem; font-size: var(--fs-small); background: color-mix(in srgb, var(--navy) 5%, white); border-radius: 8px; padding: .8rem 1rem; }
 
@@ -574,8 +594,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 }
 @media (max-width: 600px) {
   .steps-wrap { padding: 1.1rem .8rem .9rem; }
-  .steps .n { width: 1.75rem; height: 1.75rem; }
-  .steps li + li::before { top: .875rem; }
+  .steps .n { width: 1.55rem; height: 1.55rem; }
+  .steps li + li::before { top: .775rem; }
   .ref-body { padding: 1.4rem 1.1rem 1.2rem; }
   .pair, .radio-group.two, .tiles, .tiles-apart, .pdfs { grid-template-columns: 1fr; }
   .pair { grid-template-rows: none; }
@@ -611,7 +631,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
    into this sheet, since the page's security policy allows no inline styles). */
 @page {
   size: Letter; margin: 0.6in 0.65in 0.75in;
-  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 9pt Inter, sans-serif; color: #5b6878; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 9pt "Source Sans 3", sans-serif; color: #5b6878; }
 }
 @media print {
   html, body { background: #fff; }
@@ -631,7 +651,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sign-card h2 { font-size: var(--fs-card); color: var(--navy); margin-bottom: .8rem; }
 .sign-card p { font-size: var(--fs-small); margin-bottom: .8rem; }
 .sign-card .field { margin-bottom: 1rem; }
-.sign-card .btn { width: 100%; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; margin: 0 0 .6rem; }
+.sign-card .btn { width: 100%; height: 2.4rem; display: inline-flex; align-items: center; justify-content: center; margin: 0 0 .6rem; }
 .sign-card .tinted { background: color-mix(in srgb, var(--navy) 6%, white); border-radius: 8px; padding: .8rem 1rem; }
 .sign-card .small { color: var(--help); font-size: var(--fs-small); }
 .under-card { text-align: center; font-size: var(--fs-small); color: var(--muted); margin-top: 1.2rem; }
@@ -800,9 +820,9 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
    tick centred in a square first column (as far from the tile's left as from its top and bottom), the symbol and words
    centred on the tile, an empty third column as wide as the first; one above the other below 900 px */
 .about-ticks { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: .45rem; }
-.about-ticks .tile { display: grid; grid-template-columns: calc(3rem - 2px) 1fr calc(3rem - 2px); gap: 0; min-height: 3rem; margin: 0; padding: 0; font-size: var(--fs-small); color: var(--navy); } /* not the site's .field label */
+.about-ticks .tile { display: grid; grid-template-columns: calc(2.625rem - 2px) 1fr calc(2.625rem - 2px); gap: 0; min-height: 2.625rem; margin: 0; padding: 0; font-size: var(--fs-small); color: var(--navy); } /* not the site's .field label */
 .about-ticks .tile .box { justify-self: center; }
-.about-ticks .tile .mid { display: flex; align-items: center; justify-content: center; gap: .55rem; padding: .3rem 0; text-align: center; }
+.about-ticks .tile .mid { display: flex; align-items: center; justify-content: center; gap: .55rem; padding: .2rem 0; text-align: center; }
 .tile-sym { flex: none; display: grid; place-items: center; color: var(--navy); --icon-fill: #fff; --icon-accent: var(--r5); }
 .tile-sym svg { width: 32px; height: 32px; }
 .docs-head { border-top: 2px solid color-mix(in srgb, var(--navy) 20%, white); padding-top: 1rem; margin: .4rem 0 .5rem; }
@@ -863,7 +883,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 }
 .added-list { font-size: var(--fs-small); margin: .4rem 0 1rem 1.2rem; }
 .add-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.2rem; }
-.add-actions .btn { min-width: 9rem; height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; }
+.add-actions .btn { min-width: 9rem; height: 2.4rem; display: inline-flex; align-items: center; justify-content: center; }
 
 @media (max-width: 760px) {
   .list-head { flex-direction: column; align-items: stretch; }

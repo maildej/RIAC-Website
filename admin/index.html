@@ -8,7 +8,7 @@
   <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <style>
     /* Match the site's navy brand color. Decap CMS only exposes these two
        theme variables for override — deeper restyling of its internal
@@ -18,7 +18,7 @@
       --accent-light: #12263f19 !important;
     }
     body, input, select, textarea, button {
-      font-family: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif !important;
+      font-family: "Source Sans 3", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif !important;
     }
 
     /* A full-width ribbon fixed at the very top of the page — sits on top
@@ -83,7 +83,7 @@
     var AdvisoryPreview = createClass({
       render: function () {
         var entry = this.props.entry;
-        return h('div', { style: { padding: '20px', fontFamily: 'Inter, sans-serif' } },
+        return h('div', { style: { padding: '20px', fontFamily: '"Source Sans 3", sans-serif' } },
           h('h1', {}, entry.getIn(['data', 'title'])),
           h('p', { style: { color: '#5b6878', marginBottom: '20px' } }, entry.getIn(['data', 'summary'])),
           linkRow('PDF link (public — safe to email)', entry.getIn(['data', 'pdf'])),
