@@ -296,10 +296,24 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sec .people-list { border: 0; border-radius: 0; margin: 0; }
 .sec-foot { display: flex; justify-content: flex-end; padding: .6rem 1rem; }
 .sec-foot .btn { min-width: 11rem; }
-/* Step 8: Attach Now dashed, the other three grey (the owner's comment 9) */
+/* Step 8: Attach now apart from the other three grey ones (the owner's comment 9; it was dashed). W121 3 (the owner: "some
+   additional differentiation between upload and already sent / will follow controls"): Attach now a pill of its own,
+   outlined navy, with an upload symbol; Sent before, To follow and Not available joined in one grey bar beside it (under
+   it on a phone), so the two kinds of answer read apart by their shape */
+.ruled .pills4 { grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr); gap: .9rem; }
+.ruled .pills4.three { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
 .ruled .pills4 .pill { background: #eef0f3; border-color: #c3c9d2; }
-.ruled .pills4 .pill.attach { background: #fff; border: 1px dashed var(--navy); }
-.ruled .pills4 .pill:has(input:checked) { background: var(--navy); border: 1px solid var(--navy); color: var(--cream); }
+.ruled .pills4 .pill.attach { display: flex; justify-content: center; align-items: center; gap: .45rem; background: #fff; border: 1px solid var(--navy); }
+.up-sym { display: grid; color: var(--navy); --icon-accent: var(--r5); }
+.up-sym svg { width: 17px; height: 17px; }
+.ruled .pills4 .pill.attach:has(input:checked) .up-sym { color: var(--cream); }
+.joined { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); border: 1px solid #b4bcc7; border-radius: 999px; overflow: hidden; background: #eef0f3; }
+.ruled .joined .pill { border: 0; border-radius: 0; background: none; }
+.ruled .joined .pill + .pill { border-left: 1px solid #c3c9d2; }
+.ruled .joined .pill:has(input:focus-visible) { outline-offset: -4px; }   /* inside the bar, which clips at its rounded ends */
+.ruled .pills4 .pill:has(input:checked) { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+.ruled .joined .pill:has(input:checked):has(input:focus-visible) { outline-color: var(--cream); }
+@media (max-width: 600px) { .ruled .pills4, .ruled .pills4.three { grid-template-columns: minmax(0, 1fr); gap: .45rem; } }
 .ruled .fnote .g { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .25rem; }
 
 /* W31 in the sheet: an answer still to give turns its question red, with a red bar, and outlines its box */

@@ -1190,9 +1190,16 @@
     var id = 'd-' + kind;
     if (info.named) st.status = 'attached';   // W36: no choice to make, only files to add and name
     var statuses = [['attached', 'Attach now']].concat(info.sentBefore ? [['sent-before', 'Sent before']] : [], [['to-follow', 'To follow'], ['unavailable', 'Not available']]);
+    // W121 3 (the owner: "some additional differentiation between upload and already sent / will follow"): Attach now a
+    // pill of its own with an upload symbol, the other answers joined in one bar beside it
     var pills = h('div', { class: 'pills4' + (statuses.length === 3 ? ' three' : ''), role: 'radiogroup', 'aria-label': info.name });
+    var joined = null;
     statuses.forEach(function (s) {
-      pills.appendChild(h('label', { class: 'pill' + (s[0] === 'attached' ? ' attach' : ''), for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }), s[1]]));
+      var att = s[0] === 'attached';
+      var lab = h('label', { class: 'pill' + (att ? ' attach' : ''), for: id + '-' + s[0] }, [h('input', { type: 'radio', name: id, id: id + '-' + s[0], value: s[0], 'data-doc': kind, checked: st.status === s[0] }),
+        att ? h('span', { class: 'up-sym', 'aria-hidden': 'true', html: '<svg><use href="images/symbols.svg#i-upload"/></svg>' }) : null, s[1]]);
+      if (att) pills.appendChild(lab);
+      else { if (!joined) pills.appendChild(joined = h('div', { class: 'joined' })); joined.appendChild(lab); }
     });
     var body = h('div', { class: 'sq-body' }, info.named ? [] : [pills]);
     if (st.status === 'attached') {

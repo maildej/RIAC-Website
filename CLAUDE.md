@@ -1416,6 +1416,14 @@ every key and code the pages send.
   question sits over its answer, as before. Chosen over every question at its row's top with the first lines level
   ("2", which undid W103 3's centring). Pictures `riac-handover\W\design\w120\` (before and after Unknown, a dashed line
   where the buttons started).
+- **W121 3** (3 November 2026; the owner: "in the uploads page of the referral, I think there should be a line or some
+  additional differentiation between upload and already sent / will follow controls"): on the Documents step **Attach
+  now is a pill of its own, outlined navy, with an upload symbol** (`i-upload`, new: a navy tray with an orange arrow
+  rising out of it), **and Sent before, To follow and Not available are joined in one grey bar beside it** (under it on
+  a phone), so the two kinds of answer read apart by their shape; chosen, a part is navy. It was Attach Now dashed beside
+  three grey pills of one size (W103 3). The four are still one choice for a screen reader and the arrow keys; what is
+  sent is unchanged. Chosen over a line with "or" between them ("1") and Attach now on a row of its own ("2").
+  Pictures `riac-handover\W\design\w121\` (mockups) and `w121c\` (as built); script `tests\w121-shots.mjs`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1566,11 +1574,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   - **W119 2b and W120 1** (the owner, 3 November 2026: the form "doughy/oversized", a new font and smaller controls for
     the whole site, questions and choices in sentence capitals, each question centred in its row and nothing moving
     when a box opens): **built on this branch, not yet published**; see Settled. Publishing waits for the owner's yes.
-  - **W121, Documents** (the owner, 3 November 2026: "there should be a line or some additional differentiation
-    between upload and already sent / will follow controls"): mockups drawn (`riac-handover\W\design\w121\`, script
-    `tests\w121-shots.mjs`): 1 a line with "or" between Attach now and the other three; 2 Attach now a full-width row
-    of its own with an upload symbol, "or" across the box, the three under it; **3 (recommended) Attach now a
-    button-like pill with an upload symbol, the other three joined in one bar**. Waiting for the owner's choice.
+  - **W121 3, Documents** (Attach now a pill of its own with an upload symbol, the other three joined in one bar):
+    **built on this branch, not yet published**, with W119 2b and W120 1; see Settled. Publishing waits for the owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
