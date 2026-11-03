@@ -24,7 +24,7 @@
 .steps li + li::before { content: ""; position: absolute; top: .85rem; right: 50%; width: 100%; border-top: 2px solid var(--line); z-index: 0; }
 .steps .n {
   position: relative; z-index: 1; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; margin: 0 auto .45rem;
-  border-radius: 50%; border: 2px solid #cfd5dc; background: #fff; color: var(--muted); font-size: var(--fs-small);
+  border-radius: 50%; border: 2px solid #cfd5dc; background: #fff; color: var(--muted); font-size: var(--fs-button);
 }
 .steps li.current, .steps li.done { color: var(--navy); }
 .steps li.current .n, .steps li.done .n { background: var(--navy); border-color: var(--navy); color: var(--cream); }
@@ -133,7 +133,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .tiles-apart { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .55rem; padding-top: .55rem; border-top: 1px dashed var(--line); }
 .tile {
   display: flex; align-items: center; gap: .5rem; min-height: 2.9rem; padding: .25rem .7rem; cursor: pointer;
-  border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 1.3; font-size: var(--fs-small);
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 1.3; font-size: var(--fs-button);
 }
 .tile input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .tile .box { flex: none; width: .875rem; height: .875rem; border: 1.5px solid #838d9b; border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-label); color: #fff; }
@@ -152,7 +152,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .55rem 1.1rem;
   background: color-mix(in srgb, var(--navy) 8%, white); border-bottom: 1px solid color-mix(in srgb, var(--navy) 25%, white);
 }
-.sq-head .nm { font-weight: 600; color: var(--navy); }
+.sq-head .nm { font-weight: 600; color: var(--navy); font-size: var(--fs-base); }
 .sq-head .ds { display: block; font-style: italic; color: var(--help); font-size: var(--fs-small); font-weight: 400; }
 .sq-body { padding: 1rem 1.1rem .2rem; }
 
@@ -207,7 +207,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .qrow > .a { padding: .5rem .9rem; align-self: center; min-width: 0; }
 .qrow.para { display: block; padding: .6rem 1rem; }
 .qrow .lab { display: block; font-size: var(--fs-small); font-weight: 600; color: var(--navy); line-height: 1.35; }
-.ref-q .qrow .g, .ref-q .qrow .desc, .qrow .desc-list { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); line-height: 1.45; margin: .2rem 0 0; }
+.ref-q .qrow .g, .ref-q .qrow .desc, .qrow .desc-list { display: block; font-size: var(--fs-note); font-style: italic; color: var(--help); line-height: 1.45; margin: .2rem 0 0; }
 .ref-q .qrow.para .desc { margin: 0; font-size: var(--fs-small); }
 .qrow .g .eg { display: block; }
 .qrow .g .eg + span { display: block; margin-top: .3rem; }
@@ -231,8 +231,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ruled .sub-field { margin: .7rem 0 0; }
 .ruled .sub-field > .lab { margin-bottom: .3rem; }
 .ref-q.ruled .sub-field > .g { margin: -.15rem 0 .35rem; }
-.ruled .near-limit { font-size: var(--fs-label); }
-.cp-more { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .3rem; }
+.ruled .near-limit { font-size: var(--fs-note); }
+.cp-more { display: block; font-size: var(--fs-note); font-style: italic; color: var(--help); margin-bottom: .3rem; }
 .ruled .cp-lines { margin-bottom: .55rem; }
 
 /* Choices: Yes / No / Unknown as pills of one size; longer lists as tiles with a round box. W119 2b (the owner: "reducing
@@ -275,11 +275,11 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ice-sym svg { width: 26px; height: 23px; }
 .ice-sym.sm svg { width: 22px; height: 19px; }
 .qrow .lab.ice-lab { display: flex; align-items: center; gap: .45rem; }
-.ref-q .auto { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-top: .3rem; }
+.ref-q .auto { display: block; font-size: var(--fs-note); font-style: italic; color: var(--help); margin-top: .3rem; }
 /* the client's family: a row each for parent, spouse and child, coloured */
 .fam { display: grid; gap: .4rem; }
 .fr { display: grid; grid-template-columns: 8.5rem 1fr 1fr; gap: .4rem; align-items: stretch; }
-.fr-h { display: flex; align-items: center; font-size: var(--fs-small); font-weight: 600; color: var(--fc); border-left: 4px solid var(--fc); padding-left: .55rem; }
+.fr-h { display: flex; align-items: center; font-size: var(--fs-button); font-weight: 600; color: var(--fc); border-left: 4px solid var(--fc); padding-left: .55rem; }
 .ruled .fr .tile { border-left: 4px solid var(--fc); }
 .ruled .fr .tile:has(input:checked) { border-color: var(--fc); box-shadow: 0 0 0 1px var(--fc); background: color-mix(in srgb, var(--fc) 9%, white); }
 .fr .tile:has(input:checked) .box { background: var(--fc); border-color: var(--fc); }
@@ -314,7 +314,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ruled .pills4 .pill:has(input:checked) { background: var(--navy); border-color: var(--navy); color: var(--cream); }
 .ruled .joined .pill:has(input:checked):has(input:focus-visible) { outline-color: var(--cream); }
 @media (max-width: 600px) { .ruled .pills4, .ruled .pills4.three { grid-template-columns: minmax(0, 1fr); gap: .45rem; } }
-.ruled .fnote .g { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); margin-bottom: .25rem; }
+.ruled .fnote .g { display: block; font-size: var(--fs-note); font-style: italic; color: var(--help); margin-bottom: .25rem; }
 
 /* W31 in the sheet: an answer still to give turns its question red, with a red bar, and outlines its box */
 .qrow.has-err > .q { background: #fbeeee; box-shadow: inset 3px 0 0 var(--bad); }
@@ -365,7 +365,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ruled .sheet .sec-h.ok .chg:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 .ro { font-size: var(--fs-small); color: var(--ink); line-height: 1.5; overflow-wrap: anywhere; }
 .ro.who { font-weight: 600; color: var(--navy); }
-.ro .pl { display: block; font-size: var(--fs-label); color: var(--muted); }
+.ro .pl { display: block; font-size: var(--fs-note); color: var(--muted); }
 .ruled .qrow.ro-row > .a { display: flex; align-items: center; }
 
 /* ---------- Step 1: the county and its center (W1, W7, W8, W10) ---------- */
@@ -389,7 +389,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .choose h3 { font-family: var(--serif); font-size: var(--fs-card); color: var(--navy); margin-bottom: .25rem; }
 .choose .hint { margin-bottom: .8rem; }
 .centres { display: grid; gap: .35rem; }
-.centre { display: flex; align-items: center; gap: .6rem; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: .5rem .8rem; font-size: var(--fs-small); cursor: pointer; }
+.centre { display: flex; align-items: center; gap: .6rem; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: .5rem .8rem; font-size: var(--fs-button); cursor: pointer; }
 .centre:has(input:checked) { border-color: var(--navy); box-shadow: 0 0 0 1px var(--navy); }
 .centre input { margin: 0; }
 .centre .dot { width: .8rem; height: .8rem; border-radius: 50%; flex: none; background: var(--rc, var(--navy)); }
@@ -425,8 +425,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cp-lines .att input { margin: 0; width: auto; accent-color: var(--navy); }
 .cp-lines .rm { grid-column: 3; justify-self: end; line-height: 1.5; }
 .cp-lines .st { font-weight: 600; color: var(--navy); }
-.cp-lines .cls { display: block; color: var(--muted); font-size: var(--fs-label); margin-top: .1rem; }
-.cp-lines .note { display: block; color: var(--help); font-style: italic; font-size: var(--fs-label); margin-top: .1rem; }
+.cp-lines .cls { display: block; color: var(--muted); font-size: var(--fs-note); margin-top: .1rem; }
+.cp-lines .note { display: block; color: var(--help); font-style: italic; font-size: var(--fs-note); margin-top: .1rem; }
 .cp-search { position: relative; }
 .inbox-wrap.short input.inbox:not(:placeholder-shown) + .inbox-hint { display: none; }
 .field.has-err .cp-search input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
@@ -437,7 +437,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cp-matches li.on { background: color-mix(in srgb, var(--navy) 7%, white); }
 .cp-matches .what { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .cp-matches .st { font-weight: 600; color: var(--navy); }
-.cp-matches .cls { color: var(--muted); font-size: var(--fs-label); white-space: nowrap; }
+.cp-matches .cls { color: var(--muted); font-size: var(--fs-note); white-space: nowrap; }
 .cp-matches .sub { color: var(--help); font-style: italic; }
 .cp-matches li.more { cursor: default; color: var(--help); font-style: italic; }
 .cp-matches li.typed-row { border-top: 1px dashed var(--line); margin-top: .25rem; padding-top: .6rem; color: var(--navy); }
@@ -456,7 +456,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .cty .sc::-webkit-scrollbar-track { background: transparent; }
 .cty .what { color: var(--ink); }
 .cty li.on .what { font-weight: 600; color: var(--navy); }
-.ctr { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: var(--fs-label); white-space: nowrap; }
+.ctr { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: var(--fs-note); white-space: nowrap; }
 .ctr i { width: .6rem; height: .6rem; border-radius: 50%; background: var(--rc); flex: none; }
 .cty .outside { border-top: 1px dashed #b4bcc7; padding: .6rem .85rem .65rem; font-size: var(--fs-small); color: var(--navy); font-weight: 600; cursor: pointer; text-wrap: balance; }
 .cty .outside.on { background: color-mix(in srgb, var(--navy) 7%, white); }
@@ -482,7 +482,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .pick-line .tk { display: grid; color: var(--r2); }
 .pick-line .tk svg { width: 17px; height: 17px; }
 .pick-line .nm { display: block; font-weight: 600; color: var(--navy); overflow-wrap: anywhere; }
-.pick-line .pl { display: block; font-size: var(--fs-label); color: var(--muted); }
+.pick-line .pl { display: block; font-size: var(--fs-note); color: var(--muted); }
 .nl-line { grid-template-columns: minmax(0, 1fr) auto; border: 1px solid #838d9b; background: color-mix(in srgb, var(--navy) 5%, white); color: var(--navy); font-weight: 600; }
 .pick-line .link-btn, .nl-line .link-btn { font-weight: 400; font-size: var(--fs-small); }
 .nl-line + .sub-field { margin-top: .6rem; }
@@ -495,7 +495,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .bot-check { margin-bottom: .9rem; min-height: 65px; }
 .pills4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; }
 .pills4.three { grid-template-columns: repeat(3, 1fr); }
-.pill { position: relative; display: grid; place-items: center; text-align: center; min-height: 2.2rem; padding: .2rem .5rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; color: var(--navy); background: #fff; cursor: pointer; line-height: 1.2; }
+.pill { position: relative; display: grid; place-items: center; text-align: center; min-height: 2.2rem; padding: .2rem .5rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-button); font-weight: 600; color: var(--navy); background: #fff; cursor: pointer; line-height: 1.2; }
 .pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .pill:has(input:checked) { background: var(--navy); border-color: var(--navy); color: var(--cream); }
 .pill:has(input:focus-visible) { outline: 2px solid var(--navy); outline-offset: 2px; }
@@ -546,7 +546,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 
 .sendarea { max-width: 52rem; margin: 1.4rem auto 0; display: grid; gap: .7rem; }
 .sendarea p { font-size: var(--fs-small); margin: 0; }
-.sendarea .btn { height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-text); white-space: normal; }
+.sendarea .btn { height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-base); white-space: normal; }
 .sendarea .bot-check, .sendarea .limits { margin: 0; }   /* W77 1: the renewed check and its note beside Send */
 
 /* W32 1: "Before You Receive RIAC Advice" above Send, in the featured advisory card's orange, a row for each warning
@@ -567,7 +567,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 
 .sent-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
 .sent-card h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .9rem 1.6rem; display: flex; align-items: center; gap: .7rem; }
-.sent-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-small); }
+.sent-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-button); }
 .sent-facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; padding: 1.2rem 1.6rem 0; font-size: var(--fs-small); }
 .sent-facts dt { color: var(--muted); }
 .sent-facts dd { color: var(--ink); font-weight: 600; }
@@ -604,7 +604,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 @media (max-width: 1120px) {   /* 1,050 until 27 October: "Probation Violation" met "Other People" below about 1,110 (W-Q15) */
   .steps .lbl { display: none; }
   .steps .n { margin-bottom: 0; }
-  .steps-wrap .now { display: block; text-align: center; font-size: var(--fs-small); font-weight: 600; color: var(--navy); margin-top: .6rem; }
+  .steps-wrap .now { display: block; text-align: center; font-size: var(--fs-button); font-weight: 600; color: var(--navy); margin-top: .6rem; }
 }
 @media (max-width: 600px) {
   .steps-wrap { padding: 1.1rem .8rem .9rem; }
@@ -699,7 +699,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .me-fields dt { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .05rem; }
 .me-fields dd { margin: 0; font-size: var(--fs-small); color: var(--ink); overflow-wrap: break-word; }
 .me-out { height: 2.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 .85rem; font-size: var(--fs-label); margin: 0; }
-.portal-head .me-note { grid-column: 1 / -1; font-size: var(--fs-label); color: var(--muted); font-style: italic; margin: .15rem 0 0; text-align: center; line-height: 1.35; }
+.portal-head .me-note { grid-column: 1 / -1; font-size: var(--fs-note); color: var(--muted); font-style: italic; margin: .15rem 0 0; text-align: center; line-height: 1.35; }
 /* W104 A1: Send Us A New Case beside Sign Out, the two one size, the form's symbol in a small cream circle */
 .me-acts { display: grid; grid-template-columns: 12.5rem 12.5rem; gap: .4rem; }
 .me-acts .btn { height: 2.05rem; padding: 0 .8rem; font-size: var(--fs-label); margin: 0; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
@@ -716,7 +716,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
   .me-fields, .me-fields.one { grid-template-columns: minmax(0, 1fr); gap: .55rem; }
   .me-out { width: 100%; }
   .me-acts { grid-template-columns: 1fr; }
-  .me-acts .btn { height: 2.4rem; font-size: var(--fs-small); }
+  .me-acts .btn { height: 2.4rem; font-size: var(--fs-button); }
 }
 @media (max-width: 360px) { .me-acts .btn { font-size: var(--fs-label); padding: 0 .6rem; } }   /* "Send Us A New Case" kept inside the card, the pair one size */
 
@@ -763,7 +763,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; white-space: nowrap; }
 .rcv-wide { white-space: nowrap; }
-.rcv-wide .sub { font-size: var(--fs-label); margin-top: .15rem; }
+.rcv-wide .sub { font-size: var(--fs-note); margin-top: .15rem; }
 /* Where a referral stands: a tinted box with a coloured left edge (W58 1, "A"), as wide as its column in the list. W88 1:
    outlined in its own colour (on the case info's grey panel it had melted), and green when all is well (the site's
    green, as "✓ Uploaded"); orange when waiting on the attorney, grey when closed */
@@ -828,13 +828,13 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .which .cl { font-weight: 600; color: var(--ink); }
 .which .sub { color: var(--muted); }
 .which .case-line { color: var(--ink); font-weight: 600; } /* W84 2b: the case number leads, the reference beneath */
-.which .was-ref { color: var(--muted); font-size: var(--fs-label); font-style: italic; margin-top: .4rem; }
+.which .was-ref { color: var(--muted); font-size: var(--fs-note); font-style: italic; margin-top: .4rem; }
 .which .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; }
 /* "Report an offer" and "Report a disposition" (W83 1, W87 2b): two tick tiles of one size, each in three columns, the
    tick centred in a square first column (as far from the tile's left as from its top and bottom), the symbol and words
    centred on the tile, an empty third column as wide as the first; one above the other below 900 px */
 .about-ticks { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: .45rem; }
-.about-ticks .tile { display: grid; grid-template-columns: calc(2.625rem - 2px) 1fr calc(2.625rem - 2px); gap: 0; min-height: 2.625rem; margin: 0; padding: 0; font-size: var(--fs-small); color: var(--navy); } /* not the site's .field label */
+.about-ticks .tile { display: grid; grid-template-columns: calc(2.625rem - 2px) 1fr calc(2.625rem - 2px); gap: 0; min-height: 2.625rem; margin: 0; padding: 0; font-size: var(--fs-button); color: var(--navy); } /* not the site's .field label */
 .about-ticks .tile .box { justify-self: center; }
 .about-ticks .tile .mid { display: flex; align-items: center; justify-content: center; gap: .55rem; padding: .2rem 0; text-align: center; }
 .tile-sym { flex: none; display: grid; place-items: center; color: var(--navy); --icon-fill: #fff; --icon-accent: var(--r5); }
@@ -881,7 +881,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .add-card #add-message, .add-card .fnote input { font-size: var(--fs-small); padding: .5rem .7rem; }
 #add-message { min-height: 5.2rem; }
 /* W109 1: each Something else file has its own "What is it?", its example under the label (as the form's Your Documents) */
-.add-card .fnote .g { display: block; font-size: var(--fs-label); font-style: italic; color: var(--help); line-height: 1.45; margin: 0 0 .3rem; }
+.add-card .fnote .g { display: block; font-size: var(--fs-note); font-style: italic; color: var(--help); line-height: 1.45; margin: 0 0 .3rem; }
 @media (min-width: 761px) {
   /* the state box and the files become the row's own cells: the name, state and button centred on the first line, the
      files under the state (W109 1: Something else's files beside its name, each with its own "What is it?") */
@@ -916,7 +916,7 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 @media print {
   .back-link, .add-actions .btn { display: none !important; }
 }
-.add-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-small); }
+.add-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-button); }
 .add-card .pre { white-space: pre-line; display: block; background: color-mix(in srgb, var(--navy) 4%, white); border-radius: 8px; padding: .7rem .9rem; }
 .add-card .inner > p { font-size: var(--fs-small); margin-bottom: .6rem; }
 /* A tick box's label reads as an answer, not as a question */

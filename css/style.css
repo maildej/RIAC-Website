@@ -30,9 +30,15 @@
   --fs-section: 1.6rem;    /* section headings */
   --fs-card: 1.2rem;       /* card headings */
   --fs-lede: 1.1rem;       /* the paragraph introducing a page */
-  --fs-text: 1rem;         /* reading text */
-  --fs-small: .9rem;       /* card text, captions, footer, buttons */
-  --fs-label: .78rem;      /* short capitalised labels: menu, tags */
+  /* W122 1 (3 November 2026; the owner: "we overshot just a tiny bit on size reduction ... go up just a tiny bit (the
+     equivalent of 1 point in microsoft word)"): the reading sizes 1 pt (1.33 px) up; headings, buttons, the form's
+     choices, the capitalised labels and the home page's headline and paragraph kept */
+  --fs-text: 1.0833rem;    /* reading text (1rem before W122 1) */
+  --fs-small: .9833rem;    /* card text, captions, footer, the form's questions and answers (.9rem before) */
+  --fs-note: .8633rem;     /* the smallest reading text: the form's guidance and notes, the map's key (.78rem before) */
+  --fs-base: 1rem;         /* the centres' contact details, the form's Send button, the document boxes' names */
+  --fs-button: .9rem;      /* buttons, and the form's choices (pills, tiles, the step circles) */
+  --fs-label: .78rem;      /* short capitalised labels: menu, tags, bands, column headings; the small buttons */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -138,7 +144,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-
   /* where a button may wrap, never one word alone on its last line (the owner, W96 1). Before white-space, which sets
      whether it wraps at all: text-wrap after it would make every button wrap */
   text-wrap: balance;
-  display: inline-block; text-decoration: none; font: inherit; font-size: var(--fs-small); font-weight: 600;
+  display: inline-block; text-decoration: none; font: inherit; font-size: var(--fs-button); font-weight: 600;
   padding: .55rem 1.3rem; border-radius: 6px; letter-spacing: .02em; line-height: 1.4;
   margin: 0 .6rem .6rem 0; white-space: nowrap; border: none; cursor: pointer;
 }
@@ -179,7 +185,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-
 }
 .legend a {
   display: flex; align-items: center; gap: .5rem;
-  color: rgba(247,242,224,.85); text-decoration: none; font-size: var(--fs-label); padding: .15rem 0; white-space: nowrap;
+  color: rgba(247,242,224,.85); text-decoration: none; font-size: var(--fs-note); padding: .15rem 0; white-space: nowrap;
 }
 .legend a:hover { color: #fff; text-decoration: underline; }
 .dot { width: .8rem; height: .8rem; border-radius: 50%; flex: none; }
@@ -255,7 +261,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
 }
 
-.contact-block { line-height: 1.55; border-top: 1px solid var(--line); padding-top: 1rem; }
+.contact-block { font-size: var(--fs-base); line-height: 1.55; border-top: 1px solid var(--line); padding-top: 1rem; }
 .contact-block + .contact-block { margin-top: 1rem; }
 .contact-block .who { font-weight: 600; color: var(--navy); }
 .contact-block .org { color: var(--muted); }

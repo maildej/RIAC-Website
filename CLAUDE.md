@@ -215,7 +215,8 @@ repository), without sharing any of their code.
 - **Type.** Source Serif 4 for headings, **Source Sans 3** (its sister face) for everything else, across the whole
   site (W119 2b, 3 November 2026; it was Inter, which the owner found "doughy/oversized"). **Every font size is one of
   the `--fs-*` variables** at the top of `css/style.css` (display, title, section, card, lede,
-  text, small, label); do not add a size of its own to a rule. Capitals are for short labels
+  text, small, note, base, button, label; since W122 1 the reading sizes text, small and note are a point larger than the
+  buttons', the choices' and the labels'); do not add a size of its own to a rule. Capitals are for short labels
   only (the menu, "Region 1", "Counties served"), never for a sentence or a title. **Questions and choices are in
   sentence capitals** ("Does this case involve an order of protection in any way?", "Released on recognizance"; W119
   2b), keeping capitals of emphasis (ALL, INITIAL, CURRENT) and short forms (ICE, RIAC, U.S.); buttons keep a capital on
@@ -1427,6 +1428,19 @@ every key and code the pages send.
   **W119 2b, W120 1 and W121 3 live since 3 November 2026** (1:45 PM, the owner's "Yes, publish": `main` e940d46, Pages
   run 139; checked on nyriac.com: the sixteen changed files served as published, the form drawn in Source Sans 3 with the
   step bar in sentence capitals, and the Documents step's Attach now with its symbol beside the joined bar).
+- **W122 1** (3 November 2026; the owner: "we overshot just a tiny bit on size reduction. Can we go up just a tiny bit (the
+  equivalent of 1 point in microsoft word)", apart from the home title card's headline, paragraph and buttons, card
+  headings, headings generally, buttons generally and the centres' contact details, "but the counties are slightly too
+  small"): **the reading text is 1 pt (1.33 px) larger across the site**: `--fs-text` 1.0833rem (1rem), `--fs-small`
+  .9833rem (.9), and a new `--fs-note` .8633rem for the smallest reading text that had used `--fs-label` (the form's grey
+  guidance and notes, a charge's class, the map's key, "Chosen for you"). **Kept at their sizes**: headings, the lede
+  (the home page's paragraph and the navy title cards' line), buttons (the new `--fs-button`, .9rem), **the form's choices
+  as buttons** (the Yes / No pills, the tiles, the case-type cards, the centres to choose, the family rows' names, the
+  portal's tick tiles), the step bar, the capitalised labels and bands, the status boxes and the portal's small buttons
+  (`--fs-label`), and the centres' contact details, the form's Send button and the document boxes' names (the new
+  `--fs-base`, 1rem). The counties on Find Your RIAC grow with the text. Chosen over the choices' words larger too ("2",
+  where many tiles wrap onto two lines on a phone). Pictures `riac-handover\W\design\w122\` (mockup; script
+  `tests\w122-shots.mjs`). Built 3 November 2026; not yet published.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1579,6 +1593,16 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     when a box opens): **live since 3 November 2026** (1:45 PM, the owner's yes; `main` e940d46; see Settled).
   - **W121 3, Documents** (Attach now a pill of its own with an upload symbol, the other three joined in one bar):
     **live since 3 November 2026**, with W119 2b and W120 1 (`main` e940d46; see Settled).
+  - **W122 1, the reading text a point larger** (the owner, 3 November 2026: "we overshot just a tiny bit"): **built on
+    this branch, not yet published**; see Settled. **W123, open** (the owner, choosing W122 1: "For the center names, when
+    they wrap, we could replace New York with NY"; "can I see the navigation bar, as that text was too small"): mockup
+    sent, `riac-handover\W\design\w123\` (script `tests\w123-shots.mjs`): the menu 1 pt larger (recommended) or 2 pt,
+    both still beside the logo down to 1,001 px; on a phone (600 px or less) "Western NY", "Central NY", "Northern NY" in
+    the home page's map key (one column at 380 px or less, where "Hudson Valley" would still wrap) and in the form's
+    county list, where a row that still cannot fit puts its centre under the county. That last fixes a fault on the live
+    site today: on a phone the county list breaks a county's name mid-word (at 320 px, "Kings (Brooklyn)" one letter a
+    line; at 390 the New York City counties), because the centre beside it never wraps. Publishing waits for the
+    owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
