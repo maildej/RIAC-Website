@@ -1440,7 +1440,7 @@ every key and code the pages send.
   (`--fs-label`), and the centres' contact details, the form's Send button and the document boxes' names (the new
   `--fs-base`, 1rem). The counties on Find Your RIAC grow with the text. Chosen over the choices' words larger too ("2",
   where many tiles wrap onto two lines on a phone). Pictures `riac-handover\W\design\w122\` (mockup; script
-  `tests\w122-shots.mjs`). Built 3 November 2026; not yet published.
+  `tests\w122-shots.mjs`). **Live since 3 November 2026**, with W123 (below).
 - **W123, the owner's sizes** (3 November 2026; choosing W122 1: "For the center names, when they wrap, we could replace
   New York with NY to keep everything to one line? Also, can I see the navigation bar, as that text was too small", then
   "menu - 2 points bigger on desktop / 1 on a phone"): **the menu has its own size, `--fs-menu`**: .9467rem, 2 pt above
@@ -1458,8 +1458,11 @@ every key and code the pages send.
   address now breaks only where it cannot fit). Chosen over the menu 1 pt larger everywhere ("1", recommended) and 2 pt
   everywhere ("2"). Pictures `riac-handover\W\design\w123\` (mockup; `tests\w123-shots.mjs`) and `w123c\` (as built;
   `tests\w123c-shots.mjs`); checks `tests\w123-check.mjs` (every page's menu and no sideways scroll from 1360 to 320 px,
-  the key every 5 px, the county list at twelve widths); `w106-check` updated for "Central NY". Built 3 November 2026;
-  not yet published.
+  the key every 5 px, the county list at twelve widths); `w106-check` updated for "Central NY". **W122 1 and W123 live
+  since 3 November 2026** (4:49 PM, the owner's "Yes, publish": `main` 29a25d0, Pages run 140; checked on nyriac.com: the
+  six changed files served as published; at 1360 px the menu 15.1 px on one row, the text 17.3 px, the buttons and the
+  home page's paragraph unchanged; at 375 px the menu 13.8 px, the key "Western NY" with nothing wrapping, the county list
+  "Western NY" with no name broken, no sideways scroll).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1612,10 +1615,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     when a box opens): **live since 3 November 2026** (1:45 PM, the owner's yes; `main` e940d46; see Settled).
   - **W121 3, Documents** (Attach now a pill of its own with an upload symbol, the other three joined in one bar):
     **live since 3 November 2026**, with W119 2b and W120 1 (`main` e940d46; see Settled).
-  - **W122 1, the reading text a point larger** (the owner, 3 November 2026: "we overshot just a tiny bit"): **built on
-    this branch, not yet published**; see Settled. **W123** (the menu 2 pt larger on a computer, 1 pt on a phone; NY
-    where a centre's name would not fit, with three faults of the live site fixed): **built on this branch, not yet
-    published**; see Settled. Publishing W122 1 and W123 waits for the owner's yes.
+  - **W122 1, the reading text a point larger** (the owner, 3 November 2026: "we overshot just a tiny bit"), and **W123**
+    (the menu 2 pt larger on a computer, 1 pt on a phone; NY where a centre's name would not fit, with three faults of
+    the live site fixed): **both live since 3 November 2026** (4:49 PM, the owner's yes; `main` 29a25d0; see Settled).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
