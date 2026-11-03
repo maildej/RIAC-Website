@@ -1424,6 +1424,9 @@ every key and code the pages send.
   three grey pills of one size (W103 3). The four are still one choice for a screen reader and the arrow keys; what is
   sent is unchanged. Chosen over a line with "or" between them ("1") and Attach now on a row of its own ("2").
   Pictures `riac-handover\W\design\w121\` (mockups) and `w121c\` (as built); script `tests\w121-shots.mjs`.
+  **W119 2b, W120 1 and W121 3 live since 3 November 2026** (1:45 PM, the owner's "Yes, publish": `main` e940d46, Pages
+  run 139; checked on nyriac.com: the sixteen changed files served as published, the form drawn in Source Sans 3 with the
+  step bar in sentence capitals, and the Documents step's Attach now with its symbol beside the joined bar).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1573,9 +1576,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     "looks good"). `main` was moved on to it alone; this branch has since brought `main` in (merge ee5b40f). Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
   - **W119 2b and W120 1** (the owner, 3 November 2026: the form "doughy/oversized", a new font and smaller controls for
     the whole site, questions and choices in sentence capitals, each question centred in its row and nothing moving
-    when a box opens): **built on this branch, not yet published**; see Settled. Publishing waits for the owner's yes.
+    when a box opens): **live since 3 November 2026** (1:45 PM, the owner's yes; `main` e940d46; see Settled).
   - **W121 3, Documents** (Attach now a pill of its own with an upload symbol, the other three joined in one bar):
-    **built on this branch, not yet published**, with W119 2b and W120 1; see Settled. Publishing waits for the owner's yes.
+    **live since 3 November 2026**, with W119 2b and W120 1 (`main` e940d46; see Settled).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
