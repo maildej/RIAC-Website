@@ -38,7 +38,8 @@
   --fs-note: .8633rem;     /* the smallest reading text: the form's guidance and notes, the map's key (.78rem before) */
   --fs-base: 1rem;         /* the centres' contact details, the form's Send button, the document boxes' names */
   --fs-button: .9rem;      /* buttons, and the form's choices (pills, tiles, the step circles) */
-  --fs-label: .78rem;      /* short capitalised labels: menu, tags, bands, column headings; the small buttons */
+  --fs-label: .78rem;      /* short capitalised labels: tags, bands, column headings; the small buttons */
+  --fs-menu: .9467rem;     /* the menu: 2 pt above the labels' size, 1 pt on a phone (W123, 3 November 2026; .78rem before) */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -106,7 +107,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-
 .site-nav a {
   flex: 1 1 0; min-width: max-content; max-width: 12.5rem;
   position: relative; text-align: center; text-decoration: none; white-space: nowrap;
-  font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  font-size: var(--fs-menu); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
   color: rgba(247,242,224,.82); padding: .6rem 1rem; border-radius: 999px;
 }
 .site-nav a + a::before {
@@ -189,6 +190,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-
 }
 .legend a:hover { color: #fff; text-decoration: underline; }
 .dot { width: .8rem; height: .8rem; border-radius: 50%; flex: none; }
+/* W123 (the owner: "when they wrap, we could replace New York with NY"): a centre's name says NY where the whole name would
+   not fit, in the map's key (see the end of Small screens) and the form's county list; both forms are in the page, one shown */
+.ny-short { display: none; }
 
 /* ---------- Sections ---------- */
 
@@ -238,7 +242,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 
 /* ---------- Region contact cards (contact.html) ---------- */
 
-.region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+.region-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.4rem; }
 
 .region-card {
   background: #fff; border: 1px solid var(--line); border-radius: 10px;
@@ -266,6 +270,9 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 .contact-block .who { font-weight: 600; color: var(--navy); }
 .contact-block .org { color: var(--muted); }
 .contact-block p { margin: 0; }
+/* a long address breaks only where it cannot fit (immigrantdefenseproject.org/advice on the smallest phones), rather than
+   widening every card past the page */
+.contact-block a { overflow-wrap: break-word; }
 
 /* ---------- Advisories ---------- */
 
@@ -498,7 +505,7 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
 
 @media (max-width: 820px) {
   .hero .wrap { grid-template-columns: 1fr; gap: 2.2rem; padding-top: 2.8rem; padding-bottom: 2.8rem; }
-  .region-grid { grid-template-columns: 1fr; }
+  .region-grid { grid-template-columns: minmax(0, 1fr); }
   .intake-grid { grid-template-columns: 1fr; }
   .legend { grid-template-columns: repeat(2, 1fr); }
   .legend a { white-space: normal; }
@@ -522,8 +529,14 @@ a.card:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(0,0,0,.08)
   .section-intro { text-align: left; }
   .advisory-list li.featured h3 { font-size: var(--fs-card); }
   #advisory-list h3 { min-height: 0; }
-  :root { --fs-display: 1.9rem; }
+  :root { --fs-display: 1.9rem; --fs-menu: .8633rem; }
 }
+/* The map's key by the map's own width (W123): NY on a phone and in the home page's two columns from 821 to about 900 px,
+   where the key's three columns had run past the page (on the live site too, before W122 1); one column on the smallest
+   phones, where even "Hudson Valley" would not fit beside another name */
+.map-panel { container-type: inline-size; }
+@container (max-width: 26rem) { .legend .ny-long { display: none; } .legend .ny-short { display: inline; } }
+@container (max-width: 18rem) { .legend { grid-template-columns: 1fr; } }
 
 /* Region colours for the dots in the region lists and the contact cards' top edge: set here, not in the
    pages, so the pages' security policy needs no inline styles (security review, CS5). */

@@ -463,7 +463,13 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-card:has(.cp-matches:not([hidden])) { overflow: visible; }
 .qrow.has-err > .a .cb .srch input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
 .cb input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }   /* it covered the arrow */
-@media (max-width: 600px) { .ctr .long { display: none; } .cp-matches.cty li { display: flex; gap: .7rem; } }   /* on a phone the center's name without "RIAC" */
+/* W123: a row that cannot fit puts the centre under the county, whose name wraps only between words (it broke mid-word,
+   one letter a line at 320 px, beside a centre that never wraps); where the list is narrow (a phone, or the question
+   column's width up to about 800 px) the centre's name is without "RIAC" and says NY */
+.cp-matches.cty { container-type: inline-size; }
+.cp-matches.cty li { display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: .1rem; }   /* flex on a phone too, where a charge's row is a block */
+.cty .what { flex: 0 1 auto; min-width: auto; overflow-wrap: normal; }
+@container (max-width: 22rem) { .ctr .long, .ctr .ny-long { display: none; } .ctr .ny-short { display: inline; } .cp-matches.cty li { column-gap: .7rem; } }
 /* W107 3: the office and court lists, open on a press: headings for the groups, the "not listed" row kept at the foot,
    the letters typed in bold; chosen, a green line with Change (not listed, a grey one) */
 .cp-matches li b { font-weight: 600; color: var(--navy); }

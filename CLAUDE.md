@@ -215,8 +215,8 @@ repository), without sharing any of their code.
 - **Type.** Source Serif 4 for headings, **Source Sans 3** (its sister face) for everything else, across the whole
   site (W119 2b, 3 November 2026; it was Inter, which the owner found "doughy/oversized"). **Every font size is one of
   the `--fs-*` variables** at the top of `css/style.css` (display, title, section, card, lede,
-  text, small, note, base, button, label; since W122 1 the reading sizes text, small and note are a point larger than the
-  buttons', the choices' and the labels'); do not add a size of its own to a rule. Capitals are for short labels
+  text, small, note, base, button, label, menu; since W122 1 the reading sizes text, small and note are a point larger than
+  the buttons', the choices' and the labels', and since W123 the menu has its own); do not add a size of its own to a rule. Capitals are for short labels
   only (the menu, "Region 1", "Counties served"), never for a sentence or a title. **Questions and choices are in
   sentence capitals** ("Does this case involve an order of protection in any way?", "Released on recognizance"; W119
   2b), keeping capitals of emphasis (ALL, INITIAL, CURRENT) and short forms (ICE, RIAC, U.S.); buttons keep a capital on
@@ -1441,6 +1441,25 @@ every key and code the pages send.
   `--fs-base`, 1rem). The counties on Find Your RIAC grow with the text. Chosen over the choices' words larger too ("2",
   where many tiles wrap onto two lines on a phone). Pictures `riac-handover\W\design\w122\` (mockup; script
   `tests\w122-shots.mjs`). Built 3 November 2026; not yet published.
+- **W123, the owner's sizes** (3 November 2026; choosing W122 1: "For the center names, when they wrap, we could replace
+  New York with NY to keep everything to one line? Also, can I see the navigation bar, as that text was too small", then
+  "menu - 2 points bigger on desktop / 1 on a phone"): **the menu has its own size, `--fs-menu`**: .9467rem, 2 pt above
+  the labels' .78rem, on a computer and a tablet, and .8633rem (1 pt) at 600 px or less; it still fits beside the logo
+  down to 1,001 px and on one row below that. **A centre's name says NY where the whole name would not fit** ("Western
+  NY", "Central NY", "Northern NY"; New York City as it is): both forms are in the page (`.ny-long`, `.ny-short`), one
+  shown by the width of what holds them, not the window's (CSS container queries): **in the map's key** on the home and
+  contact pages where the map is 26rem or narrower (on a phone, and in the home page's two columns from 825 to 920 px),
+  the key in one column at 18rem or narrower (the smallest phones); **in the form's county list** where the list is
+  22rem or narrower (a phone, and the question column up to about 800 px), as "RIAC" was already left off there. Fixed
+  with it, three faults also on the live site: **the county list broke a county's name mid-word** on a phone (at 320 px
+  "Kings (Brooklyn)" one letter a line, beside a centre that never wraps): a row that cannot fit now puts its centre under
+  the county; **the home page scrolled sideways from 821 to 880 px** (the key's three columns ran past the page); **Find
+  Your RIAC scrolled sideways on the smallest phones** (immigrantdefenseproject.org/advice widened every card: a long
+  address now breaks only where it cannot fit). Chosen over the menu 1 pt larger everywhere ("1", recommended) and 2 pt
+  everywhere ("2"). Pictures `riac-handover\W\design\w123\` (mockup; `tests\w123-shots.mjs`) and `w123c\` (as built;
+  `tests\w123c-shots.mjs`); checks `tests\w123-check.mjs` (every page's menu and no sideways scroll from 1360 to 320 px,
+  the key every 5 px, the county list at twelve widths); `w106-check` updated for "Central NY". Built 3 November 2026;
+  not yet published.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
@@ -1594,15 +1613,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   - **W121 3, Documents** (Attach now a pill of its own with an upload symbol, the other three joined in one bar):
     **live since 3 November 2026**, with W119 2b and W120 1 (`main` e940d46; see Settled).
   - **W122 1, the reading text a point larger** (the owner, 3 November 2026: "we overshot just a tiny bit"): **built on
-    this branch, not yet published**; see Settled. **W123, open** (the owner, choosing W122 1: "For the center names, when
-    they wrap, we could replace New York with NY"; "can I see the navigation bar, as that text was too small"): mockup
-    sent, `riac-handover\W\design\w123\` (script `tests\w123-shots.mjs`): the menu 1 pt larger (recommended) or 2 pt,
-    both still beside the logo down to 1,001 px; on a phone (600 px or less) "Western NY", "Central NY", "Northern NY" in
-    the home page's map key (one column at 380 px or less, where "Hudson Valley" would still wrap) and in the form's
-    county list, where a row that still cannot fit puts its centre under the county. That last fixes a fault on the live
-    site today: on a phone the county list breaks a county's name mid-word (at 320 px, "Kings (Brooklyn)" one letter a
-    line; at 390 the New York City counties), because the centre beside it never wraps. Publishing waits for the
-    owner's yes.
+    this branch, not yet published**; see Settled. **W123** (the menu 2 pt larger on a computer, 1 pt on a phone; NY
+    where a centre's name would not fit, with three faults of the live site fixed): **built on this branch, not yet
+    published**; see Settled. Publishing W122 1 and W123 waits for the owner's yes.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by

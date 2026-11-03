@@ -929,8 +929,11 @@
         var el;
         if (name === OUTSIDE) el = h('div', { class: 'outside', text: words.outside });
         else {
-          var c = centreOf(counties[i].centre), short = c.short.replace(/^the /, '');
-          var ctr = h('span', { class: 'ctr' }, [h('i', { 'aria-hidden': 'true' }), h('span', null, [short.replace(/ RIAC$/, ''), / RIAC$/.test(short) ? h('span', { class: 'long', text: ' RIAC' }) : null])]);
+          var c = centreOf(counties[i].centre), short = c.short.replace(/^the /, ''), nm = short.replace(/ RIAC$/, ''), ny = / New York$/.test(nm);
+          // W123: "Western NY" where the list is narrow (referral.css), so the county's name keeps its line
+          var ctr = h('span', { class: 'ctr' }, [h('i', { 'aria-hidden': 'true' }), h('span', null, [ny ? nm.replace(/New York$/, '') : nm,
+            ny ? h('span', { class: 'ny-long', text: 'New York' }) : null, ny ? h('span', { class: 'ny-short', text: 'NY' }) : null,
+            / RIAC$/.test(short) ? h('span', { class: 'long', text: ' RIAC' }) : null])]);
           ctr.style.setProperty('--rc', c.colour);
           el = h('li', null, [h('span', { class: 'what', text: name }), ctr]);
         }
