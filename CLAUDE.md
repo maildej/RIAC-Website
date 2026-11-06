@@ -1629,8 +1629,20 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     worker's 200 characters but two Penal Law attempts already on the site, which the page trims. Check
     `tests\vtl-offenses-check.mjs` (1360 and 390 px). **Live since 6 November 2026** (about 9:20 AM, the owner's "Yes,
     publish": `main` deb9cc2, Pages run 141; checked on nyriac.com: the file served as published, made 2026-11-06 with 149
-    VTL rows, and the form's picker finding VTL 509.1 by "509.1" and by "unlicensed operation"). The Penal Law priors
-    split is still to come. Passed to the database chat: a note subject naming the kinds of document when an update carries
+    VTL rows, and the form's picker finding VTL 509.1 by "509.1" and by "unlicensed operation"). **Made again the same
+    day for the priors split** (the OP chat's, on the owner's OP1 2, OP2 2 and OP3 2 there; written in RIAC's list, so a
+    charge picked from the old file could fail to match): Penal Law 225.90 and 225.95 (each subdivision and "subdivision
+    not known"; no prior within 5 years, A misdemeanor, or 1 prior, E felony), 265.65, 270.21 and 270.22 (first offense,
+    or subsequent, E felony) and 265.38(1) and its "subdivision not known" (first or second violation, or third, A
+    misdemeanor) are now one row per tier, so no charge's class reads "depends on prior convictions" any more; 265.38(2) is
+    a definition now, left out. VTL 1192's and 600.2(a)'s tiers renamed ("First Offense" is "No Prior Within 10 Years",
+    "At Most 1 Prior Within 10 Years" and the like) and three deleted. 1,974 charges (1,828 Penal Law, 146 VTL) of 2,141
+    rows, 167 definitions left out; 186 KB, 19 KB as sent. `build-offenses.mjs` now orders the new tier names by priors.
+    A charge chosen in a tab before the change keeps its old tier and reaches RIAC as typed words. Eight lines (seven of
+    them PL 225.95's long name with a tier) now run past the worker's 200 characters, which the page trims at the end,
+    clipping the class from the label only (the database matches by law, statute and tier). Checks
+    `tests\op-tiers-check.mjs` (1360 and 390 px) and `vtl-offenses-check.mjs`; `w101-check.mjs` updated for the new
+    1192.3 tier, to run with the worker chat's local worker. Not yet published. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
