@@ -1619,7 +1619,16 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     (the menu 2 pt larger on a computer, 1 pt on a phone; NY where a centre's name would not fit, with three faults of
     the live site fixed): **both live since 3 November 2026** (4:49 PM, the owner's yes; `main` 29a25d0; see Settled).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
-    prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. Passed to the database chat: a note subject naming the kinds of document when an update carries
+    prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. **Made again
+    on 6 November 2026 for 113 new VTL rows** (the VT chat's, loaded into RIAC's list unreviewed, "Draft - still needs
+    review", on the owner's word for the soft launch: "it's fine to add put the in the offenses page and on the portal
+    before I have reviewed them"): 1,965 charges (149 VTL, 36 before, among them VTL 509.1, unlicensed operation; 1,816
+    Penal Law, unchanged) of 2,131 rows, the 166 definitions left out; 184 KB, 19 KB as sent. Read from the base "RIAC -
+    CMS" (six columns only) with `riac-handover\W\tools\export-offenses.js` and `build-offenses.mjs`. New VTL rows with no
+    classification, or "Other", show no class, as two Penal Law rows already did; every charge's line still fits the
+    worker's 200 characters but two Penal Law attempts already on the site, which the page trims. Check
+    `tests\vtl-offenses-check.mjs` (1360 and 390 px). Built on this branch, not yet published. The Penal Law priors split
+    is still to come. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
