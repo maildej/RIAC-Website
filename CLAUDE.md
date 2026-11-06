@@ -1627,8 +1627,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     CMS" (six columns only) with `riac-handover\W\tools\export-offenses.js` and `build-offenses.mjs`. New VTL rows with no
     classification, or "Other", show no class, as two Penal Law rows already did; every charge's line still fits the
     worker's 200 characters but two Penal Law attempts already on the site, which the page trims. Check
-    `tests\vtl-offenses-check.mjs` (1360 and 390 px). Built on this branch, not yet published. The Penal Law priors split
-    is still to come. Passed to the database chat: a note subject naming the kinds of document when an update carries
+    `tests\vtl-offenses-check.mjs` (1360 and 390 px). **Live since 6 November 2026** (about 9:20 AM, the owner's "Yes,
+    publish": `main` deb9cc2, Pages run 141; checked on nyriac.com: the file served as published, made 2026-11-06 with 149
+    VTL rows, and the form's picker finding VTL 509.1 by "509.1" and by "unlicensed operation"). The Penal Law priors
+    split is still to come. Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
