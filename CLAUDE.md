@@ -1642,7 +1642,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     them PL 225.95's long name with a tier) now run past the worker's 200 characters, which the page trims at the end,
     clipping the class from the label only (the database matches by law, statute and tier). Checks
     `tests\op-tiers-check.mjs` (1360 and 390 px) and `vtl-offenses-check.mjs`; `w101-check.mjs` updated for the new
-    1192.3 tier, to run with the worker chat's local worker. Not yet published. Passed to the database chat: a note subject naming the kinds of document when an update carries
+    1192.3 tier, to run with the worker chat's local worker. **Live since 6 November 2026** (4:57 PM, the owner's "Yes,
+    publish": `main` 278580c, Pages run 142; checked on nyriac.com: the file served as published, and the form's picker
+    showing 225.90(1)'s two tiers and 1192.2's four, each with its class). Passed to the database chat: a note subject naming the kinds of document when an update carries
   only files. **W62 a**: emailed links only for now; passkeys later, when the owner says. S3's small finding is fixed by
   **W77 1**.
   Airtable's own form is no longer public, so it is **not** linked from this site.
