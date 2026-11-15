@@ -1631,8 +1631,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     address's cannot shut the attorney out. The secret never leaves the browser (only its hash does) and on its own signs
     nobody in. So W113 a's "both are forgotten once signed in" now holds for the time of asking only. Nothing on screen
     changes. Checks `tests\rw29-secret-check.mjs` (the worker stood in for, 1360 and 390 px); `w113-check.mjs` updated
-    for the kept secret and `w98-check.mjs` pass; `w113-local.mjs` and `w104-check.mjs` need the worker chat's local
-    worker, not running on 15 November.
+    for the kept secret and `w98-check.mjs` pass; `w113-local.mjs` updated for it too. **Checked end to end by the worker
+    chat** (15 November 2026, this page on 8790 against its worker with the real limit of 5 links an hour; 12 passed,
+    `riac-handover\RW\tests\known-browser-check.mjs`): signed in by code, the secret and its time kept through Sign Out;
+    a stranger's requests from new browsers used up the address's five links; the known browser asked again with the
+    same proof, got its email and signed in; a fresh browser was turned away silently.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. **Made again
     on 6 November 2026 for 113 new VTL rows** (the VT chat's, loaded into RIAC's list unreviewed, "Draft - still needs
