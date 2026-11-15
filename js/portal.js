@@ -26,6 +26,7 @@
   var PAGE = app.getAttribute('data-page');
   var SECRET_KEY = 'riac-portal-secret';
   var ASKED_KEY = 'riac-portal-asked';   // when this browser last asked for a sign-in email (W113)
+  var SIGNED_KEY = 'riac-portal-signed';   // when this browser last signed in with its secret (contract draft 29)
   var SESSION_KEY = 'riac_portal';
   var turnstileId = null;
 
@@ -136,8 +137,25 @@
       return s && t && Date.now() - t < 15 * 60000 ? s : null;
     } catch (e) { return null; }
   }
-  function forget(keepSecret) {   // the request is done with; the secret alone may be kept for the link
-    try { localStorage.removeItem(ASKED_KEY); if (!keepSecret) localStorage.removeItem(SECRET_KEY); } catch (e) { /* none */ }
+  // Contract draft 29: a browser that has signed in for an address is known to the worker for 30 days from its last
+  // sign-in, by the proof it asked with, and has its own count of links and of wrong codes, so a stranger who uses up the
+  // address's cannot shut the attorney out. So once signed in, the secret is kept 30 days and the next request asks with
+  // it; sign-out and "Use A Different Email Address" leave it. It never leaves the browser (only its hash does), and on
+  // its own it signs nobody in: a link or a code from the attorney's email is still needed.
+  function keptSecret() {   // the secret this browser signed in with in the last 30 days, or null
+    try {
+      var s = localStorage.getItem(SECRET_KEY), t = parseInt(localStorage.getItem(SIGNED_KEY) || '0', 10);
+      return s && t && Date.now() - t < 30 * 24 * 3600000 ? s : null;
+    } catch (e) { return null; }
+  }
+  function signedIn() {   // a session has started with this secret: kept 30 days from now
+    try { localStorage.removeItem(ASKED_KEY); localStorage.setItem(SIGNED_KEY, String(Date.now())); } catch (e) { /* none */ }
+  }
+  function forget(keepSecret) {   // the request is done with; the secret is kept for the link, or once it has signed in
+    try {
+      localStorage.removeItem(ASKED_KEY);
+      if (!keepSecret && !keptSecret()) { localStorage.removeItem(SECRET_KEY); localStorage.removeItem(SIGNED_KEY); }
+    } catch (e) { /* none */ }
   }
 
   function signInCard(email, message) {
@@ -170,7 +188,8 @@
       if (!/^[A-Za-z0-9._%+-]+@/.test(e)) { msg.textContent = D.EMAIL_CHARS + '. Please contact your RIAC.'; input.focus(); return; }   // W-Q06
       if (!token) { msg.textContent = botFailed ? D.BOT_CHECK_FAILED : 'Please wait for the check that you are not a robot to finish, then press the button again.'; return; }
       btn.disabled = true; btn.textContent = 'Sending…';
-      var secret = heldAsk() || randomSecret();
+      var secret = heldAsk() || keptSecret();   // the same secret within 15 minutes of asking, or 30 days of signing in
+      if (!secret) { secret = randomSecret(); try { localStorage.removeItem(SIGNED_KEY); } catch (x) { /* none */ } }
       try { localStorage.setItem(SECRET_KEY, secret); } catch (x) { /* a browser that blocks storage cannot sign in */ }
       sha256hex(secret).then(function (proof) {
         return api('POST', '/v1/portal/sign-in', { email: e, turnstile: token, browserProof: proof, withCode: true });
@@ -234,7 +253,7 @@
       busy = true; btn.disabled = true; btn.textContent = 'Signing In…';
       api('POST', '/v1/portal/session', { code: code, browserSecret: secret }).then(function (r) {
         busy = false; btn.disabled = false; btn.textContent = 'Sign In';
-        if (r.status === 200 && r.body.session) { forget(); setSession(r.body.session); list(); return; }
+        if (r.status === 200 && r.body.session) { signedIn(); setSession(r.body.session); list(); return; }
         if (r.status === 401 && r.body.error === 'code-invalid') { wrong('That code is not right. Check it and try again.'); input.focus(); input.select(); return; }
         if (r.status === 400) { wrong('Please type the six digits from the email.'); input.focus(); return; }
         if (r.status === 429) { wrong('Too many tries from here. Please wait a few minutes and try again.'); return; }
@@ -271,9 +290,8 @@
         app.appendChild(h('p', { class: 'under-card', text: 'RIAC could not be reached just now. Please open the link in your email again in a minute or two: it still works.' }));
         return;
       }
-      forget();
-      if (r.status === 200 && r.body.session) { setSession(r.body.session); list(); }
-      else linkInvalid();
+      if (r.status === 200 && r.body.session) { signedIn(); setSession(r.body.session); list(); }
+      else { forget(); linkInvalid(); }
     });
     return true;
   }

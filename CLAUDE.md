@@ -1618,6 +1618,21 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   - **W122 1, the reading text a point larger** (the owner, 3 November 2026: "we overshot just a tiny bit"), and **W123**
     (the menu 2 pt larger on a computer, 1 pt on a phone; NY where a centre's name would not fit, with three faults of
     the live site fixed): **both live since 3 November 2026** (4:49 PM, the owner's yes; `main` 29a25d0; see Settled).
+  - **Contract draft 29** (the worker chat, 14 November 2026, after its security review; live on the worker since 11:23
+    AM that day): nothing for the pages to change (a centre must be a listed code; 60 requests a minute per sender, `429`;
+    `413 too-long-overall` past 4 MB for a centre reached by email, shown as any referral too long; invisible characters
+    removed from answers; wrong codes counted over any 24 hours, and at most 100 across every address from browsers not
+    known for their address, `401 code-expired`, which the page already handles). **One recommendation, built 15 November
+    2026 and held for the owner's "Yes, publish"**: once signed in (by link or code), **the portal keeps its browser secret
+    (`riac-portal-secret`, `localStorage`) for 30 days from that sign-in** (the time in `riac-portal-signed`), and the
+    next sign-in request asks with it (W113 a's 15 minutes still apply first); Sign Out and Use A Different Email Address
+    leave it; a secret that never signed in is forgotten as before, and one past 30 days is replaced. The worker then knows
+    the browser for the address, with its own count of links (5 an hour) and of wrong codes, so a stranger using up the
+    address's cannot shut the attorney out. The secret never leaves the browser (only its hash does) and on its own signs
+    nobody in. So W113 a's "both are forgotten once signed in" now holds for the time of asking only. Nothing on screen
+    changes. Checks `tests\rw29-secret-check.mjs` (the worker stood in for, 1360 and 390 px); `w113-check.mjs` updated
+    for the kept secret and `w98-check.mjs` pass; `w113-local.mjs` and `w104-check.mjs` need the worker chat's local
+    worker, not running on 15 November.
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. **Made again
     on 6 November 2026 for 113 new VTL rows** (the VT chat's, loaded into RIAC's list unreviewed, "Draft - still needs
