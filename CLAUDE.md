@@ -1368,8 +1368,10 @@ every key and code the pages send.
   custody), `e2e.mjs`, `w36-e2e`, `w40-check`, `w101-check`, `w48-check` and `q02-q03-check` pass against the worker
   chat's local worker, which takes the key. **Live since 2 November 2026** (3:17 PM, the owner's "Yes, publish": `main`
   af1c02f, Pages run 138; checked on nyriac.com: the three changed files served as published, and step 3 drawing Yes /
-  No / Unknown, immigration custody choosing Yes with "Chosen for you: …"). The first live Send with Unknown is the
-  owner's, from his own Chrome.
+  No / Unknown, immigration custody choosing Yes with "Chosen for you: …"). **The first live Send with Unknown** (16 November 2026,
+  2:43 PM, sent by this chat in the owner's own Chrome on his "Yes, send it"; invented details, the client's last name and
+  the docket starting "ZZ-TEST", Region 2): R2-261116-575467, its receipt emailed; at RIAC within a minute as a new
+  intake carrying the line "ICE involvement (a detainer, or any ICE involvement): Unknown".
 - **W118 1, with the band's words centred** (1 November 2026; the owner, in the dispatcher's chat, with a screenshot of
   the live list: "Can we make the your referrals card tighter to reduce its vertical size. The 12 hours signout
   description should be under the sign out button in the right column. Also center [trial run]"): the cream "Your
@@ -1605,8 +1607,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     built** (1 November; see Settled: ICE Involvement as Yes / No / Unknown; the screening list on ICE already had
     Unknown, W21). It needs one new answer from the worker, `court.iceInvolvementUnknown` (true/false): contract draft
     28, on the live worker since 2 November (1:05 PM), and tested here against its local worker. **W117 1 live since 2
-    November 2026** (3:17 PM, the owner's yes; `main` af1c02f). **Left, the owner's:** one test referral with ICE
-    Involvement "Unknown" from his own Chrome, to see it arrive at RIAC.
+    November 2026** (3:17 PM, the owner's yes; `main` af1c02f). **The test referral with ICE Involvement
+    "Unknown"**, sent from his own Chrome: **done, 16 November 2026** (R2-261116-575467, a ZZ-TEST intake at RIAC with
+    the Unknown line).
   - **W118 1** (the Your Referrals card tighter, the 12-hours line under Sign Out, the trial band centred): **live since
     1 November 2026** (9:51 AM, `main` 0666850; see Settled), and **checked by the owner signed in** (2 November 2026:
     "looks good"). `main` was moved on to it alone; this branch has since brought `main` in (merge ee5b40f). Pictures `riac-handover\W\design\w116\`; `tests\w116-shots.mjs`.
