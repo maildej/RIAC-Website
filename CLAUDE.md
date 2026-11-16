@@ -1689,9 +1689,15 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   and W-Q19's `tests\every-step-check.mjs` (every step of every case type, both ways: 108). Checks
   `tests\overnight-check.mjs`. **The look items, built after mockups** (live since 27 October 2026): W-Q10's colours (W108 1),
   W-Q08's one "What is it?" for every Something else file (W109 1), W-Q13's portal sentence (W110 1), W-S06's "Start
-  over" (W111 1). **The owner's to decide:** W-S01 (the base's ID and two share addresses are in the public history:
-  they open nothing, and none is in the current files, checked 27 October; rewriting the history is not advised) and
-  W-S04 (HSTS and framing headers need a proxy in front of Pages). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
+  over" (W111 1). **Decided by the owner, 16 November 2026 ("Yes, both", to the
+  recommendations):** **W-S01, the history left as it is** (the base's ID and two share addresses are in the public
+  history: they open nothing, and none is in the current files, checked 27 October; rewriting it would break every copy
+  and remove nothing from copies already made; worth remembering the base ID is public when judging any future leak of
+  a key), and **W-S04, accepted as known limits** (no HSTS, no `frame-ancestors`, no `nosniff`: GitHub Pages sends no
+  custom headers, and a proxy in front would mean a paid Cloudflare plan or moving the domain from Wix; the form and the
+  portal already refuse to draw inside another site; the review's `<meta name="referrer">` for the seven other pages
+  skipped, since browsers already send only "nyriac.com" to other sites, and `no-referrer` could upset Formspree's
+  check on the request page). Notes only: W-S02, W-S05 (at H2), W-S07 to W-S13. The worker chat's:
   the portal worker's rows. **W-Q02 and W-Q03 turned out to need no worker change (the worker chat) and are fixed here
   too:** a message on Send RIAC a message after the hour's upload batch has lapsed gets a new batch with the same
   sign-in, any files sent again, and goes (the worker chat has put to the owner letting a batch last the sign-in's 12
