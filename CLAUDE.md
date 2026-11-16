@@ -1623,7 +1623,7 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     `413 too-long-overall` past 4 MB for a centre reached by email, shown as any referral too long; invisible characters
     removed from answers; wrong codes counted over any 24 hours, and at most 100 across every address from browsers not
     known for their address, `401 code-expired`, which the page already handles). **One recommendation, built 15 November
-    2026 and held for the owner's "Yes, publish"**: once signed in (by link or code), **the portal keeps its browser secret
+    2026**: once signed in (by link or code), **the portal keeps its browser secret
     (`riac-portal-secret`, `localStorage`) for 30 days from that sign-in** (the time in `riac-portal-signed`), and the
     next sign-in request asks with it (W113 a's 15 minutes still apply first); Sign Out and Use A Different Email Address
     leave it; a secret that never signed in is forgotten as before, and one past 30 days is replaced. The worker then knows
@@ -1635,7 +1635,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     chat** (15 November 2026, this page on 8790 against its worker with the real limit of 5 links an hour; 12 passed,
     `riac-handover\RW\tests\known-browser-check.mjs`): signed in by code, the secret and its time kept through Sign Out;
     a stranger's requests from new browsers used up the address's five links; the known browser asked again with the
-    same proof, got its email and signed in; a fresh browser was turned away silently.
+    same proof, got its email and signed in; a fresh browser was turned away silently. **Live since 16 November 2026**
+    (2:34 PM, the owner's "Yes, publish": `main` 705f16d, Pages run 143; checked on nyriac.com: `js/portal.js` served as
+    published, the sign-in page drawing with no errors).
   - **Re-making `js/offenses.js`**: a chat of the owner's is splitting the Penal Law offenses whose class depends on
     prior convictions into one row per class, as VTL 1192's are; it says when, and the list is made again. **Made again
     on 6 November 2026 for 113 new VTL rows** (the VT chat's, loaded into RIAC's list unreviewed, "Draft - still needs
