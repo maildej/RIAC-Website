@@ -131,10 +131,12 @@ public website.
 **Do not re-add it to this repo.** If it needs changing, ask the owner for the file from OneDrive,
 edit it, and give it back — do not commit it.
 
-The file is a plain page holding the signature ready to select and copy, with setup steps around
-it: a worked example (Sharon Ames), a blank template, and a table of all six centres'
-phone/email taken from `contact.html` — **if contact details change here, that file needs the
-same change.**
+**Since 26 October 2026 the brand kit holds one ready-made signature file per staff member** (Dan, Sharon,
+Courtney) for the nyriac.com mailboxes, with Region 2's phone and cny@nyriac.com, and the earlier OCBA ones in a
+folder of old ones; its README says how to copy one into Outlook. (Found 16 November 2026; the brand kit is now in the
+RIAC OneDrive, under the CNY RIAC files' Admin folder.) No file lists the six centres any more (the old master page had
+a worked example, a blank template and a table of them), so **a change on `contact.html` touches the signatures only if
+Region 2's own phone or address changes.**
 
 **The cause, and the rule that follows from it.** The old signature did not contain the logo — it
 contained an `<img>` pointing at `https://nyriac.com/images/riac-email-logo.png`. Mail clients
@@ -1706,12 +1708,11 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
 - **[Owner] Confirm the staff email signature actually renders.** `nyriac.com` is blocked to
   Claude, and no session can see a real Outlook. Send a test to an address that has never
   received mail from the sender before.
-- **[Owner] Update the OneDrive signature file's Region 2 number** to **(315) 898-2593** in every
-  signature block it holds, **and its Region 2 email to cny@nyriac.com** (W54 1, 22 October 2026). An online
-  session cannot reach OneDrive, and the individual staff blocks exist only in that file. **Also add Region 1's second
-  email, wabdallah@labbuffalo.org**, to its table of the centres (the owner's request, on `contact.html` and the form's
-  copy since 30 October 2026, published at once at his word; a centre's `email` in `js/referral-data.js` may now be a
-  list, each address its own line on the form's cards).
+- **The OneDrive signature files' Region 2 number and email (W54 1): nothing left to do** (checked 16 November 2026):
+  the three signature files of 26 October already carry (315) 898-2593 and cny@nyriac.com, and none lists the six
+  centres, so Region 1's second email (wabdallah@labbuffalo.org, on `contact.html` and the form's copy since 30 October
+  2026; a centre's `email` in `js/referral-data.js` may be a list, each address its own line on the form's cards) has
+  no place there.
 - **[Owner, optional] Delete the Chief Defender survey's form in Formspree** (`mdaqzrpq`,
   "Chief Defender Referral Survey"). The survey page is gone from the site, so nothing posts to
   it; deleting it frees the slot. The responses already emailed to RIAC2@ocbaacp.org are not
