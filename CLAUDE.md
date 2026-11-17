@@ -1723,9 +1723,9 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   "Chief Defender Referral Survey"). The survey page is gone from the site, so nothing posts to
   it; deleting it frees the slot. The responses already emailed to RIAC2@ocbaacp.org are not
   affected.
-- **[Owner, decide] The Region 2 and Region 3 cards on `contact.html` name no host office**; the
-  other four do (e.g. "Legal Aid Bureau of Buffalo"). Suggested, not yet answered: send the names
-  as they should appear if they are to be added.
+- **Decided, 17 November 2026: the Region 2 and Region 3 cards on `contact.html` stay without a host
+  office** (the owner: "Leave them off"), while the other four keep theirs (e.g. "Legal Aid Bureau of
+  Buffalo"). Do not ask again; nothing to change unless the owner raises it.
 
 **Traps that have already cost time:**
 
