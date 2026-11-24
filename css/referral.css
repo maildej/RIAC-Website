@@ -574,11 +574,13 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sent-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-width: 52rem; margin: 0 auto; }
 .sent-card h2 { background: var(--navy); color: #fff; font-size: var(--fs-card); padding: .9rem 1.6rem; display: flex; align-items: center; gap: .7rem; }
 .sent-card h2 .tick { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--cream); color: var(--navy); font-family: var(--sans); font-size: var(--fs-button); }
-.sent-facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; padding: 1.2rem 1.6rem 0; font-size: var(--fs-small); }
+.sent-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .3rem 1.2rem; padding: 1.2rem 1.6rem 0; font-size: var(--fs-small); }
 .sent-facts dt { color: var(--muted); }
-.sent-facts dd { color: var(--ink); font-weight: 600; }
+/* A long email address breaks only where it cannot fit (on the smallest phones it ran past the card, which clipped it) */
+.sent-facts dd { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
 .receipt-note { display: block; margin-top: .35rem; font-weight: 400; }   /* W48 1 */
 .receipt-note strong { white-space: nowrap; }
+@media (max-width: 359px) { .receipt-note strong { white-space: normal; } }   /* too wide for the smallest phones: it breaks at its hyphen */
 .only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }
 .only-copy p { margin: 0; }
 .only-copy .btn { background: var(--r5); color: var(--navy); flex: none; }   /* W108 1 */

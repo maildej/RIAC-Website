@@ -1880,7 +1880,8 @@
     var sheet = Array.prototype.filter.call(document.styleSheets, function (s) { return s.href && /referral\.css/.test(s.href); })[0];
     if (!sheet) return;
     try {
-      sheet.insertRule('@page { @bottom-left { content: "Referral ' + String(ref).replace(/[^A-Za-z0-9-]/g, '') + '"; font: 9pt Inter, sans-serif; color: #5b6878; } }', sheet.cssRules.length);
+      // Letters, digits, hyphens and dots only: the dots are in the references made since CS157 2 (R2-11.17.26-327574)
+      sheet.insertRule('@page { @bottom-left { content: "Referral ' + String(ref).replace(/[^A-Za-z0-9.-]/g, '') + '"; font: 9pt "Source Sans 3", sans-serif; color: #5b6878; } }', sheet.cssRules.length);
     } catch (e) { /* a browser without page margin boxes prints without the reference in the footer */ }
   }
 
