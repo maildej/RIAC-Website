@@ -37,7 +37,7 @@
   function fresh() {
     return { v: 1, step: 0, visited: 0, A: {}, sendAs: 'questions',
       route: { county: null, outside: false, conflict: false, centre: null, note: '' },
-      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null, iceAuto: false, icePrev: null };
+      people: [], charges: [], adding: {}, docs: {}, batch: null, send: null, iceAuto: false, icePrev: null, dobParts: {} };
   }
   function load() {
     try {
@@ -47,6 +47,7 @@
       // computer a half-filled referral could reach the next person: a draft untouched for 12 hours is dropped (W-S06)
       if (s.at && Date.now() - s.at > 12 * 3600000) { clearDraft(); return null; }
       s.charges = s.charges || [];
+      s.dobParts = s.dobParts || {};   // CS202 3: what is typed in a date of birth's three boxes
       // A draft from before W117 1 holds ICE involvement as a tick: ticked is Yes; unticked was never an answer
       if (s.A && typeof s.A['court.iceInvolvement'] === 'boolean') s.A['court.iceInvolvement'] = s.A['court.iceInvolvement'] ? 'yes' : null;
       Object.keys(s.docs || {}).forEach(function (k) {   // files cannot survive a reload unless they had finished
@@ -308,8 +309,103 @@
     if (q.type === 'para') return h('div', { class: 'qrow para' }, [h('p', { class: 'desc', text: q.desc })]);   // no key: before fid()
     var id = fid(q.key, q.alias);
     var t = q.type;
-    var ans = t === 'radio' ? radioAnswer(q, id) : t === 'ticks' ? ticksAnswer(q, id) : t === 'check' ? checkAnswer(q, id) : t === 'charges' ? chargesAnswer(q, id) : control(q, id);
-    return qrow(id, qHead(q, id, ['radio', 'ticks', 'check'].indexOf(t) === -1 ? id : null), ans);
+    var ans = t === 'radio' ? radioAnswer(q, id) : t === 'ticks' ? ticksAnswer(q, id) : t === 'check' ? checkAnswer(q, id) : t === 'charges' ? chargesAnswer(q, id) :
+      t === 'dob' ? dobAnswer(id, dobPartsOf(S.dobParts[q.key], S.A[q.key]), { key: q.key, by: describedBy(q, id), ageCheck: q.ageCheck }) : control(q, id);
+    return qrow(id, qHead(q, id, ['radio', 'ticks', 'check', 'dob'].indexOf(t) === -1 ? id : null), ans);
+  }
+
+  // CS202 3 (24 November 2026; the owner's pick in the case-start chat, "but make the upper age 75"): a date of birth is
+  // typed in three boxes, Month / Day / Year, with no calendar. The browser's calendar opened on this year, and a client's
+  // date of birth reached RIAC as 04/21/2026. What is sent is still yyyy-mm-dd. Some boxes filled but not all, a date
+  // that does not exist, or one after today stops Next; for the client, a date that makes them 16 or younger or older
+  // than 75 says so under the boxes, a warning only. These limits mirror the centre's own flag on a client's date of
+  // birth; nothing is copied from the centre's system. Other people's dates of birth have no age line (step 7: a child
+  // or an elderly parent is ordinary there).
+  var DOB_YOUNG = 16, DOB_OLD = 75;
+  function todayNY() {   // today's date in New York, as yyyy-mm-dd
+    var p = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date())
+      .forEach(function (x) { p[x.type] = x.value; });
+    return p.year + '-' + p.month + '-' + p.day;
+  }
+  // What is typed in the three boxes, or, before anything is typed here, the date already held (a draft, a person
+  // being changed)
+  function dobPartsOf(typed, iso) {
+    if (typed) return typed;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    return m ? { m: m[2], d: m[3], y: m[1] } : { m: '', d: '', y: '' };
+  }
+  function dobTyped(p) { return !!p && ['m', 'd', 'y'].some(function (k) { return String(p[k] || '').trim(); }); }
+  // { iso } for a date that can be sent, { err } for one that cannot, {} for three empty boxes; age as of today
+  function dobRead(p) {
+    var m = String(p.m || '').trim(), d = String(p.d || '').trim(), y = String(p.y || '').trim();
+    if (!m && !d && !y) return {};
+    if (!m || !d || !y) return { err: '⚠ Please fill in the month, day and year, or leave all three empty' };
+    if (!/^\d{4}$/.test(y)) return { err: '⚠ Please type the year in full, like 1985' };
+    var mi = +m, di = +d, dt = new Date(0);
+    dt.setUTCFullYear(+y, mi - 1, di);
+    if (!/^\d{1,2}$/.test(m) || !/^\d{1,2}$/.test(d) || mi < 1 || mi > 12 || dt.getUTCMonth() !== mi - 1 || dt.getUTCDate() !== di) return { err: '⚠ That date does not exist: check the month and day' };
+    var iso = y + '-' + ('0' + mi).slice(-2) + '-' + ('0' + di).slice(-2), today = todayNY();
+    if (iso > today) return { err: '⚠ That date is in the future: check the year' };
+    var age = +today.slice(0, 4) - +y - (today.slice(5) < iso.slice(5) ? 1 : 0);
+    return { iso: iso, age: age };
+  }
+  function ageLine(r) {
+    return r.iso && (r.age <= DOB_YOUNG || r.age > DOB_OLD) ? '⚠ This makes your client ' + r.age + (r.age === 1 ? ' year' : ' years') + ' old: check the year' : '';
+  }
+  // The three boxes, each with its small label over it; the question names the group. opts: key (a question's key, or
+  // '#person' for step 7's box), by (the guidance's id), ageCheck.
+  function dobAnswer(id, parts, opts) {
+    var r = dobRead(parts), line = opts.ageCheck ? ageLine(r) : '';
+    function box(part, label, max) {
+      var bid = id + '-' + label.toLowerCase();   // -month, -day, -year (the question's description is already -d)
+      return h('div', { class: 'dmy-' + part }, [h('label', { for: bid, text: label }),
+        h('input', { type: 'text', inputmode: 'numeric', id: bid, maxlength: String(max), value: parts[part] || '', autocomplete: 'off', class: part === 'y' && line ? 'warn' : null,
+          'data-dob': part, 'data-dobk': opts.key, 'aria-describedby': [opts.by, opts.ageCheck ? id + '-age' : null].filter(Boolean).join(' ') || null })]);
+    }
+    var out = [h('div', { class: 'dmy', role: 'group', id: id, 'aria-labelledby': id + '-l', 'data-age': opts.ageCheck ? '1' : null }, [box('m', 'Month', 2), box('d', 'Day', 2), box('y', 'Year', 4)])];
+    if (opts.ageCheck) out.push(h('p', { class: 'dob-warn', id: id + '-age', 'aria-live': 'polite', text: line }));
+    return out;
+  }
+  function dobInput(g) {   // something typed or pasted in the three boxes: digits only
+    var parts = {}, k = g.querySelector('input').dataset.dobk;
+    ['m', 'd', 'y'].forEach(function (p) {
+      var i = g.querySelector('[data-dob="' + p + '"]');
+      if (/\D/.test(i.value)) i.value = i.value.replace(/\D/g, '');
+      parts[p] = i.value;
+    });
+    if (k === '#person') S.adding.dobParts = parts; else S.dobParts[k] = parts;
+    dobShow(g, parts);
+  }
+  // A whole date pasted into any of the three boxes ("04/21/1985", or "1985-04-21") fills all three; anything else
+  // goes in as typed
+  function dobPaste(e) {
+    var s = ((e.clipboardData || {}).getData ? e.clipboardData.getData('text') : '').trim();
+    var a = /^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/.exec(s), b = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s);
+    if (!a && !b) return;
+    e.preventDefault();
+    var g = e.target.closest('.dmy'), v = a ? { m: a[1], d: a[2], y: a[3] } : { m: b[2], d: b[3], y: b[1] };
+    ['m', 'd', 'y'].forEach(function (p) { g.querySelector('[data-dob="' + p + '"]').value = v[p]; });
+    dobInput(g);
+  }
+  // Holds what is typed, and the date to send once it can be sent; the age line and the year box's outline follow as it
+  // is typed. A date put right takes away its error at once (W31).
+  function dobShow(g, parts) {
+    var k = g.querySelector('input').dataset.dobk, r = dobRead(parts);
+    if (k === '#person') S.adding.dob = r.iso || ''; else S.A[k] = r.iso || '';
+    save();
+    if (g.dataset.age) {
+      var line = ageLine(r);
+      document.getElementById(g.id + '-age').textContent = line;
+      g.querySelector('[data-dob="y"]').classList.toggle('warn', !!line);
+    }
+    var w = g.closest('.qrow');
+    if (w && w.classList.contains('has-err') && !r.err) {
+      w.classList.remove('has-err');
+      Array.prototype.forEach.call(w.querySelectorAll('[aria-invalid]'), function (i) { i.removeAttribute('aria-invalid'); });
+      Array.prototype.forEach.call(w.querySelectorAll('.field-err'), function (x) { x.remove(); });
+      if (ERRORS) ERRORS = ERRORS.filter(function (e) { return e.id !== g.id; });
+    }
   }
   // A question inside another's answer (a note under Unknown, the court's "not listed"): its own label over its box.
   function subField(q) {
@@ -684,6 +780,7 @@
   function begun() {
     var given = S.signIn ? S.signIn.keys : [];   // W104: the sign-in's details are not answers given
     return S.visited > 0 || !!S.route.county || S.route.outside || S.people.length > 0 || S.charges.length > 0 || allFiles().length > 0 ||
+      Object.keys(S.dobParts).some(function (k) { return dobTyped(S.dobParts[k]); }) ||
       Object.keys(S.A).some(function (k) { var v = S.A[k]; if (given.indexOf(k) !== -1) return false; return v !== '' && v !== null && v !== undefined && v !== false && !(Array.isArray(v) && !v.length); });
   }
   function startOverAsk() {
@@ -1110,8 +1207,9 @@
         h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.adding = Object.assign({}, p); S.people.splice(i, 1); save(); render('p-first'); } } }, ['Change']),
         h('button', { type: 'button', class: 'link-btn', on: { click: function () { S.people.splice(i, 1); save(); render(); } } }, ['Remove'])])]);
   }
-  function personComplete(p) { return !!(p.firstName && p.firstName.trim() && p.lastName && p.lastName.trim() && p.role); }
-  function personStarted(p) { return ['firstName', 'lastName', 'dob', 'role', 'relationship'].some(function (k) { return p[k] && String(p[k]).trim(); }); }
+  function personDob(p) { return dobRead(dobPartsOf(p.dobParts, p.dob)); }   // CS202 3: the date checked as the client's, with no age line
+  function personComplete(p) { return !!(p.firstName && p.firstName.trim() && p.lastName && p.lastName.trim() && p.role) && !personDob(p).err; }
+  function personStarted(p) { return ['firstName', 'lastName', 'dob', 'role', 'relationship'].some(function (k) { return p[k] && String(p[k]).trim(); }) || dobTyped(p.dobParts); }
   function addPerson() {
     var p = S.adding;
     if (!personComplete(p)) { setErrors(personErrors(p)); return false; }
@@ -1124,6 +1222,8 @@
     if (!p.firstName || !p.firstName.trim()) e.push({ id: 'p-first', empty: true, text: 'first name' });
     if (!p.lastName || !p.lastName.trim()) e.push({ id: 'p-last', empty: true, text: 'middle and last names' });
     if (!p.role) e.push({ id: 'p-role', empty: true, text: 'role' });
+    var dr = personDob(p);
+    if (dr.err) e.push({ id: 'p-dob', text: dr.err });
     return e;
   }
 
@@ -1134,15 +1234,16 @@
     if (S.A.noOtherPeople === 'yes') {
       if (S.people.length) sheet.appendChild(h('section', { class: 'sec' }, [h('h3', { class: 'sec-h', text: 'People added' }), h('ul', { class: 'people-list' }, S.people.map(personLine))]));
       var p = S.adding;
-      function prow(id, label, req, guidance, ctrl) {   // a row of the "Add a person" box
-        var head = [h('label', { class: 'lab', for: id, id: id + '-l' }, req ? [label, '\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })] : [label])];
-        if (guidance) { head.push(h('span', { class: 'g', id: id + '-g', text: guidance })); ctrl.setAttribute('aria-describedby', id + '-g'); }
-        return qrow(id, head, [ctrl]);
+      function prow(id, label, req, guidance, ctrl) {   // a row of the "Add a person" box; ctrl is a box, or a list of parts (the date's)
+        var one = !Array.isArray(ctrl);
+        var head = [h(one ? 'label' : 'span', { class: 'lab', for: one ? id : null, id: id + '-l' }, req ? [label, '\u00a0', h('span', { class: 'req', 'aria-hidden': 'true', text: '*' })] : [label])];
+        if (guidance) { head.push(h('span', { class: 'g', id: id + '-g', text: guidance })); if (one) ctrl.setAttribute('aria-describedby', id + '-g'); }
+        return qrow(id, head, one ? [ctrl] : ctrl);
       }
       var box = h('section', { class: 'sec', id: 'p-box-w' }, [h('h3', { class: 'sec-h', text: 'Add a person' }),
         prow('p-first', 'First name', true, 'First name only. If in doubt, put a name in the next box.', h('input', { type: 'text', id: 'p-first', maxlength: '100', value: p.firstName || '', autocomplete: 'off', 'data-person': 'firstName' })),
         prow('p-last', 'Middle & last names', true, null, h('input', { type: 'text', id: 'p-last', maxlength: '100', value: p.lastName || '', autocomplete: 'off', 'data-person': 'lastName' })),
-        prow('p-dob', 'Date of birth', false, 'If known', h('input', { type: 'date', id: 'p-dob', value: p.dob || '', 'data-person': 'dob' })),
+        prow('p-dob', 'Date of birth', false, 'If known', dobAnswer('p-dob', dobPartsOf(p.dobParts, p.dob), { key: '#person', by: 'p-dob-g' })),
         prow('p-role', 'Their role', true, null, h('select', { id: 'p-role', class: 'role', 'data-person': 'role' }, [h('option', { value: '', text: 'Choose one' })].concat(
           D.CHOICES.roles.map(function (r) { return h('option', { value: r.code, text: r.label, selected: p.role === r.code }); })))),
         prow('p-rel', 'Relationship to the client', false, 'e.g. "former partner"; "brother"; "none"', h('input', { type: 'text', id: 'p-rel', maxlength: '200', value: p.relationship || '', autocomplete: 'off', 'data-person': 'relationship' })),
@@ -1555,6 +1656,7 @@
         if (q.type === 'ticks' && !(Array.isArray(v) && v.length)) errs.push({ id: fid(q.key) + '-' + q.choices[0].code, wid: fid(q.key), empty: true, text: 'ticks' });
         else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, wid: q.type === 'radio' ? fid(q.key) : null, empty: true, text: 'answer' });
       }
+      if (q.type === 'dob') { var dr = dobRead(dobPartsOf(S.dobParts[q.key], v)); if (dr.err) errs.push({ id: id, text: dr.err }); }   // CS202 3
       if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
       else if (q.type === 'email' && clean(v) && !/^[A-Za-z0-9._%+-]+@/.test(v.trim())) errs.push({ id: id, text: D.EMAIL_CHARS + '. Please use another address, or send your RIAC the intake form instead.' });
       if (q.type === 'charges' && chargeQuery.trim() && S.charges.length < CH.max) errs.push({ id: id, text: CH.notChosen });
@@ -1580,7 +1682,7 @@
       return c + (q.unknownNote && v === 'unknown' && clean(S.A[q.key + 'UnknownWhy']) ? ': ' + S.A[q.key + 'UnknownWhy'].trim() : '');
     }
     if (q.type === 'check') return v === true ? 'Yes' : 'No';
-    if (q.type === 'date') return v ? fmtDate(v) : '—';
+    if (q.type === 'date' || q.type === 'dob') return v ? fmtDate(v) : '—';
     return clean(v) || '—';
   }
   function rowsFor(list) {
@@ -1891,7 +1993,8 @@
     var t = e.target;
     var ew = t.closest('.err-empty');
     if (ew && t.value && t.value.trim() && t.type !== 'radio' && t.type !== 'checkbox') clearErr(ew);
-    if (t.dataset.key && (t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && ['text', 'email', 'tel', 'search', 'date'].indexOf(t.type) !== -1))) {
+    if (t.dataset.dob) { dobInput(t.closest('.dmy')); return; }   // CS202 3
+    if (t.dataset.key &&(t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && ['text', 'email', 'tel', 'search', 'date'].indexOf(t.type) !== -1))) {
       S.A[t.dataset.key] = t.value;
       var n = document.getElementById(t.id + '-n');
       if (n) n.textContent = nearLimit(t.value.length, parseInt(t.getAttribute('maxlength'), 10) || 6000);
@@ -1901,6 +2004,7 @@
     else if (t.dataset.fnote) { var nf = docState(t.dataset.fkind).files.filter(function (x) { return x.id === t.dataset.fnote; })[0]; if (nf) { nf.note = t.value; save(); } }
     else if (t.dataset.docnote) { docState(t.dataset.docnote).note = t.value; save(); }
   });
+  app.addEventListener('paste', function (e) { if (e.target.dataset && e.target.dataset.dob) dobPaste(e); });
   app.addEventListener('change', function (e) {
     var t = e.target;
     if (t.dataset.route === 'county') {
@@ -1912,7 +2016,8 @@
     if (t.dataset.route === 'centre') { S.route.centre = t.value; save(); render(t.id); return; }
     if (t.dataset.file) { addFiles(t.dataset.file, t.files); return; }
     if (t.dataset.doc) { docState(t.dataset.doc).status = t.value; save(); render(t.id); if (t.value === 'attached') pump(); return; }
-    if (t.dataset.person === 'role' || t.dataset.person === 'dob') {
+    if (t.dataset.dob) return;   // CS202 3: held as it is typed
+    if (t.dataset.person === 'role') {
       S.adding[t.dataset.person] = t.value; save();
       var ew = t.closest('.err-empty'); if (ew && t.value) clearErr(ew);
       return;

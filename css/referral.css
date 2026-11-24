@@ -222,6 +222,20 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-q.ruled textarea { min-height: 0; }
 .ref-q.ruled textarea.l2 { min-height: calc(2lh + .6rem + 2px); }
 .ref-q.ruled textarea.l3 { min-height: calc(3lh + .6rem + 2px); }
+/* CS202 3 (24 November 2026): a date of birth as three typed boxes, Month / Day / Year, each with a small label over it,
+   and no calendar (the calendar opened on this year, and a client's date of birth arrived as this year's). When the date
+   makes the client 16 or younger or older than 75, the year box is outlined in the warning colour, with a line under the
+   boxes; a warning only. */
+.dmy { display: flex; gap: .5rem; align-items: flex-end; }
+.dmy > div { display: flex; flex-direction: column; }
+.dmy-m, .dmy-d { width: 3.6rem; }
+.dmy-y { width: 5.2rem; }
+.dmy label { font-size: var(--fs-note); color: var(--help); line-height: 1.3; margin-bottom: .15rem; }
+.ref-q.ruled .dmy input { text-align: center; font-variant-numeric: tabular-nums; padding-left: .3rem; padding-right: .3rem; }
+.ref-q.ruled .dmy input.warn { border-color: var(--warn); box-shadow: 0 0 0 1px var(--warn); }
+.ref-q.ruled .qrow.has-err .dmy input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
+.dob-warn { color: var(--warn); font-weight: 600; font-size: var(--fs-small); line-height: 1.4; margin: .35rem 0 0; }
+.dob-warn:empty { display: none; }
 .srch { position: relative; }
 .srch .lens { position: absolute; left: .65rem; top: 50%; transform: translateY(-50%); display: grid; color: var(--muted); pointer-events: none; }
 .srch .lens svg { width: 15px; height: 15px; }

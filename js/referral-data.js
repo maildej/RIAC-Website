@@ -317,7 +317,7 @@
     SEC('Identity'),
     Q('client.firstName', 'Client first name', 'name', { required: true, guidance: 'First name only. If in doubt, put a name in the next box.' }),
     Q('client.lastName', 'Client middle & last names', 'name', { required: true }),   // W19
-    Q('client.dob', 'Client DoB', 'date', { desc: 'If unknown, please leave blank.' }),
+    Q('client.dob', 'Client DoB', 'dob', { desc: 'If unknown, please leave blank.', ageCheck: true }),   // CS202 3: Month / Day / Year, the age line
     Q('client.aliases', 'Any known aliases, or variations to the name or date of birth?', 'radio', { choices: CHOICES.aliases, inline: true, required: true }),
     Q('client.aliasDetails', 'Details of known aliases, or variations to the name or date of birth', 'note', { show: function (A) { return has(A, 'client.aliases', 'yes'); } }),
     SEC('Background'),

@@ -1491,6 +1491,28 @@ every key and code the pages send.
   on nyriac.com: the stylesheet served as published, the form drawing with the bands' rule loaded). Pictures
   `riac-handover\W\design\w124\`, `w125\`, `w126\` (mockups) and `w126c\`
   (as built); checks `tests\refs-dots-check.mjs` (465, 1360 to 320 px), `w114-check`.
+- **CS202 3, with the owner's change** (24 November 2026, chosen in the case-start chat: "cs202-3 - but make the upper age
+  75"; built here on that chat's brief): a referral reached RIAC with the client's date of birth 04/21/2026, because the
+  browser's calendar opens on the current year. **A date of birth is now three typed boxes, Month / Day / Year**, each a
+  number box (a numeric keypad on a phone) with a small grey label over it, Month and Day 3.6rem wide, Year 5.2rem (a
+  little narrower, together, below about 340 px), no calendar; on the Client step and for each other person at step 7.
+  It reverses W14 2's browser date box for the dates of birth only: "Advice needed by" and the court dates keep it.
+  **For the client, a date that makes them 16 or younger or older than 75** (age as of today's New York date) shows
+  *"⚠ This makes your client N years old: check the year"* under the boxes, in the warning brown, semibold, the Year box
+  outlined in it: **a warning only**, the referral can still be sent. The limits are the page's own (`DOB_YOUNG`,
+  `DOB_OLD` in `js/referral.js`), mirroring the centre's own flag; nothing is copied from the centre's system. Step 7
+  has no age line (a child or an elderly parent is ordinary there). **Next stops**, in W31's words-beside-the-answer
+  style, on: some boxes filled but not all ("⚠ Please fill in the month, day and year, or leave all three empty"), a
+  two-digit year ("⚠ Please type the year in full, like 1985"), a date that does not exist, 02/30 ("⚠ That date does not
+  exist: check the month and day"), and a date after today ("⚠ That date is in the future: check the year"); put right,
+  the red goes as it is typed. Letters are dropped as typed; a whole date pasted into any box ("04/21/1985" or
+  "1985-04-21") fills all three; what is typed is kept in the tab's draft (`dobParts`), so a reload keeps it, part-way
+  too. **What is sent is still yyyy-mm-dd** (`client.dob`, `people[].dob`), so the worker's contract is unchanged;
+  Review and send, the copy and a person's line still read mm/dd/yyyy. Picture of the choice
+  `riac-handover\CS\cs144\CS202 the form flags an odd date of birth.png`; as built `riac-handover\W\design\cs202c\`;
+  checks `tests\cs202-check.mjs` (the page's clock fixed at 10:30 PM in New York on 24 November, already the 25th in
+  UTC; 1360 to 320 px), `every-step-check.mjs` (with `STUB_LISTS=1` when the worker chat's local worker is not running);
+  `e2e.mjs` updated to type the three boxes.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
