@@ -580,7 +580,12 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sent-facts dd { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
 .receipt-note { display: block; margin-top: .35rem; font-weight: 400; }   /* W48 1 */
 .receipt-note strong { white-space: nowrap; }
-@media (max-width: 359px) { .receipt-note strong { white-space: normal; } }   /* too wide for the smallest phones: it breaks at its hyphen */
+/* W124 2 (24 November 2026): on the smallest phones each label over its value, so nothing breaks part-way, as the copy */
+@media (max-width: 359px) {
+  .sent-facts { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .sent-facts dd { margin-bottom: .6rem; }
+  .sent-facts dd:last-child { margin-bottom: 0; }
+}
 .only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }
 .only-copy p { margin: 0; }
 .only-copy .btn { background: var(--r5); color: var(--navy); flex: none; }   /* W108 1 */

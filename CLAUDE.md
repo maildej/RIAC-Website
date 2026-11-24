@@ -1467,6 +1467,21 @@ every key and code the pages send.
   six changed files served as published; at 1360 px the menu 15.1 px on one row, the text 17.3 px, the buttons and the
   home page's paragraph unchanged; at 375 px the menu 13.8 px, the key "Western NY" with nothing wrapping, the county list
   "Western NY" with no name broken, no sideways scroll).
+- **The longer references, and W124 2** (24 November 2026): the worker chat's **CS157 2** (Dan's pick there) makes new
+  references **`R2-11.17.26-327574`** (the New York date with dots, two characters longer; R10 and up one more), the old
+  shape staying valid. Checked here from 1360 to 320 px with invented ones (`tests\refs-dots-check.mjs`): they fit the
+  portal's pills (the grey Intake Reference on two lines below 360 px, as before), the search finds them by the dotted
+  date, the digits or a typed O, `add.html#<ref>` finds the referral, and the card after Send shows them. **Two faults
+  fixed** (fc90d6d): **the printed copy's footer** kept only letters, digits and hyphens, so it would have read "Referral
+  R2-111726-327574", a valid-looking reference that does not exist; it keeps dots now, in Source Sans 3 (it still named
+  Inter, a leftover of W119 2b); and **the card after Send ran past its own edge below 360 px**, clipped (its facts column
+  could not shrink below the longest address; so with the old references too): the column now shrinks and an address
+  breaks only where it cannot fit. **Live since 24 November 2026** (the owner's "Yes, publish": `main` fc90d6d, Pages run
+  144; checked on nyriac.com: both files served as published, the form drawing with no errors), published ahead of the
+  worker's change so no printed copy ever lacks the dots; the dispatcher then let the worker's change go. **W124 2** (the
+  owner's choice): **below 360 px the card after Send puts each label over its value**, so nothing breaks part-way, as
+  the copy further down the page does on a phone. Chosen over label beside value with the addresses breaking part-way
+  ("1"). Not yet published. Pictures `riac-handover\W\design\w124\` (mockup) and `w124c\` (as built).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
