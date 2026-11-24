@@ -1487,7 +1487,9 @@ every key and code the pages send.
   W124 2 first did it below 360 px only (chosen over label beside value with addresses breaking part-way); W125 2 took
   it to every phone (from 360 to about 440 px a longer address still broke beside its label); W126 1 chosen over a grey
   line between fields ("2") and a line with small grey capitalised labels as the portal's Your Referrals card ("3", the
-  recommendation). Not yet published. Pictures `riac-handover\W\design\w124\`, `w125\`, `w126\` (mockups) and `w126c\`
+  recommendation). **Live since 24 November 2026** (the owner's "Yes, publish": `main` 932d803, Pages run 145; checked
+  on nyriac.com: the stylesheet served as published, the form drawing with the bands' rule loaded). Pictures
+  `riac-handover\W\design\w124\`, `w125\`, `w126\` (mockups) and `w126c\`
   (as built); checks `tests\refs-dots-check.mjs` (465, 1360 to 320 px), `w114-check`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
