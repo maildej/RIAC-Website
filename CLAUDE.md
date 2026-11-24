@@ -1512,7 +1512,9 @@ every key and code the pages send.
   `riac-handover\CS\cs144\CS202 the form flags an odd date of birth.png`; as built `riac-handover\W\design\cs202c\`;
   checks `tests\cs202-check.mjs` (the page's clock fixed at 10:30 PM in New York on 24 November, already the 25th in
   UTC; 1360 to 320 px), `every-step-check.mjs` (with `STUB_LISTS=1` when the worker chat's local worker is not running);
-  `e2e.mjs` updated to type the three boxes.
+  `e2e.mjs` updated to type the three boxes. **Live since 24 November 2026** (the owner's "Yes, publish": `main`
+  7dd05d5, Pages run 146; checked on nyriac.com: the three changed files served as published, and the Client step drawing
+  Month / Day / Year with "This makes your client 0 years old" for 04/21/2026).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
