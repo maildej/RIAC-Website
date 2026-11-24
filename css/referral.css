@@ -580,10 +580,12 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .sent-facts dd { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
 .receipt-note { display: block; margin-top: .35rem; font-weight: 400; }   /* W48 1 */
 .receipt-note strong { white-space: nowrap; }
-/* W124 2 (24 November 2026): on the smallest phones each label over its value, so nothing breaks part-way, as the copy */
-@media (max-width: 359px) {
+/* W124 2, W125 2, W126 1 (24 November 2026): on a phone each label over its value, as the copy further down, so nothing
+   breaks part-way; each label in a pale navy band across the card (the card's padding is 1rem here) */
+@media (max-width: 600px) {
   .sent-facts { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .sent-facts dd { margin-bottom: .6rem; }
+  .sent-facts dt { margin: 0 -1rem .35rem; padding: .3rem 1rem; background: color-mix(in srgb, var(--navy) 7%, white); color: var(--navy); font-weight: 600; }
+  .sent-facts dd { margin-bottom: .9rem; }
   .sent-facts dd:last-child { margin-bottom: 0; }
 }
 .only-copy { margin: 1.2rem 1.6rem 1.4rem; padding: 1rem 1.2rem; background: color-mix(in srgb, var(--r5) 12%, white); border: 1px solid var(--r5); border-radius: 8px; display: flex; align-items: center; gap: 1.2rem; justify-content: space-between; font-size: var(--fs-small); }

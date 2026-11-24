@@ -1478,10 +1478,17 @@ every key and code the pages send.
   could not shrink below the longest address; so with the old references too): the column now shrinks and an address
   breaks only where it cannot fit. **Live since 24 November 2026** (the owner's "Yes, publish": `main` fc90d6d, Pages run
   144; checked on nyriac.com: both files served as published, the form drawing with no errors), published ahead of the
-  worker's change so no printed copy ever lacks the dots; the dispatcher then let the worker's change go. **W124 2** (the
-  owner's choice): **below 360 px the card after Send puts each label over its value**, so nothing breaks part-way, as
-  the copy further down the page does on a phone. Chosen over label beside value with the addresses breaking part-way
-  ("1"). Not yet published. Pictures `riac-handover\W\design\w124\` (mockup) and `w124c\` (as built).
+  worker's change so no printed copy ever lacks the dots; the dispatcher then let the worker's change go.
+- **W124 2, W125 2 and W126 1** (24 November 2026): **on a phone (600 px wide or less) the card after Send puts each
+  label over its value**, as the copy further down the page does on a phone, so no reference or address breaks part-way
+  (an address wider than the card itself still breaks where it must, below 360 px); **each label sits in a pale navy band
+  across the full width of the card** (the owner: "we need some delineation as the headings melted a little. Full width
+  background banner? Line between each field?"), its words navy, semibold. Computers and tablets keep label beside value.
+  W124 2 first did it below 360 px only (chosen over label beside value with addresses breaking part-way); W125 2 took
+  it to every phone (from 360 to about 440 px a longer address still broke beside its label); W126 1 chosen over a grey
+  line between fields ("2") and a line with small grey capitalised labels as the portal's Your Referrals card ("3", the
+  recommendation). Not yet published. Pictures `riac-handover\W\design\w124\`, `w125\`, `w126\` (mockups) and `w126c\`
+  (as built); checks `tests\refs-dots-check.mjs` (465, 1360 to 320 px), `w114-check`.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
