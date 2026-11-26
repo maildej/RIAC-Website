@@ -859,6 +859,14 @@ mark { background: #fff3a8; color: inherit; padding: 0 .05em; }
 .which .case-line { color: var(--ink); font-weight: 600; } /* W84 2b: the case number leads, the reference beneath */
 .which .was-ref { color: var(--muted); font-size: var(--fs-note); font-style: italic; margin-top: .4rem; }
 .which .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; }
+/* W127 1 (25 November 2026; DC43 2): what RIAC still needs the attorney to tell it, in the orange of "Still needed" and
+   Waiting on you, under the case info; each fact whole on a line of its own */
+.info-needed { background: color-mix(in srgb, var(--r5) 9%, white); border: 1px solid color-mix(in srgb, var(--r5) 45%, white); border-left: 4px solid var(--r5);
+  border-radius: 6px; padding: .65rem 1rem .75rem; margin: -.4rem 0 1.4rem; }
+.info-needed h3 { margin: 0 0 .35rem; font-family: var(--sans); font-size: var(--fs-small); font-weight: 600; color: #8a4210; line-height: 1.35; }
+.info-needed ul { margin: 0; padding-left: 1.15rem; }
+.info-needed li { font-size: var(--fs-small); color: var(--ink); line-height: 1.45; margin: .15rem 0; overflow-wrap: anywhere; }
+.info-needed li::marker { color: var(--r5); }
 /* "Report an offer" and "Report a disposition" (W83 1, W87 2b): two tick tiles of one size, each in three columns, the
    tick centred in a square first column (as far from the tile's left as from its top and bottom), the symbol and words
    centred on the tile, an empty third column as wide as the first; one above the other below 900 px */

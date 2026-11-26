@@ -1535,6 +1535,18 @@ every key and code the pages send.
   between 1900 and 2100: check the year"); `DATE_MIN`, `DATE_MAX` in `js/referral.js`. A refusal of one person's answer
   at Send names them ("Other people, Maria Example (date of birth): This is not a date."). Also held on this branch.
   `cs202-check.mjs` 189 passed.
+- **W127 1** (25 November 2026; Dan's DC43 2, typed in the documents chat on 23 November: the portal shows the
+  information RIAC still needs from the attorney, as well as the documents; contract draft 30, RW): `GET
+  /v1/portal/referrals` gives each referral `information`, a list of facts in RIAC's set words ("The disposition
+  date"), 20 at most, `[]` when none, always on a closed referral, and everywhere until the base fills it. **On Send RIAC
+  a message, an orange box under the case info, "RIAC still needs to know"**, each fact whole on a line of its own with
+  an orange bullet, as plain text (a fact may hold a comma, so never split), in the orange of "Still needed" and Waiting
+  on you; nothing when there are none or the key is absent. No answer box of its own: the attorney answers in the
+  message, and RIAC staff close each fact (DC43 2). The heading is `INFO_NEEDED` in `js/referral-data.js`. Chosen over
+  a part of the case info panel ("2") and a row per fact with a "Still needed" box, as the documents ("3"). Built, not
+  yet published. Pictures `riac-handover\W\design\w127\` (mockup) and `w127c\` (as built); checks `tests\w127-check.mjs`
+  (80, 1360 to 320 px). **W128**, whether the list says so: Dan likes a line by the status ("seems like a good idea") but
+  not "3 things to tell RIAC"; redrawn in three wordings (`design\w128b\`), waiting for his pick.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

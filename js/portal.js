@@ -577,6 +577,17 @@
       : [h('div', { class: 'sub', text: ['Reference ' + r.reference].concat(where).join(' · ') })];
     return h('div', { class: 'which' }, [h('div', null, [clientName(r)].concat(info)), statusPill(r)]);
   }
+  // W127 1 (25 November 2026; Dan's DC43 2, contract draft 30): the facts RIAC still needs the attorney to tell it, in an
+  // orange box under the case info, each whole on a line of its own, as plain text. No answer box of their own: the
+  // attorney answers in the message, and RIAC staff close each fact. Nothing when there are none (or the key is absent).
+  function infoOwed(r) {
+    return (Array.isArray(r.information) ? r.information : []).filter(function (t) { return typeof t === 'string' && t.trim(); }).slice(0, 20);
+  }
+  function infoNeeded(r) {
+    var items = infoOwed(r);
+    if (!items.length) return null;
+    return h('div', { class: 'info-needed' }, [h('h3', { text: D.INFO_NEEDED }), h('ul', null, items.map(function (t) { return h('li', { text: t.trim() }); }))]);
+  }
   function setLimits(t) { var el = document.getElementById('add-limits'); if (el) el.textContent = t; }
   function showLimits() {
     setLimits('Up to ' + A.batch.maxFiles + ' files, ' + fmtBytes(A.batch.maxFileBytes) + ' each, ' + fmtBytes(A.batch.maxTotalBytes) + ' in all — PDF, Word (.docx), JPEG, PNG or HEIC.');
@@ -616,7 +627,7 @@
     A.kinds.forEach(function (kind) { docs.appendChild(docRow(kind, r)); });
     var err = h('div', { id: 'add-err', role: 'alert' });
     var sendBtn = h('button', { type: 'button', class: 'btn btn-navy', id: 'add-send', on: { click: function () { sendAddition(r); } } }, ['Send To RIAC']);
-    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC a message' }), h('div', { class: 'inner ref-q' }, [which(r), about, msgField,
+    var card = h('div', { class: 'add-card' }, [h('h2', { text: 'Send RIAC a message' }), h('div', { class: 'inner ref-q' }, [which(r), infoNeeded(r), about, msgField,
       h('div', { class: 'docs-head' }, [h('span', { class: 'lab', text: 'Documents' }), ' ', h('span', { class: 'opt', text: '(optional)' })]),
       Array.isArray(r.documents) ? h('p', { class: 'doc-key', text: D.DOC_STATES_NOTE }) : null,
       h('p', { class: 'limits', id: 'add-limits', text: 'Checking the file limits…' }), docs, err,

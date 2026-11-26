@@ -411,11 +411,13 @@
     'sent-before': { text: 'Sent before, as you said', tone: 'grey' }
   };
   var DOC_STATES_NOTE = 'What RIAC has for this referral is shown beside each kind. A file you have just sent may take up to 20 minutes to show here.';
+  // W127 1 (DC43 2, contract draft 30): over the facts RIAC still needs the attorney to tell it, on Send RIAC a message
+  var INFO_NEEDED = 'RIAC still needs to know';
 
   window.RIAC_REF = {
     CONFIG: CONFIG, CENTRES: CENTRES, PDFS: PDFS, ADVICE_FIRST: ADVICE_FIRST, CASE_TYPES: CASE_TYPES, CHOICES: CHOICES, YNU: YNU,
     STEPS: { county: COUNTY, about: ABOUT, court: COURT, client: CLIENT, immigration: IMMIGRATION },
     SECTIONS: SECTIONS, DOCS: DOCS, docKinds: docKinds, has: has, BOT_CHECK_FAILED: BOT_CHECK_FAILED, EMAIL_CHARS: EMAIL_CHARS, RECEIPT_JUNK: RECEIPT_JUNK, UPDATE_ABOUT: UPDATE_ABOUT,
-    DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE, CHARGES: CHARGES
+    DOC_STATES: DOC_STATES, DOC_STATES_NOTE: DOC_STATES_NOTE, CHARGES: CHARGES, INFO_NEEDED: INFO_NEEDED
   };
 })();
