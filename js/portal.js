@@ -719,6 +719,12 @@
       A.pumping = false;
       var b = {}; try { b = JSON.parse(xhr.responseText || '{}'); } catch (e) { /* */ }
       if (xhr.status === 201 && b.fileId) { f.state = 'done'; f.fileId = b.fileId; }
+      else if (xhr.status === 429 && (f.waits || 0) < 6) {   // asked to wait (SR2, R2-D3-5): pause, then the same file again
+        f.state = 'queued'; f.pct = 0; f.waits = (f.waits || 0) + 1; A.pumping = true; drawFiles();
+        var secs = Math.max(1, parseInt(xhr.getResponseHeader('Retry-After') || '5', 10) || 5);
+        setTimeout(function () { A.pumping = false; pump(); }, secs * 1000);
+        return;
+      }
       else { f.state = 'failed'; f.error = xhr.status === 415 ? 'This kind of file cannot be sent: use PDF, Word (.docx), JPEG, PNG or HEIC.' : xhr.status === 413 ? 'Too large to send.' : 'Did not upload.'; }
       drawFiles(); pump();
     };

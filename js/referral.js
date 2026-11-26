@@ -800,7 +800,7 @@
   }
   function startOver() {
     Object.keys(XHRS).forEach(function (id) { var x = XHRS[id]; x.onload = x.onerror = x.onabort = null; x.abort(); });
-    XHRS = {}; FILES = {}; pumping = false;
+    XHRS = {}; FILES = {}; pumping = false; clearTimeout(pumpWait); pumpWait = null;
     pendingSend = false; pendingNote = null; chargeQuery = ''; pickQuery = {}; asking = false;
     clearTimeout(saveTimer); clearDraft();
     S = fresh();
@@ -1372,6 +1372,7 @@
 
   // Sends the queued files one at a time (contract C step 2). Without a batch they wait until the bot check makes one.
   var pumping = false;
+  var pumpWait = null;   // the pause a 429 asked for, before the next file (R2-D3-5)
   function pump() {
     if (pumping) return;
     if (!batchValid()) return;
@@ -1398,6 +1399,14 @@
       var body = {}; try { body = JSON.parse(xhr.responseText || '{}'); } catch (e) { /* not JSON */ }
       if (xhr.status === 201 && body.fileId) { f.state = 'done'; f.fileId = body.fileId; f.pct = 100; }
       else if (xhr.status === 400 && expired(body)) { f.state = 'queued'; renewBatch(); return; }
+      else if (xhr.status === 429 && (f.waits || 0) < 6) {
+        // The worker asks this address to wait before more files (security review SR2, R2-D3-5): the queue pauses for
+        // the time it gives, then sends the same file again, as Send does; it fails only after six waits
+        f.state = 'queued'; f.pct = 0; f.waits = (f.waits || 0) + 1; pumping = true; renderFiles();
+        var secs = Math.max(1, parseInt(xhr.getResponseHeader('Retry-After') || '5', 10) || 5);
+        pumpWait = setTimeout(function () { pumpWait = null; pumping = false; pump(); }, secs * 1000);
+        return;
+      }
       else {
         f.state = 'failed';
         f.retry = [413, 415, 409].indexOf(xhr.status) === -1;

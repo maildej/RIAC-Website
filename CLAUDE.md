@@ -1815,6 +1815,23 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
   sign-in, any files sent again, and goes (the worker chat has put to the owner letting a batch last the sign-in's 12
   hours instead); a referral refused because its files are too large for a centre reached by email now says so, with a
   link to Documents, not "too long" (`tests\q02-q03-check.mjs`).
+- **Security review SR2 (26 November 2026)**: report in `RIAC Parked Tweaks\Security review 26 Nov 2026\SR2 findings.md`
+  on the desktop. The website's part:
+  - **High, R2-D5-V1, the owner's to do in Netlify:** the Netlify site behind the admin page's GitHub sign-in (its name is
+    `site_domain` in `admin/config.yml`) has also been building a public preview of every pull request since July,
+    and the preview of the closed PR #16 serves a private address of RIAC's that is being rotated. Fix: stop that site's
+    builds, turn off its deploy previews, delete PR #16's deploys (ideally every PR's), then check PR #16's two
+    preview links no longer answer. **Keep the site itself**: the admin page signs in through it, and a released name
+    could be claimed by anyone. If it is ever replaced, change `site_domain` in the same step. Steps given to the owner
+    25 November 2026.
+  - **Low at go-live, R2-D3-3 (with RW):** a wrong sign-in code is answered code-invalid or code-expired depending on
+    whether the address is in the portal. The real fix is the worker answering both alike; the page shows what it is
+    sent (W113 1's two messages, the owner's), so a change there waits for RW and the owner.
+  - **Note, R2-D3-5, fixed:** a file refused with 429 now pauses the upload queue for Retry-After and is sent again (six
+    waits at most), on the form and the portal; nothing on screen changes. `tests\sr2-429-check.mjs` (9).
+  - **Notes for the owner:** R2-D5-V2, nyriac.com serves the whole repository, so `CLAUDE.md` answers on RIAC's own
+    domain (the repository is public anyway; only the site's files could be published, through a Pages workflow);
+    R2-D5-4, four old branches still hold an old base ID that main's history keeps anyway (deleting them is tidying).
 - **Security review (CS5, 20 October 2026)**: report in `riac-handover\CS5\security-review.md` on the desktop. Done:
   findings 1 (download link) and 2 (Decap pinned), both **live** (pull requests #20 and #22); 4 (.doc refused), 6
   (framing), 8 (portal sign-in in the tab) and 9 (go-live checklist) on this branch, re-tested by CS5; 5, 7, 13 and 14
