@@ -1573,7 +1573,7 @@ every key and code the pages send.
   not right…", and "This code has expired or has been tried too often…", which greyed the box, took Sign In away and
   made Send Another Email navy). A stray `code-expired` reads the same. A browser holding no secret keeps W113 1's
   local "expired" state (no call to the worker, so it tells nobody anything). Chosen over the worker's own words with
-  "send another email" ("1"). RW's worker change (7a9b55f2) waits for this page to be live: **tell RW then.** Pictures
+  "send another email" ("1"). RW's worker change (7a9b55f2) waited for this page. **Live since 26 November 2026** (the owner's "Yes, publish": `main` 7fa1413, Pages run 149; checked on nyriac.com: the two changed files served as published, the portal's sign-in and the form drawing); RW told. Pictures
   `riac-handover\W\design\w129\`; checks `tests\w113-check.mjs` (updated: 111).
 - **RW14 2, the referral carries the portal's sign-in** (25 November 2026; Dan's pick in the worker chat; contract
   draft 31): the portal's card and About You take the attorney's details only from referrals sent signed in, or from
