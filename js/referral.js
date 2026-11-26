@@ -1858,8 +1858,14 @@
     sending = true; render();
     post(referral, 0);
   }
+  // RW14 2 (contract draft 31): sent while signed in to the portal in this tab, the referral carries the sign-in, so the
+  // portal can take the attorney's details from it. Only on the referral itself, never on the upload batch or the files
+  // (a sign-in there makes an addition's batch, and the referral is then refused). An ended sign-in refuses nothing.
+  function portalSession() { try { return sessionStorage.getItem(CFG.portalSessionKey) || null; } catch (e) { return null; } }
   function post(referral, tries) {
-    api('POST', '/v1/referrals', { uploadId: S.batch.uploadId, referral: referral }, { 'Idempotency-Key': S.send.key }).then(function (r) {
+    var hd = { 'Idempotency-Key': S.send.key }, ps = portalSession();
+    if (ps) hd.Authorization = 'Bearer ' + ps;
+    api('POST', '/v1/referrals', { uploadId: S.batch.uploadId, referral: referral }, hd).then(function (r) {
       if (r.status === 201) { sending = false; sent(r.body); return; }
       if (r.status === 429 && tries < 6) { sendMessage(['Sending…']); setTimeout(function () { post(referral, tries + 1); }, Math.max(1, r.retryAfter || 5) * 1000); return; }
       sending = false; render();

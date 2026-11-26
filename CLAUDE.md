@@ -1561,6 +1561,17 @@ every key and code the pages send.
   receiving-side chat (RR), whose words the page shows as sent. RR put the wording for documents and facts owed together
   to Dan (RR28); facts alone read "Waiting for information" (one line in the status box). RR builds it with the widened
   Waiting on you, both after this page's W127 1 and W128 1 are published: **tell RR, and RW, once they are live.**
+- **RW14 2, the referral carries the portal's sign-in** (25 November 2026; Dan's pick in the worker chat; contract
+  draft 31): the portal's card and About You take the attorney's details only from referrals sent signed in, or from
+  intakes keyed in at RIAC. So **when the attorney is signed in to the portal in this tab, Send adds `Authorization:
+  Bearer <session>` to POST /v1/referrals**, and only there: never to the upload batch or the files (a sign-in there
+  makes an addition's batch, and the referral is then refused). The session is read from the tab's `sessionStorage`
+  (`CONFIG.portalSessionKey`, the same key as `js/portal.js`'s `SESSION_KEY`), so the form opened from the portal in the
+  same tab (W104 A1) carries it, and one opened in a new tab does not. An ended session refuses nothing. The answers
+  sent are unchanged. The live worker already allows the header on that call (its preflight checked, 25 November), so
+  the page can go before the worker's side. Nothing on screen changes; for an attorney with no signed-in referrals the
+  card shows the address alone and About You is not filled in, which Dan chose knowingly, and the page says nothing
+  more. Checks `tests\rw14-check.mjs` (8: signed in and not, through a batch, a file and Send).
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by

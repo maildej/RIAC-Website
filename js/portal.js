@@ -27,7 +27,7 @@
   var SECRET_KEY = 'riac-portal-secret';
   var ASKED_KEY = 'riac-portal-asked';   // when this browser last asked for a sign-in email (W113)
   var SIGNED_KEY = 'riac-portal-signed';   // when this browser last signed in with its secret (contract draft 29)
-  var SESSION_KEY = 'riac_portal';
+  var SESSION_KEY = 'riac_portal';   // the form reads it too, to send the sign-in with a referral (RW14 2; CONFIG.portalSessionKey)
   var turnstileId = null;
 
   // ---------- Helpers ------------------------------------------------------------------------------------------------

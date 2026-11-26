@@ -13,6 +13,7 @@
     maxReferralBytes: 81920,
     draftKey: 'riac-referral-draft',
     prefillKey: 'riac-referral-prefill',   // W104: the signed-in details, from the portal's Send Us A New Case to step 2
+    portalSessionKey: 'riac_portal',       // RW14 2: the portal's sign-in in this tab (js/portal.js's SESSION_KEY, the same)
     // Send RIAC A Message (W59 A): the kinds of update offered, a note always; each other kind is a tick tile (W83 1).
     // Offers and dispositions on nyriac.com too since RIAC's database files them as such (W72, 23 October 2026).
     updateKinds: ['message', 'offer', 'disposition']
