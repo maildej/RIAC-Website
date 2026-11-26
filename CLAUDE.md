@@ -1524,8 +1524,8 @@ every key and code the pages send.
   `e2e.mjs` updated to type the three boxes. **Live since 24 November 2026** (the owner's "Yes, publish": `main`
   7dd05d5, Pages run 146; checked on nyriac.com: the three changed files served as published, and the Client step drawing
   Month / Day / Year with "This makes your client 0 years old" for 04/21/2026). **A second review** (25 November 2026, a
-  fresh reviewer, under the dispatcher's D90) found no real bug; three small fixes, nothing on screen changed, are on
-  this branch, not yet published: the link in "The center's system did not accept the referral" puts the focus in the
+  fresh reviewer, under the dispatcher's D90) found no real bug; three small fixes, nothing on screen changed, live since 25 November
+  2026 (main f52082f): the link in "The center's system did not accept the referral" puts the focus in the
   Month box (it found the group, which cannot take it); the empty age line stays on the page (`display: none` would keep
   a screen reader from hearing it appear); a whole date pasted into "Add a person" takes away that box's red, as typing
   does. Its fourth point, any four-digit year passing (0985 was sent as 0985-04-21), turned out to be a fault: **the
@@ -1533,7 +1533,7 @@ every key and code the pages send.
   Send. So now a date of birth before 1900 stops Next ("⚠ That date is before 1900: check the year"), and so does a
   browser date box ("Advice needed by", the next court or hearing date) outside 1900 to 2100 ("⚠ That date is not
   between 1900 and 2100: check the year"); `DATE_MIN`, `DATE_MAX` in `js/referral.js`. A refusal of one person's answer
-  at Send names them ("Other people, Maria Example (date of birth): This is not a date."). Also held on this branch.
+  at Send names them ("Other people, Maria Example (date of birth): This is not a date."). **Live since 25 November 2026** (the owner's "Yes, publish": `main` f52082f, Pages run 147; checked on nyriac.com: the four changed files served as published, the form and the portal's sign-in drawing).
   `cs202-check.mjs` 189 passed.
 - **W127 1** (25 November 2026; Dan's DC43 2, typed in the documents chat on 23 November: the portal shows the
   information RIAC still needs from the attorney, as well as the documents; contract draft 30, RW): `GET
@@ -1543,8 +1543,7 @@ every key and code the pages send.
   an orange bullet, as plain text (a fact may hold a comma, so never split), in the orange of "Still needed" and Waiting
   on you; nothing when there are none or the key is absent. No answer box of its own: the attorney answers in the
   message, and RIAC staff close each fact (DC43 2). The heading is `INFO_NEEDED` in `js/referral-data.js`. Chosen over
-  a part of the case info panel ("2") and a row per fact with a "Still needed" box, as the documents ("3"). Built, not
-  yet published. Pictures `riac-handover\W\design\w127\` (mockup) and `w127c\` (as built); checks `tests\w127-check.mjs`
+  a part of the case info panel ("2") and a row per fact with a "Still needed" box, as the documents ("3"). **Live since 25 November 2026** (the owner's "Yes, publish": `main` f52082f, Pages run 147; checked on nyriac.com: the four changed files served as published, the form and the portal's sign-in drawing). Pictures `riac-handover\W\design\w127\` (mockup) and `w127c\` (as built); checks `tests\w127-check.mjs`
   (80, 1360 to 320 px).
 - **W128 1** (25 November 2026; Dan, on the first drawing: showing what is outstanding "on the card right by its status
   seems like a good idea", but not the words "3 things to tell RIAC"): on Your Referrals, **under each status box, an
@@ -1555,7 +1554,7 @@ every key and code the pages send.
   (W58 1), which says that something is needed while the line says what; once DC43 2's last step widens `waitingOnYou`
   to facts owed, such a referral is grouped there too. Chosen over "RIAC needs 3 answers from you" ("2", the facts
   alone) and "Still needed: the disposition date, and 2 more" ("3"); W128's first drawing had offered nothing in the
-  list ("a", then recommended) or "3 things to tell RIAC" ("b"). Built, not yet published. Pictures
+  list ("a", then recommended) or "3 things to tell RIAC" ("b"). **Live since 25 November 2026** (the owner's "Yes, publish": `main` f52082f, Pages run 147; checked on nyriac.com: the four changed files served as published, the form and the portal's sign-in drawing). Pictures
   `riac-handover\W\design\w127\W128-options.png`, `w128b\` (mockups) and `w128c\` (as built); checks
   `tests\w128-check.mjs` (56, 1360 to 320 px). **With it, Dan's yes to a database status** (25 November 2026: "yes do
   this"): a portal status like "Waiting for information" while facts are owed, as "Waiting for documents"; passed to the
