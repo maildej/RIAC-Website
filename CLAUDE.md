@@ -1559,7 +1559,9 @@ every key and code the pages send.
   `riac-handover\W\design\w127\W128-options.png`, `w128b\` (mockups) and `w128c\` (as built); checks
   `tests\w128-check.mjs` (56, 1360 to 320 px). **With it, Dan's yes to a database status** (25 November 2026: "yes do
   this"): a portal status like "Waiting for information" while facts are owed, as "Waiting for documents"; passed to the
-  receiving-side chat (RR), whose words the page shows as sent.
+  receiving-side chat (RR), whose words the page shows as sent. RR put the wording for documents and facts owed together
+  to Dan (RR28); facts alone read "Waiting for information" (one line in the status box). RR builds it with the widened
+  Waiting on you, both after this page's W127 1 and W128 1 are published: **tell RR, and RW, once they are live.**
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
