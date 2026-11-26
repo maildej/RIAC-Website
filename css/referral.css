@@ -235,7 +235,7 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
 .ref-q.ruled .dmy input.warn { border-color: var(--warn); box-shadow: 0 0 0 1px var(--warn); }
 .ref-q.ruled .qrow.has-err .dmy input { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad); }
 .dob-warn { color: var(--warn); font-weight: 600; font-size: var(--fs-small); line-height: 1.4; margin: .35rem 0 0; }
-.dob-warn:empty { display: none; }
+.dob-warn:empty { margin: 0; }   /* kept on the page while empty, so a screen reader hears the line when it appears */
 .srch { position: relative; }
 .srch .lens { position: absolute; left: .65rem; top: 50%; transform: translateY(-50%); display: grid; color: var(--muted); pointer-events: none; }
 .srch .lens svg { width: 15px; height: 15px; }

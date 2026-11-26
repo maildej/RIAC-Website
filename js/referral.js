@@ -387,6 +387,7 @@
     var g = e.target.closest('.dmy'), v = a ? { m: a[1], d: a[2], y: a[3] } : { m: b[2], d: b[3], y: b[1] };
     ['m', 'd', 'y'].forEach(function (p) { g.querySelector('[data-dob="' + p + '"]').value = v[p]; });
     dobInput(g);
+    var ew = g.closest('.err-empty'); if (ew) clearErr(ew);   // as typing would (the "Add a person" box asked for a person)
   }
   // Holds what is typed, and the date to send once it can be sent; the age line and the year box's outline follow as it
   // is typed. A date put right takes away its error at once (W31).
@@ -1918,7 +1919,9 @@
       return h('li', null, [h('a', { href: '#' + id, class: 'err-link', on: { click: function (ev) {
         ev.preventDefault();
         go(stepOfKey(f.key));
-        var el = document.getElementById(id) || document.querySelector('#' + id + '-w input, #' + id + '-w textarea, #' + id + '-w select');
+        var el = document.getElementById(id);
+        if (el && el.classList.contains('dmy')) el = el.querySelector('input');   // CS202 3: a date of birth's group: its Month box
+        el = el || document.querySelector('#' + id + '-w input, #' + id + '-w textarea, #' + id + '-w select');
         if (el) { el.focus(); el.scrollIntoView({ block: 'center' }); }
       } } }, [lab + ': ' + (PROBLEMS[f.problem] || 'This answer was not accepted (' + f.problem + ').')])]);
     });
