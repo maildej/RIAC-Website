@@ -322,6 +322,9 @@
   // birth; nothing is copied from the centre's system. Other people's dates of birth have no age line (step 7: a child
   // or an elderly parent is ordinary there).
   var DOB_YOUNG = 16, DOB_OLD = 75;
+  // Every date the worker takes is a real day from 1900 to 2100 (its own rule, told us 25 November 2026); a year outside
+  // them is caught at Next rather than refused at Send
+  var DATE_MIN = 1900, DATE_MAX = 2100;
   function todayNY() {   // today's date in New York, as yyyy-mm-dd
     var p = {};
     new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date())
@@ -347,6 +350,7 @@
     if (!/^\d{1,2}$/.test(m) || !/^\d{1,2}$/.test(d) || mi < 1 || mi > 12 || dt.getUTCMonth() !== mi - 1 || dt.getUTCDate() !== di) return { err: '⚠ That date does not exist: check the month and day' };
     var iso = y + '-' + ('0' + mi).slice(-2) + '-' + ('0' + di).slice(-2), today = todayNY();
     if (iso > today) return { err: '⚠ That date is in the future: check the year' };
+    if (+y < DATE_MIN) return { err: '⚠ That date is before ' + DATE_MIN + ': check the year' };   // the worker refuses it (a slip, 0985)
     var age = +today.slice(0, 4) - +y - (today.slice(5) < iso.slice(5) ? 1 : 0);
     return { iso: iso, age: age };
   }
@@ -1658,6 +1662,10 @@
         else if (q.type !== 'ticks' && !clean(v)) errs.push({ id: id, wid: q.type === 'radio' ? fid(q.key) : null, empty: true, text: 'answer' });
       }
       if (q.type === 'dob') { var dr = dobRead(dobPartsOf(S.dobParts[q.key], v)); if (dr.err) errs.push({ id: id, text: dr.err }); }   // CS202 3
+      if (q.type === 'date' && clean(v)) {   // the browser's date box takes years the worker refuses (0985, 20266)
+        var dy = /^(\d{4})-\d{2}-\d{2}$/.exec(v.trim());
+        if (!dy || +dy[1] < DATE_MIN || +dy[1] > DATE_MAX) errs.push({ id: id, text: '⚠ That date is not between ' + DATE_MIN + ' and ' + DATE_MAX + ': check the year' });
+      }
       if (q.type === 'email' && clean(v) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) errs.push({ id: id, text: 'Please enter an email address, like name@example.org.' });
       else if (q.type === 'email' && clean(v) && !/^[A-Za-z0-9._%+-]+@/.test(v.trim())) errs.push({ id: id, text: D.EMAIL_CHARS + '. Please use another address, or send your RIAC the intake form instead.' });
       if (q.type === 'charges' && chargeQuery.trim() && S.charges.length < CH.max) errs.push({ id: id, text: CH.notChosen });
@@ -1912,9 +1920,11 @@
   }
   function workerErrors(fields) {
     var items = fields.map(function (f) {
+      var pm = /^people\[(\d+)\]\.(\w+)$/.exec(String(f.key)), who = pm && S.people[+pm[1]];   // one person's answer: named
       f = { key: String(f.key).replace(/\[\d+\].*$/, ''), problem: f.problem };   // one charge of several: the question itself
       var q = findQuestion(f.key);
       var lab = q ? (q.labelHtml ? plain(q.label) : q.label) : f.key;
+      if (who) lab += ', ' + (who.firstName + ' ' + who.lastName).trim() + (pm[2] === 'dob' ? ' (date of birth)' : '');
       var id = fid(f.key);
       return h('li', null, [h('a', { href: '#' + id, class: 'err-link', on: { click: function (ev) {
         ev.preventDefault();

@@ -1528,8 +1528,13 @@ every key and code the pages send.
   this branch, not yet published: the link in "The center's system did not accept the referral" puts the focus in the
   Month box (it found the group, which cannot take it); the empty age line stays on the page (`display: none` would keep
   a screen reader from hearing it appear); a whole date pasted into "Add a person" takes away that box's red, as typing
-  does. Its fourth point, open: any four-digit year passes (0985 is sent as 0985-04-21; for the client only the age line
-  says so); a floor (say 1900) would be a new rule, so it is the owner's to decide. `cs202-check.mjs` 179 passed.
+  does. Its fourth point, any four-digit year passing (0985 was sent as 0985-04-21), turned out to be a fault: **the
+  worker takes a date only from 1900 to 2100** (its one rule for every date key, RW 25 November 2026) and refused it at
+  Send. So now a date of birth before 1900 stops Next ("⚠ That date is before 1900: check the year"), and so does a
+  browser date box ("Advice needed by", the next court or hearing date) outside 1900 to 2100 ("⚠ That date is not
+  between 1900 and 2100: check the year"); `DATE_MIN`, `DATE_MAX` in `js/referral.js`. A refusal of one person's answer
+  at Send names them ("Other people, Maria Example (date of birth): This is not a date."). Also held on this branch.
+  `cs202-check.mjs` 189 passed.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
