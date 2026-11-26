@@ -354,6 +354,15 @@ every key and code the pages send.
   - **H1, H2:** the worker goes live first (the trial's rows deleted, MODE "live"), then on `main` **the trial commit
     is reverted** and `localhost:8789` taken out of the three policies, in one pull request; that publishes Send A Case.
     ⚠️ Worker first, so no real attorney ever meets "only a test email address can be used".
+    **H2 is ready, held** (25 November 2026, under the dispatcher's D90): branch `claude/go-live-h2`, commit 95cd9bd,
+    pushed, not merged. It reverts 4fa2fb1 (the menu and footers say Send A Case, `intake.html` is Send A Case with its
+    two cards over the paper forms, the home page's two buttons are Send Us A New Case and Find Your RIAC, the noindex
+    off `referral.html` and `portal/index.html`), removes the trial band and its styles, and leaves only the live worker
+    in the three policies' `connect-src`. Checked by `tests\h2-check.mjs` (80, every page from 1360 to 320 px);
+    pictures `riac-handover\W\design\h2\`. **At "hard launch"**, once the worker chat confirms MODE "live": merge `main`
+    into that branch, run `h2-check.mjs` with it served on 8790, publish it to `main`, check it on nyriac.com, then
+    update this file (the file map's "built, not yet live", the Outstanding list). From then on a local test against the
+    worker on 8789 needs Playwright's `bypassCSP`, since the pages' policy no longer allows it.
 - **Testing locally:** the worker chat starts the worker on `localhost:8789` with stand-ins; serve this folder on
   `localhost:8790`; the local worker writes each sign-in link to `riac-handover\RW\local-links.txt`. Test scripts
   (Playwright, from `RIAC-App\tests\case-page\node_modules`) are in `riac-handover\W\tests\`: a full criminal
