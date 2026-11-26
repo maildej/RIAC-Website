@@ -254,7 +254,10 @@
       api('POST', '/v1/portal/session', { code: code, browserSecret: secret }).then(function (r) {
         busy = false; btn.disabled = false; btn.textContent = 'Sign In';
         if (r.status === 200 && r.body.session) { signedIn(); setSession(r.body.session); list(); return; }
-        if (r.status === 401 && r.body.error === 'code-invalid') { wrong('That code is not right. Check it and try again.'); input.focus(); input.select(); return; }
+        // W129 2 (26 November 2026; SR2's R2-D3-3, contract draft 32): the worker answers every refused code alike, wrong
+        // or no longer usable, so a stranger cannot tell whether an address uses the portal; one message, the box usable
+        // (a stray code-expired the same). It was W113 1's two, "not right" and "expired", the second greying the box.
+        if (r.status === 401) { wrong('That code did not work. Check it and try again, use the link in the email, or send another email.'); input.focus(); input.select(); return; }
         if (r.status === 400) { wrong('Please type the six digits from the email.'); input.focus(); return; }
         if (r.status === 429) { wrong('Too many tries from here. Please wait a few minutes and try again.'); return; }
         if (r.status === 0 || r.status >= 500) { wrong('RIAC could not be reached just now. Please try again in a minute or two.'); return; }

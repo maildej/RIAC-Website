@@ -1565,6 +1565,16 @@ every key and code the pages send.
   for docs and info" where it would have read "Waiting for documents", and Waiting on you includes facts owed, so the
   orange box and the words agree. Both fit the status box on one line, on the list and on Send RIAC a message, from
   1360 to 320 px (measured with stand-in data; no live referral owes a fact yet).
+- **W129 2** (26 November 2026; the security review SR2's R2-D3-3 and RW's contract draft 32): the worker answers
+  every refused sign-in code with one `401 code-invalid`, wrong or no longer usable (`code-expired` stops), because two
+  answers had told a stranger whether an address uses the portal. So **"Check your email" shows one message for a
+  refused code: "That code did not work. Check it and try again, use the link in the email, or send another email."**,
+  the label and box red, the box still usable, Sign In kept, the secret and the time kept (W113 1 had two: "That code is
+  not right…", and "This code has expired or has been tried too often…", which greyed the box, took Sign In away and
+  made Send Another Email navy). A stray `code-expired` reads the same. A browser holding no secret keeps W113 1's
+  local "expired" state (no call to the worker, so it tells nobody anything). Chosen over the worker's own words with
+  "send another email" ("1"). RW's worker change (7a9b55f2) waits for this page to be live: **tell RW then.** Pictures
+  `riac-handover\W\design\w129\`; checks `tests\w113-check.mjs` (updated: 111).
 - **RW14 2, the referral carries the portal's sign-in** (25 November 2026; Dan's pick in the worker chat; contract
   draft 31): the portal's card and About You take the attorney's details only from referrals sent signed in, or from
   intakes keyed in at RIAC. So **when the attorney is signed in to the portal in this tab, Send adds `Authorization:
