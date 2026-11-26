@@ -1833,7 +1833,10 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     builds, turn off its deploy previews, delete PR #16's deploys (ideally every PR's), then check PR #16's two
     preview links no longer answer. **Keep the site itself**: the admin page signs in through it, and a released name
     could be claimed by anyone. If it is ever replaced, change `site_domain` in the same step. Steps given to the owner
-    25 November 2026.
+    25 November 2026. **PR #16's two deploys deleted by the owner, 26 November 2026**; both its links now answer 404
+    (checked). The other PRs' previews still answer (old notes only, Low); stopping builds and turning previews off
+    keep new ones from appearing. The site's own address still answers, as the admin sign-in needs. In Netlify's list
+    the project shows as "nyriac.com" (its custom domain); its Netlify address is the `site_domain`.
   - **Low at go-live, R2-D3-3 (with RW):** a wrong sign-in code is answered code-invalid or code-expired depending on
     whether the address is in the portal. The real fix is the worker answering both alike; the page shows what it is
     sent (W113 1's two messages, the owner's), so a change there waits for RW and the owner.
