@@ -1571,9 +1571,10 @@ every key and code the pages send.
   sent are unchanged. The live worker already allows the header on that call (its preflight checked, 25 November), so
   the page can go before the worker's side. Nothing on screen changes; for an attorney with no signed-in referrals the
   card shows the address alone and About You is not filled in, which Dan chose knowingly, and the page says nothing
-  more. Checks `tests\rw14-check.mjs` (8: signed in and not, through a batch, a file and Send). **Once it is live, tell
-  RR directly** (RW's ask): RR blanks the card details of referrals sent unsigned only after it, so no attorney is left
-  with a bare card before they can send signed in.
+  more. Checks `tests\rw14-check.mjs` (8: signed in and not, through a batch, a file and Send). RR blanks the card
+  details of referrals sent unsigned only after this is live, so no attorney is left with a bare card before they can
+  send signed in. **Live since 25 November 2026** (the owner's "Yes, publish": `main` f7a4d38, Pages run 148; checked on
+  nyriac.com: the three changed files served as published, the form drawing); RR and RW told.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
