@@ -1560,7 +1560,11 @@ every key and code the pages send.
   this"): a portal status like "Waiting for information" while facts are owed, as "Waiting for documents"; passed to the
   receiving-side chat (RR), whose words the page shows as sent. RR put the wording for documents and facts owed together
   to Dan (RR28); facts alone read "Waiting for information" (one line in the status box). RR builds it with the widened
-  Waiting on you, both after this page's W127 1 and W128 1 are published: **tell RR, and RW, once they are live.**
+  Waiting on you, both after this page's W127 1 and W128 1 are published (they were, 25 November). **RR28 2 live in
+  RIAC's database since 25 November 2026**: while facts are owed the status reads "Waiting for information", or "Waiting
+  for docs and info" where it would have read "Waiting for documents", and Waiting on you includes facts owed, so the
+  orange box and the words agree. Both fit the status box on one line, on the list and on Send RIAC a message, from
+  1360 to 320 px (measured with stand-in data; no live referral owes a fact yet).
 - **RW14 2, the referral carries the portal's sign-in** (25 November 2026; Dan's pick in the worker chat; contract
   draft 31): the portal's card and About You take the attorney's details only from referrals sent signed in, or from
   intakes keyed in at RIAC. So **when the attorney is signed in to the portal in this tab, Send adds `Authorization:
