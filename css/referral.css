@@ -797,6 +797,8 @@ textarea.inbox:not(:placeholder-shown) + .inbox-hint { visibility: hidden; }
    outlined in its own colour (on the case info's grey panel it had melted), and green when all is well (the site's
    green, as "✓ Uploaded"); orange when waiting on the attorney, grey when closed */
 .ref-table .status { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; } /* as tall as the button beside it (W65) */
+/* W128 1 (25 November 2026): under the status box, "Still needed: 1 document, 3 details", in the warning brown, centred */
+.ref-table .owed { display: block; margin-top: .35rem; font-size: var(--fs-label); font-weight: 600; color: #8a4210; text-align: center; line-height: 1.35; text-wrap: balance; }
 /* W96 1: the words centred, and a status that wraps never leaves one word alone on its last line */
 .status { display: inline-block; background: color-mix(in srgb, var(--r2) 11%, white); color: #1d5a2a; border: 1px solid color-mix(in srgb, var(--r2) 40%, white); border-left: 4px solid var(--r2); border-radius: 6px; padding: .3rem .6rem; font-size: var(--fs-label); font-weight: 600; line-height: 1.35; text-align: center; text-wrap: balance; }
 .status.waiting { background: color-mix(in srgb, var(--r5) 16%, white); border-color: color-mix(in srgb, var(--r5) 45%, white); border-left-color: var(--r5); color: #8a4210; }

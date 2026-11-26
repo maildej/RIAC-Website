@@ -303,6 +303,16 @@
     // A closed referral's words are the database's; some already begin "Closed: ", so it is added only where they do not
     return h('span', { class: 'status' + (g === 'you' ? ' waiting' : g === 'closed' ? ' closed' : ''), text: (r.isOpen || /^closed\b/i.test(words) ? '' : 'Closed: ') + words });
   }
+  // W128 1 (25 November 2026; Dan, with DC43 2): under the status box, what RIAC still needs from the attorney: the kinds
+  // of document it has marked still needed and the facts it still needs to know, "Still needed: 1 document, 3 details",
+  // only the parts that apply, on an open referral only; nothing when nothing is owed
+  function owedLine(r) {
+    if (!r.isOpen) return null;
+    var W = D.STILL_NEEDED, docs = knownDocs(r).filter(function (d) { return d.state === 'needed'; }).length, info = infoOwed(r).length, parts = [];
+    if (docs) parts.push(docs + ' ' + W.doc[docs === 1 ? 0 : 1]);
+    if (info) parts.push(info + ' ' + W.info[info === 1 ? 0 : 1]);
+    return parts.length ? h('span', { class: 'owed', text: W.lead + parts.join(', ') }) : null;
+  }
   function marked(text, term) {   // the text, with each match of the search term marked (as text, never as HTML)
     var frag = document.createDocumentFragment();
     text = text || '';
@@ -392,7 +402,7 @@
       var received = h('td', { class: 'rcv' }, [h('div', { class: 'rcv-wide' }, [h('div', { text: fmtDay(r.receivedOn) }),
         r.closedOn ? h('div', { class: 'sub', text: 'Closed ' + fmtDay(r.closedOn) }) : null]), dates]);
       var court = h('td', null, [h('div', null, [marked(r.court, term)]), h('div', { class: 'sub' }, [marked(r.docket, term)])]);
-      tb.appendChild(h('tr', null, [client, received, court, h('td', null, [statusPill(r)]),
+      tb.appendChild(h('tr', null, [client, received, court, h('td', null, [statusPill(r), owedLine(r)]),
         // W97 1 (the owner: "a grey button with a symbol just saying send a message"); a screen reader hears whose
         h('td', { class: 'act' }, [h('a', { class: 'btn btn-msg', href: 'add.html#' + encodeURIComponent(r.reference),
           'aria-label': 'Send a message about ' + (r.clientName || r.reference) }, [symbol('i-message'), 'Send a message'])])]));

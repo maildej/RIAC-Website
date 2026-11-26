@@ -1545,8 +1545,21 @@ every key and code the pages send.
   message, and RIAC staff close each fact (DC43 2). The heading is `INFO_NEEDED` in `js/referral-data.js`. Chosen over
   a part of the case info panel ("2") and a row per fact with a "Still needed" box, as the documents ("3"). Built, not
   yet published. Pictures `riac-handover\W\design\w127\` (mockup) and `w127c\` (as built); checks `tests\w127-check.mjs`
-  (80, 1360 to 320 px). **W128**, whether the list says so: Dan likes a line by the status ("seems like a good idea") but
-  not "3 things to tell RIAC"; redrawn in three wordings (`design\w128b\`), waiting for his pick.
+  (80, 1360 to 320 px).
+- **W128 1** (25 November 2026; Dan, on the first drawing: showing what is outstanding "on the card right by its status
+  seems like a good idea", but not the words "3 things to tell RIAC"): on Your Referrals, **under each status box, an
+  orange-brown line "Still needed: 1 document, 3 details"**: the kinds of document RIAC has marked still needed (W80 1's
+  `needed`) and the facts it still needs to know (W127 1), only the parts that apply ("Still needed: 1 detail", "Still
+  needed: 2 documents"), on an open referral only; nothing when nothing is owed. Centred under the box, on a computer and
+  on a phone's card. The words are `STILL_NEEDED` in `js/referral-data.js`. It works with the **Waiting on you** group
+  (W58 1), which says that something is needed while the line says what; once DC43 2's last step widens `waitingOnYou`
+  to facts owed, such a referral is grouped there too. Chosen over "RIAC needs 3 answers from you" ("2", the facts
+  alone) and "Still needed: the disposition date, and 2 more" ("3"); W128's first drawing had offered nothing in the
+  list ("a", then recommended) or "3 things to tell RIAC" ("b"). Built, not yet published. Pictures
+  `riac-handover\W\design\w127\W128-options.png`, `w128b\` (mockups) and `w128c\` (as built); checks
+  `tests\w128-check.mjs` (56, 1360 to 320 px). **With it, Dan's yes to a database status** (25 November 2026: "yes do
+  this"): a portal status like "Waiting for information" while facts are owed, as "Waiting for documents"; passed to the
+  receiving-side chat (RR), whose words the page shows as sent.
 - **All guidance is in italics** (the owner's instruction, 18 October 2026): every piece of grey
   guidance on the form, inside the boxes and out, the length notes, "Select any which apply" and
   the step hints included. Inside a box, the example and the instruction are then told apart by
