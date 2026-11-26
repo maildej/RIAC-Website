@@ -1838,7 +1838,8 @@ reasoning, is rule 10 of `CLAUDE.md` in `maildej/RIAC-Airtable`.
     whether the address is in the portal. The real fix is the worker answering both alike; the page shows what it is
     sent (W113 1's two messages, the owner's), so a change there waits for RW and the owner.
   - **Note, R2-D3-5, fixed:** a file refused with 429 now pauses the upload queue for Retry-After and is sent again (six
-    waits at most), on the form and the portal; nothing on screen changes. `tests\sr2-429-check.mjs` (9).
+    waits at most), on the form and the portal; nothing on screen changes. `tests\sr2-429-check.mjs` (9). Live since 26
+    November 2026 (main 7fa1413, Pages run 149). With it, R2-D3-3's page side is W129 2, also live.
   - **Notes for the owner:** R2-D5-V2, nyriac.com serves the whole repository, so `CLAUDE.md` answers on RIAC's own
     domain (the repository is public anyway; only the site's files could be published, through a Pages workflow);
     R2-D5-4, four old branches still hold an old base ID that main's history keeps anyway (deleting them is tidying).
